@@ -175,7 +175,7 @@ Sub PartyShareKillPoints(ByVal index As Long, ByVal partynum As Byte, ByVal poin
         MemberIndex = Party(partynum).Member(i)
         If ShareVect(i) Then
             SetPlayerKillPoints MemberIndex, GetPlayerKillPoints(MemberIndex, PartyStatus) + points, PartyStatus
-            PlayerMsg MemberIndex, "Has ganado: " & points & " puntos de " & JusticeToStr(PartyStatus) & " ahora tienes: " & GetPlayerKillPoints(MemberIndex, PartyStatus), GetColorByJustice(PartyStatus)
+            PlayerMsg MemberIndex, GetTranslation("Has ganado:") & " " & points & " " & GetTranslation("puntos de") & " " & JusticeToStr(PartyStatus) & " " & GetTranslation("ahora tienes:") & " " & GetPlayerKillPoints(MemberIndex, PartyStatus), GetColorByJustice(PartyStatus), , False
             SendKillPoints MemberIndex
         End If
     Next
@@ -192,7 +192,7 @@ Sub ComputeGivenKillPoints(ByVal index As Long, ByVal points As Single, ByVal St
     Else
         Call SetPlayerKillPoints(index, GetPlayerKillPoints(index, Status) + points, Status)
         SendKillPoints index
-        PlayerMsg index, "Has ganado: " & points & " puntos de " & JusticeToStr(Status) & " ahora tienes: " & GetPlayerKillPoints(index, Status), GetColorByJustice(Status)
+        PlayerMsg index, GetTranslation("Has ganado:") & " " & points & " " & GetTranslation("puntos de") & " " & JusticeToStr(Status) & " " & GetTranslation("ahora tienes:") & " " & GetPlayerKillPoints(index, Status), GetColorByJustice(Status), , False
     End If
 End Sub
 
@@ -248,7 +248,7 @@ Sub ComputeArmyPvP(ByVal attacker As Long, ByVal victim As Long)
         
         Call SetPlayerKillPoints(victim, vpoints - points, vStatus)
         SendKillPoints victim
-        PlayerMsg victim, "Has perdido: " & points & " puntos de " & JusticeToStr(vStatus) & " ahora tienes: " & GetPlayerKillPoints(victim, vStatus), GetColorByJustice(vStatus)
+        PlayerMsg victim, GetTranslation("Has perdido:") & " " & points & " " & GetTranslation("puntos de") & " " & JusticeToStr(vStatus) & " " & GetTranslation("ahora tienes:") & " " & GetPlayerKillPoints(victim, vStatus), GetColorByJustice(vStatus), , False
     'End If
 End Sub
 
@@ -330,23 +330,23 @@ Select Case IsPlayerNeutral(Killer)
     Case True
         If IsPlayerNeutral(Killed) Then 'Player Killed Hero or Normal
             player(Killer).PK = PK_PLAYER
-            Call GlobalMsg(GetPlayerName(Killer) & " se ha convertido en un asesino!", BrightRed)
+            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un asesino!"), BrightRed)
             SendJust = True
             
             ResetPlayerArmy Killer, HERO_PLAYER
             SendKillPoints Killer
         Else 'Player Killed PK
             If GetPlayerPK(Killer) = HERO_PLAYER Then
-                Call GlobalMsg(GetPlayerName(Killer) & " ha hecho justicia!", Yellow)
+                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha hecho justicia!"), Yellow, False)
             Else
                 player(Killer).PK = HERO_PLAYER
-                Call GlobalMsg(GetPlayerName(Killer) & " se ha convertido en un héroe!", Yellow)
+                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un héroe!"), Yellow, False)
                 SendJust = True
             End If
         End If
     Case False 'Killer Player is PK
         If IsPlayerNeutral(Killed) Then 'Add points in case of killed is neutral
-            Call GlobalMsg(GetPlayerName(Killer) & " ha cometido un crimen!", BrightRed)
+            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha cometido un crimen!"), BrightRed, False)
         End If
 End Select
 
@@ -360,7 +360,7 @@ End Sub
 Public Sub SetPlayerHitJustice(ByVal Killer As Long, ByVal Killed As Long)
 If Not (Killer > 0 And Killer <= Player_HighIndex And Killed > 0 And Killed <= Player_HighIndex) Then Exit Sub
 
-If GetPlayerPK(Killer) = NONE_PLAYER And GetPlayerPK(Killed) = HERO_PLAYER And getmapmoral(GetPlayerMap(Killer)) <> MAP_MORAL_ARENA Then
+If GetPlayerPK(Killer) = NONE_PLAYER And GetPlayerPK(Killed) = HERO_PLAYER And GetMapMoral(GetPlayerMap(Killer)) <> MAP_MORAL_ARENA Then
     Call SetPlayerPK(Killer, PK_PLAYER)
     PlayerMsg Killer, "Atacas a un héroe y te conviertes en asesino!", BrightRed
     SendJusticeToMap Killer
@@ -465,7 +465,7 @@ Sub SendKillPoints(ByVal index As Long)
     Set buffer = Nothing
 End Sub
 
-Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef mapnum As Long, ByRef X As Long, ByRef Y As Long) As Boolean
+Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef MapNum As Long, ByRef X As Long, ByRef Y As Long) As Boolean
     Dim header As String
     Select Case justice
     Case NONE_PLAYER
@@ -483,10 +483,10 @@ Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef mapnum As Long, ByRef 
     VY = GetVar(App.Path & "\data\army.ini", header, "SpawnY")
     
     If IsNumeric(vmap) And IsNumeric(VX) And IsNumeric(VY) Then
-        mapnum = vmap
+        MapNum = vmap
         X = VX
         Y = VY
-        If Not OutOfBoundries(X, Y, mapnum) Then
+        If Not OutOfBoundries(X, Y, MapNum) Then
             GetJusticeSpawnSite = True
         End If
     End If

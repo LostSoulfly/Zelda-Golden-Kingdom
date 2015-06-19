@@ -18,22 +18,6 @@ Dim FileName As String
     Close #1
 End Sub
 
-Public Function ReadFile(sFile As String, Optional ByRef NotNull As Boolean) As Byte()
-    Dim nFile As Integer
-
-    nFile = FreeFile
-    Open sFile For Binary Access Read As #nFile
-    If LOF(nFile) > 0 Then
-        ReDim ReadFile(0 To LOF(nFile) - 1)
-        Get nFile, , ReadFile
-        NotNull = True
-    Else
-        NotNull = False
-    End If
-    Close #nFile
-End Function
-
-
 
 Public Sub ChkDir(ByVal tDir As String, ByVal tName As String)
     If LCase$(dir(tDir & tName, vbDirectory)) <> tName Then Call MkDir(tDir & tName)
@@ -56,7 +40,7 @@ Sub AddLog(ByVal index As Long, ByVal Text As String, ByVal FN As String)
     
             F = FreeFile
             Open FileName For Append As #F
-            Print #F, Time & ": " & Text
+            Print #F, Now & ": " & Text
             Close #F
         End If
     End If
@@ -151,12 +135,13 @@ Sub BanIndex(ByVal BanPlayerIndex As Long, ByVal BannedByIndex As Long)
     Open FileName For Append As #F
     Print #F, IP & "," & GetPlayerName(BannedByIndex)
     Close #F
-    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " ha sido baneado de " & Options.Game_Name & " by " & GetPlayerName(BannedByIndex) & "!", White)
+    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " " & GetTranslation(" ha sido baneado de ") & Options.Game_Name & " by " & GetPlayerName(BannedByIndex) & "!", White, False)
     Call AddLog(BannedByIndex, GetPlayerName(BannedByIndex) & " ha baneado a " & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & GetPlayerName(BannedByIndex) & "!")
 End Sub
 
 Sub ServerBanIndex(ByVal BanPlayerIndex As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim FileName As String
     Dim IP As String
     Dim F As Long
@@ -186,7 +171,7 @@ Sub ServerBanIndex(ByVal BanPlayerIndex As Long)
     Open FileName For Append As #F
     Print #F, IP & "," & "Server"
     Close #F
-    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " ha sido baneado de " & Options.Game_Name & " by " & "the Server" & "!", White)
+    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " " & GetTranslation(" ha sido baneado de ") & " " & Options.Game_Name & " by " & "the Server" & "!", White, False)
     Call AddLog(0, "The Server" & " ha baneado a " & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & "The Server" & "!")
 End Sub
@@ -409,7 +394,7 @@ Sub LoadPlayer(ByVal index As Long, ByVal Name As String)
     Dim FileName As String
     Dim F As Long
     Call ClearPlayer(index)
-    FileName = App.Path & "\data\accounts\" & Trim(Name) & ".bin"
+    FileName = App.Path & "\data\accounts\" & Trim$(Name) & ".bin"
     F = FreeFile
     Open FileName For Binary As #F
     Get #F, , player(index)
@@ -473,7 +458,7 @@ Sub LoadClasses()
 
     For i = 1 To Max_Classes
         Class(i).Name = GetVar(FileName, "CLASS" & i, "Name")
-        
+        Class(i).TranslatedName = GetVar(FileName, "CLASS" & i, "Name")
         ' read string of sprites
         tmpSprite = GetVar(FileName, "CLASS" & i, "MaleSprite")
         ' split into an array of strings
@@ -546,6 +531,7 @@ Sub SaveClasses()
 
     For i = 1 To Max_Classes
         Call PutVar(FileName, "CLASS" & i, "Name", Trim$(Class(i).Name))
+        Call PutVar(FileName, "CLASS" & i, "TranslatedName", Trim$(Class(i).TranslatedName))
         Call PutVar(FileName, "CLASS" & i, "Maleprite", "1")
         Call PutVar(FileName, "CLASS" & i, "Femaleprite", "1")
         Call PutVar(FileName, "CLASS" & i, "Face", "1")
@@ -626,6 +612,7 @@ Sub LoadItems()
         Open FileName For Binary As #F
         Get #F, , item(i)
         Close #F
+        If Trim$(Replace(item(i).TranslatedName, vbNullChar, "")) = "" Then item(i).TranslatedName = GetTranslation(item(i).Name)
     Next
 
 End Sub
@@ -693,6 +680,7 @@ Sub LoadShops()
         Open FileName For Binary As #F
         Get #F, , Shop(i)
         Close #F
+        If Trim$(Replace(Shop(i).TranslatedName, vbNullChar, "")) = "" Then Shop(i).TranslatedName = GetTranslation(Shop(i).Name)
     Next
 
 End Sub
@@ -759,6 +747,7 @@ Sub LoadSpells()
         Open FileName For Binary As #F
         Get #F, , Spell(i)
         Close #F
+        If Trim$(Replace(Spell(i).TranslatedName, vbNullChar, "")) = "" Then Spell(i).TranslatedName = GetTranslation(Spell(i).Name)
     Next
 
 End Sub
@@ -827,6 +816,7 @@ Sub LoadNpcs()
         Open FileName For Binary As #F
         Get #F, , NPC(i)
         Close #F
+        If Trim$(Replace(NPC(i).TranslatedName, vbNullChar, "")) = "" Then NPC(i).TranslatedName = GetTranslation(NPC(i).Name)
     Next
 
 End Sub
@@ -847,6 +837,7 @@ End Sub
 Sub ClearNpc(ByVal index As Long)
     Call ZeroMemory(ByVal VarPtr(NPC(index)), LenB(NPC(index)))
     NPC(index).Name = vbNullString
+    NPC(index).TranslatedName = vbNullString
     NPC(index).AttackSay = vbNullString
     NPC(index).Sound = "None."
 End Sub
@@ -896,6 +887,8 @@ Sub LoadResources()
         Open FileName For Binary As #F
             Get #F, , Resource(i)
         Close #F
+        If Trim$(Replace(Resource(i).TranslatedName, vbNullChar, "")) = "" Then Resource(i).TranslatedName = GetTranslation(Resource(i).Name)
+        
     Next
 
 End Sub
@@ -963,6 +956,7 @@ Sub LoadAnimations()
         Open FileName For Binary As #F
             Get #F, , Animation(i)
         Close #F
+        If Trim$(Replace(Animation(i).TranslatedName, vbNullChar, "")) = "" Then Animation(i).TranslatedName = GetTranslation(Animation(i).Name)
     Next
 
 End Sub
@@ -997,22 +991,19 @@ End Sub
 ' **********
 ' ** Maps **
 ' **********
-Sub SaveMap(ByVal mapnum As Long, ByRef map As MapRec)
+Sub SaveMap(ByVal MapNum As Long, ByRef map As MapRec)
     Dim FileName As String
     Dim F As Long
     Dim X As Long
     Dim Y As Long
-    
     Dim Data() As Byte
     Data = GetMapData(map)
-    FileName = App.Path & "\data\maps\map" & mapnum & ".dat"
+    FileName = App.Path & "\data\maps\map" & MapNum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
         Put #F, , Compress(Data)
     Close #F
 End Sub
-
-
 
 Sub LoadMaps()
     Dim FileName As String
@@ -1024,17 +1015,17 @@ Sub LoadMaps()
 
     For i = 1 To MAX_MAPS
         FileName = App.Path & "\data\maps\map" & i & ".dat"
-        
+    
         Dim CompressedData() As Byte
         CompressedData = ReadFile(FileName)
         MapCache(i).Data = CompressedData
-    
+
         Call SetServerMapData(i, Decompress(CompressedData))
-        
         ClearTempTile i
         CacheResources i
         DoEvents
     Next
+
 End Sub
 
 Sub CheckMaps()
@@ -1051,11 +1042,11 @@ Sub CheckMaps()
 
 End Sub
 
-Sub ClearMapItem(ByVal index As Long, ByVal mapnum As Long)
-    Call ZeroMemory(ByVal VarPtr(MapItem(mapnum, index)), LenB(MapItem(mapnum, index)))
-    MapItem(mapnum, index).playerName = vbNullString
+Sub ClearMapItem(ByVal index As Long, ByVal MapNum As Long)
+    Call ZeroMemory(ByVal VarPtr(MapItem(MapNum, index)), LenB(MapItem(MapNum, index)))
+    MapItem(MapNum, index).playerName = vbNullString
     
-    CheckMapItemHighIndex mapnum, index, False
+    CheckMapItemHighIndex MapNum, index, False
     
 End Sub
 
@@ -1071,9 +1062,9 @@ Sub ClearMapItems()
 
 End Sub
 
-Sub ClearMapNpc(ByVal index As Long, ByVal mapnum As Long)
-    ReDim MapNpc(mapnum).NPC(1 To MAX_MAP_NPCS)
-    Call ZeroMemory(ByVal VarPtr(MapNpc(mapnum).NPC(index)), LenB(MapNpc(mapnum).NPC(index)))
+Sub ClearMapNpc(ByVal index As Long, ByVal MapNum As Long)
+    ReDim MapNpc(MapNum).NPC(1 To MAX_MAP_NPCS)
+    Call ZeroMemory(ByVal VarPtr(MapNpc(MapNum).NPC(index)), LenB(MapNpc(MapNum).NPC(index)))
 End Sub
 
 Sub ClearMapNpcs()
@@ -1088,20 +1079,35 @@ Sub ClearMapNpcs()
 
 End Sub
 
-Sub ClearMap(ByVal mapnum As Long)
-    Call ZeroMemory(ByVal VarPtr(map(mapnum)), LenB(map(mapnum)))
+Sub BackupMap(ByVal MapNum As Long, ByVal revision As Long)
+On Error Resume Next
+Dim FilePath As String
+Dim BackupPath As String
+Dim FileName As String
+Dim NewFileName As String
+
+FilePath = App.Path & "\data\maps\"
+FileName = FilePath & "map" & MapNum & ".dat"
+BackupPath = FilePath & "revisions\"
+MkDir BackupPath
+NewFileName = FilePath & "map" & MapNum & "-" & revision & ".dat"
+FileCopy FileName, NewFileName
+End Sub
+
+Sub ClearMap(ByVal MapNum As Long)
+    Call ZeroMemory(ByVal VarPtr(map(MapNum)), LenB(map(MapNum)))
     
-    map(mapnum).Name = vbNullString
-    map(mapnum).MaxX = MAX_MAPX
-    map(mapnum).MaxY = MAX_MAPY
-    ReDim map(mapnum).Tile(0 To map(mapnum).MaxX, 0 To map(mapnum).MaxY)
+    map(MapNum).Name = vbNullString
+    map(MapNum).MaxX = MAX_MAPX
+    map(MapNum).MaxY = MAX_MAPY
+    ReDim map(MapNum).Tile(0 To map(MapNum).MaxX, 0 To map(MapNum).MaxY)
     ' Reset the values for if a player is on the map or not
-    ClearMapReference mapnum
+    ClearMapReference MapNum
     ' Reset the map cache array for this map.
-    MapCache(mapnum).Data = vbNullString
+    MapCache(MapNum).Data = vbNullString
     
     'reset tempmap data
-    Call ZeroMemory(ByVal VarPtr(TempMap(mapnum)), LenB(TempMap(mapnum)))
+    Call ZeroMemory(ByVal VarPtr(TempMap(MapNum)), LenB(TempMap(MapNum)))
 End Sub
 
 Sub ClearMaps()
@@ -1114,7 +1120,7 @@ Sub ClearMaps()
 End Sub
 
 Function GetClassName(ByVal ClassNum As Long) As String
-    GetClassName = Trim$(Class(ClassNum).Name)
+    GetClassName = Trim$(Class(ClassNum).TranslatedName)
 End Function
 
 Function GetClassMaxVital(ByVal ClassNum As Long, ByVal vital As Vitals) As Long
@@ -1203,13 +1209,13 @@ Sub SaveDoors()
 
 End Sub
 
-Sub SaveDoor(ByVal doornum As Long)
+Sub SaveDoor(ByVal DoorNum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\doors\door" & doornum & ".dat"
+    FileName = App.Path & "\data\doors\door" & DoorNum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-        Put #F, , Doors(doornum)
+        Put #F, , Doors(DoorNum)
     Close #F
 End Sub
 
@@ -1227,6 +1233,7 @@ Sub LoadDoors()
         Open FileName For Binary As #F
             Get #F, , Doors(i)
         Close #F
+        If Trim$(Replace(Doors(i).TranslatedName, vbNullChar, "")) = "" Then Doors(i).TranslatedName = GetTranslation(Doors(i).Name)
     Next
 
 End Sub
@@ -1356,6 +1363,7 @@ Sub SaveAction(ByVal ActionNum As Long)
     Dim F As Long
     FileName = App.Path & "\data\Actions\Action" & ActionNum & ".dat"
     F = FreeFile
+    'Actions(ActionNum).TranslatedName = GetTranslation(Actions(ActionNum).Name)
     Open FileName For Binary As #F
         Put #F, , Actions(ActionNum).Name
         Put #F, , Actions(ActionNum).Type
@@ -1365,6 +1373,7 @@ Sub SaveAction(ByVal ActionNum As Long)
         Put #F, , Actions(ActionNum).Data3
         Put #F, , Actions(ActionNum).Data4
     Close #F
+    
 End Sub
 
 Sub LoadActions()
@@ -1387,6 +1396,8 @@ Sub LoadActions()
             Get #F, , Actions(i).Data4
 
         Close #F
+        If Trim$(Replace(Actions(i).TranslatedName, vbNullChar, "")) = "" Then Actions(i).TranslatedName = GetTranslation(Actions(i).Name)
+        
     Next
 
 End Sub
@@ -1545,14 +1556,14 @@ ErrorHandler:
 ' if an error occurs, this function returns False
 End Function
 
-Sub ClearSingleMapNpc(ByVal index As Long, ByVal mapnum As Long)
+Sub ClearSingleMapNpc(ByVal index As Long, ByVal MapNum As Long)
 
-    DeleteNPCFromMapRef mapnum, index
+    DeleteNPCFromMapRef MapNum, index
     
-    Call ZeroMemory(ByVal VarPtr(MapNpc(mapnum).NPC(index)), LenB(MapNpc(mapnum).NPC(index)))
+    Call ZeroMemory(ByVal VarPtr(MapNpc(MapNum).NPC(index)), LenB(MapNpc(MapNum).NPC(index)))
 
-    If index >= TempMap(mapnum).npc_highindex Then
-        Call SetMapNPCHighIndex(mapnum, index)
+    If index >= TempMap(MapNum).npc_highindex Then
+        Call SetMapNPCHighIndex(MapNum, index)
     End If
     
 
@@ -1676,6 +1687,7 @@ Function GetMakeAdminPassword() As String
 End Function
 
 Function GetBanPassword() As String
+If frmServer.chkTroll.Value = vbChecked Then Exit Function
     Dim FileName As String
     Dim F As Long
     Dim s As String
@@ -1707,7 +1719,7 @@ Sub UnlockAccount(ByVal login As String)
     
     ZeroMemory AuxPlayer, Len(AuxPlayer)
     
-    FileName = App.Path & "\data\accounts\" & Trim(login) & ".bin"
+    FileName = App.Path & "\data\accounts\" & Trim$(login) & ".bin"
     
     F = FreeFile
     Open FileName For Binary As #F

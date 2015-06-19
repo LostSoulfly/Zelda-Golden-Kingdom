@@ -48,7 +48,7 @@ End Sub
 
 Public Sub Trim()
     ' If the readhead is past the buffersize, this means everything has been read in the array, flush it
-    If ReadHead >= count Then Flush
+    If ReadHead >= Count Then Flush
 End Sub
 
 Public Sub WriteByte(ByVal nByte As Byte)
@@ -198,12 +198,12 @@ Dim sBytes() As Byte
     ReadConstString = StrConv(sBytes, vbUnicode)
     If MoveReadHead Then ReadHead = ReadHead + sLength
 End Function
-Public Function count() As Long
-    count = (UBound(buffer) - LBound(buffer)) + 1
+Public Function Count() As Long
+    Count = (UBound(buffer) - LBound(buffer)) + 1
 End Function
 
 Public Function length() As Long
-    length = count - ReadHead
+    length = Count - ReadHead
 End Function
 
 Public Function ToArray() As Byte()
@@ -226,7 +226,7 @@ End Sub
 
 Public Function BufferDeCompress()
     Dim Data() As Byte
-    Data = DeCompress(buffer)
+    Data = Decompress(buffer)
     buffer = Data
     BufferSize = UBound(buffer) - LBound(buffer) + 1
     ReadHead = 0

@@ -22,9 +22,11 @@ End Type
 
 Private Type ShopRec
     Name As String * NAME_LENGTH
+    
     BuyRate As Long
     TradeItem(1 To MAX_TRADES) As TradeItemRec
     PriceType As Byte
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 
@@ -66,7 +68,7 @@ Function ProcessPlayerCostItem(ByVal index As Long, ByVal shopnum As Long, ByVal
     Dim CostAmount As Long
     CostAmount = .Costvalue
     
-    Dim Points As Long
+    Dim points As Long
     
     Select Case Shop(shopnum).PriceType
     Case SHItem
@@ -83,20 +85,20 @@ Function ProcessPlayerCostItem(ByVal index As Long, ByVal shopnum As Long, ByVal
         End If
         
     Case SHPKKillPoints
-        Points = GetPlayerKillPoints(index, PK_PLAYER)
+        points = GetPlayerKillPoints(index, PK_PLAYER)
         
-        If Points > 0 And Points >= CostAmount Then
-            SetPlayerKillPoints index, Points - CostAmount, PK_PLAYER
+        If points > 0 And points >= CostAmount Then
+            SetPlayerKillPoints index, points - CostAmount, PK_PLAYER
             ProcessPlayerCostItem = True
         Else
             PlayerMsg index, "No posees suficientes puntos!", BrightRed
         End If
         
     Case SHHeroKillPoints
-        Points = GetPlayerKillPoints(index, HERO_PLAYER)
+        points = GetPlayerKillPoints(index, HERO_PLAYER)
         
-        If Points > 0 And Points >= CostAmount Then
-            SetPlayerKillPoints index, Points - CostAmount, HERO_PLAYER
+        If points > 0 And points >= CostAmount Then
+            SetPlayerKillPoints index, points - CostAmount, HERO_PLAYER
             ProcessPlayerCostItem = True
         Else
             PlayerMsg index, "No posees suficientes puntos!", BrightRed
@@ -107,10 +109,10 @@ Function ProcessPlayerCostItem(ByVal index As Long, ByVal shopnum As Long, ByVal
     Case SHNPCPoints
     
     Case SHBonusPoints
-        Points = GetPlayerBonusPoints(index)
+        points = GetPlayerBonusPoints(index)
         
-        If Points > 0 And Points >= CostAmount Then
-            SetPlayerBonusPoints index, Points - CostAmount
+        If points > 0 And points >= CostAmount Then
+            SetPlayerBonusPoints index, points - CostAmount
             SendPlayerBonusPoints index
             ProcessPlayerCostItem = True
         Else

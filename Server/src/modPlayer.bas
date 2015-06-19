@@ -24,41 +24,62 @@ Sub JoinGame(ByVal index As Long, ByVal NeedData As Boolean)
     
     ' send the login ok
     SendLoginOk index
-    
+    DoEvents
     TotalPlayersOnline = TotalPlayersOnline + 1
     CalculateSleepTime
     ByteCounter = 0
-    
+    DoEvents
     CheckPlayerStateAtJoin index
     ' Send some more little goodies, no need to explain these
+    
     SendMaxWeight index
+    
     Call CheckEquippedItems(index)
+    
     If NeedData Then
         Call SendClasses(index)
+        
         Call SendItems(index) 'done
+        
         Call SendAnimations(index) 'done
+        
         Call SendNpcs(index) 'done
+        
         Call SendShops(index)
+        
         Call SendSpells(index) 'done
+        
         Call SendResources(index) 'done
+        
         Call SendQuests(index)
+        
         Call SendPets(index)
+        
         Call SendCustomSprites(index)
+        
         If GetPlayerAccess_Mode(index) >= ADMIN_CREATOR Then
             Call SendMovements(index)
+            
             Call SendActions(index)
+            
             Call SendDoors(index)
+            
         End If
     End If
     
     Call SendInventory(index)
-    Call SendWornEquipment(index)
-    Call SendMapEquipment(index)
-    Call SendPlayerSpells(index)
-    Call SendHotbar(index)
-    Call SendWeather(index)
-    Call SendRunningSprites(index)
     
+    Call SendWornEquipment(index)
+    
+    Call SendMapEquipment(index)
+    
+    Call SendPlayerSpells(index)
+    
+    Call SendHotbar(index)
+    
+    Call SendWeather(index)
+    
+    Call SendRunningSprites(index)
     
     SendKillPoints index
     SendPlayerBonusPoints index
@@ -80,22 +101,28 @@ Sub JoinGame(ByVal index As Long, ByVal NeedData As Boolean)
     
     Call ComputeAllPlayerStats(index)
     Call SendStats(index)
-    
+        
     ' Warp the player to his saved location
     Call PlayerSpawn(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index))
     
     ' Send a global message that he/she joined
     If GetPlayerAccess_Mode(index) <= ADMIN_MONITOR Then
-        Call GlobalMsg(GetPlayerName(index) & " se ha conectado", BrightGreen)
+        Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" se ha conectado"), BrightGreen, False)
     Else
-        'Call GlobalMsg(GetPlayerName(index) & " se ha conectado", BrightGreen)
+        Call GlobalMsg(GetPlayerName(index) & " se ha conectado", BrightGreen)
     End If
     
     ' Send welcome messages
     Call SendWelcome(index)
     
+    If frmServer.chkTroll.Value = vbChecked Then PlayerMsg index, "You are on a Troll server. Type /admin for admin menu.", BrightRed, , False
+    
     'Do all the guild start up checks
     Call GuildLoginCheck(index)
+    
+    If player(index).points > 0 Then
+        PlayerMsg index, "You have " & player(index).points & " unspent stat points!", White, , False
+    End If
     
     'miscellanious
     Call InitPlayerPets(index)
@@ -139,7 +166,7 @@ Sub LeftGame(ByVal index As Long)
         ' cancel any trade they're in
         If TempPlayer(index).InTrade > 0 Then
             tradeTarget = TempPlayer(index).InTrade
-            PlayerMsg tradeTarget, Trim$(GetPlayerName(index)) & " ha rechazado el comercio.", BrightRed
+            PlayerMsg tradeTarget, Trim$(GetPlayerName(index)) & " " & GetTranslation("ha rechazado el comercio."), BrightRed, , False
             ' clear out trade
             For i = 1 To MAX_INV
                 TempPlayer(tradeTarget).TradeOffer(i).Num = 0
@@ -169,7 +196,7 @@ Sub LeftGame(ByVal index As Long)
 
         ' Send a global message that he/she left
         If GetPlayerAccess_Mode(index) <= ADMIN_MONITOR Then
-            Call GlobalMsg(GetPlayerName(index) & " se ha desconectado", BrightRed)
+            Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" se ha desconectado"), BrightRed, False)
         Else
             'Call GlobalMsg(GetPlayerName(index) & " se ha desconectado", BrightRed)
         End If
@@ -648,10 +675,10 @@ Sub PlayerMapGetItem(ByVal index As Long)
                             
                             If isItemStackable(ItemNum) Then
                                 'Call SetPlayerInvItemValue(index, n, GetPlayerInvItemValue(index, n) + MapItem(mapnum, i).Value)
-                                msg = MapItem(mapnum, i).Value & " " & Trim$(item(ItemNum).Name)
+                                msg = MapItem(mapnum, i).Value & " " & Trim$(item(ItemNum).TranslatedName)
                             Else
                                 'Call SetPlayerInvItemValue(index, n, 0)
-                                msg = Trim$(item(ItemNum).Name)
+                                msg = Trim$(item(ItemNum).TranslatedName)
                             End If
                             
                             If Not MapItem(mapnum, i).isDrop Then
@@ -725,16 +752,16 @@ Sub PlayerMapDropItem(ByVal index As Long, ByVal invNum As Long, ByVal amount As
                     ' Check if its more then they have and if so drop it all
                     If amount >= GetPlayerInvItemValue(index, invNum) Then
                         MapItem(GetPlayerMap(index), i).Value = GetPlayerInvItemValue(index, invNum)
-                        If SayMsg Then Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & " arroja " & GetPlayerInvItemValue(index, invNum) & " " & Trim$(item(GetPlayerInvItemNum(index, invNum)).Name) & ".", Yellow)
+                        If SayMsg Then Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & GetTranslation(" arroja ") & " " & GetPlayerInvItemValue(index, invNum) & " " & Trim$(item(GetPlayerInvItemNum(index, invNum)).TranslatedName) & ".", Yellow, False)
                     Else
                         MapItem(GetPlayerMap(index), i).Value = amount
-                        If SayMsg Then Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & " arroja " & amount & " " & Trim$(item(GetPlayerInvItemNum(index, invNum)).Name) & ".", Yellow)
+                        If SayMsg Then Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & GetTranslation(" arroja ") & " " & amount & " " & Trim$(item(GetPlayerInvItemNum(index, invNum)).TranslatedName) & ".", Yellow, False)
                     End If
                 Else
                     ' Its not a currency object so this is easy
                     MapItem(GetPlayerMap(index), i).Value = 0
                     ' send message
-                    If SayMsg Then Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & " arroja " & CheckGrammar(Trim$(item(GetPlayerInvItemNum(index, invNum)).Name)) & ".", Yellow)
+                    If SayMsg Then Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & " " & GetTranslation(" arroja ") & " " & CheckGrammar((item(GetPlayerInvItemNum(index, invNum)).TranslatedName)) & ".", Yellow, False)
                 End If
                 
                 Call TakeInvSlot(index, invNum, amount, True)
@@ -780,10 +807,10 @@ Sub CheckPlayerLevelUp(ByVal index As Long)
     If level_count > 0 And Not LPE(index) Then
         If level_count = 1 Then
             'singular
-            GlobalMsg "¡" & GetPlayerName(index) & " ha subido " & level_count & " nivel!", Brown
+            GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha subido ") & " " & level_count & " " & GetTranslation(" nivel!"), Brown, False
         Else
             'plural
-            GlobalMsg "¡" & GetPlayerName(index) & " ha subido " & level_count & " niveles!", Brown
+            GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha subido ") & " " & level_count & GetTranslation(" niveles!"), Brown, False
         End If
         SendEXP index
         SendPoints index
@@ -1344,12 +1371,12 @@ Function CheckResource(ByVal index As Long, ByVal X As Long, ByVal Y As Long) As
                                         CheckResource = True
                                 Else
                                         ' too weak
-                                        SendActionMsg GetPlayerMap(index), "Fallo!", BrightRed, 1, (Rx * 32), (Ry * 32)
+                                        SendActionMsg GetPlayerMap(index), "Fallo!", BrightRed, 1, (Rx * 32), (Ry * 32), , True
                                 End If
                         Else
                                 ' send message if it exists
                                 If Len(Trim$(Resource(Resource_index).EmptyMessage)) > 0 Then
-                                        SendActionMsg GetPlayerMap(index), Trim$(Resource(Resource_index).EmptyMessage), BrightRed, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+                                        SendActionMsg GetPlayerMap(index), GetTranslation(Resource(Resource_index).EmptyMessage), BrightRed, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32), , True
                                 End If
                         End If
                 End If
@@ -1382,7 +1409,7 @@ Sub CheckSingleResource(ByVal index As Long, ByVal Resource_Num As Long)
         If ResourceCache(mapnum).ResourceData(Resource_Num).ResourceState <> 0 Then
             ' send message if it exists
             If Len(Trim$(Resource(Resource_index).EmptyMessage)) > 0 Then
-                    SendActionMsg mapnum, Trim$(Resource(Resource_index).EmptyMessage), BrightRed, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+                    SendActionMsg mapnum, GetTranslation(Resource(Resource_index).EmptyMessage), BrightRed, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32), , True
             End If
             Exit Sub
         End If
@@ -1440,7 +1467,7 @@ Sub CheckSingleResource(ByVal index As Long, ByVal Resource_Num As Long)
             '/ALATAR
         Else
             ' too weak
-            SendActionMsg mapnum, "Fallo!", BrightRed, 1, (Rx * 32), (Ry * 32)
+            SendActionMsg mapnum, "Fallo!", BrightRed, 1, (Rx * 32), (Ry * 32), , True
         End If
                           
 End Sub
@@ -1463,7 +1490,7 @@ Case REWARD_ITEM
         'If Resource(ResourceNum).ItemSuccessMessage Then
                 'SendActionMsg GetPlayerMap(index), Trim$(Resource(ResourceNum).SuccessMessage), BrightGreen, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
         'Else
-                SendActionMsg GetPlayerMap(index), "¡" & Trim$(item(RewardItem).Name) & "!", BrightGreen, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+                SendActionMsg GetPlayerMap(index), Trim$(item(RewardItem).TranslatedName) & "!", BrightGreen, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32), , False
         'End If
     End If
 Case REWARD_SPAWN_NPC
@@ -1590,6 +1617,7 @@ Dim ContainerAmount, amount As Long
     
     ' Prevent hacking
     If invNum < 1 Or invNum > MAX_INV Then
+        HackingAttempt index, "UseItem <1 or >Max."
         Exit Sub
     End If
 
@@ -1717,7 +1745,7 @@ Dim ContainerAmount, amount As Long
 
 
                 ' Check if a key exists
-                If map(GetPlayerMap(index)).Tile(X, Y).Type = TILE_TYPE_KEY Then
+                If map(GetPlayerMap(index)).Tile(X, Y).Type = TILE_TYPE_key Then
                     Dim KeyToOpen As Long
                     KeyToOpen = GetTempDoorNumberByTile(GetPlayerMap(index), X, Y)
                     If KeyToOpen > 0 Then
@@ -1765,7 +1793,7 @@ Dim ContainerAmount, amount As Long
                                     Call SetPlayerSpell(index, i, N)
                                     Call SendAnimation(GetPlayerMap(index), item(ItemNum).Animation, 0, 0, TARGET_TYPE_PLAYER, index)
                                     Call TakeInvItem(index, ItemNum, 0)
-                                    Call PlayerMsg(index, "Has aprendido una nueva habilidad. Ahora puedes usar " & Trim$(Spell(N).Name) & ".", BrightGreen)
+                                    Call PlayerMsg(index, GetTranslation("Has aprendido una nueva habilidad. Ahora puedes usar") & " " & Trim$(Spell(N).TranslatedName) & ".", BrightGreen, , False)
                                     Call SendPlayerSpells(index)
                                 Else
                                     Call PlayerMsg(index, "Ya conoces ésta habilidad.", BrightRed)
@@ -1776,11 +1804,11 @@ Dim ContainerAmount, amount As Long
                             End If
 
                         Else
-                            Call PlayerMsg(index, "Debes ser nivel " & i & " para aprender ésta habilidad.", BrightRed)
+                            Call PlayerMsg(index, GetTranslation("Debes ser nivel") & " " & i & " " & GetTranslation("para aprender ésta habilidad."), BrightRed, , False)
                         End If
 
                     Else
-                        Call PlayerMsg(index, "Solo puede ser aprendido por " & CheckGrammar(GetClassName(Spell(N).ClassReq)) & ".", BrightRed)
+                        Call PlayerMsg(index, GetTranslation("Solo puede ser aprendido por") & " " & CheckGrammar(GetClassName(Spell(N).ClassReq)) & ".", BrightRed, , False)
                     End If
                 End If
                 
@@ -1794,12 +1822,12 @@ Dim ContainerAmount, amount As Long
                 Call SendPoints(index)
                 Call ComputeAllPlayerStats(index)
                 Call SendStats(index)
-                Call PlayerMsg(index, "Has reseteado tus puntos, ahora tienes " & i & " puntos!", BrightGreen)
+                Call PlayerMsg(index, GetTranslation("Has reseteado tus puntos, ahora tienes") & " " & i & " " & GetTranslation("puntos!"), BrightGreen, , False)
             Else
                 i = ResetPlayerPetPoints(index, GetPlayerPetSlot(index))
                 Call SetPlayerPetPOINTS(index, GetPlayerPetPOINTS(index) + i)
                 Call SendPetData(index, TempPlayer(index).TempPet.ActualPet)
-                Call PlayerMsg(index, "Has reseteado los puntos de tu mascota! Ahora tiene: " & i & " puntos!", BrightGreen)
+                Call PlayerMsg(index, GetTranslation("Has reseteado los puntos de tu mascota! Ahora tiene:") & " " & i & " " & GetTranslation("puntos!"), BrightGreen, , False)
             End If
             Call TakeInvItem(index, ItemNum, 0)
             ' send the sound
@@ -1809,7 +1837,7 @@ Dim ContainerAmount, amount As Long
         
             'Triforce Type
             If Not GetPlayerLevel(index) >= MIN_LEVEL_TO_RESET Then
-                PlayerMsg index, "Necesitas ser nivel " & MIN_LEVEL_TO_RESET & " para adquirir la trifuerza", BrightRed
+                PlayerMsg index, GetTranslation("Necesitas ser nivel") & " " & MIN_LEVEL_TO_RESET & " " & GetTranslation("para adquirir la trifuerza"), BrightRed, , False
                 ' send the sound
                 SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seError, 1
                 Exit Sub
@@ -1845,7 +1873,7 @@ Dim ContainerAmount, amount As Long
          
                 If CanPlayerEquipItem(index, ItemNum) = False Then Exit Sub
         
-                PlayerMsg index, "Has abierto " & item(ItemNum).Name, Green
+                PlayerMsg index, GetTranslation("Has abierto") & Trim$(item(ItemNum).TranslatedName), Green, , False
                 TakeInvItem index, ItemNum, 0
                 For i = 0 To MAX_ITEM_CONTAINERS
                     If item(ItemNum).Container(i).ItemNum > 0 And item(ItemNum).Container(i).ItemNum <= MAX_ITEMS Then
@@ -1858,9 +1886,9 @@ Dim ContainerAmount, amount As Long
                         End If
                         Call GiveInvItem(index, item(ItemNum).Container(i).ItemNum, amount)
                         If (amount > 0) Then
-                            PlayerMsg index, "Has descubierto " & Trim$(item(item(ItemNum).Container(i).ItemNum).Name) & " (" & amount & ")", Green
+                            PlayerMsg index, GetTranslation("Has descubierto") & " " & Trim$(item(item(ItemNum).Container(i).ItemNum).TranslatedName) & " (" & amount & ")", Green, , False
                         Else
-                            PlayerMsg index, "Has descubierto " & Trim$(item(item(ItemNum).Container(i).ItemNum).Name), Green
+                            PlayerMsg index, GetTranslation("Has descubierto") & " " & Trim$(item(item(ItemNum).Container(i).ItemNum).TranslatedName), Green, , False
                         End If
                     End If
                 Next i
@@ -1880,10 +1908,10 @@ Dim ContainerAmount, amount As Long
             If Bags >= MAX_RUPEE_BAGS Then
                 Bags = MAX_RUPEE_BAGS
                 Call SetPlayerBags(index, Bags)
-                PlayerMsg index, "Ahora tienes la maxima capacidad de rupias: " & GetPlayerMaxMoney(index) & "!", BrightGreen
+                PlayerMsg index, GetTranslation("Ahora tienes la maxima capacidad de rupias:") & " " & GetPlayerMaxMoney(index) & "!", BrightGreen, , False
             Else
                 Call SetPlayerBags(index, Bags)
-                PlayerMsg index, "Aumentas tu capacidad de rupias a: " & GetPlayerMaxMoney(index) & " rupias!", BrightGreen
+                PlayerMsg index, GetTranslation("Aumentas tu capacidad de rupias a:") & " " & GetPlayerMaxMoney(index) & GetTranslation("rupias") & "!", BrightGreen, , False
             End If
             
         Case ITEM_TYPE_ADDWEIGHT
@@ -1902,7 +1930,7 @@ Dim ContainerAmount, amount As Long
             TakeInvItem index, ItemNum, 0
             Call SetPlayerMaxWeight(index, GetPlayerMaxWeight(index) + AddWeight)
             SendMaxWeight index
-            PlayerMsg index, "Aumentas tu peso maximo a: " & GetPlayerMaxWeight(index), BrightGreen
+            PlayerMsg index, GetTranslation("Aumentas tu peso maximo a:") & " " & GetPlayerMaxWeight(index), BrightGreen, , False
             
         End Select
                         
@@ -2118,7 +2146,7 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     Call SendPlayerData(index)
     
-    GlobalMsg GetPlayerName(index) & " ha adquirido la trifuerza " & message, colour
+    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & GetTranslation(message), colour, False
     
 End Sub
 Public Function GetPlayerTriforcesNum(ByVal index As Long) As Byte
@@ -2295,9 +2323,9 @@ Dim Chain As String
 Dim i As Byte
 Dim j As Byte
 i = GetPlayerTriforcesNum(index)
-Chain = ""
+Chain = vbNullString
 If i = 0 Then
-    Chain = ""
+    Chain = vbNullString
 Else
     For j = 1 To TriforceType.TriforceType_Count - 1
         If GetPlayerTriforce(index, j) = True Then
@@ -2399,14 +2427,14 @@ Sub WarpXtoY(ByVal X As Long, ByVal Y As Long, ByVal carry As Boolean)
     If carry Then
         Call AddLog(Y, GetPlayerName(Y) & " has warped " & GetPlayerName(X) & " to self, map #" & GetPlayerMap(Y) & ".", ADMIN_LOG)
         If GetPlayerVisible(Y) = 0 Then
-            Call PlayerMsg(X, "Has sido teletransportado por " & GetPlayerName(Y) & ".", Cyan)
-            Call PlayerMsg(Y, GetPlayerName(X) & " ha sido teletransportado", Cyan)
+            Call PlayerMsg(X, GetTranslation("Has sido teletransportado por") & " " & GetPlayerName(Y) & ".", Cyan, , False)
+            Call PlayerMsg(Y, GetPlayerName(X) & " " & GetTranslation("ha sido teletransportado"), Cyan, , False)
         End If
     Else
         Call AddLog(X, GetPlayerName(X) & " has warped to " & GetPlayerName(Y) & ", map #" & GetPlayerMap(Y) & ".", ADMIN_LOG)
         If GetPlayerVisible(X) = 0 Then
-            Call PlayerMsg(Y, GetPlayerName(X) & " se ha teletransportado hacia ti.", Cyan)
-            Call PlayerMsg(X, "Has sido teletransportado hacia " & GetPlayerName(Y) & ".", Cyan)
+            Call PlayerMsg(Y, GetPlayerName(X) & GetTranslation(" se ha teletransportado hacia ti."), Cyan, , False)
+            Call PlayerMsg(X, GetTranslation("Has sido teletransportado hacia ") & GetPlayerName(Y) & ".", Cyan, , False)
         End If
     End If
 End Sub
@@ -2503,8 +2531,8 @@ End Sub
 Sub KickPlayer(ByVal index As Long, Optional ByRef Reason As String = "")
     If index = 0 Or Not IsPlaying(index) Then Exit Sub
     
-    Call GlobalMsg(GetPlayerName(index) & " ha sido expulsado por: " & Reason, White)
-    Call AddLog(0, GetPlayerName(index) & " ha sido expulsado por: " & Reason, ADMIN_LOG)
+    Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado por: ") & " " & Reason, White, False)
+    Call AddLog(0, GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado por: ") & " " & Reason, ADMIN_LOG)
     Call AlertMsg(index, "Has sido expulsado por: " & Reason)
 End Sub
 
@@ -2513,10 +2541,6 @@ Sub ClearPlayerTarget(ByVal index As Long)
     TempPlayer(index).TargetType = TARGET_TYPE_NONE
     SendTarget index
 End Sub
-
-Function FindPlayerByName(ByVal Name As String) As Long
-
-End Function
 
 Sub EarthQuake(ByVal index As Long)
     Dim a As Variant

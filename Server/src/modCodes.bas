@@ -186,7 +186,7 @@ Sub AddPlayerBonusPoints(ByVal index As Long, ByVal points As Long)
     curpoints = GetPlayerBonusPoints(index)
     
     SetPlayerBonusPoints index, curpoints + points
-    PlayerMsg index, "Has ganado: " & points & " " & CURRENCY_NAME & "!", BrightGreen
+    PlayerMsg index, GetTranslation("Has ganado:") & " " & points & " " & CURRENCY_NAME & "!", BrightGreen, , False
     SendPlayerBonusPoints index
 End Sub
 

@@ -23,7 +23,7 @@ Sub HandleNeedAccounts(ByVal index As Long, ByRef Data() As Byte, ByVal StartAdd
     password = buffer.ReadString
     
     If Not password = GetAccountsPassword Then
-        Call GlobalMsg(GetPlayerName(index) & " ha sido expulsado de " & Options.Game_Name & " por el servidor!", White)
+        Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado de ") & " " & Options.Game_Name & " " & GetTranslation(" por el servidor!"), White)
         Call AddLog(0, "el servidor ha expulsado a " & GetPlayerName(index) & ".", ADMIN_LOG)
         Call AlertMsg(index, "Has sido expulsado")
         Exit Sub

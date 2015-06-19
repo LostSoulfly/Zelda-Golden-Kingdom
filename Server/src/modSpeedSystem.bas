@@ -44,7 +44,7 @@ Sub CheckPlayerSpeedHack(ByVal index As Long, ByVal Tick As Long)
         If (Tick - T) / 1000 < CSng(SPEEDHACK_LAPSE - 2) Then
             KickPlayer index, "SpeedHack"
         End If
-        GlobalMsg (Tick - T) / 1000, BrightRed
+        GlobalMsg (Tick - T) / 1000, BrightRed, False
     End If
     
 End Sub

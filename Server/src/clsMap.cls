@@ -13,6 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 'NO USADO
 Private Name As String * NAME_LENGTH
+Private TranslatedName As String * NAME_LENGTH
 Private Music As String * NAME_LENGTH
     
 Private Revision As Long

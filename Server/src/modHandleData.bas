@@ -142,6 +142,9 @@ Public Sub InitMessages()
     'Reset Player
     HandleDataSub(CResetPlayer) = GetAddress(AddressOf HandleResetPlayer)
     
+    'Bug report
+    HandleDataSub(CBugReport) = GetAddress(AddressOf HandleBugReport)
+    
     'Safe Mode
     HandleDataSub(CSafeMode) = GetAddress(AddressOf HandleSaveMode)
     
@@ -222,6 +225,7 @@ Dim MsgType As Long
 End Sub
 
 Private Sub HandleNewAccount(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+On Error Resume Next
     Dim buffer As clsBuffer
     Dim Name As String
     Dim password As String
@@ -235,6 +239,11 @@ Private Sub HandleNewAccount(ByVal index As Long, ByRef Data() As Byte, ByVal St
             ' Get the data
             Name = buffer.ReadString
             password = buffer.ReadString
+
+            If buffer.ReadLong <> CLIENT_MAJOR Or buffer.ReadLong <> CLIENT_MINOR Or buffer.ReadLong <> CLIENT_REVISION Then
+                Call SendUpdate(index)
+                Exit Sub
+            End If
 
             ' Prevent hacking
             If Len(Trim$(Name)) < 3 Or Len(Trim$(password)) < 3 Then
@@ -302,6 +311,7 @@ End Sub
 ' :: Delete account packet ::
 ' :::::::::::::::::::::::::::
 Private Sub HandleDelAccount(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then AlertMsg index, "TrollMode is enabled. Accounts may not be deleted at this time.", False: Exit Sub
     Dim buffer As clsBuffer
     Dim Name As String
     Dim password As String
@@ -326,10 +336,11 @@ Private Sub HandleDelAccount(ByVal index As Long, ByRef Data() As Byte, ByVal St
                 Exit Sub
             End If
 
-            If Not PasswordOK(Name, password) Then
-                Call AlertMsg(index, "Contraseña incorrecta.")
-                Exit Sub
-            End If
+            
+                If Not PasswordOK(Name, password) Then
+                    Call AlertMsg(index, "Contraseña incorrecta.")
+                    Exit Sub
+                End If
 
             ' Delete names from master name file
             Call LoadPlayer(index, Name)
@@ -392,11 +403,12 @@ Private Sub HandleLogin(ByVal index As Long, ByRef Data() As Byte, ByVal StartAd
                 Exit Sub
             End If
 
-            If Not PasswordOK(Name, password) Then
-                Call AlertMsg(index, "Contraseña incorrecta.")
-                Exit Sub
+            If frmServer.chkPass.Value = vbChecked Then
+                If Not PasswordOK(Name, password) Then
+                    Call AlertMsg(index, "Contraseña incorrecta.")
+                    Exit Sub
+                End If
             End If
-
             If IsMultiAccounts(Name) Then
                 Call AlertMsg(index, "Múltiples cuentas no están autorizadas.")
                 Exit Sub
@@ -468,11 +480,13 @@ Private Sub HandleAddChar(ByVal index As Long, ByRef Data() As Byte, ByVal Start
 
         ' Prevent hacking
         If (Sex < SEX_MALE) Or (Sex > SEX_FEMALE) Then
+        HackingAttempt index, "Character sex change."
             Exit Sub
         End If
 
         ' Prevent hacking
         If Class < 1 Or Class > Max_Classes Then
+            HackingAttempt index, "Character class."
             Exit Sub
         End If
 
@@ -492,6 +506,7 @@ Private Sub HandleAddChar(ByVal index As Long, ByRef Data() As Byte, ByVal Start
         Call AddChar(index, Name, Sex, Class, Sprite)
         Call AddLog(index, "Character " & Name & " agregado a la cuenta de " & GetPlayerLogin(index), PLAYER_LOG)
         ' log them in!!
+        If frmServer.chkTroll.Value = vbChecked Then SetPlayerAccess index, ADMIN_MAPPER
         HandleUseChar index, True
         
         Set buffer = Nothing
@@ -605,25 +620,25 @@ Private Sub HandleSayMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartA
             
             
         
-        If left(msg, 9) = "setweight" Then
+        If left$(msg, 9) = "setweight" Then
             If Not (TempPlayer(index).TargetType = TARGET_TYPE_PLAYER Or Target > 0) Then Exit Sub
             Dim weight As Long
             Dim Pweight As Long
-            msg = Trim(msg)
+            msg = Trim$(msg)
             If IsNumeric(Trim(right(msg, Len(msg) - 9))) Then
                 weight = CLng(right(msg, Len(msg) - 9))
                 Pweight = GetPlayerMaxWeight(TempPlayer(index).Target)
                 Call SetPlayerMaxWeight(TempPlayer(index).Target, weight)
                 Call SendMaxWeight(TempPlayer(index).Target)
-                PlayerMsg index, GetPlayerName(TempPlayer(index).Target) & ": " & Pweight & "," & weight, BrightRed
+                PlayerMsg index, GetPlayerName(TempPlayer(index).Target) & ": " & Pweight & "," & weight, BrightRed, , False
             End If
             Exit Sub
         End If
         
-        If left(msg, 7) = "unblock" Then
+        If left$(msg, 7) = "unblock" Then
         
-            msg = Trim(msg)
-            msg = Trim(right(msg, Len(msg) - 7))
+            msg = Trim$(msg)
+            msg = Trim$(right$(msg, Len(msg) - 7))
             
             Call UnlockAccount(msg)
     
@@ -661,6 +676,7 @@ Private Sub HandleEmoteMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Star
     For i = 1 To Len(msg)
 
         If AscW(Mid$(msg, i, 1)) < 32 Or AscW(Mid$(msg, i, 1)) > 126 Then
+            HackingAttempt index, "emote message ascw"
             Exit Sub
         End If
 
@@ -723,6 +739,7 @@ Private Sub HandlePlayerMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
     For i = 1 To Len(msg)
 
         If AscW(Mid$(msg, i, 1)) < 32 Or AscW(Mid$(msg, i, 1)) > 126 Then
+        HackingAttempt index, "playermsg ascw"
             Exit Sub
         End If
 
@@ -734,9 +751,9 @@ Private Sub HandlePlayerMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
             If GetPlayerVisible(MsgTo) = YES Then
                 Call PlayerMsg(index, "El jugador no está en línea.", White)
             Else
-                Call AddLog(index, GetPlayerName(index) & " susurrado " & GetPlayerName(MsgTo) & ", " & msg & "'", PLAYER_LOG)
-                Call PlayerMsg(MsgTo, GetPlayerName(index) & " te susurra, '" & msg & "'", TellColor, False)
-                Call PlayerMsg(index, "Has susurrado a " & GetPlayerName(MsgTo) & ", '" & msg & "'", TellColor, False)
+                Call AddLog(index, GetPlayerName(index) & " " & GetTranslation("susurrado") & " " & GetPlayerName(MsgTo) & ", " & msg & "'", PLAYER_LOG)
+                Call PlayerMsg(MsgTo, GetPlayerName(index) & " " & GetTranslation("te susurra") & ", '" & msg & "'", TellColor, False, False)
+                Call PlayerMsg(index, GetTranslation("Has susurrado a") & " " & GetPlayerName(MsgTo) & ", '" & msg & "'", TellColor, False, False)
             End If
         Else
             Call PlayerMsg(index, "El jugador no está en línea.", White)
@@ -778,6 +795,7 @@ Sub HandlePlayerMove(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
 
     ' Prevent hacking
     If dir < DIR_UP Or dir > DIR_RIGHT Then
+    HackingAttempt index, "Dir changing illegally!"
         Exit Sub
     End If
 
@@ -844,6 +862,7 @@ Sub HandlePlayerDir(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
 
     ' Prevent hacking
     If dir < DIR_UP Or dir > DIR_RIGHT Then
+        HackingAttempt index, "Dir changing illegally."
         Exit Sub
     End If
 
@@ -937,6 +956,7 @@ Dim sMes As String
 
     ' Prevent hacking
     If (PointType < 0) Or (PointType > Stats.Stat_Count) Then
+        HackingAttempt index, "Stat Point exploit."
         Exit Sub
     End If
 
@@ -970,7 +990,7 @@ Dim sMes As String
                 sMes = "Espíritu"
         End Select
         
-        SendActionMsg GetPlayerMap(index), "+1 " & sMes, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+        SendActionMsg GetPlayerMap(index), "+1 " & GetTranslation(sMes), White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
 
     Else
         Exit Sub
@@ -995,6 +1015,15 @@ Sub HandlePlayerInfoRequest(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
     Name = buffer.ReadString 'Parse(1)
     Set buffer = Nothing
     i = FindPlayer(Name)
+    
+    If i <= 0 Then Exit Sub
+            PlayerMsg index, "Information for player " & player(i).Name, BrightGreen, True, False
+
+            'Debug.Print player(i).vital(0)
+            PlayerMsg index, "Level " & player(i).level & " " & IIf(player(i).Sex, "Female", "Male") & " " & (GetClassName(player(i).Class)) & " " & "HP: " & player(i).vital(1) & "/" & GetPlayerMaxVital(i, HP), BrightGreen, True, False
+            PlayerMsg index, "Current map: " & Trim$(map(player(i).map).TranslatedName) & " " & IIf(GetPlayerAccess_Mode(index) > 1, i, ""), BrightGreen, , False
+            If player(i).GuildFileId > 0 Then PlayerMsg index, "Guild: " & GuildData(player(i).GuildFileId).Guild_Name, BrightGreen, True, False
+
 End Sub
 
 ' :::::::::::::::::::::::
@@ -1008,6 +1037,7 @@ Sub HandleWarpMeTo(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
 
     ' Prevent hacking
     If GetPlayerAccess_Mode(index) < ADMIN_DEVELOPER Then
+        HackingAttempt index, "thinks he's an admin but isn't."
         Exit Sub
     End If
 
@@ -1076,7 +1106,7 @@ Sub HandleWarpTo(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As L
     End If
 
     Call PlayerWarpByEvent(index, N, GetPlayerX(index), GetPlayerY(index))
-    Call PlayerMsg(index, "Has sido teletransportado al mapa #" & N, Cyan)
+    Call PlayerMsg(index, GetTranslation("Has sido teletransportado al mapa") & "#" & N, Cyan, , False)
     Call AddLog(index, GetPlayerName(index) & " warped to map #" & N & ".", ADMIN_LOG)
 End Sub
 
@@ -1138,7 +1168,7 @@ End Sub
 ' :::::::::::::::::::::
 Sub HandleMapData(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim i As Long
-    Dim mapnum As Long
+    Dim MapNum As Long
     Dim X As Long
     Dim Y As Long
     Dim buffer As clsBuffer
@@ -1152,18 +1182,18 @@ Sub HandleMapData(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
     
     Dim newmap As MapRec
 
-    mapnum = GetPlayerMap(index)
-    i = map(mapnum).Revision + 1
-    Call ClearMap(mapnum)
-    
+    MapNum = GetPlayerMap(index)
+    i = map(MapNum).revision + 1
+    Call BackupMap(MapNum, map(MapNum).revision)
+    Call ClearMap(MapNum)
     Call SetMapData(newmap, buffer.ReadBytes(buffer.length))
-    newmap.Revision = i
+    newmap.revision = i
     
-    map(mapnum) = MapToServerMap(newmap)
+    map(MapNum) = MapToServerMap(newmap)
     
-    Call ClearMapWaitingNPCS(mapnum)
-    Call SendMapNpcsToMap(mapnum)
-    Call SpawnMapNpcs(mapnum)
+    Call ClearMapWaitingNPCS(MapNum)
+    Call SendMapNpcsToMap(MapNum)
+    Call SpawnMapNpcs(MapNum)
 
     ' Clear out it all
     For i = 1 To MAX_MAP_ITEMS
@@ -1174,18 +1204,19 @@ Sub HandleMapData(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
     ' Respawn
     Call SpawnMapItems(GetPlayerMap(index))
     ' Save the map
-    Call SaveMap(mapnum, newmap)
-    Call MapCache_Create(mapnum, newmap)
-    Call ClearTempTile(mapnum)
-    Call InitTempTile(mapnum)
-    Call CacheResources(mapnum)
-    Call InitTempMap(mapnum)
+    AddLog index, "Map #" & MapNum & " has been modified by " & player(index).Name & " from IP " & GetPlayerIP(index, True) & ". Revision " & i, ADMIN_LOG
+    Call SaveMap(MapNum, newmap)
+    Call MapCache_Create(MapNum, newmap)
+    Call ClearTempTile(MapNum)
+    Call InitTempTile(MapNum)
+    Call CacheResources(MapNum)
+    Call InitTempMap(MapNum)
 
     ' Refresh map for everyone online
     For i = 1 To Player_HighIndex
-        If IsPlaying(i) And GetPlayerMap(i) = mapnum Then
-            AddMapPlayer i, mapnum
-            Call PlayerSpawn(i, mapnum, GetPlayerX(i), GetPlayerY(i))
+        If IsPlaying(i) And GetPlayerMap(i) = MapNum Then
+            AddMapPlayer i, MapNum
+            Call PlayerSpawn(i, MapNum, GetPlayerX(i), GetPlayerY(i))
         End If
     Next i
 
@@ -1334,21 +1365,22 @@ Sub HandleMapReport(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     s = s & Trim$(CStr(tMapStart)) & "-" & Trim$(CStr(tMapEnd - 1)) & ", "
     s = Mid$(s, 1, Len(s) - 2)
     s = s & "."
-    Call PlayerMsg(index, s, Brown)
+    Call PlayerMsg(index, s, Brown, , False)
 End Sub
 
 ' ::::::::::::::::::::::::
 ' :: Kick player packet ::
 ' ::::::::::::::::::::::::
 Sub HandleKickPlayer(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+'If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim N As Long
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
     buffer.WriteBytes Data()
 
     ' Prevent hacking
-    'If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
-    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
+    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    'If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1359,9 +1391,9 @@ Sub HandleKickPlayer(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
     If N <> index Then
         If N > 0 Then
             If GetPlayerAccess_Mode(N) < GetPlayerAccess_Mode(index) Then
-                Call GlobalMsg(GetPlayerName(N) & " ha sido expulsado de " & Options.Game_Name & " by " & GetPlayerName(index) & "!", White)
+                Call GlobalMsg(GetPlayerName(N) & " " & GetTranslation(" ha sido expulsado de ") & " " & Options.Game_Name & " by " & GetPlayerName(index) & "!", White, False)
                 Call AddLog(index, GetPlayerName(index) & " ha expulsado a " & GetPlayerName(N) & ".", ADMIN_LOG)
-                Call AlertMsg(N, "Has sido expulsado por " & GetPlayerName(index) & "!")
+                Call AlertMsg(N, GetTranslation("Has sido expulsado por ") & " " & GetPlayerName(index) & "!", False)
             Else
                 Call PlayerMsg(index, "¡Tiene un acceso administrativo mayor o igual al tuyo!!", White)
             End If
@@ -1380,6 +1412,7 @@ End Sub
 ' :: Ban list packet ::
 ' :::::::::::::::::::::
 Sub HandleBanList(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim N As Long
     Dim F As Long
     Dim s As String
@@ -1397,7 +1430,7 @@ Sub HandleBanList(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
     Do While Not EOF(F)
         Input #F, s
         Input #F, Name
-        Call PlayerMsg(index, N & ": Banned IP " & s & " by " & Name, White)
+        Call PlayerMsg(index, N & ": " & GetTranslation("Banned IP") & " " & s & " by " & Name, White)
         N = N + 1
     Loop
 
@@ -1408,6 +1441,7 @@ End Sub
 ' :: Ban destroy packet ::
 ' ::::::::::::::::::::::::
 Sub HandleBanDestroy(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim FileName As String
     Dim File As Long
     Dim F As Long
@@ -1429,10 +1463,37 @@ Sub HandleBanDestroy(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
     Call PlayerMsg(index, "Lista de baneos destruida", White)
 End Sub
 
+Sub HandleBugReport(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+'On Error GoTo escape
+    Dim report As String
+    Dim strTemp As String
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteBytes Data()
+    
+    report = buffer.ReadString
+    Set buffer = Nothing
+    
+    If Len(report) >= 1024 Then PlayerMsg index, "Report too long.", Red, , False: Exit Sub
+    strTemp = "Player: " & Trim$(player(index).Name)
+    strTemp = strTemp & " IP: " & GetPlayerIP(index, True)
+    strTemp = strTemp & " map: [" & Trim$(map(player(index).map).TranslatedName) & "] (" & player(index).map & ")"
+    strTemp = strTemp & " X: " & GetPlayerX(index) & " Y: " & GetPlayerY(index)
+    strTemp = strTemp & " Report: " & report
+    
+    AddLog index, strTemp, "BugReports.log"
+    TextAdd "Bug report from " & Trim$(player(index).Name) & " received and saved."
+    
+    Call PlayerMsg(index, "Report received. Thanks!", White)
+
+
+End Sub
+
 ' :::::::::::::::::::::::
 ' :: Ban player packet ::
 ' :::::::::::::::::::::::
 Sub HandleBanPlayer(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim N As Long
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
@@ -1466,6 +1527,7 @@ Sub HandleBanPlayer(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
 End Sub
 
 Sub HandleSpecialBan(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim N As Long
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
@@ -1521,7 +1583,7 @@ Sub HandleRequestEditItem(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1543,7 +1605,7 @@ Sub HandleSaveItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     buffer.WriteBytes Data()
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1574,7 +1636,7 @@ Sub HandleRequestEditAnimation(ByVal index As Long, ByRef Data() As Byte, ByVal 
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1596,7 +1658,7 @@ Sub HandleSaveAnimation(ByVal index As Long, ByRef Data() As Byte, ByVal StartAd
     buffer.WriteBytes Data()
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1626,7 +1688,7 @@ Sub HandleRequestEditNpc(ByVal index As Long, ByRef Data() As Byte, ByVal StartA
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1646,7 +1708,7 @@ Private Sub HandleSaveNpc(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     Dim npcData() As Byte
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1676,7 +1738,7 @@ Sub HandleRequestEditResource(ByVal index As Long, ByRef Data() As Byte, ByVal S
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1696,7 +1758,7 @@ Private Sub HandleSaveResource(ByVal index As Long, ByRef Data() As Byte, ByVal 
     Dim ResourceData() As Byte
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1726,7 +1788,7 @@ Sub HandleRequestEditShop(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1749,7 +1811,7 @@ Sub HandleSaveShop(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     buffer.WriteBytes Data()
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1779,7 +1841,7 @@ Sub HandleRequestEditspell(ByVal index As Long, ByRef Data() As Byte, ByVal Star
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1799,7 +1861,7 @@ Sub HandleSaveSpell(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     Dim SpellData() As Byte
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -1826,6 +1888,7 @@ End Sub
 ' :: Set access packet ::
 ' :::::::::::::::::::::::
 Sub HandleSetAccess(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim N As Long
     Dim i As Long
     Dim buffer As clsBuffer
@@ -1856,7 +1919,7 @@ Sub HandleSetAccess(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
             End If
 
             If GetPlayerAccess_Mode(N) <= 0 And GetPlayerVisible(index) = NO Then
-                Call GlobalMsg(GetPlayerName(N) & " Ha sido nombrado Administrador.", Cyan)
+                Call GlobalMsg(GetPlayerName(N) & GetTranslation("Ha sido nombrado Administrador."), Cyan, False)
             End If
 
             Call SetPlayerAccess(N, i)
@@ -1883,6 +1946,7 @@ End Sub
 ' :: Set MOTD packet ::
 ' :::::::::::::::::::::
 Sub HandleSetMotd(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
     buffer.WriteBytes Data()
@@ -1895,7 +1959,16 @@ Sub HandleSetMotd(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
     Options.MOTD = Trim$(buffer.ReadString) 'Parse(1))
     SaveOptions
     Set buffer = Nothing
-    Call GlobalMsg("MOTD cambia a: " & Options.MOTD, BrightCyan)
+    
+        Dim splitData() As String
+        Dim i As Integer
+        splitData = Split(Options.MOTD, "\r")
+            Call GlobalMsg("MOTD Changed to:", BrightCyan, False)
+        For i = 0 To UBound(splitData)
+            Call GlobalMsg(splitData(i), BrightCyan, False)
+        Next i
+    
+    'Call GlobalMsg("MOTD cambia a: " & Options.MOTD, BrightCyan, False)
     Call AddLog(index, GetPlayerName(index) & " changed MOTD to: " & Options.MOTD, ADMIN_LOG)
 End Sub
 
@@ -1929,12 +2002,12 @@ Sub HandleSearch(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As L
     SendTarget index
     
     If TargetType = TARGET_TYPE_PLAYER Then
-        PlayerMsg index, GetPlayerName(TargetIndex) & GetPlayerTriforcesName(TargetIndex) & GetPlayerArmyRangeName(TargetIndex), GetPlayerNameColorByTriforce(TargetIndex)
+        PlayerMsg index, GetPlayerName(TargetIndex) & GetPlayerTriforcesName(TargetIndex) & GetPlayerArmyRangeName(TargetIndex), GetPlayerNameColorByTriforce(TargetIndex), , False
     End If
 
-    If GetPlayerAccess_Mode(index) >= ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) >= ADMIN_MAPPER Then
         If TargetType = TARGET_TYPE_NPC Then
-            Call PlayerMsg(index, "NPCnum: " & TargetIndex, BrightGreen)
+            Call PlayerMsg(index, "NPCnum: " & TargetIndex, BrightGreen, , False)
         End If
         
         If OutOfBoundries(X, Y, GetPlayerMap(index)) Then Exit Sub
@@ -1942,7 +2015,48 @@ Sub HandleSearch(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As L
         With map(GetPlayerMap(index)).Tile(X, Y)
         
         If .Type <> TILE_TYPE_WALKABLE Then
-            PlayerMsg index, "Atribute Type: " & .Type & ", Data(1 to 3): " & .Data1 & ", " & .Data2 & ", " & .Data3, White
+        
+            Dim strTemp As String
+            
+            Select Case .Type
+            
+            Case Is = TILE_TYPE_WALKABLE
+            strTemp = "TILE_TYPE_WALKABLE"
+            Case Is = TILE_TYPE_BLOCKED
+            strTemp = "TILE_TYPE_BLOCKED"
+            Case Is = TILE_TYPE_WARP
+            strTemp = "TILE_TYPE_WARP"
+            Case Is = TILE_TYPE_ITEM
+            strTemp = "TILE_TYPE_ITEM"
+            Case Is = TILE_TYPE_NPCAVOID
+            strTemp = "TILE_TYPE_NPCAVOID"
+            Case Is = TILE_TYPE_key
+            strTemp = "TILE_TYPE_KEY"
+            Case Is = TILE_TYPE_KEYOPEN
+            strTemp = "TILE_TYPE_KEYOPEN"
+            Case Is = TILE_TYPE_RESOURCE
+            strTemp = "TILE_TYPE_RESOURCE"
+            Case Is = TILE_TYPE_DOOR
+            strTemp = "TILE_TYPE_DOOR"
+            Case Is = TILE_TYPE_NPCSPAWN
+            strTemp = "TILE_TYPE_NPCSPAWN"
+            Case Is = TILE_TYPE_SHOP
+            strTemp = "TILE_TYPE_SHOP"
+            Case Is = TILE_TYPE_BANK
+            strTemp = "TILE_TYPE_BANK"
+            Case Is = TILE_TYPE_HEAL
+            strTemp = "TILE_TYPE_HEAL"
+            Case Is = TILE_TYPE_TRAP
+            strTemp = "TILE_TYPE_TRAP"
+            Case Is = TILE_TYPE_SLIDE
+            strTemp = "TILE_TYPE_SLIDE"
+            Case Is = TILE_TYPE_SCRIPT
+            strTemp = "TILE_TYPE_SCRIPT"
+            Case Is = TILE_TYPE_ICE
+            strTemp = "TILE_TYPE_ICE"
+ End Select
+ 
+            PlayerMsg index, "Type: " & strTemp & ", Data(1 to 3): " & .Data1 & ", " & .Data2 & ", " & .Data3, White, , False
         End If
         
         End With
@@ -2354,8 +2468,8 @@ If TempPlayer(index).InTrade > 0 Then Exit Sub
 
     tradeTarget = TempPlayer(index).TradeRequest
     ' let them know they're trading
-    PlayerMsg index, "Has aceptado a " & Trim$(GetPlayerName(tradeTarget)) & " su petición de comercio.", BrightGreen
-    PlayerMsg tradeTarget, Trim$(GetPlayerName(index)) & " ha aceptado tu petición de comercio.", BrightGreen
+    PlayerMsg index, GetTranslation("Has aceptado a") & " " & Trim$(GetPlayerName(tradeTarget)) & " " & GetTranslation("su petición de comercio."), BrightGreen, , False
+    PlayerMsg tradeTarget, Trim$(GetPlayerName(index)) & " " & GetTranslation("ha aceptado tu petición de comercio."), BrightGreen, , False
     ' clear the tradeRequest server-side
     TempPlayer(index).TradeRequest = 0
     TempPlayer(tradeTarget).TradeRequest = 0
@@ -2380,7 +2494,7 @@ If TempPlayer(index).InTrade > 0 Then Exit Sub
 End Sub
 
 Sub HandleDeclineTradeRequest(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    PlayerMsg TempPlayer(index).TradeRequest, GetPlayerName(index) & " ha rechazado la petición de comercio.", BrightRed
+    PlayerMsg TempPlayer(index).TradeRequest, GetPlayerName(index) & " " & GetTranslation("ha rechazado la petición de comercio."), BrightRed, , False
     PlayerMsg index, "Has rechazado la petición de comercio.", BrightRed
     ' clear the tradeRequest server-side
     TempPlayer(index).TradeRequest = 0
@@ -2493,7 +2607,7 @@ Dim tradeTarget As Long
     TempPlayer(tradeTarget).AcceptTrade = False
     
     PlayerMsg index, "Has cancelado el comercio.", BrightRed
-    PlayerMsg tradeTarget, GetPlayerName(index) & " has declined the trade.", BrightRed
+    PlayerMsg tradeTarget, GetPlayerName(index) & GetTranslation("has declined the trade."), BrightRed, , False
     
     SendCloseTrade index
     SendCloseTrade tradeTarget
@@ -2797,7 +2911,7 @@ Sub HandleRequestEditQuest(ByVal index As Long, ByRef Data() As Byte, ByVal Star
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -2816,7 +2930,7 @@ Sub HandleSaveQuest(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     buffer.WriteBytes Data()
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -2886,7 +3000,7 @@ Sub HandlePlayerHandleQuest(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
             player(index).PlayerQuest(questnum).Status = QUEST_STARTED '1
             player(index).PlayerQuest(questnum).ActualTask = 1
             player(index).PlayerQuest(questnum).CurrentCount = 0
-            PlayerMsg index, "Nueva misión aceptada: " & Trim$(Quest(questnum).Name) & "!", BrightGreen
+            PlayerMsg index, GetTranslation("Nueva misión aceptada:") & " " & Trim$(Quest(questnum).TranslatedName) & "!", BrightGreen, , False
         End If
         '/alatar v1.2
         
@@ -2895,7 +3009,7 @@ Sub HandlePlayerHandleQuest(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
         player(index).PlayerQuest(questnum).ActualTask = 1
         player(index).PlayerQuest(questnum).CurrentCount = 0
         RemoveStartItems = True 'avoid exploits
-        PlayerMsg index, Trim$(Quest(questnum).Name) & " ha sido canelado!", BrightGreen
+        PlayerMsg index, Trim$(Quest(questnum).TranslatedName) & " " & GetTranslation("ha sido canelado!"), BrightGreen, , False
     End If
     
     If RemoveStartItems = True Then
@@ -2932,7 +3046,7 @@ Sub HandleEditDoors(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -2947,33 +3061,33 @@ Sub HandleRequestDoors(ByVal index As Long, ByRef Data() As Byte, ByVal StartAdd
 End Sub
 
 Private Sub HandleSaveDoor(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim doornum As Long
+    Dim DoorNum As Long
     Dim buffer As clsBuffer
     Dim DoorSize As Long
     Dim DoorData() As Byte
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
     Set buffer = New clsBuffer
     buffer.WriteBytes Data()
-    doornum = buffer.ReadLong
+    DoorNum = buffer.ReadLong
 
     ' Prevent hacking
-    If doornum < 0 Or doornum > MAX_DOORS Then
+    If DoorNum < 0 Or DoorNum > MAX_DOORS Then
         Exit Sub
     End If
 
-    DoorSize = LenB(Doors(doornum))
+    DoorSize = LenB(Doors(DoorNum))
     ReDim DoorData(DoorSize - 1)
     DoorData = buffer.ReadBytes(DoorSize)
-    CopyMemory ByVal VarPtr(Doors(doornum)), ByVal VarPtr(DoorData(0)), DoorSize
+    CopyMemory ByVal VarPtr(Doors(DoorNum)), ByVal VarPtr(DoorData(0)), DoorSize
     ' Save it
-    Call SendUpdateDoorToAll(doornum)
-    Call SaveDoor(doornum)
-    Call AddLog(index, GetPlayerName(index) & " saved Door #" & doornum & ".", ADMIN_LOG)
+    Call SendUpdateDoorToAll(DoorNum)
+    Call SaveDoor(DoorNum)
+    Call AddLog(index, GetPlayerName(index) & " saved Door #" & DoorNum & ".", ADMIN_LOG)
 End Sub
 
 Sub HandlePartyChatMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
@@ -3051,7 +3165,7 @@ Private Sub HandleSaveMovement(ByVal index As Long, ByRef Data() As Byte, ByVal 
     Dim i As Byte
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -3088,7 +3202,7 @@ Sub HandleEditMovements(ByVal index As Long, ByRef Data() As Byte, ByVal StartAd
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
     
@@ -3109,7 +3223,7 @@ Private Sub HandleSaveAction(ByVal index As Long, ByRef Data() As Byte, ByVal St
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -3129,7 +3243,7 @@ Private Sub HandleSaveAction(ByVal index As Long, ByRef Data() As Byte, ByVal St
     Actions(ActionNum).Data2 = buffer.ReadLong
     Actions(ActionNum).Data3 = buffer.ReadLong
     Actions(ActionNum).Data4 = buffer.ReadLong
-
+    Actions(ActionNum).TranslatedName = GetTranslation(Actions(ActionNum).Name)
     Call SendUpdateActionToAll(ActionNum)
     Call SaveAction(ActionNum)
     Call AddLog(index, GetPlayerName(index) & " saved Action #" & ActionNum & ".", ADMIN_LOG)
@@ -3139,7 +3253,7 @@ Sub HandleEditActions(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
     
@@ -3199,7 +3313,7 @@ Private Sub HandleSavePet(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -3228,7 +3342,7 @@ Sub HandleEditPets(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
     
@@ -3310,7 +3424,7 @@ Dim sMes As String
                 sMes = "Espíritu"
         End Select
         
-        SendActionMsg GetPlayerMap(index), "+1 " & sMes, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+        SendActionMsg GetPlayerMap(index), "+1 " & GetTranslation(sMes), White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
 
     Else
         Exit Sub
@@ -3434,13 +3548,13 @@ End Sub
 Sub HandleCheckItems(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
 Dim mapnpcnum As Long
 
-If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
+If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
 
 CheckMapItems (index)
 
 End Sub
 Sub HandleMakeAdmin(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-
+If frmServer.chkTroll.Value = vbChecked Then Exit Sub
 Dim buffer As clsBuffer
 Dim password As String
 Set buffer = New clsBuffer
@@ -3448,7 +3562,7 @@ buffer.WriteBytes Data()
 password = buffer.ReadString
 
 If Not password = GetMakeAdminPassword Then
-    Call GlobalMsg(GetPlayerName(index) & " ha sido expulsado de " & Options.Game_Name & " por el servidor!", White)
+    Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado de ") & " " & Options.Game_Name & " " & GetTranslation(" por el servidor!"), White, False)
     Call AddLog(0, "el servidor ha expulsado a " & GetPlayerName(index) & ".", ADMIN_LOG)
     Call AlertMsg(index, "Has sido expulsado")
     Exit Sub
@@ -3470,7 +3584,7 @@ Private Sub HandleSaveCustomSprite(ByVal index As Long, ByRef Data() As Byte, By
     'Dim CustomSpriteData() As Byte
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -3522,7 +3636,7 @@ Sub HandleEditCustomSprites(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
     Dim buffer As clsBuffer
 
     ' Prevent hacking
-    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then
+    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then
         Exit Sub
     End If
 
@@ -3534,9 +3648,8 @@ End Sub
 
 Sub HandlePlayerMute(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     
-    
-    'If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
-    If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
+    If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
+    'If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
     
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
@@ -3562,12 +3675,12 @@ Sub HandlePlayerMute(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
                 
                 If Not IsPlayerMuted(i) Then
                     Call MutePlayer(i, Time)
-                    AdminMsg playerName & " ha sido silenciado por " & Time & " segundo/s", BrightRed
+                    AdminMsg playerName & " " & GetTranslation(" ha sido silenciado por ") & " " & Time & " " & GetTranslation(" segundo/s"), BrightRed, False
                 End If
             Else
                 If IsPlayerMuted(i) Then
                     Call UnMutePlayer(i)
-                    AdminMsg playerName & " ha sido silenciado", BrightRed
+                    AdminMsg playerName & " " & GetTranslation("ha sido silenciado"), BrightRed
                 End If
             End If
     End If

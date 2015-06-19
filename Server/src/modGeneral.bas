@@ -5,6 +5,16 @@ Public Declare Function GetTickCount Lib "kernel32" () As Long
 Public Declare Function GetQueueStatus Lib "user32" (ByVal fuFlags As Long) As Long
 
 Public Sub Main()
+
+'setup the translation stuff
+LangTo = "en"
+LangFrom = "es"
+strTransPath = App.Path & "\" & LangTo & ".dat"
+strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
+
+frmTransLog.Show
+frmTransLog.txtLog.Text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
+
     Call InitServer
 End Sub
 
@@ -43,13 +53,13 @@ Public Sub InitServer()
     
     ' load options, set if they dont exist
     If Not FileExist(App.Path & "\data\options.ini", True) Then
-        Options.Game_Name = "The Legend of Zelda: El Reino Dorado"
+        Options.Game_Name = "The Legend of Zelda: The Golden Kingdom"
         Options.Port = 4000
-        Options.MOTD = "Bienvenido a The Legend of Zelda: El Reino Dorado"
-        Options.Website = "http://zeldaelreinodorado.foroactivo.com/"
+        Options.MOTD = "Welcome to The Legend of Zelda: The Golden Kingdom"
+        Options.Website = "http://trollparty.org/"
         Options.DisableAdmins = 0
-        Options.Update = "http://zeldaelreinodorado.foroactivo.com/"
-        Options.Instructions = "Descargar"
+        Options.Update = "http://trollparty.org/Zelda/Launcher.zip"
+        Options.Instructions = "Your client is out of date! Please run the Launcher to be updated to the current version." 'GetTranslation("Descargar")
         Options.ExpMultiplier = 1
         
         SaveOptions
@@ -132,6 +142,8 @@ Public Sub DestroyServer()
     Dim i As Long
     ServerOnline = False
     
+    Call saveLang(strTransPath, langCol, True)
+    Call saveLang(strOrigPath, origCol, True)
     Call SetStatus("Destroying System Tray...")
     Call DestroySystemTray
     Call SetStatus("Saving players online...")

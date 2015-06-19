@@ -93,7 +93,7 @@ Sub ServerLoop()
                 If TempPlayer(i).tmpGuildInviteSlot > 0 Then
                     If Tick > TempPlayer(i).tmpGuildInviteTimer Then
                         If GuildData(TempPlayer(i).tmpGuildInviteSlot).In_Use = True Then
-                            PlayerMsg i, "El tiempo de aceptar invitación al clan se agotó" & GuildData(TempPlayer(i).tmpGuildInviteSlot).Guild_Name & ".", BrightRed
+                            PlayerMsg i, GetTranslation("El tiempo de aceptar invitación al clan se agotó") & " " & GuildData(TempPlayer(i).tmpGuildInviteSlot).Guild_Name & ".", BrightRed, , False
                             TempPlayer(i).tmpGuildInviteSlot = 0
                             TempPlayer(i).tmpGuildInviteTimer = 0
                         Else
@@ -211,7 +211,7 @@ Sub ServerLoop()
         
 
         If Not CPSUnlock Then Sleep SleepTime
-        DoEvents
+                DoEvents
         
         
 
@@ -264,7 +264,7 @@ End Sub
 Private Sub UpdateMapLogic()
     Dim i As Long, X As Long, mapnum As Long, N As Long, x1 As Long, y1 As Long
     Dim TickCount As Long, Damage As Long, DistanceX As Long, DistanceY As Long, npcnum As Long
-    Dim Target As Long, TargetType As Byte, DidWalk As Boolean, buffer As clsBuffer, Resource_index As Long
+    Dim Target As Long, TargetType As Byte, DidWalk As Boolean, Buffer As clsBuffer, Resource_index As Long
     Dim TargetX As Long, TargetY As Long, target_verify As Boolean
     Dim MAP_HIGH_NPC As Long, MAP_HIGH_ITEM As Long
     
@@ -387,7 +387,7 @@ Private Sub UpdateMapLogic()
                                                 If Len(Trim$(NPC(npcnum).AttackSay)) > 0 Then
                                                     'Call PlayerMsg(i, Trim$(NPC(npcnum).Name) & ": " & Trim$(NPC(npcnum).AttackSay), SayColor)
                                                     
-                                                    Call SendActionMsg(mapnum, Trim$(NPC(npcnum).AttackSay), SayColor, 1, MapNpc(mapnum).NPC(X).X * 32, MapNpc(mapnum).NPC(X).Y * 32)
+                                                    Call SendActionMsg(mapnum, GetTranslation(NPC(npcnum).AttackSay), SayColor, 1, MapNpc(mapnum).NPC(X).X * 32, MapNpc(mapnum).NPC(X).Y * 32)
                                                 End If
                                                 MapNpc(mapnum).NPC(X).TargetType = 1 ' player
                                                 MapNpc(mapnum).NPC(X).Target = i
@@ -586,7 +586,7 @@ Private Sub UpdateSavePlayers()
     Dim i As Long
 
     If TotalOnlinePlayers > 0 Then
-        Call TextAdd("Guardando jugadores en línea...")
+        Call TextAdd(GetTranslation("Guardando jugadores en línea..."))
 
         For i = 1 To Player_HighIndex
 
@@ -604,8 +604,8 @@ End Sub
 
 Private Sub HandleShutdown()
 
-    If Secs <= 0 Then Secs = 5
-    If Secs Mod 5 = 0 Or Secs <= 5 Then
+    If Secs <= 0 Then Secs = 30
+    If Secs Mod 5 = 0 Or Secs <= 10 Then
         Call GlobalMsg("Apagado del Servidor en: " & Secs & " seconds.", Cyan)
         Call TextAdd("Automated Server Shutdown in " & Secs & " seconds.")
     End If

@@ -49,7 +49,7 @@ Sub SearchPath(ByVal index As Long, ByVal mapnum As Long, ByVal x1 As Long, ByVa
     Dim a As Long
     a = GetTickCount
     Call Search_Path_Rec_2(p1, p2, d, s, calls, 0)
-    PlayerMsg index, GetTickCount - a, 1
+    PlayerMsg index, GetTickCount - a, 1, , False
     
     'Dim a As Long
     'a = GetTickCount
@@ -91,27 +91,27 @@ Function DirToPos(ByRef DirVector As clsVector, Optional ByRef StartPoint As cls
     Next
 End Function
 
-Sub DeleteTrash(ByRef V As clsVector)
+Sub DeleteTrash(ByRef v As clsVector)
     ' Vector of points
     Dim i As Long
     i = 0
-    While i < V.GetSize
+    While i < v.GetSize
         Dim j As Long
         j = i + 2
         Dim AtLeastOne As Boolean
-        While j < V.GetSize
+        While j < v.GetSize
             Dim d As clsDirection
-            Set d = Colindant(V, i, j)
+            Set d = Colindant(v, i, j)
             If d.GetDir <> 4 Then
-                Call V.SetElem(d, i)
+                Call v.SetElem(d, i)
                 Dim k As Long
                 For k = i + 1 To j
-                    V.DeleteElem (k)
+                    v.DeleteElem (k)
                 Next
                 
                 j = i + 2
                 
-                V.Unificate
+                v.Unificate
             Else
                 j = j + 1
             End If
@@ -167,11 +167,11 @@ Function Search_Path_Rec_2(ByRef p1 As clsPosition, ByRef p2 As clsPosition, ByR
         Dim height(0 To 3) As Long
         Dim state(0 To 3) As Integer
         Visited(p1.GetPoint.GetX, p1.GetPoint.GetY) = -1
-        Dim V As clsDirVector
-        Set V = New clsDirVector
-        Call V.SetVector(p1.GetPoint, p2.GetPoint)
+        Dim v As clsDirVector
+        Set v = New clsDirVector
+        Call v.SetVector(p1.GetPoint, p2.GetPoint)
         Dim PriorityStack As clsStack
-        Set PriorityStack = V.GetVectorAngle.GetPriorityStackDir(ComeDir)
+        Set PriorityStack = v.GetVectorAngle.GetPriorityStackDir(ComeDir)
         
         Dim i As Byte
         While Not PriorityStack.IsEmpty
@@ -223,11 +223,11 @@ Function Search_Path_Rec(ByRef p1 As clsPosition, ByRef p2 As clsPosition, ByRef
         Visited(p1.GetPoint.GetX, p1.GetPoint.GetY) = -1
     Else
         Visited(p1.GetPoint.GetX, p1.GetPoint.GetY) = -1
-        Dim V As clsDirVector
-        Set V = New clsDirVector
-        Call V.SetVector(p1.GetPoint, p2.GetPoint)
+        Dim v As clsDirVector
+        Set v = New clsDirVector
+        Call v.SetVector(p1.GetPoint, p2.GetPoint)
         Dim PriorityStack As clsStack
-        Set PriorityStack = V.GetVectorAngle.GetPriorityStackDir(Dir_Stack.Front)
+        Set PriorityStack = v.GetVectorAngle.GetPriorityStackDir(Dir_Stack.Front)
         
         While Not PriorityStack.IsEmpty
             

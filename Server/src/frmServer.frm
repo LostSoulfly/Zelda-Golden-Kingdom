@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCN.OCX"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmServer 
    AutoRedraw      =   -1  'True
    BorderStyle     =   0  'None
@@ -23,7 +23,6 @@ Begin VB.Form frmServer
    LinkTopic       =   "Form1"
    ScaleHeight     =   3720
    ScaleWidth      =   6720
-   ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    WhatsThisHelp   =   -1  'True
    Begin MSWinsockLib.Winsock Socket 
@@ -60,11 +59,11 @@ Begin VB.Form frmServer
       TabCaption(0)   =   "Console"
       TabPicture(0)   =   "frmServer.frx":1708A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "lblCPS"
-      Tab(0).Control(1)=   "lblCpsLock"
+      Tab(0).Control(0)=   "tmrIsServerBug"
+      Tab(0).Control(1)=   "txtChat"
       Tab(0).Control(2)=   "txtText"
-      Tab(0).Control(3)=   "txtChat"
-      Tab(0).Control(4)=   "tmrIsServerBug"
+      Tab(0).Control(3)=   "lblCpsLock"
+      Tab(0).Control(4)=   "lblCPS"
       Tab(0).ControlCount=   5
       TabCaption(1)   =   "Players"
       TabPicture(1)   =   "frmServer.frx":170A6
@@ -85,7 +84,13 @@ Begin VB.Form frmServer
       Tab(2).Control(2).Enabled=   0   'False
       Tab(2).Control(3)=   "FraExp"
       Tab(2).Control(3).Enabled=   0   'False
-      Tab(2).ControlCount=   4
+      Tab(2).Control(4)=   "cmdTransLog"
+      Tab(2).Control(4).Enabled=   0   'False
+      Tab(2).Control(5)=   "chkTroll"
+      Tab(2).Control(5).Enabled=   0   'False
+      Tab(2).Control(6)=   "cmdSave"
+      Tab(2).Control(6).Enabled=   0   'False
+      Tab(2).ControlCount=   7
       TabCaption(3)   =   "Info"
       TabPicture(3)   =   "frmServer.frx":170DE
       Tab(3).ControlEnabled=   0   'False
@@ -96,6 +101,30 @@ Begin VB.Form frmServer
       Tab(3).Control(4)=   "lblBytesSent"
       Tab(3).Control(5)=   "lblBytesReceived"
       Tab(3).ControlCount=   6
+      Begin VB.CommandButton cmdSave 
+         Caption         =   "Save."
+         Height          =   615
+         Left            =   5640
+         TabIndex        =   38
+         Top             =   2520
+         Width           =   735
+      End
+      Begin VB.CheckBox chkTroll 
+         Caption         =   "TrollMode!"
+         Height          =   255
+         Left            =   4920
+         TabIndex        =   36
+         Top             =   2040
+         Width           =   1455
+      End
+      Begin VB.CommandButton cmdTransLog 
+         Caption         =   "Show TransLog"
+         Height          =   495
+         Left            =   4920
+         TabIndex        =   35
+         Top             =   1440
+         Width           =   1455
+      End
       Begin VB.Frame FraExp 
          Caption         =   "Exp: 1"
          Height          =   855
@@ -145,17 +174,17 @@ Begin VB.Form frmServer
       End
       Begin VB.Frame FraExtras 
          Caption         =   "Extras"
-         Height          =   975
+         Height          =   855
          Left            =   3000
          TabIndex        =   19
-         Top             =   2280
+         Top             =   2400
          Width           =   2535
          Begin VB.CommandButton cmdWeather 
             Caption         =   "Weather"
             Height          =   495
             Left            =   1320
             TabIndex        =   21
-            Top             =   360
+            Top             =   240
             Width           =   1095
          End
          Begin VB.CommandButton CharacterEditor 
@@ -163,17 +192,26 @@ Begin VB.Form frmServer
             Height          =   495
             Left            =   120
             TabIndex        =   20
-            Top             =   360
+            Top             =   240
             Width           =   1095
          End
       End
       Begin VB.Frame fraServer 
          Caption         =   "Server"
-         Height          =   1575
+         Height          =   1815
          Left            =   3000
          TabIndex        =   1
          Top             =   480
          Width           =   1815
+         Begin VB.CheckBox chkPass 
+            Caption         =   "Verify Passw."
+            Height          =   255
+            Left            =   120
+            TabIndex        =   33
+            Top             =   1440
+            Value           =   1  'Checked
+            Width           =   1575
+         End
          Begin VB.CheckBox chkServerLog 
             Caption         =   "Server Log"
             Height          =   255
@@ -206,6 +244,23 @@ Begin VB.Form frmServer
          TabIndex        =   8
          Top             =   480
          Width           =   2775
+         Begin VB.CommandButton cmdLoadOptions 
+            Caption         =   "Options"
+            Height          =   375
+            Left            =   1440
+            TabIndex        =   37
+            Top             =   2160
+            Width           =   1215
+         End
+         Begin VB.CommandButton cmdReloadLang 
+            Caption         =   "Language"
+            Enabled         =   0   'False
+            Height          =   375
+            Left            =   1440
+            TabIndex        =   34
+            Top             =   1680
+            Width           =   1215
+         End
          Begin VB.CommandButton cmdReloadAnimations 
             Caption         =   "Animations"
             Height          =   375
@@ -423,6 +478,18 @@ Begin VB.Form frmServer
       Begin VB.Menu mnuRemoveAdmin 
          Caption         =   "Remove Admin"
       End
+      Begin VB.Menu mnuGodPlayer 
+         Caption         =   "Turn GodPlayer?"
+      End
+      Begin VB.Menu mnuSpellPlayer 
+         Caption         =   "Turn SpellPlayer?"
+      End
+      Begin VB.Menu mnuSail 
+         Caption         =   "Set Sail!"
+      End
+      Begin VB.Menu mnuRide 
+         Caption         =   "Start Riding."
+      End
    End
 End
 Attribute VB_Name = "frmServer"
@@ -457,8 +524,37 @@ If Options.DisableAdmins = 0 Then
 End If
 End Sub
 
+
+Private Sub cmdLoadOptions_Click()
+Call TextAdd("Options reloaded.")
+LoadOptions
+End Sub
+
+Private Sub cmdTransLog_Click()
+frmTransLog.Visible = True
+End Sub
+
 Private Sub cmdWeather_Click()
 frmWeather.Visible = True
+End Sub
+
+Private Sub cmdSave_Click()
+Dim i As Long
+SaveClasses
+SaveItems
+SaveResources
+SaveNpcs
+SaveShops
+SaveSpells
+SaveAnimations
+SaveQuests
+SaveDoors
+SaveActions
+Savemovements
+SavePets
+SaveCustomSprites
+MsgBox "Done.."
+
 End Sub
 
 Private Sub lblCPSLock_Click()
@@ -474,6 +570,62 @@ End Sub
 Private Sub CharacterEditor_Click()
 'If GetAD Then Exit Sub
 frmAccountEditor.Visible = True
+End Sub
+
+Private Sub mnuGodPlayer_Click()
+    Dim Name As String
+    Name = frmServer.lvwInfo.SelectedItem.SubItems(3)
+
+    If Not Name = "Not Playing" Then
+        TurnGodPlayer FindPlayer(Name)
+        Call SendPlayerData(FindPlayer(Name))
+        Call PlayerMsg(FindPlayer(Name), "You are now a GodPlayer. Wtf does that mean?", BrightCyan, True, False)
+    End If
+
+End Sub
+
+Private Sub mnuSail_Click()
+    Dim Name As String
+    Name = frmServer.lvwInfo.SelectedItem.SubItems(3)
+
+    If Not Name = "Not Playing" Then
+        If GetPlayerState(FindPlayer(Name)) = StateSailing Then
+            ClearSailing (FindPlayer(Name))
+        Else
+            StartSailing (FindPlayer(Name))
+        End If
+        Call SendPlayerData(FindPlayer(Name))
+        Call PlayerMsg(FindPlayer(Name), "Allll abbbooooooooarddddd!", BrightCyan, True, False)
+    End If
+
+End Sub
+
+Private Sub mnuRide_Click()
+    Dim Name As String
+    Name = frmServer.lvwInfo.SelectedItem.SubItems(3)
+
+    If Not Name = "Not Playing" Then
+        If GetPlayerState(FindPlayer(Name)) = StateRiding Then
+            ClearRiding (FindPlayer(Name))
+        Else
+            StartRiding (FindPlayer(Name))
+        End If
+        Call SendPlayerData(FindPlayer(Name))
+        Call PlayerMsg(FindPlayer(Name), "Allll abbbooooooooarddddd!", BrightCyan, True, False)
+    End If
+
+End Sub
+
+Private Sub mnuSpellPlayer_Click()
+    Dim Name As String
+    Name = frmServer.lvwInfo.SelectedItem.SubItems(3)
+
+    If Not Name = "Not Playing" Then
+        TurnSpellPlayer FindPlayer(Name)
+        Call SendPlayerData(FindPlayer(Name))
+        Call PlayerMsg(FindPlayer(Name), "You are now a SpellPlayer. Wtf does that mean?", BrightCyan, True, False)
+    End If
+
 End Sub
 
 ' ********************
@@ -665,7 +817,7 @@ Private Sub txtChat_KeyPress(KeyAscii As Integer)
 
     If KeyAscii = vbKeyReturn Then
         If LenB(Trim$(txtChat.Text)) > 0 Then
-            Call GlobalMsg(txtChat.Text, White)
+            Call GlobalMsg(txtChat.Text, White, False)
             Call TextAdd("Server: " & txtChat.Text)
             txtChat.Text = vbNullString
         End If

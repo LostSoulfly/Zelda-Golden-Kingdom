@@ -305,6 +305,7 @@ Public Enum ClientPackets
     CCode
     CSpeedAck
     CSFImpactar
+    CBugReport
     ' Make sure CMSG_COUNT is below everything else
     CMSG_COUNT
 End Enum
@@ -436,6 +437,8 @@ Public Enum PlayerCommandsType
     Visible
     FixWarp
     DisableAdmins
+    FindMAP
+    GiveItem
 End Enum
 
 

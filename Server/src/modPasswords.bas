@@ -8,7 +8,7 @@ Dim PasLen As Byte
 Dim newpass() As String
 Dim med As Byte
 
-PasLen = Len(Trim(password))
+PasLen = Len(Trim$(password))
 
 If PasLen <= 0 Then Exit Function
 
@@ -35,7 +35,7 @@ Dim i As Integer
 Dim PasLen As Byte
 Dim newpass() As String
 
-PasLen = Len(Trim(password))
+PasLen = Len(Trim$(password))
 
 If PasLen <= 0 Then Exit Function
 
@@ -76,9 +76,9 @@ Dim bits As Long
 bits = 255
 
 If Asc(char1) + Asc(char2) > bits Then
-    CharSummation = Chr(Asc(char1) + Asc(char2) - bits)
+    CharSummation = Chr$(Asc(char1) + Asc(char2) - bits)
 Else
-    CharSummation = Chr(Asc(char1) + Asc(char2))
+    CharSummation = Chr$(Asc(char1) + Asc(char2))
 End If
 
 End Function
@@ -90,9 +90,9 @@ bits = 255
 
 
 If Asc(char1) - Asc(char2) < 0 Then
-    CharSubstract = Chr(Asc(char1) - Asc(char2) + bits)
+    CharSubstract = Chr$(Asc(char1) - Asc(char2) + bits)
 Else
-    CharSubstract = Chr(Asc(char1) - Asc(char2))
+    CharSubstract = Chr$(Asc(char1) - Asc(char2))
 End If
 
 End Function

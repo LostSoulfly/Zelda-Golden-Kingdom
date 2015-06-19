@@ -33,7 +33,7 @@ End Type
 
 Private Type MapReferenceRec
     Tiles() As TileReferenceRec
-    mapnum As Long
+    MapNum As Long
     NumPlayers As Long
 End Type
 
@@ -44,21 +44,21 @@ Private NMaps As Long
 
 Public CurrentMapIndex As Long
 
-Function GetMapPlayerCollection(ByVal mapnum As Long) As Collection
+Function GetMapPlayerCollection(ByVal MapNum As Long) As Collection
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
-        Set GetMapPlayerCollection = TempMap(mapnum).PlayersOnMap
+        Set GetMapPlayerCollection = TempMap(MapNum).PlayersOnMap
     Else
         Set GetMapPlayerCollection = New Collection
     End If
 End Function
 
 
-Function FindMapPlayerSlot(ByVal mapnum As Long, ByVal index As Long) As Long
-    If mapnum = 0 Or index = 0 Then Exit Function
+Function FindMapPlayerSlot(ByVal MapNum As Long, ByVal index As Long) As Long
+    If MapNum = 0 Or index = 0 Then Exit Function
     Dim i As Long
-        With TempMap(mapnum)
+        With TempMap(MapNum)
             For i = 1 To .PlayersOnMap.Count
                 If .PlayersOnMap.item(i) = index Then
                     FindMapPlayerSlot = i
@@ -70,10 +70,10 @@ End Function
 
 
 
-Sub AddWaitingNPC(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal Time As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+Sub AddWaitingNPC(ByVal MapNum As Long, ByVal mapnpcnum As Long, ByVal Time As Long)
+    If MapNum = 0 Or mapnpcnum = 0 Then Exit Sub
     Dim i As Long
-    With TempMap(mapnum)
+    With TempMap(MapNum)
     .WaitingNPCS = .WaitingNPCS + 1
     
     
@@ -109,10 +109,10 @@ Sub CheckWaitingNPCS(ByVal Tick As Long)
     Next
 End Sub
 
-Sub PopWaitingNPC(ByVal mapnum As Long)
-    If mapnum = 0 Then Exit Sub
+Sub PopWaitingNPC(ByVal MapNum As Long)
+    If MapNum = 0 Then Exit Sub
 
-    With TempMap(mapnum)
+    With TempMap(MapNum)
     If .WaitingNPCS > 1 Then
         Dim i As Long
         For i = 1 To .WaitingNPCS - 1
@@ -125,15 +125,15 @@ Sub PopWaitingNPC(ByVal mapnum As Long)
     End With
 End Sub
 
-Sub DeleteWaitingNPC(ByVal mapnum As Long, ByVal index As Long)
+Sub DeleteWaitingNPC(ByVal MapNum As Long, ByVal index As Long)
 
 End Sub
 
-Sub ClearMapWaitingNPCS(ByVal mapnum As Long)
-    If mapnum = 0 Then Exit Sub
+Sub ClearMapWaitingNPCS(ByVal MapNum As Long)
+    If MapNum = 0 Then Exit Sub
     
-    ReDim TempMap(mapnum).WaitingForSpawnNPCS(1 To 1)
-    TempMap(mapnum).WaitingNPCS = 0
+    ReDim TempMap(MapNum).WaitingForSpawnNPCS(1 To 1)
+    TempMap(MapNum).WaitingNPCS = 0
     
 End Sub
 
@@ -145,36 +145,36 @@ End Function
 
 Function GetMapNumByMapReference(ByVal index As Long) As Long
     If index > 0 And index <= NMaps Then
-        GetMapNumByMapReference = MapReferences(index).mapnum
+        GetMapNumByMapReference = MapReferences(index).MapNum
     End If
 End Function
 
-Function ArePlayersOnMap(ByVal mapnum As Long) As Long
+Function ArePlayersOnMap(ByVal MapNum As Long) As Long
     'if map is on our structure, this means players are on it
-    If mapnum = 0 Then Exit Function
+    If MapNum = 0 Then Exit Function
     
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 And i <= NMaps Then
         ArePlayersOnMap = MapReferences(i).NumPlayers
     End If
 End Function
 
-Sub AddMapPlayer(ByVal index As Long, ByVal mapnum As Long)
-    If index = 0 Or mapnum = 0 Then Exit Sub
+Sub AddMapPlayer(ByVal index As Long, ByVal MapNum As Long)
+    If index = 0 Or MapNum = 0 Then Exit Sub
     
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         MapReferences(i).NumPlayers = MapReferences(i).NumPlayers + 1
     Else 'map not created, do it
-        i = InsertMapReference(mapnum)
+        i = InsertMapReference(MapNum)
         MapReferences(i).NumPlayers = 1
     End If
     
     
     If i > 0 Then
-        With TempMap(mapnum)
+        With TempMap(MapNum)
             .PlayersOnMap.Add index
         End With
     End If
@@ -191,10 +191,10 @@ End Sub
 
 
 
-Function FindPlayerByPos(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long) As Long
+Function FindPlayerByPos(ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long) As Long
     Dim i As Long, j As Variant
-    If mapnum = 0 Then Exit Function
-        With TempMap(mapnum)
+    If MapNum = 0 Then Exit Function
+        With TempMap(MapNum)
             For Each j In .PlayersOnMap
                 If GetPlayerX(j) = X And GetPlayerY(j) = Y Then
                     FindPlayerByPos = j
@@ -204,9 +204,9 @@ Function FindPlayerByPos(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long)
         End With
 End Function
 
-Sub DeleteMapPlayer(ByVal index As Long, ByVal mapnum As Long)
+Sub DeleteMapPlayer(ByVal index As Long, ByVal MapNum As Long)
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         
         MapReferences(i).NumPlayers = MapReferences(i).NumPlayers - 1
@@ -215,10 +215,10 @@ Sub DeleteMapPlayer(ByVal index As Long, ByVal mapnum As Long)
             ClearMapReferenceByIndex i
         End If
         
-        With TempMap(mapnum)
+        With TempMap(MapNum)
         
         Dim j As Long
-        j = FindMapPlayerSlot(mapnum, index)
+        j = FindMapPlayerSlot(MapNum, index)
         
         If j > 0 Then
             .PlayersOnMap.Remove j
@@ -233,17 +233,17 @@ Sub DeleteMapPlayer(ByVal index As Long, ByVal mapnum As Long)
     
 End Sub
 
-Sub AddMapData(ByVal mapnum As Long)
+Sub AddMapData(ByVal MapNum As Long)
 
 End Sub
 
-Sub DeleteMapData(ByVal mapnum As Long)
+Sub DeleteMapData(ByVal MapNum As Long)
     'ZeroMemory map(mapnum), Len(map(mapnum))
 End Sub
 
 
-Function InsertMapReference(ByVal mapnum As Long) As Long
-    If mapnum = 0 Then Exit Function
+Function InsertMapReference(ByVal MapNum As Long) As Long
+    If MapNum = 0 Then Exit Function
     
     'AddMapData mapnum
     Dim i As Long
@@ -256,9 +256,9 @@ Function InsertMapReference(ByVal mapnum As Long) As Long
     
     If i > 1 Then
         While i > 1 And Not found
-            If MapReferences(i - 1).mapnum > mapnum Then
+            If MapReferences(i - 1).MapNum > MapNum Then
                 MapReferences(i) = MapReferences(i - 1)
-                TempMap(MapReferences(i).mapnum).mapref = TempMap(MapReferences(i).mapnum).mapref + 1
+                TempMap(MapReferences(i).MapNum).mapref = TempMap(MapReferences(i).MapNum).mapref + 1
                 i = i - 1
             Else
                 found = True
@@ -267,32 +267,32 @@ Function InsertMapReference(ByVal mapnum As Long) As Long
     End If
     
     
-    Call CreateMapTileReference(i, mapnum)
+    Call CreateMapTileReference(i, MapNum)
     InsertMapReference = i
     
-    TempMap(mapnum).mapref = i
+    TempMap(MapNum).mapref = i
     
-    Set TempMap(mapnum).PlayersOnMap = New Collection
+    Set TempMap(MapNum).PlayersOnMap = New Collection
     
 End Function
 
-Sub ClearMapReference(ByVal mapnum As Long)
-    If mapnum = 0 Then Exit Sub
+Sub ClearMapReference(ByVal MapNum As Long)
+    If MapNum = 0 Then Exit Sub
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         If NMaps > 1 Then
             Dim j As Long
             For j = i To NMaps - 1
                 MapReferences(j) = MapReferences(j + 1)
-                TempMap(MapReferences(j).mapnum).mapref = TempMap(MapReferences(j).mapnum).mapref - 1
+                TempMap(MapReferences(j).MapNum).mapref = TempMap(MapReferences(j).MapNum).mapref - 1
             Next
             ReDim Preserve MapReferences(1 To NMaps - 1)
         End If
         
         NMaps = NMaps - 1
         
-        TempMap(mapnum).mapref = 0
+        TempMap(MapNum).mapref = 0
         
     End If
     
@@ -301,12 +301,12 @@ End Sub
 Sub ClearMapReferenceByIndex(ByVal index As Long)
     If index > 0 And index <= NMaps Then
         Dim j As Long
-        Dim mapnum As Long
-        mapnum = MapReferences(index).mapnum
+        Dim MapNum As Long
+        MapNum = MapReferences(index).MapNum
         If NMaps > 1 Then
             For j = index To NMaps - 1
                 MapReferences(j) = MapReferences(j + 1)
-                TempMap(MapReferences(j).mapnum).mapref = TempMap(MapReferences(j).mapnum).mapref - 1
+                TempMap(MapReferences(j).MapNum).mapref = TempMap(MapReferences(j).MapNum).mapref - 1
             Next
             
             ReDim Preserve MapReferences(1 To NMaps - 1)
@@ -314,13 +314,13 @@ Sub ClearMapReferenceByIndex(ByVal index As Long)
         
         NMaps = NMaps - 1
         
-        TempMap(mapnum).mapref = 0
+        TempMap(MapNum).mapref = 0
     End If
     
-    Call DeleteMapData(mapnum)
+    Call DeleteMapData(MapNum)
 End Sub
 
-Public Function BinarySearchMapRef(ByVal mapnum As Long, ByVal left As Long, ByVal right As Long) As Long
+Public Function BinarySearchMapRef(ByVal MapNum As Long, ByVal left As Long, ByVal right As Long) As Long
     If right < left Then
         BinarySearchMapRef = 0
     Else
@@ -328,11 +328,11 @@ Public Function BinarySearchMapRef(ByVal mapnum As Long, ByVal left As Long, ByV
         meddle = (left + right) \ 2
         
         Dim CurMap As Long
-        CurMap = MapReferences(meddle).mapnum
-        If mapnum < CurMap Then
-            BinarySearchMapRef = BinarySearchMapRef(mapnum, left, meddle - 1)
-        ElseIf mapnum > CurMap Then
-            BinarySearchMapRef = BinarySearchMapRef(mapnum, meddle + 1, right)
+        CurMap = MapReferences(meddle).MapNum
+        If MapNum < CurMap Then
+            BinarySearchMapRef = BinarySearchMapRef(MapNum, left, meddle - 1)
+        ElseIf MapNum > CurMap Then
+            BinarySearchMapRef = BinarySearchMapRef(MapNum, meddle + 1, right)
         Else
             BinarySearchMapRef = meddle
         End If
@@ -341,32 +341,32 @@ Public Function BinarySearchMapRef(ByVal mapnum As Long, ByVal left As Long, ByV
         
         
 End Function
-Sub CreateMapTileReference(ByVal index As Long, ByVal mapnum As Long)
-    MapReferences(index).mapnum = mapnum
+Sub CreateMapTileReference(ByVal index As Long, ByVal MapNum As Long)
+    MapReferences(index).MapNum = MapNum
     Dim MaxX As Byte, MaxY As Byte
-    MaxX = map(mapnum).MaxX
-    MaxY = map(mapnum).MaxY
+    MaxX = map(MapNum).MaxX
+    MaxY = map(MapNum).MaxY
     With MapReferences(index)
     ReDim .Tiles(0 To MaxX, 0 To MaxY)
     
     Dim i As Long
-    For i = 1 To GetMapNpcHighIndex(mapnum)
-        MaxX = MapNpc(mapnum).NPC(i).X
-        MaxY = MapNpc(mapnum).NPC(i).Y
+    For i = 1 To GetMapNpcHighIndex(MapNum)
+        MaxX = MapNpc(MapNum).NPC(i).X
+        MaxY = MapNpc(MapNum).NPC(i).Y
         
         .Tiles(MaxX, MaxY).mapnpcnum = i
     Next
     
     'Create Resource Tile
-    For MaxX = 0 To map(mapnum).MaxX
-        For MaxY = 0 To map(mapnum).MaxY
+    For MaxX = 0 To map(MapNum).MaxX
+        For MaxY = 0 To map(MapNum).MaxY
             .Tiles(MaxX, MaxY).ResourceIndex = 0
         Next
     Next
     
-    For i = 1 To ResourceCache(mapnum).Resource_Count
-        MaxX = ResourceCache(mapnum).ResourceData(i).X
-        MaxY = ResourceCache(mapnum).ResourceData(i).Y
+    For i = 1 To ResourceCache(MapNum).Resource_Count
+        MaxX = ResourceCache(MapNum).ResourceData(i).X
+        MaxY = ResourceCache(MapNum).ResourceData(i).Y
         .Tiles(MaxX, MaxY).ResourceIndex = i
     Next
     
@@ -376,15 +376,15 @@ Sub CreateMapTileReference(ByVal index As Long, ByVal mapnum As Long)
     
 End Sub
 
-Function GetMapNpcHighIndex(ByVal mapnum As Long) As Long
-    If mapnum = 0 Then Exit Function
-    GetMapNpcHighIndex = TempMap(mapnum).npc_highindex
+Function GetMapNpcHighIndex(ByVal MapNum As Long) As Long
+    If MapNum = 0 Then Exit Function
+    GetMapNpcHighIndex = TempMap(MapNum).npc_highindex
 End Function
 
 
 
-Function GetMapNpcNumForClient(ByVal mapnum As Long, ByVal mapnpcnum As Long) As Long
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Function
+Function GetMapNpcNumForClient(ByVal MapNum As Long, ByVal mapnpcnum As Long) As Long
+    If MapNum = 0 Or mapnpcnum = 0 Then Exit Function
     
     'GetMapNpcNumForClient = mapnpc(mapnum).NPC(MapNPCNum).MapNPCNum
     GetMapNpcNumForClient = mapnpcnum
@@ -393,51 +393,51 @@ End Function
 
 
 
-Function GetMapNPCX(ByVal mapnum As Long, ByVal mapnpcnum As Long) As Long
-    GetMapNPCX = MapNpc(mapnum).NPC(mapnpcnum).X
+Function GetMapNPCX(ByVal MapNum As Long, ByVal mapnpcnum As Long) As Long
+    GetMapNPCX = MapNpc(MapNum).NPC(mapnpcnum).X
 End Function
 
-Function GetMapNPCY(ByVal mapnum As Long, ByVal mapnpcnum As Long) As Long
-    GetMapNPCY = MapNpc(mapnum).NPC(mapnpcnum).Y
+Function GetMapNPCY(ByVal MapNum As Long, ByVal mapnpcnum As Long) As Long
+    GetMapNPCY = MapNpc(MapNum).NPC(mapnpcnum).Y
 End Function
 
-Function SetMapNPCX(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal X As Long) As Long
-    MapNpc(mapnum).NPC(mapnpcnum).X = X
+Function SetMapNPCX(ByVal MapNum As Long, ByVal mapnpcnum As Long, ByVal X As Long) As Long
+    MapNpc(MapNum).NPC(mapnpcnum).X = X
 End Function
 
-Function SetMapNPCY(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal Y As Long) As Long
-    MapNpc(mapnum).NPC(mapnpcnum).Y = Y
+Function SetMapNPCY(ByVal MapNum As Long, ByVal mapnpcnum As Long, ByVal Y As Long) As Long
+    MapNpc(MapNum).NPC(mapnpcnum).Y = Y
 End Function
 
 
-Function ComputeNPCSingleMovement(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Byte) As Boolean
+Function ComputeNPCSingleMovement(ByVal MapNum As Long, ByVal mapnpcnum As Long, ByVal dir As Byte) As Boolean
     Dim mapref As Long
-    mapref = GetMapRef(mapnum)
+    mapref = GetMapRef(MapNum)
     
     If mapref < 1 Or mapref > NMaps Then Exit Function
     
     With MapReferences(mapref)
-    If .mapnum <> mapnum Then Exit Function
+    If .MapNum <> MapNum Then Exit Function
     
     Dim X As Long
     Dim Y As Long
-    X = GetMapNPCX(mapnum, mapnpcnum)
-    Y = GetMapNPCY(mapnum, mapnpcnum)
+    X = GetMapNPCX(MapNum, mapnpcnum)
+    Y = GetMapNPCY(MapNum, mapnpcnum)
     
     
     Dim Nx As Long, ny As Long
     GetNextPosition X, Y, dir, Nx, ny
     
-    If OutOfBoundries(Nx, ny, mapnum) Then Exit Function
+    If OutOfBoundries(Nx, ny, MapNum) Then Exit Function
     
-    MapNpc(mapnum).NPC(mapnpcnum).dir = dir
+    MapNpc(MapNum).NPC(mapnpcnum).dir = dir
     
     If .Tiles(X, Y).mapnpcnum = mapnpcnum Then
         .Tiles(X, Y).mapnpcnum = 0
     End If
     
-    SetMapNPCX mapnum, mapnpcnum, Nx
-    SetMapNPCY mapnum, mapnpcnum, ny
+    SetMapNPCX MapNum, mapnpcnum, Nx
+    SetMapNPCY MapNum, mapnpcnum, ny
     
     .Tiles(Nx, ny).mapnpcnum = mapnpcnum
     
@@ -446,16 +446,16 @@ Function ComputeNPCSingleMovement(ByVal mapnum As Long, ByVal mapnpcnum As Long,
     ComputeNPCSingleMovement = True
 End Function
 
-Sub AddNPCToMapRef(ByVal mapnum As Long, ByVal mapnpcnum As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+Sub AddNPCToMapRef(ByVal MapNum As Long, ByVal mapnpcnum As Long)
+    If MapNum = 0 Or mapnpcnum = 0 Then Exit Sub
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         With MapReferences(i)
         
         Dim X As Long, Y As Long
-        X = GetMapNPCX(mapnum, mapnpcnum)
-        Y = GetMapNPCY(mapnum, mapnpcnum)
+        X = GetMapNPCX(MapNum, mapnpcnum)
+        Y = GetMapNPCY(MapNum, mapnpcnum)
         
         .Tiles(X, Y).mapnpcnum = mapnpcnum
         
@@ -466,16 +466,16 @@ Sub AddNPCToMapRef(ByVal mapnum As Long, ByVal mapnpcnum As Long)
     
 End Sub
 
-Sub DeleteNPCFromMapRef(ByVal mapnum As Long, ByVal mapnpcnum As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+Sub DeleteNPCFromMapRef(ByVal MapNum As Long, ByVal mapnpcnum As Long)
+    If MapNum = 0 Or mapnpcnum = 0 Then Exit Sub
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         With MapReferences(i)
         
         Dim X As Long, Y As Long
-        X = GetMapNPCX(mapnum, mapnpcnum)
-        Y = GetMapNPCY(mapnum, mapnpcnum)
+        X = GetMapNPCX(MapNum, mapnpcnum)
+        Y = GetMapNPCY(MapNum, mapnpcnum)
         
         If .Tiles(X, Y).mapnpcnum = mapnpcnum Then
             .Tiles(X, Y).mapnpcnum = 0
@@ -487,16 +487,16 @@ Sub DeleteNPCFromMapRef(ByVal mapnum As Long, ByVal mapnpcnum As Long)
     End If
 End Sub
 
-Sub AddResourceIndexToMapRef(ByVal mapnum As Long, ByVal ResourceIndex As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+Sub AddResourceIndexToMapRef(ByVal MapNum As Long, ByVal ResourceIndex As Long)
+    If MapNum = 0 Or mapnpcnum = 0 Then Exit Sub
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         With MapReferences(i)
         
         Dim X As Long, Y As Long
-        X = ResourceCache(mapnum).ResourceData(ResourceIndex).X
-        Y = ResourceCache(mapnum).ResourceData(ResourceIndex).Y
+        X = ResourceCache(MapNum).ResourceData(ResourceIndex).X
+        Y = ResourceCache(MapNum).ResourceData(ResourceIndex).Y
         
         .Tiles(X, Y).ResourceIndex = ResourceIndex
         
@@ -507,16 +507,16 @@ Sub AddResourceIndexToMapRef(ByVal mapnum As Long, ByVal ResourceIndex As Long)
     
 End Sub
 
-Sub DeleteResourceIndexFromMapRef(ByVal mapnum As Long, ByVal ResourceIndex As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+Sub DeleteResourceIndexFromMapRef(ByVal MapNum As Long, ByVal ResourceIndex As Long)
+    If MapNum = 0 Or mapnpcnum = 0 Then Exit Sub
     Dim i As Long
-    i = GetMapRef(mapnum)
+    i = GetMapRef(MapNum)
     If i > 0 Then
         With MapReferences(i)
         
         Dim X As Long, Y As Long
-        X = ResourceCache(mapnum).ResourceData(ResourceIndex).X
-        Y = ResourceCache(mapnum).ResourceData(ResourceIndex).Y
+        X = ResourceCache(MapNum).ResourceData(ResourceIndex).X
+        Y = ResourceCache(MapNum).ResourceData(ResourceIndex).Y
         
         If .Tiles(X, Y).ResourceIndex = ResourceIndex Then
             .Tiles(X, Y).ResourceIndex = -1
@@ -548,11 +548,11 @@ End Function
 
 
 
-Function GetMapNPCNumByTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long) As Long
+Function GetMapNPCNumByTile(ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long) As Long
     
     Dim i As Long
-    For i = 1 To GetMapNpcHighIndex(mapnum)
-        If GetMapNPCX(mapnum, i) = X And GetMapNPCY(mapnum, i) = Y Then
+    For i = 1 To GetMapNpcHighIndex(MapNum)
+        If GetMapNPCX(MapNum, i) = X And GetMapNPCY(MapNum, i) = Y Then
             GetMapNPCNumByTile = i
             Exit Function
         End If
@@ -561,26 +561,29 @@ Function GetMapNPCNumByTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Lo
 
 End Function
 
-Function GetMapRef(ByVal mapnum As Long) As Long
-    If mapnum = 0 Then Exit Function
-    GetMapRef = TempMap(mapnum).mapref
+Function GetMapRef(ByVal MapNum As Long) As Long
+    If MapNum = 0 Then Exit Function
+    GetMapRef = TempMap(MapNum).mapref
 End Function
 
-Sub CheckToAddMap(ByVal mapnum As Long)
-    If GetMapRef(mapnum) = 0 Then
-        AddMapData (mapnum)
+Sub CheckToAddMap(ByVal MapNum As Long)
+    If GetMapRef(MapNum) = 0 Then
+        AddMapData (MapNum)
     End If
 End Sub
-
 
 Public Function GetMapData(ByRef MapT As MapRec) As Byte()
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
     With MapT
+    
+        buffer.WriteConstString "v.2"
         buffer.WriteConstString .Name
+        If Len(Trim$(Replace(.TranslatedName, vbNullChar, ""))) = 0 Then .TranslatedName = GetTranslation(.Name)
+        buffer.WriteConstString .TranslatedName
         buffer.WriteConstString .Music
         
-        buffer.WriteLong .Revision
+        buffer.WriteLong .revision
         buffer.WriteByte .moral
         
         buffer.WriteLong .Up
@@ -631,11 +634,15 @@ End Function
 Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
+    Dim newVer As Boolean
     buffer.WriteBytes Data
     With map
+        If buffer.ReadConstString(3, False) = "v.2" Then newVer = True: buffer.MoveReadHead 3
         .Name = buffer.ReadConstString(NAME_LENGTH)
+        If newVer = True Then .TranslatedName = buffer.ReadConstString(NAME_LENGTH)
+        If newVer = False Then .TranslatedName = GetTranslation(.Name)
         .Music = buffer.ReadConstString(NAME_LENGTH)
-        .Revision = buffer.ReadLong
+        .revision = buffer.ReadLong
         .moral = buffer.ReadByte
         .Up = buffer.ReadLong
         .Down = buffer.ReadLong
@@ -680,18 +687,22 @@ Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
     Set buffer = Nothing
 End Sub
 
-
-Public Sub SetServerMapData(ByVal mapnum As Long, ByRef Data() As Byte)
+'here
+Public Sub SetServerMapData(ByVal MapNum As Long, ByRef Data() As Byte)
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
     buffer.WriteBytes Data
-    
-    'buffer.PreAllocate NAME_LENGTH * 2 + 6 * 4 + 5 * 1
-   
-    With map(mapnum)
+    Dim newVer As Boolean
+
+    With map(MapNum)
+        If buffer.ReadConstString(3, False) = "v.2" Then newVer = True: buffer.MoveReadHead 3
+  
         .Name = buffer.ReadConstString(NAME_LENGTH)
-        buffer.MoveReadHead NAME_LENGTH
-        .Revision = buffer.ReadLong
+        If newVer = True Then .TranslatedName = buffer.ReadConstString(NAME_LENGTH)
+        If newVer = False Then .TranslatedName = GetTranslation(.Name) ': buffer.MoveReadHead NAME_LENGTH
+        'this is because the server doesn't need to know the music
+         buffer.MoveReadHead NAME_LENGTH
+        .revision = buffer.ReadLong
         .moral = buffer.ReadByte
         .Up = buffer.ReadLong
         .Down = buffer.ReadLong
@@ -720,7 +731,8 @@ Public Sub SetServerMapData(ByVal mapnum As Long, ByRef Data() As Byte)
 
         For X = 1 To MAX_MAP_NPCS
             .NPC(X) = buffer.ReadLong
-            MapNpc(mapnum).NPC(X).Num = .NPC(X)
+            'here
+            MapNpc(MapNum).NPC(X).Num = .NPC(X)
             .NPCSProperties(X).Movement = buffer.ReadByte
             .NPCSProperties(X).Action = buffer.ReadByte
         Next
@@ -735,27 +747,27 @@ Public Sub SetServerMapData(ByVal mapnum As Long, ByRef Data() As Byte)
 End Sub
 
 
-Sub SetMapState(ByVal mapnum As Long, ByVal state As PlayerStateType, ByVal Value As Boolean)
-    map(mapnum).AllowedStates(state) = Value
+Sub SetMapState(ByVal MapNum As Long, ByVal state As PlayerStateType, ByVal Value As Boolean)
+    map(MapNum).AllowedStates(state) = Value
 End Sub
 
-Function GetMapState(ByVal mapnum As Long, ByVal state As PlayerStateType) As Boolean
-    GetMapState = map(mapnum).AllowedStates(state)
+Function GetMapState(ByVal MapNum As Long, ByVal state As PlayerStateType) As Boolean
+    GetMapState = map(MapNum).AllowedStates(state)
 End Function
 
-Function GetMapMoral(ByVal mapnum As Long) As Byte
-    GetMapMoral = map(mapnum).moral
+Function GetMapMoral(ByVal MapNum As Long) As Byte
+    GetMapMoral = map(MapNum).moral
 End Function
 
-Sub GetOnDeathMap(ByVal index As Long, ByRef mapnum As Long, ByRef X As Long, ByRef Y As Long)
+Sub GetOnDeathMap(ByVal index As Long, ByRef MapNum As Long, ByRef X As Long, ByRef Y As Long)
 
 If FixWarpMap_Enabled Then
-    mapnum = FixWarpMap
-    If mapnum > 0 And mapnum < MAX_MAPS Then
-        X = RAND(0, map(mapnum).MaxX)
-        Y = RAND(0, map(mapnum).MaxY)
+    MapNum = FixWarpMap
+    If MapNum > 0 And MapNum < MAX_MAPS Then
+        X = RAND(0, map(MapNum).MaxX)
+        Y = RAND(0, map(MapNum).MaxY)
     Else
-        mapnum = Class(GetPlayerClass(index)).StartMap
+        MapNum = Class(GetPlayerClass(index)).StartMap
         X = Class(GetPlayerClass(index)).StartMapX
         Y = Class(GetPlayerClass(index)).StartMap
     End If
@@ -766,21 +778,21 @@ Else
         ' to the bootmap if it is set
         If RespawnSite = 0 Then
             If .BootMap > 0 Then
-                mapnum = .BootMap
+                MapNum = .BootMap
                 X = .BootX
                 Y = .BootY
             Else
-                mapnum = Class(GetPlayerClass(index)).StartMap
+                MapNum = Class(GetPlayerClass(index)).StartMap
                 X = Class(GetPlayerClass(index)).StartMapX
                 Y = Class(GetPlayerClass(index)).StartMapY
             End If
         ElseIf RespawnSite = 1 Then
-                mapnum = Class(GetPlayerClass(index)).StartMap
+                MapNum = Class(GetPlayerClass(index)).StartMap
                 X = Class(GetPlayerClass(index)).StartMapX
                 Y = Class(GetPlayerClass(index)).StartMapY
         ElseIf RespawnSite = 2 Then
-            If Not GetJusticeSpawnSite(GetPlayerPK(index), mapnum, X, Y) Then
-                mapnum = Class(GetPlayerClass(index)).StartMap
+            If Not GetJusticeSpawnSite(GetPlayerPK(index), MapNum, X, Y) Then
+                MapNum = Class(GetPlayerClass(index)).StartMap
                 X = Class(GetPlayerClass(index)).StartMapX
                 Y = Class(GetPlayerClass(index)).StartMapY
             End If

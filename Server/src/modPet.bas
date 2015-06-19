@@ -47,16 +47,16 @@ End Type
 Public Sub PetFollowOwner(ByVal index As Long)
     If TempPlayer(index).TempPet.TempPetSlot < 1 Then Exit Sub
     
-    mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = 1
-    mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = index
+    MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = 1
+    MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = index
 End Sub
 
 'makes the pet wander around the map
 Public Sub PetWander(ByVal index As Long)
     If TempPlayer(index).TempPet.TempPetSlot < 1 Then Exit Sub
 
-    mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NONE
-    mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = 0
+    MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NONE
+    MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = 0
 End Sub
 
 'Clear the npc from the map
@@ -76,9 +76,9 @@ Public Function PetDisband(ByVal index As Long, ByVal mapnum As Long, Optional B
     
     For i = 1 To Vital_Count - 1
         If Not WaitForSpawn Then
-            Player(index).Pet(TempPlayer(index).TempPet.ActualPet).CurVital(i) = mapnpc(mapnum).NPC(mapnpcnum).vital(i)
+            player(index).Pet(TempPlayer(index).TempPet.ActualPet).CurVital(i) = MapNpc(mapnum).NPC(mapnpcnum).vital(i)
         Else
-            Player(index).Pet(TempPlayer(index).TempPet.ActualPet).CurVital(i) = 0
+            player(index).Pet(TempPlayer(index).TempPet.ActualPet).CurVital(i) = 0
         End If
     Next
     
@@ -117,36 +117,36 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     If PlayerPet <= 0 Or PlayerPet > MAX_PLAYER_PETS Then Exit Sub
     
     
-    UntilTime = GetRealTickCount - TempPlayer(index).TempPet.PetSpawnWait - GetPetSpawnTime(Player(index).Pet(PlayerPet).NumPet)
+    UntilTime = GetRealTickCount - TempPlayer(index).TempPet.PetSpawnWait - GetPetSpawnTime(player(index).Pet(PlayerPet).NumPet)
     
     'Check if SpawnWait Finished
     If UntilTime <= 0 Then
-        Call PlayerMsg(index, "Aún no puedes invocar a tu mascota!, faltan " & Round(Abs(UntilTime) / 1000, 0) & " segundos!", BrightRed)
+        Call PlayerMsg(index, GetTranslation("Aún no puedes invocar a tu mascota!, faltan") & " " & Round(Abs(UntilTime) / 1000, 0) & " " & GetTranslation("segundos!"), BrightRed, , False)
         Exit Sub
     End If
     
     'Prevent spawning inexistent pet
-    If Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet < 1 Or Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet > MAX_PETS Then Exit Sub
+    If player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet < 1 Or player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet > MAX_PETS Then Exit Sub
     
     PlayerMap = GetPlayerMap(index)
     PetSlot = 0
     
     'Prevent Boundries
-    Select Case Player(index).dir
+    Select Case player(index).dir
     Case 0
-        If Player(index).Y = map(PlayerMap).MaxY Then Exit Sub
+        If player(index).Y = map(PlayerMap).MaxY Then Exit Sub
     Case 1
-        If Player(index).Y = 0 Then Exit Sub
+        If player(index).Y = 0 Then Exit Sub
     Case 2
-        If Player(index).X = map(PlayerMap).MaxX Then Exit Sub
+        If player(index).X = map(PlayerMap).MaxX Then Exit Sub
     Case 3
-        If Player(index).X = 0 Then Exit Sub
+        If player(index).X = 0 Then Exit Sub
     End Select
     
     If map(PlayerMap).moral = MAP_MORAL_SAFE Then Exit Sub
     
     For i = 1 To MAX_MAP_NPCS
-        If map(PlayerMap).NPC(i) = 0 And mapnpc(PlayerMap).NPC(i).Num = 0 Then
+        If map(PlayerMap).NPC(i) = 0 And MapNpc(PlayerMap).NPC(i).Num = 0 Then
             PetSlot = i
             Exit For
         End If
@@ -158,10 +158,10 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     End If
 
     'create the pet for the map
-    mapnpc(PlayerMap).NPC(PetSlot).Num = Pet(Player(index).Pet(PlayerPet).NumPet).npcnum  'pet npc number
+    MapNpc(PlayerMap).NPC(PetSlot).Num = Pet(player(index).Pet(PlayerPet).NumPet).npcnum  'pet npc number
     
     'set its Pet Data
-    mapnpc(PlayerMap).NPC(PetSlot).PetData.Owner = index
+    MapNpc(PlayerMap).NPC(PetSlot).PetData.Owner = index
 
     
     TempPlayer(index).TempPet.TempPetSlot = PetSlot
@@ -169,13 +169,13 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
 
     Select Case GetPlayerDir(index)
         Case DIR_UP
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) + 1, Pet(Player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) + 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
         Case DIR_DOWN
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) - 1, Pet(Player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) - 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
         Case DIR_LEFT
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) + 1, GetPlayerY(index), Pet(Player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) + 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
         Case DIR_RIGHT
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) - 1, GetPlayerY(index), Pet(Player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) - 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
     End Select
     
     
@@ -189,7 +189,7 @@ Dim i As Byte
 CheckFreePetSlots = -1
 For i = 1 To MAX_PLAYER_PETS
 
-    If Player(index).Pet(i).NumPet = 0 Then
+    If player(index).Pet(i).NumPet = 0 Then
         CheckFreePetSlots = i
         Exit Function
     End If
@@ -221,7 +221,7 @@ If IsMapNPCaPet(GetPlayerMap(index), TempPlayer(index).Target) Then
     Exit Sub
 End If
 
-PetIndex = IsNPCaPet(mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).Target).Num)
+PetIndex = IsNPCaPet(MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).Target).Num)
 
 If PetIndex <= 0 Then
     Call PlayerMsg(index, "El NPC no es domable", BrightRed)
@@ -235,7 +235,7 @@ End If
 
 'Agregar pet a slot libre
 Call AddPlayerPet(index, CByte(slot), CByte(PetIndex))
-Call PlayerMsg(index, Trim$(NPC(Pet(PetIndex).npcnum).Name) & " se ha unido a tu equipo!", BrightGreen)
+Call PlayerMsg(index, Trim$(NPC(Pet(PetIndex).npcnum).TranslatedName) & " " & GetTranslation("se ha unido a tu equipo!"), BrightGreen, , False)
 Call KillNpc(GetPlayerMap(index), TempPlayer(index).Target)
 Call SendPetData(index, TempPlayer(index).TempPet.ActualPet)
 
@@ -258,14 +258,14 @@ Next
 End Function
 
 Public Function GetPlayerPetStat(ByVal index As Long, ByVal stat As Byte) As Byte
-    GetPlayerPetStat = Player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat)
+    GetPlayerPetStat = player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat)
 End Function
 
 Public Function GetPlayerPetTotalStat(ByVal index As Long, ByVal stat As Byte) As Byte
 Dim result As Integer
-If Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet > 0 Then
+If player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet > 0 Then
 
-    result = Player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat) + NPC(Pet(Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet).npcnum).stat(stat)
+    result = player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat) + NPC(Pet(player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet).npcnum).stat(stat)
     If result > 255 Then
         result = 255
     End If
@@ -278,33 +278,33 @@ Public Sub SetPlayerPetStat(ByVal index As Long, ByVal stat As Byte, ByVal numbe
 
 If number > MAX_STAT Or number < 0 Then Exit Sub
 
-Player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat) = number
+player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat) = number
 
 End Sub
 
 Public Function GetPlayerPetLevel(ByVal index As Long) As Long
-    GetPlayerPetLevel = Player(index).Pet(TempPlayer(index).TempPet.ActualPet).level
+    GetPlayerPetLevel = player(index).Pet(TempPlayer(index).TempPet.ActualPet).level
 End Function
 
 Public Function SetPlayerPetLevel(ByVal index As Long, ByVal level As Long) As Boolean
     SetPlayerPetLevel = False
-    If level > MAX_LEVELS Or level > Pet(Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet).MaxLevel Then Exit Function
-    Player(index).Pet(TempPlayer(index).TempPet.ActualPet).level = level
+    If level > MAX_LEVELS Or level > Pet(player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet).MaxLevel Then Exit Function
+    player(index).Pet(TempPlayer(index).TempPet.ActualPet).level = level
     SetPlayerPetLevel = True
 End Function
 
 Public Function GetPlayerPetExp(ByVal index As Long) As Long
-    GetPlayerPetExp = Player(index).Pet(TempPlayer(index).TempPet.ActualPet).Experience
+    GetPlayerPetExp = player(index).Pet(TempPlayer(index).TempPet.ActualPet).Experience
 End Function
 
 Public Sub SetPlayerPetExp(ByVal index As Long, ByVal exp As Long)
-    Player(index).Pet(TempPlayer(index).TempPet.ActualPet).Experience = exp
+    player(index).Pet(TempPlayer(index).TempPet.ActualPet).Experience = exp
 End Sub
 
 Public Function GetPlayerPetNextLevel(ByVal index As Long) As Long
     Dim exp As Long
     exp = LevelExp(GetPlayerPetLevel(index))
-    GetPlayerPetNextLevel = exp / 2 + exp / 15 * Pet(Player(index).Pet(GetPlayerPetSlot(index)).NumPet).ExpProgression
+    GetPlayerPetNextLevel = exp / 2 + exp / 15 * Pet(player(index).Pet(GetPlayerPetSlot(index)).NumPet).ExpProgression
 End Function
 
 Public Function GetPlayerPetExpByLevel(ByVal PetNum As Byte, ByVal level As Long) As Long
@@ -328,16 +328,16 @@ Function GetPetExpPercent(ByVal index As Long) As Single
 End Function
 
 Public Function GetPlayerPetMaxLevel(ByVal index As Long) As Long
-    GetPlayerPetMaxLevel = Pet(Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet).MaxLevel
+    GetPlayerPetMaxLevel = Pet(player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet).MaxLevel
 End Function
 Public Function GetPlayerPetPOINTS(ByVal index As Long) As Integer
-    GetPlayerPetPOINTS = Player(index).Pet(TempPlayer(index).TempPet.ActualPet).points
+    GetPlayerPetPOINTS = player(index).Pet(TempPlayer(index).TempPet.ActualPet).points
 End Function
 Public Sub SetPlayerPetPOINTS(ByVal index As Long, ByVal points As Integer)
-    Player(index).Pet(TempPlayer(index).TempPet.ActualPet).points = points
+    player(index).Pet(TempPlayer(index).TempPet.ActualPet).points = points
 End Sub
 Public Function GetPetNextPOINTS(ByVal index As Long, ByVal PetNum As Byte)
-    GetPetNextPOINTS = PointsPerLevel(PetNum, Player(index).Pet(TempPlayer(index).TempPet.ActualPet).level)
+    GetPetNextPOINTS = PointsPerLevel(PetNum, player(index).Pet(TempPlayer(index).TempPet.ActualPet).level)
 End Function
 
 Sub CheckPlayerPetLevelUp(ByVal index As Long)
@@ -356,7 +356,7 @@ Sub CheckPlayerPetLevelUp(ByVal index As Long)
             Exit Do
         End If
         
-        PointsWon = GetPetNextPOINTS(index, Player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet)
+        PointsWon = GetPetNextPOINTS(index, player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet)
         Call SetPlayerPetPOINTS(index, GetPlayerPetPOINTS(index) + PointsWon)
         'PlayerMsg index, PointsWon & " puntos ganados!", cyan
         Call SetPlayerPetExp(index, expRollover)
@@ -384,7 +384,7 @@ Public Sub GivePetEXP(ByVal index As Long, ByVal exp As Long)
     Call SetPlayerPetExp(index, exp + GetPlayerPetExp(index))
     'SendEXP index
     SendPetData index, TempPlayer(index).TempPet.ActualPet
-    SendActionMsg GetPlayerMap(index), "+" & exp & " EXP", White, 1, (mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).X * 32), (mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Y * 32)
+    SendActionMsg GetPlayerMap(index), "+" & exp & " EXP", White, 1, (MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).X * 32), (MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Y * 32)
     ' check if we've leveled
     CheckPlayerPetLevelUp index
 End Sub
@@ -459,7 +459,7 @@ End Function
 
 Public Function GetPlayerTamePoints(ByVal index As Long, ByVal npcnum As Long) As Integer
 
-GetPlayerTamePoints = CInt(GetPlayerStat(index, willpower) + GetPlayerLevel(index) + (Player(index).NPCKills / 500))
+GetPlayerTamePoints = CInt(GetPlayerStat(index, willpower) + GetPlayerLevel(index) + (player(index).NPCKills / 500))
 
 End Function
 
@@ -475,8 +475,8 @@ End If
 Call ResetPlayerPetSlot(index, PetSlot)
 
 'Player(index).Pet(PetSlot).Name = GetPlayerName(index) & "'s " & NPC(Pet(PetNum).NPCNum).Name
-Player(index).Pet(PetSlot).NumPet = PetNum
-Player(index).Pet(PetSlot).level = 1
+player(index).Pet(PetSlot).NumPet = PetNum
+player(index).Pet(PetSlot).level = 1
 
 End Sub
 
@@ -491,13 +491,13 @@ End Sub
 Public Sub ResetPlayerPetSlot(ByVal index As Long, ByVal PetSlot As Byte)
 Dim i As Byte
 
-Player(index).Pet(PetSlot).Experience = 0
+player(index).Pet(PetSlot).Experience = 0
 'Player(index).Pet(PetSlot).Name = ""
-Player(index).Pet(PetSlot).NumPet = 0
-Player(index).Pet(PetSlot).level = 0
-Player(index).Pet(PetSlot).points = 0
+player(index).Pet(PetSlot).NumPet = 0
+player(index).Pet(PetSlot).level = 0
+player(index).Pet(PetSlot).points = 0
 For i = 1 To Stats.Stat_Count - 1
-    Player(index).Pet(PetSlot).StatsAdd(i) = 0
+    player(index).Pet(PetSlot).StatsAdd(i) = 0
 Next
 End Sub
 
@@ -507,7 +507,7 @@ If Not (exp > 0) Then Exit Sub
 
 If Not (PetSlot > 0 And PetSlot <= MAX_PLAYER_PETS) Then Exit Sub
 
-If Not (Player(index).Pet(PetSlot).NumPet > 0) Then Exit Sub
+If Not (player(index).Pet(PetSlot).NumPet > 0) Then Exit Sub
 
     'Pet exp
     PetExp = Round(CLng(CDbl(exp) * (Percent / 100)))
@@ -543,7 +543,7 @@ If TempPlayer(index).TempPet.TempPetSlot > 0 Then
     If PetDisband(index, GetPlayerMap(index), False) = False Then Exit Sub
 End If
 
-Call PlayerMsg(index, "Abandonas a tu " & Trim$(NPC(Pet(Player(index).Pet(PetSlot).NumPet).npcnum).Name), Yellow)
+Call PlayerMsg(index, GetTranslation("Abandonas a tu") & " " & Trim$(NPC(Pet(player(index).Pet(PetSlot).NumPet).npcnum).TranslatedName), Yellow, , False)
 Call ResetPlayerPetSlot(index, PetSlot)
 'Call GivePlayerEXP(index, CumExp / 2)
 Call SendPetData(index, PetSlot)
@@ -556,7 +556,7 @@ Public Function GetMapPetOwner(ByVal mapnum As Long, ByVal mapnpcnum As Long) As
 Dim Owner As Long
 GetMapPetOwner = 0
 
-Owner = mapnpc(mapnum).NPC(mapnpcnum).PetData.Owner
+Owner = MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner
 
 If Owner > 0 Then
     GetMapPetOwner = Owner
@@ -598,7 +598,7 @@ mapnum = GetPlayerMap(index)
 If mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Then Exit Function
 
 'subscript 9
-If Not (mapnpc(mapnum).NPC(mapnpcnum).Num > 0) Then Exit Function
+If Not (MapNpc(mapnum).NPC(mapnpcnum).Num > 0) Then Exit Function
 
 'player hasn't pet?
 If GetMapPetOwner(mapnum, mapnpcnum) <> index Then Exit Function
@@ -648,7 +648,7 @@ If mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Or IsPlaying(index) = False Then
 End If
 
 ' Check for subscript out of range
-If mapnpc(GetPlayerMap(index)).NPC(mapnpcnum).Num <= 0 Then
+If MapNpc(GetPlayerMap(index)).NPC(mapnpcnum).Num <= 0 Then
     Exit Function
 End If
    
@@ -656,7 +656,7 @@ If SpellSlotNum <= 0 Or SpellSlotNum > MAX_NPC_SPELLS Then Exit Function
         
 ' The Variables
 mapnum = GetPlayerMap(index)
-spellnum = NPC(mapnpc(mapnum).NPC(mapnpcnum).Num).Spell(SpellSlotNum)
+spellnum = NPC(MapNpc(mapnum).NPC(mapnpcnum).Num).Spell(SpellSlotNum)
 
 If Not (spellnum > 0 And spellnum <= MAX_SPELLS And mapnum > 0 And mapnum) <= MAX_MAPS Then Exit Function
 
@@ -669,7 +669,7 @@ Case Else
     Exit Function
 End Select
 PlayerVital = CDbl(GetPlayerVital(index, vital))
-PetVital = CDbl(mapnpc(mapnum).NPC(mapnpcnum).vital(vital))
+PetVital = CDbl(MapNpc(mapnum).NPC(mapnpcnum).vital(vital))
 
 If PlayerVital <= 0 Then
     PlayerVital = 1
@@ -705,8 +705,8 @@ End Function
 Sub PetAttack(ByVal index As Long)
     If TempPlayer(index).TempPet.TempPetSlot < 1 Then Exit Sub
     
-    mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TempPlayer(index).TargetType
-    mapnpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = TempPlayer(index).Target
+    MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TempPlayer(index).TargetType
+    MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = TempPlayer(index).Target
     TempPlayer(index).TempPet.PetHasOwnTarget = TempPlayer(index).Target
 End Sub
 
@@ -742,8 +742,8 @@ ResetPlayerPetPoints = 0
 sum = 0
 
 For i = 1 To Stats.Stat_Count - 1
-    Do While Player(index).Pet(PetSlot).StatsAdd(i) > 0
-        Player(index).Pet(PetSlot).StatsAdd(i) = Player(index).Pet(PetSlot).StatsAdd(i) - 1
+    Do While player(index).Pet(PetSlot).StatsAdd(i) > 0
+        player(index).Pet(PetSlot).StatsAdd(i) = player(index).Pet(PetSlot).StatsAdd(i) - 1
         sum = sum + 1
     Loop
 Next
@@ -769,9 +769,9 @@ Public Sub SetPetTarget(ByVal index As Long, ByVal PetSlot As Byte)
         Chance = 10
         Chosen = 0
         For i = 1 To TempMap(mapnum).npc_highindex
-            If mapnpc(mapnum).NPC(i).TargetType = TARGET_TYPE_PLAYER Then
-                If mapnpc(mapnum).NPC(i).Target = index Then
-                    If IsinRange(2, GetPlayerX(index), GetPlayerY(index), mapnpc(mapnum).NPC(i).X, mapnpc(mapnum).NPC(i).Y) Then
+            If MapNpc(mapnum).NPC(i).TargetType = TARGET_TYPE_PLAYER Then
+                If MapNpc(mapnum).NPC(i).Target = index Then
+                    If IsinRange(2, GetPlayerX(index), GetPlayerY(index), MapNpc(mapnum).NPC(i).X, MapNpc(mapnum).NPC(i).Y) Then
                         Dim auxchance As Single
                         auxchance = GetNPCSFightChance(mapnum, PlayerHasPetInMap(index), i)
                         If auxchance < Chance Then
@@ -787,8 +787,8 @@ Public Sub SetPetTarget(ByVal index As Long, ByVal PetSlot As Byte)
     
     If Chosen > 0 Then
         TempPlayer(index).TempPet.PetHasOwnTarget = Chosen
-        mapnpc(mapnum).NPC(PlayerHasPetInMap(index)).Target = Chosen
-        mapnpc(mapnum).NPC(PlayerHasPetInMap(index)).TargetType = TARGET_TYPE_NPC
+        MapNpc(mapnum).NPC(PlayerHasPetInMap(index)).Target = Chosen
+        MapNpc(mapnum).NPC(PlayerHasPetInMap(index)).TargetType = TARGET_TYPE_NPC
     End If
 
 End Sub
@@ -805,7 +805,7 @@ Function IsMapNPCaPet(ByVal mapnum As Long, ByVal mapnpcnum As Long) As Boolean
     If mapnum = 0 Then Exit Function
     If mapnpcnum = 0 Then Exit Function
     
-    If mapnpc(mapnum).NPC(mapnpcnum).PetData.Owner > 0 Then
+    If MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner > 0 Then
         IsMapNPCaPet = True
     End If
 End Function

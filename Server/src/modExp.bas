@@ -107,7 +107,7 @@ Sub ComputePlayerExp(ByVal attacker As Long, ByVal attackertype As Byte, ByVal v
         Else
             Call SetPlayerExp(victim, GetPlayerExp(victim) - exp)
             SendEXP victim
-            Call PlayerMsg(victim, "¡Has perdido " & exp & " de experiencia!", BrightRed)
+            Call PlayerMsg(victim, GetTranslation("¡Has perdido") & " " & exp & " " & GetTranslation("de experiencia!"), BrightRed, , False)
             
             'Kill Counter
             player(attacker).Kill = player(attacker).Kill + 1

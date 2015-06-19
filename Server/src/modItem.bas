@@ -290,9 +290,8 @@ Public Sub CheckMapWaitingItem(ByVal mapnum As Long)
 End Sub
 
 Function GetItemName(ByVal ItemNum As Long) As String
-
 If ItemNum < 1 Or ItemNum > MAX_ITEMS Then Exit Function
-GetItemName = Trim(item(ItemNum).Name)
+GetItemName = Trim$(item(ItemNum).TranslatedName)
 End Function
 
 Function ItemExists(ByVal ItemNum As Long) As Boolean

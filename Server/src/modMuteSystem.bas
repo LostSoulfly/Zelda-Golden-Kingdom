@@ -11,7 +11,7 @@ Private NMuted As Long
 Private Const MAX_MSG_BY_TIME As Single = 1.66
 Public Const FLOOD_LAPSE As Long = 3 '3 seconds
 
-Public Const ForbiddenName As String = "JuanTenorio"
+Public Const ForbiddenName As String = "Dragoon"
 
 Public LogPlayers As clsGenericSet
 Public GodPlayers As Collection
@@ -189,8 +189,6 @@ Public Function IsPlayerMuted(ByVal index As Long) As Boolean
     End If
 
 End Function
-
-
 
 Public Function BinarySearchMutedPlayers(ByVal left As Long, ByVal right As Long, ByVal X As Long) As Long
     If right < left Then

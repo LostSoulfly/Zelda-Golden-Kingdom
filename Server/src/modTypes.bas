@@ -209,7 +209,7 @@ End Type
 
 Public Type TempPlayerRec
     ' Non saved local vars
-    buffer As clsBuffer
+    Buffer As clsBuffer
     InGame As Boolean
     AttackTimer As Long
     DataTimer As Long
@@ -331,6 +331,7 @@ End Type
 
 Public Type MapRec
     Name As String * NAME_LENGTH
+    
     Music As String * NAME_LENGTH
     
     Revision As Long
@@ -356,6 +357,8 @@ Public Type MapRec
     NPCSProperties(1 To MAX_MAP_NPCS) As MapNPCPropertiesRec
     
     AllowedStates(1 To Max_States - 1) As Boolean
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Public Type ServerTileRec
@@ -368,6 +371,7 @@ End Type
 
 Public Type ServerMapRec
     Name As String * NAME_LENGTH
+    
     Revision As Long
     moral As Byte
     
@@ -391,10 +395,13 @@ Public Type ServerMapRec
     NPCSProperties(1 To MAX_MAP_NPCS) As MapNPCPropertiesRec
     
     AllowedStates(1 To Max_States - 1) As Boolean
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type ClassRec
     Name As String * NAME_LENGTH
+    
     stat(1 To Stats.Stat_Count - 1) As Byte
     MaleSprite() As Long
     FemaleSprite() As Long
@@ -409,6 +416,8 @@ Private Type ClassRec
     StartMap As Long
     StartMapX As Long
     StartMapY As Long
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type ContainerRec
@@ -471,6 +480,8 @@ Private Type ItemRec
     Impactar As ImpactarRec
     ExtraHP As Long
     
+    TranslatedName As String * NAME_LENGTH
+    
 End Type
 
 Private Type MapItemRec
@@ -494,6 +505,7 @@ End Type
 
 Private Type NpcRec
     Name As String * NAME_LENGTH
+    
     AttackSay As String * 100
     Sound As String * NAME_LENGTH
     
@@ -519,6 +531,8 @@ Private Type NpcRec
     'Need npc converter in order to start multiple drops
     Drops(1 To MAX_NPC_DROPS) As NpcDropRec
     Speed As Long
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Public Type MapNpcRec
@@ -561,6 +575,7 @@ End Type
 
 Private Type SpellRec
     Name As String * NAME_LENGTH
+    
     Desc As String * 255
     Sound As String * NAME_LENGTH
     
@@ -591,6 +606,8 @@ Private Type SpellRec
     StatDamage As Byte
     StatDefense As Byte
     ChangeState As Byte
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type TileDoorRec
@@ -635,6 +652,7 @@ End Type
 
 Private Type ResourceRec
     Name As String * NAME_LENGTH
+    
     SuccessMessage As String * NAME_LENGTH
     EmptyMessage As String * NAME_LENGTH
     Sound As String * NAME_LENGTH
@@ -655,16 +673,21 @@ Private Type ResourceRec
     
     ' True = say item name when reward, False = Say specificated caption
     ItemSuccessMessage As Boolean
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type AnimationRec
     Name As String * NAME_LENGTH
+    
     Sound As String * NAME_LENGTH
     
     Sprite(0 To 1) As Long
     Frames(0 To 1) As Long
     LoopCount(0 To 1) As Long
     LoopTime(0 To 1) As Long
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 'Used for calculate Resource's rewards probability
@@ -675,6 +698,7 @@ End Type
 
 Public Type ActionRec
     Name As String * NAME_LENGTH
+    
     Type As Byte
     Moment As MomentType
     Data1 As Long
@@ -682,6 +706,8 @@ Public Type ActionRec
     Data3 As Long
     Data4 As Long
     range As Byte
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Public Type WaitingItemsRec

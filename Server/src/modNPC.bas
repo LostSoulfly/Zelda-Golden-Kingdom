@@ -218,7 +218,7 @@ If Not (npcnum > 0 And npcnum <= MAX_NPCS) Then Exit Sub
 
 If NPC(npcnum).Behaviour = NPC_BEHAVIOUR_SLIDE Then 'found
     If MapNpc(mapnum).NPC(mapnpcnum).X = X And MapNpc(mapnum).NPC(mapnpcnum).Y = Y Then
-        If CanNpcMove(mapnum, mapnpcnum, dir) Then
+        If CanNpcMove(mapnum, mapnpcnum, dir, True) Then
             Call NpcMove(mapnum, mapnpcnum, dir, 1)
             Call SendSoundToMap(mapnum, X, Y, SoundEntity.seSlide, 1)
             
@@ -643,7 +643,46 @@ End Function
 
 
 Function GetNPCName(ByVal npcnum As Long) As String
-    GetNPCName = Trim$(NPC(npcnum).Name)
+    GetNPCName = Trim$(NPC(npcnum).TranslatedName)
+End Function
+
+Function CanSlideThroughTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long) As Boolean
+    If OutOfBoundries(X, Y, mapnum) Then Exit Function
+    
+    Select Case GetTileType(mapnum, X, Y)
+    Case TILE_TYPE_WALKABLE, TILE_TYPE_ITEM, TILE_TYPE_NPCSPAWN, TILE_TYPE_ICE, TILE_TYPE_NPCAVOID, TILE_TYPE_SCRIPT
+        CanSlideThroughTile = True
+        
+    Case TILE_TYPE_DOOR, TILE_TYPE_KEY
+        Dim TempDoorNum As Long
+        TempDoorNum = GetTempDoorNumberByTile(mapnum, X, Y)
+        CanSlideThroughTile = True
+        If TempDoorNum > 0 Then
+            If Not IsTempDoorWalkable(mapnum, TempDoorNum) Then
+                CanSlideThroughTile = False
+                Exit Function
+            End If
+            
+            If IsDoorOpened(mapnum, TempDoorNum) Then
+                CanSlideThroughTile = True
+            End If
+            
+            If GetDoorType(TempTile(mapnum).Door(TempDoorNum).doornum) = DOOR_TYPE_WEIGHTSWITCH Then
+                Call CheckWeightSwitch(mapnum, TempDoorNum)
+            End If
+        End If
+        
+    Case TILE_TYPE_RESOURCE
+        If isWalkableResource(mapnum, X, Y) Then
+            CanSlideThroughTile = True
+        Else
+            CanSlideThroughTile = False
+        End If
+
+    Case Else
+        CanSlideThroughTile = False
+    End Select
+
 End Function
 
 Function CanNpcMoveThroughTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long) As Boolean
@@ -714,7 +753,7 @@ Function CanNpcMoveToPos(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal X 
 
 End Function
 
-Function CanNpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Byte) As Boolean
+Function CanNpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Byte, Optional blIsSliding As Boolean = False) As Boolean
     Dim i As Long
     Dim X As Long
     Dim Y As Long
@@ -776,12 +815,16 @@ Function CanNpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As 
     End If
     
     If Not CanNpcMoveThroughTile(mapnum, X, Y) Then
+    'sliding?
+        If blIsSliding = True Then
+            If CanSlideThroughTile(mapnum, X, Y) Then
+                CanNpcMove = True
+                Exit Function
+            End If
+        End If
         CanNpcMove = False
         Exit Function
     End If
-    
-    
-    
 
 End Function
 

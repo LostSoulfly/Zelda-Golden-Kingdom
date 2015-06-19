@@ -9,13 +9,28 @@ Begin VB.Form frmAccountEditor
    ScaleHeight     =   6750
    ScaleWidth      =   9375
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton cmdSaveAcc 
+      Caption         =   "Save Acc"
+      Height          =   255
+      Left            =   1560
+      TabIndex        =   46
+      Top             =   600
+      Width           =   855
+   End
+   Begin VB.CommandButton cmdLoad 
+      Caption         =   "Load Acc"
+      Height          =   255
+      Left            =   1560
+      TabIndex        =   45
+      Top             =   360
+      Width           =   855
+   End
    Begin VB.Frame FrameStats 
       Caption         =   "Char Data"
       Height          =   2415
       Left            =   240
       TabIndex        =   30
       Top             =   4320
-      Visible         =   0   'False
       Width           =   2055
       Begin VB.TextBox txtEExp 
          Height          =   285
@@ -29,7 +44,7 @@ Begin VB.Form frmAccountEditor
          Height          =   285
          Left            =   480
          TabIndex        =   36
-         Text            =   "5"
+         Text            =   "0"
          Top             =   1320
          Width           =   375
       End
@@ -37,7 +52,7 @@ Begin VB.Form frmAccountEditor
          Height          =   285
          Left            =   1440
          TabIndex        =   35
-         Text            =   "5"
+         Text            =   "0"
          Top             =   840
          Width           =   375
       End
@@ -45,7 +60,7 @@ Begin VB.Form frmAccountEditor
          Height          =   285
          Left            =   480
          TabIndex        =   34
-         Text            =   "5"
+         Text            =   "0"
          Top             =   1800
          Width           =   375
       End
@@ -53,7 +68,7 @@ Begin VB.Form frmAccountEditor
          Height          =   285
          Left            =   1440
          TabIndex        =   33
-         Text            =   "5"
+         Text            =   "0"
          Top             =   1320
          Width           =   375
       End
@@ -61,7 +76,7 @@ Begin VB.Form frmAccountEditor
          Height          =   285
          Left            =   1440
          TabIndex        =   32
-         Text            =   "5"
+         Text            =   "0"
          Top             =   1800
          Width           =   375
       End
@@ -69,7 +84,7 @@ Begin VB.Form frmAccountEditor
          Height          =   285
          Left            =   480
          TabIndex        =   31
-         Text            =   "3"
+         Text            =   "0"
          Top             =   840
          Width           =   375
       End
@@ -136,7 +151,6 @@ Begin VB.Form frmAccountEditor
       Left            =   120
       TabIndex        =   29
       Top             =   3960
-      Visible         =   0   'False
       Width           =   2295
    End
    Begin VB.Frame frameInventory 
@@ -374,25 +388,74 @@ Private Sub cmdFindPlayer_Click()
 Dim Username As String
 Dim i As Byte
 
-Username = txtUserNameLoad.Text
+Username = Trim$(txtUserNameLoad.Text)
 lstBank.Clear
 lstInventory.Clear
 frameBank.Visible = False
 FrameAccountDetails.Visible = False
 frameInventory.Visible = False
-FrameStats.Visible = False
-mnuLevel.Visible = False
+FrameStats.Visible = True
+mnuLevel.Visible = True
 
 For i = 1 To Player_HighIndex
     If IsPlaying(i) = True Then
-        If Trim$(Player(i).Name) = Username Then
+        If LCase$(Trim$(player(i).name)) = LCase$(Username) Then
             EditUserIndex = i
             Call AccountEditorInit(i)
-        Else
-            AddInfo ("El usuario no está en línea, o el nombre no coincide")
+        ElseIf AccountExist(Username) Then
+            AddInfo ("User is offline.")
+            cmdLoad_Click
+            Else
+            AddInfo "User does not exist!"
         End If
     End If
 Next
+
+End Sub
+
+Private Sub cmdLoad_Click()
+Username = Trim$(txtUserNameLoad.Text)
+lstBank.Clear
+lstInventory.Clear
+frameBank.Visible = False
+FrameAccountDetails.Visible = False
+frameInventory.Visible = False
+FrameStats.Visible = True
+mnuLevel.Visible = True
+
+If Not AccountExist(Username) Then Exit Sub
+If IsPlaying(MAX_PLAYERS) Then Exit Sub
+
+ClearPlayer MAX_PLAYERS
+ClearBank MAX_PLAYERS
+LoadPlayer MAX_PLAYERS, Username
+LoadBank MAX_PLAYERS, Username
+EditUserIndex = MAX_PLAYERS
+Call AccountEditorInit(MAX_PLAYERS)
+
+
+End Sub
+
+Private Sub cmdSaveAcc_Click()
+SavePlayer EditUserIndex
+'SendPlayerData EditUserIndex
+Call SaveEditPlayer(EditUserIndex)
+
+With player(EditUserIndex)
+    .name = frmAccountEditor.txtUserName.Text
+    .password = EncriptatePassword(frmAccountEditor.txtPassword.Text)
+    .Access = frmAccountEditor.txtAccess.Text
+    .Class = frmAccountEditor.cmbClass.ListIndex + 1
+    .Sprite = frmAccountEditor.txtSprite.Text
+End With
+
+Call CheckPlayerLevelUp(EditUserIndex)
+'Call SendPlayerData(index)
+
+SavePlayer EditUserIndex
+
+ClearPlayer MAX_PLAYERS
+ClearBank MAX_PLAYERS
 
 End Sub
 
@@ -403,8 +466,8 @@ If IsPlaying(EditUserIndex) = False Then
     Exit Sub
 End If
 
-Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Num = scrlBankItem.Value
-Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Value = txtAmount.Text
+Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num = scrlBankItem.Value
+Bank(EditUserIndex).item(lstBank.ListIndex + 1).Value = txtAmount.Text
 
 Call SaveBank(EditUserIndex)
 Call BankEditorInit
@@ -418,8 +481,8 @@ If IsPlaying(EditUserIndex) = False Then
     Exit Sub
 End If
 
-Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num = scrlInvItem.Value
-Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Value = txtAmountInv.Text
+player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num = scrlInvItem.Value
+player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Value = txtAmountInv.Text
 
 Call SendInventoryUpdate(EditUserIndex, lstInventory.ListIndex + 1)
 
@@ -449,55 +512,57 @@ Private Sub Form_Load()
 Dim i As Byte
 
 scrlBankItem.max = MAX_ITEMS
+scrlInvItem.max = MAX_ITEMS
 
-cmbClass.Text = Trim$(Class(1).Name)
+cmbClass.Text = Trim$(Class(1).name)
 For i = 1 To Max_Classes
-    cmbClass.AddItem Trim$(Class(i).Name)
+    cmbClass.AddItem Trim$(Class(i).name)
 Next
+
 End Sub
 
 Private Sub lstInventory_Click()
 Dim ItemName As String
 
-If Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num = 0 Then
+If player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num = 0 Then
     ItemName = "None"
 Else
-    ItemName = Trim$(Item(Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num).Name)
+    ItemName = Trim$(item(player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num).name)
 End If
 
 lblInvItem.Caption = "Inv item: " & ItemName
-txtAmountInv.Text = Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Value
-scrlInvItem.Value = Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num
+txtAmountInv.Text = player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Value
+scrlInvItem.Value = player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num
 
 End Sub
 
 Private Sub lstBank_Click()
 Dim ItemName As String
 
-If Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Num = 0 Then
+If Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num = 0 Then
     ItemName = "None"
 Else
-    ItemName = Trim$(Item(Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Num).Name)
+    ItemName = Trim$(item(Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num).name)
 End If
 
 lblBankItem.Caption = "Bank item: " & ItemName
-txtAmount.Text = Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Value
-scrlBankItem.Value = Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Num
+txtAmount.Text = Bank(EditUserIndex).item(lstBank.ListIndex + 1).Value
+scrlBankItem.Value = Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num
 
 End Sub
 Private Sub mnuLevel_Click()
 Dim level As Integer
 Dim Player_Level As Integer
 level = InputBox("Level 1-100:", "Level")
-Dim Name As String
-Name = frmServer.lvwInfo.SelectedItem.SubItems(3)
-If Not Name = "Not Playing" Then
+Dim name As String
+name = frmServer.lvwInfo.SelectedItem.SubItems(3)
+If Not name = "Not Playing" Then
 
-Player_Level = GetPlayerLevel(FindPlayer(Name))
+Player_Level = GetPlayerLevel(FindPlayer(name))
 ' If you want to change points please pm me <img src='http://www.touchofdeathforums.com/community/public/style_emoticons/<#EMO_DIR#>/wink.png' class='bbc_emoticon' alt=';)' />
-Call SetPlayerLevel(FindPlayer(Name), level)
-Call SendPlayerData(FindPlayer(Name))
-Call PlayerMsg(FindPlayer(Name), "Te han cambiado tu nivel " & Player_Level & " al nivel " & level, BrightCyan)
+Call SetPlayerLevel(FindPlayer(name), level)
+Call SendPlayerData(FindPlayer(name))
+Call PlayerMsg(FindPlayer(name), GetTranslation("Te han cambiado tu nivel") & " " & Player_Level & " " & GetTranslation("al nivel") & " " & level, BrightCyan, , False)
 End If
 End Sub
 
@@ -506,7 +571,7 @@ Private Sub scrlBankItem_Change()
 If scrlBankItem.Value = 0 Then
     lblBankItem.Caption = "Bank item: None"
 Else
-    lblBankItem.Caption = "Bank item: " & Item(scrlBankItem.Value).Name
+    lblBankItem.Caption = "Bank item: " & item(scrlBankItem.Value).name
 End If
 
 End Sub
@@ -516,45 +581,45 @@ Private Sub scrlInvItem_Change()
 If scrlInvItem.Value = 0 Then
     lblInvItem.Caption = "Inv item: None"
 Else
-    lblInvItem.Caption = "Inv item: " & Item(scrlInvItem.Value).Name
+    lblInvItem.Caption = "Inv item: " & item(scrlInvItem.Value).name
 End If
 
 End Sub
 
 Private Sub txtAccess_Change()
 
-If IsNumeric(txtAccess.Text) = False Then txtAccess.Text = Player(EditUserIndex).Access
+If IsNumeric(txtAccess.Text) = False Then txtAccess.Text = player(EditUserIndex).Access
 
 End Sub
 
 Private Sub txtAmountInv_Change()
 
-If IsNumeric(txtAmountInv.Text) = False Then txtAmountInv.Text = Player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Value
+If IsNumeric(txtAmountInv.Text) = False Then txtAmountInv.Text = player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Value
 If txtAmountInv.Text > 2000000000 Then txtAmountInv.Text = 2000000000
 
 End Sub
 
 Private Sub txtPassword_Change()
 
-If txtPassword.Text = vbNullString Then txtPassword.Text = DesEncriptatePassword(Player(EditUserIndex).password)
+If txtPassword.Text = vbNullString Then txtPassword.Text = DesEncriptatePassword(player(EditUserIndex).password)
 
 End Sub
 
 Private Sub txtSprite_Change()
 
-If IsNumeric(txtSprite.Text) = False Then txtSprite.Text = Player(edituseindex).Sprite
+If IsNumeric(txtSprite.Text) = False Then txtSprite.Text = player(edituseindex).Sprite
 
 End Sub
 
 Private Sub txtUserName_Change()
 
-If txtUserName.Text = vbNullString Then txtUserName.Text = Player(EditUserIndex).Name
+If txtUserName.Text = vbNullString Then txtUserName.Text = player(EditUserIndex).name
 
 End Sub
 
 Private Sub txtAmount_Change()
 
-If IsNumeric(txtAmount.Text) = False Then txtAmount.Text = Bank(EditUserIndex).Item(lstBank.ListIndex + 1).Value
+If IsNumeric(txtAmount.Text) = False Then txtAmount.Text = Bank(EditUserIndex).item(lstBank.ListIndex + 1).Value
 If txtAmount.Text > 2000000000 Then txtAmount.Text = 2000000000
 
 End Sub
