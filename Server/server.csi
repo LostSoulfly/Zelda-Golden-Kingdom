@@ -1,0 +1,11 @@
+[History]
+1=#P0#=mb	#P1#=PlayerData	#P2#=Server/modServerTCP/PlayerData	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130418000842	#P7#=0	#P8#=24	.
+2=#P0#=mb	#P1#=AddChar	#P2#=Server/modDatabase/AddChar	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417235925	#P7#=0	#P8#=44	.
+3=#P0#=mb	#P1#=SpawnMapItems	#P2#=Server/modGameLogic/SpawnMapItems	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417235711	#P7#=0	#P8#=0	.
+4=#P0#=mb	#P1#=CreateClassesINI	#P2#=Server/modDatabase/CreateClassesINI	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417234812	#P7#=0	#P8#=13	.
+5=#P0#=mb	#P1#=SaveClasses	#P2#=Server/modDatabase/SaveClasses	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417234649	#P7#=0	#P8#=11	.
+6=#P0#=mb	#P1#=LoadClasses	#P2#=Server/modDatabase/LoadClasses	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417234737	#P7#=0	#P8#=3	.
+7=#P0#=mb	#P1#=SendClasses	#P2#=Server/modServerTCP/SendClasses	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417234845	#P7#=0	#P8#=41	.
+8=#P0#=mb	#P1#=SpawnNpc	#P2#=Server/modGameLogic/SpawnNpc	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130403182138	#P7#=0	#P8#=5	.
+9=#P0#=mb	#P1#=LoadMaps	#P2#=Server/modDatabase/LoadMaps	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130403180407	#P7#=0	#P8#=15	.
+10=#P0#=mb	#P1#=SaveMap	#P2#=Server/modDatabase/SaveMap	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130403180346	#P7#=0	#P8#=13	.

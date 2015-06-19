@@ -1,0 +1,8 @@
+[History]
+1=#P0#=mb	#P1#=GetPlayerClass	#P2#=EO/modDatabase/GetPlayerClass	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130418001112	#P7#=0	#P8#=5	.
+2=#P0#=mb	#P1#=HandlePlayerData	#P2#=EO/modHandleData/HandlePlayerData	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130418000910	#P7#=0	#P8#=30	.
+3=#P0#=mb	#P1#=BltFace	#P2#=EO/modDirectDraw7/BltFace	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130418000941	#P7#=0	#P8#=17	.
+4=#P0#=mb	#P1#=BltEquipment	#P2#=EO/modDirectDraw7/BltEquipment	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417235724	#P7#=0	#P8#=34	.
+5=#P0#=mb	#P1#=HandleClassesData	#P2#=EO/modHandleData/HandleClassesData	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130417235120	#P7#=0	#P8#=15	.
+6=#P0#=mb	#P1#=BltMapFringeTile	#P2#=EO/modDirectDraw7/BltMapFringeTile	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130403181900	#P7#=0	#P8#=27	.
+7=#P0#=mb	#P1#=BltMapTile	#P2#=EO/modDirectDraw7/BltMapTile	#P3#=	#P4#=	#P5#=MembMethodPrivate	#P6#=20130403181822	#P7#=0	#P8#=28	.
