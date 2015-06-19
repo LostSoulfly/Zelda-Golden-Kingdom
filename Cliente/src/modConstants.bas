@@ -2,15 +2,15 @@ Attribute VB_Name = "modConstants"
 Option Explicit
 
 ' API Declares
-Public Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal length As Long)
+Public Declare Sub CopyMemory Lib "Kernel32.dll" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal length As Long)
 Public Declare Function CallWindowProc Lib "USER32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByRef msg() As Byte, ByVal wParam As Long, ByVal lParam As Long) As Long
 Public Declare Function GetForegroundWindow Lib "USER32" () As Long
 
 ' animated buttons
 Public Const MAX_MENUBUTTONS As Long = 4
 Public Const MAX_MAINBUTTONS As Long = 9 'Alatar v1.2 replace 6 to 7
-Public Const MENUBUTTON_PATH As String = "\Data Files\graphics\gui\menu\buttons\"
-Public Const MAINBUTTON_PATH As String = "\Data Files\graphics\gui\main\buttons\"
+Public Const MENUBUTTON_PATH As String = "\data\graphics\gui\menu\buttons\"
+Public Const MAINBUTTON_PATH As String = "\data\graphics\gui\main\buttons\"
 
 'Currency Name
 Public Const CURRENCY_NAME As String = "Tingles"
@@ -60,8 +60,8 @@ Public Const MAX_INTEGER As Integer = 32767
 Public Const MAX_LONG As Long = 2147483647
 
 ' path constants
-Public Const SOUND_PATH As String = "\Data Files\sound\"
-Public Const MUSIC_PATH As String = "\Data Files\music\"
+Public Const SOUND_PATH As String = "\data\sound\"
+Public Const MUSIC_PATH As String = "\data\music\"
 
 ' Font variables
 Public Const FONT_NAME As String = "Georgia"
@@ -69,14 +69,14 @@ Public Const FONT_SIZE As Byte = 14
 
 ' Log Path and variables
 Public Const LOG_DEBUG As String = "debug.txt"
-Public Const LOG_PATH As String = "\Data Files\logs\"
+Public Const LOG_PATH As String = "\data\logs\"
 
 ' Map Path and variables
-Public Const MAP_PATH As String = "\Data Files\maps\"
+Public Const MAP_PATH As String = "\data\maps\"
 Public Const MAP_EXT As String = ".map"
 
 ' Gfx Path and variables
-Public Const GFX_PATH As String = "\Data Files\graphics\"
+Public Const GFX_PATH As String = "\data\graphics\"
 Public Const GFX_EXT As String = ".bmp"
 
 ' Key constants

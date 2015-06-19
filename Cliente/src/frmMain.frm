@@ -1,12 +1,13 @@
 VERSION 5.00
 Object = "{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}#1.0#0"; "msscript.ocx"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "Mswinsck.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
 Begin VB.Form frmMain 
-   ClientHeight    =   10425
-   ClientLeft      =   60
-   ClientTop       =   390
+   BorderStyle     =   1  'Fixed Single
+   ClientHeight    =   10215
+   ClientLeft      =   45
+   ClientTop       =   375
    ClientWidth     =   12000
    BeginProperty Font 
       Name            =   "Cambria"
@@ -20,18 +21,21 @@ Begin VB.Form frmMain
    Icon            =   "frmMain.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
-   ScaleHeight     =   695
+   MaxButton       =   0   'False
+   ScaleHeight     =   681
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   800
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.PictureBox picLoad 
+   Begin VB.PictureBox picCharacter 
       Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -39,33 +43,1453 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   9120
-      Left            =   0
-      ScaleHeight     =   608
+      Height          =   4860
+      Left            =   7950
+      ScaleHeight     =   324
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   800
-      TabIndex        =   199
-      Top             =   0
+      ScaleWidth      =   194
+      TabIndex        =   5
+      Top             =   4200
       Visible         =   0   'False
-      Width           =   12000
-      Begin VB.Label Label2 
-         BackStyle       =   0  'Transparent
-         Caption         =   "...Cargando Mapa..."
+      Width           =   2910
+      Begin VB.CommandButton cmdCounters 
+         BackColor       =   &H80000009&
+         Caption         =   "Contador"
          BeginProperty Font 
             Name            =   "Georgia"
-            Size            =   15.75
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H8000000E&
-         Height          =   495
-         Left            =   4440
-         TabIndex        =   200
+         Height          =   225
+         Index           =   1
+         Left            =   1680
+         MaskColor       =   &H00FFFFFF&
+         TabIndex        =   341
          Top             =   4200
-         Width           =   3255
+         Width           =   1095
+      End
+      Begin VB.CommandButton cmdCounters 
+         BackColor       =   &H80000009&
+         Caption         =   "Muertes"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   225
+         Index           =   0
+         Left            =   1680
+         MaskColor       =   &H00FFFFFF&
+         TabIndex        =   340
+         Top             =   3960
+         Width           =   1095
+      End
+      Begin VB.PictureBox picFace 
+         Appearance      =   0  'Flat
+         AutoRedraw      =   -1  'True
+         BackColor       =   &H00000000&
+         BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "Verdana"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   1500
+         Left            =   735
+         ScaleHeight     =   100
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   100
+         TabIndex        =   80
+         Top             =   900
+         Width           =   1500
+      End
+      Begin VB.Label lblHP 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "100/100"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   1
+         Left            =   1680
+         TabIndex        =   345
+         Top             =   4440
+         Width           =   1125
+      End
+      Begin VB.Label lblHP 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Vida:"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   0
+         Left            =   240
+         TabIndex        =   344
+         Top             =   4440
+         Width           =   465
+      End
+      Begin VB.Label lblInvWeight 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Peso: 100%"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   240
+         TabIndex        =   335
+         Top             =   4200
+         Width           =   1260
+      End
+      Begin VB.Label lblKillPoints 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Armada: 0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Left            =   240
+         TabIndex        =   334
+         Top             =   3960
+         Width           =   1380
+      End
+      Begin VB.Label lblPoints 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Left            =   2400
+         TabIndex        =   87
+         Top             =   2970
+         Width           =   120
+      End
+      Begin VB.Label lblTrainStat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   3
+         Left            =   1380
+         TabIndex        =   51
+         Top             =   2955
+         Width           =   105
+      End
+      Begin VB.Label lblTrainStat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   5
+         Left            =   2550
+         TabIndex        =   50
+         Top             =   2730
+         Width           =   105
+      End
+      Begin VB.Label lblTrainStat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   2
+         Left            =   1380
+         TabIndex        =   49
+         Top             =   2730
+         Width           =   105
+      End
+      Begin VB.Label lblTrainStat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   4
+         Left            =   2550
+         TabIndex        =   48
+         Top             =   2505
+         Width           =   105
+      End
+      Begin VB.Label lblTrainStat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "+"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   1
+         Left            =   1380
+         TabIndex        =   47
+         Top             =   2505
+         Width           =   105
+      End
+      Begin VB.Label lblCharStat 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   3
+         Left            =   1230
+         TabIndex        =   13
+         Top             =   2970
+         Width           =   120
+      End
+      Begin VB.Label lblCharStat 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   5
+         Left            =   2400
+         TabIndex        =   12
+         Top             =   2760
+         Width           =   120
+      End
+      Begin VB.Label lblCharStat 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   2
+         Left            =   1230
+         TabIndex        =   11
+         Top             =   2760
+         Width           =   120
+      End
+      Begin VB.Label lblCharStat 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   4
+         Left            =   2400
+         TabIndex        =   10
+         Top             =   2550
+         Width           =   120
+      End
+      Begin VB.Label lblCharStat 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "0"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   210
+         Index           =   1
+         Left            =   1230
+         TabIndex        =   9
+         Top             =   2520
+         Width           =   120
+      End
+      Begin VB.Label lblCharName 
+         Alignment       =   2  'Center
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Empty"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   225
+         Left            =   120
+         TabIndex        =   8
+         Top             =   495
+         Width           =   2640
+      End
+   End
+   Begin VB.OptionButton optChatStyle 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "Off"
+      BeginProperty Font 
+         Name            =   "Georgia"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   0
+      Left            =   6630
+      MaskColor       =   &H00FFFFFF&
+      TabIndex        =   348
+      Top             =   9285
+      UseMaskColor    =   -1  'True
+      Width           =   570
+   End
+   Begin VB.OptionButton optChatStyle 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "2"
+      BeginProperty Font 
+         Name            =   "Georgia"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   2
+      Left            =   6210
+      MaskColor       =   &H00FFFFFF&
+      TabIndex        =   347
+      Top             =   9285
+      Width           =   420
+   End
+   Begin VB.OptionButton optChatStyle 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      Caption         =   "1"
+      BeginProperty Font 
+         Name            =   "Georgia"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Index           =   1
+      Left            =   5790
+      MaskColor       =   &H00FFFFFF&
+      TabIndex        =   346
+      Top             =   9285
+      Width           =   420
+   End
+   Begin VB.PictureBox picHotbar 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
+      BackColor       =   &H80000006&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   540
+      Left            =   60
+      ScaleHeight     =   36
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   476
+      TabIndex        =   83
+      Top             =   9630
+      Width           =   7140
+   End
+   Begin VB.TextBox txtMyChat 
+      Appearance      =   0  'Flat
+      BackColor       =   &H000C0E10&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Georgia"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   240
+      Left            =   60
+      MaxLength       =   200
+      TabIndex        =   3
+      Top             =   9300
+      Width           =   5580
+   End
+   Begin TabDlg.SSTab WorldMap 
+      Height          =   6255
+      Left            =   1320
+      TabIndex        =   255
+      Top             =   960
+      Visible         =   0   'False
+      Width           =   9045
+      _ExtentX        =   15954
+      _ExtentY        =   11033
+      _Version        =   393216
+      Tabs            =   2
+      TabsPerRow      =   2
+      TabHeight       =   529
+      BackColor       =   -2147483641
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Georgia"
+         Size            =   14.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      TabCaption(0)   =   "Hyrule"
+      TabPicture(0)   =   "frmMain.frx":0A4E
+      Tab(0).ControlEnabled=   -1  'True
+      Tab(0).Control(0)=   "MiniMapHyrule(0)"
+      Tab(0).Control(0).Enabled=   0   'False
+      Tab(0).ControlCount=   1
+      TabCaption(1)   =   "Términa"
+      TabPicture(1)   =   "frmMain.frx":0A6A
+      Tab(1).ControlEnabled=   0   'False
+      Tab(1).Control(0)=   "MiniMapTermina(1)"
+      Tab(1).ControlCount=   1
+      Begin VB.PictureBox MiniMapTermina 
+         BackColor       =   &H00404000&
+         BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "Verdana"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   5520
+         Index           =   1
+         Left            =   -74760
+         Picture         =   "frmMain.frx":0A86
+         ScaleHeight     =   5520
+         ScaleWidth      =   8580
+         TabIndex        =   278
+         Top             =   480
+         Width           =   8580
+         Begin VB.OptionButton NoneTermina 
+            BackColor       =   &H00404000&
+            Caption         =   "Nada"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   1
+            Left            =   4320
+            TabIndex        =   282
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.OptionButton DungeonsTermina 
+            BackColor       =   &H00404000&
+            Caption         =   "Templos"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   1
+            Left            =   3000
+            TabIndex        =   281
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.OptionButton WorldsTermina 
+            BackColor       =   &H00404000&
+            Caption         =   "Regiones"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   1
+            Left            =   240
+            TabIndex        =   280
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.OptionButton CitiesTermina 
+            BackColor       =   &H00404000&
+            Caption         =   "Ciudades"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   1
+            Left            =   1560
+            TabIndex        =   279
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo de la Torre de Piedra"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   540
+            Index           =   9
+            Left            =   6240
+            TabIndex        =   295
+            Top             =   0
+            Visible         =   0   'False
+            Width           =   2355
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo de la Gran Bahía"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   540
+            Index           =   8
+            Left            =   240
+            TabIndex        =   294
+            Top             =   1320
+            Visible         =   0   'False
+            Width           =   1515
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo Nevado"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   7
+            Left            =   5280
+            TabIndex        =   293
+            Top             =   960
+            Visible         =   0   'False
+            Width           =   1995
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo del Pantano"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   6
+            Left            =   3600
+            TabIndex        =   292
+            Top             =   4440
+            Visible         =   0   'False
+            Width           =   2595
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Ciudad Zora"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   9
+            Left            =   960
+            TabIndex        =   291
+            Top             =   3360
+            Visible         =   0   'False
+            Width           =   1395
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Refugio Goron"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   8
+            Left            =   4440
+            TabIndex        =   290
+            Top             =   600
+            Visible         =   0   'False
+            Width           =   1635
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Ciudad Reloj"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   7
+            Left            =   3600
+            TabIndex        =   289
+            Top             =   3360
+            Visible         =   0   'False
+            Width           =   1515
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Valle Ikana"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   10
+            Left            =   6600
+            TabIndex        =   288
+            Top             =   3000
+            Visible         =   0   'False
+            Width           =   1395
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Gran Bahía"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   9
+            Left            =   720
+            TabIndex        =   287
+            Top             =   2760
+            Visible         =   0   'False
+            Width           =   1275
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Cumbre Nevada"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   8
+            Left            =   3840
+            TabIndex        =   286
+            Top             =   120
+            Visible         =   0   'False
+            Width           =   1995
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Pantano"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   7
+            Left            =   4080
+            TabIndex        =   285
+            Top             =   3600
+            Visible         =   0   'False
+            Width           =   1395
+         End
+         Begin VB.Label CloseWorldMap 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Cerrar"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   255
+            Index           =   1
+            Left            =   7680
+            TabIndex        =   283
+            Top             =   5160
+            Width           =   735
+         End
+      End
+      Begin VB.PictureBox MiniMapHyrule 
+         BackColor       =   &H00004000&
+         BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "Verdana"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   5520
+         Index           =   0
+         Left            =   240
+         Picture         =   "frmMain.frx":8E6CA
+         ScaleHeight     =   5520
+         ScaleWidth      =   8580
+         TabIndex        =   256
+         Top             =   480
+         Width           =   8580
+         Begin VB.OptionButton CitiesHyrule 
+            BackColor       =   &H00004000&
+            Caption         =   "Ciudades"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   0
+            Left            =   1560
+            TabIndex        =   260
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.OptionButton WorldsHyrule 
+            BackColor       =   &H00004000&
+            Caption         =   "Regiones"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   0
+            Left            =   240
+            TabIndex        =   259
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.OptionButton DungeonsHyrule 
+            BackColor       =   &H00004000&
+            Caption         =   "Templos"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   0
+            Left            =   3000
+            TabIndex        =   258
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.OptionButton NoneHyrule 
+            BackColor       =   &H00004000&
+            Caption         =   "Nada"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H8000000E&
+            Height          =   210
+            Index           =   0
+            Left            =   4320
+            TabIndex        =   257
+            Top             =   5160
+            Width           =   1215
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo de las Sombras"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   540
+            Index           =   5
+            Left            =   7080
+            TabIndex        =   284
+            Top             =   120
+            Visible         =   0   'False
+            Width           =   1455
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Kakariko"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   1
+            Left            =   6720
+            TabIndex        =   277
+            Top             =   840
+            Visible         =   0   'False
+            Width           =   1065
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Kokiri"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   3
+            Left            =   3120
+            TabIndex        =   276
+            Top             =   3000
+            Visible         =   0   'False
+            Width           =   765
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Hyrule"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   2
+            Left            =   4080
+            TabIndex        =   275
+            Top             =   240
+            Visible         =   0   'False
+            Width           =   855
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Zoras"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   5
+            Left            =   7200
+            TabIndex        =   274
+            Top             =   2160
+            Visible         =   0   'False
+            Width           =   705
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Gorons"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   4
+            Left            =   5640
+            TabIndex        =   273
+            Top             =   960
+            Visible         =   0   'False
+            Width           =   825
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Bosques Perdidos"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   1
+            Left            =   2160
+            TabIndex        =   272
+            Top             =   3720
+            Visible         =   0   'False
+            Width           =   1995
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Montaña de la Muerte"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   585
+            Index           =   2
+            Left            =   5520
+            TabIndex        =   271
+            Top             =   1320
+            Visible         =   0   'False
+            Width           =   1425
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Lago Hylia"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   3
+            Left            =   360
+            TabIndex        =   270
+            Top             =   3480
+            Visible         =   0   'False
+            Width           =   1275
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Rio Zora"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   4
+            Left            =   5880
+            TabIndex        =   269
+            Top             =   2400
+            Visible         =   0   'False
+            Width           =   1035
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Rancho Lon Lon"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   5
+            Left            =   4080
+            TabIndex        =   268
+            Top             =   3000
+            Visible         =   0   'False
+            Width           =   1875
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo del Bosque"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   1
+            Left            =   1800
+            TabIndex        =   267
+            Top             =   4560
+            Visible         =   0   'False
+            Width           =   2235
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo del Fuego"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   540
+            Index           =   2
+            Left            =   5400
+            TabIndex        =   266
+            Top             =   120
+            Visible         =   0   'False
+            Width           =   1215
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo del Agua"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   3
+            Left            =   120
+            TabIndex        =   265
+            Top             =   2160
+            Visible         =   0   'False
+            Width           =   2055
+         End
+         Begin VB.Label CloseWorldMap 
+            BackStyle       =   0  'Transparent
+            Caption         =   "Cerrar"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00FFFFFF&
+            Height          =   255
+            Index           =   0
+            Left            =   7680
+            TabIndex        =   264
+            Top             =   5160
+            Width           =   735
+         End
+         Begin VB.Label lblDungeons 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Templo del Espíritu"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   4
+            Left            =   120
+            TabIndex        =   263
+            Top             =   120
+            Visible         =   0   'False
+            Width           =   2295
+         End
+         Begin VB.Label lblWorlds 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Cañón Gerudo"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   6
+            Left            =   1680
+            TabIndex        =   262
+            Top             =   480
+            Visible         =   0   'False
+            Width           =   1755
+         End
+         Begin VB.Label lblCities 
+            Alignment       =   2  'Center
+            BackColor       =   &H00A4D7DB&
+            BorderStyle     =   1  'Fixed Single
+            Caption         =   "Gerudo"
+            BeginProperty Font 
+               Name            =   "Georgia"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000000&
+            Height          =   300
+            Index           =   6
+            Left            =   720
+            TabIndex        =   261
+            Top             =   1200
+            Visible         =   0   'False
+            Width           =   885
+         End
       End
    End
    Begin VB.PictureBox picCurrency 
@@ -82,12 +1506,12 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   2085
-      Left            =   2190
-      ScaleHeight     =   2085
+      Height          =   1995
+      Left            =   2400
+      ScaleHeight     =   1995
       ScaleWidth      =   7140
-      TabIndex        =   54
-      Top             =   4440
+      TabIndex        =   55
+      Top             =   4920
       Width           =   7140
       Begin VB.TextBox txtCurrency 
          Appearance      =   0  'Flat
@@ -102,7 +1526,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   285
          Left            =   2160
-         TabIndex        =   56
+         TabIndex        =   57
          Top             =   840
          Width           =   2775
       End
@@ -124,7 +1548,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   3150
-         TabIndex        =   58
+         TabIndex        =   59
          Top             =   1440
          Width           =   795
       End
@@ -146,7 +1570,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   3300
-         TabIndex        =   57
+         TabIndex        =   58
          Top             =   1200
          Width           =   495
       End
@@ -167,7 +1591,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   1680
-         TabIndex        =   55
+         TabIndex        =   56
          Top             =   480
          Width           =   3855
       End
@@ -184,11 +1608,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   5295
-      Left            =   2280
+      Left            =   2520
       ScaleHeight     =   5235
       ScaleWidth      =   6960
       TabIndex        =   122
-      Top             =   1200
+      Top             =   960
       Visible         =   0   'False
       Width           =   7020
       Begin VB.Label lblTutorialExit 
@@ -392,7 +1816,7 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblTutorialText 
          BackStyle       =   0  'Transparent
-         Caption         =   $"frmMain.frx":0A4E
+         Caption         =   $"frmMain.frx":11C30E
          BeginProperty Font 
             Name            =   "Georgia"
             Size            =   8.25
@@ -465,14 +1889,22 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   8775
-      Left            =   7800
+      Left            =   12000
       ScaleHeight     =   583
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   181
-      TabIndex        =   13
-      Top             =   240
+      TabIndex        =   14
+      Top             =   0
       Visible         =   0   'False
       Width           =   2745
+      Begin VB.CommandButton cmdClose 
+         Caption         =   "x"
+         Height          =   300
+         Left            =   2400
+         TabIndex        =   349
+         Top             =   0
+         Width           =   375
+      End
       Begin VB.CommandButton cmdACustomSprite 
          Caption         =   "Sprites"
          BeginProperty Font 
@@ -571,7 +2003,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   114
+         TabIndex        =   115
          Top             =   3120
          Width           =   1095
       End
@@ -588,7 +2020,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   113
+         TabIndex        =   114
          Top             =   3480
          Width           =   1095
       End
@@ -605,7 +2037,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   88
+         TabIndex        =   89
          Top             =   8400
          Width           =   2295
       End
@@ -622,7 +2054,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   52
+         TabIndex        =   53
          Top             =   8040
          Width           =   2295
       End
@@ -639,7 +2071,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   51
+         TabIndex        =   52
          Top             =   4560
          Width           =   1095
       End
@@ -656,7 +2088,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   45
+         TabIndex        =   46
          Top             =   1680
          Width           =   2295
       End
@@ -672,7 +2104,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   285
          Left            =   1440
-         TabIndex        =   43
+         TabIndex        =   44
          Top             =   600
          Width           =   1095
       End
@@ -688,7 +2120,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   285
          Left            =   2160
-         TabIndex        =   41
+         TabIndex        =   42
          Top             =   2160
          Width           =   375
       End
@@ -705,7 +2137,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   40
+         TabIndex        =   41
          Top             =   6120
          Width           =   1095
       End
@@ -722,7 +2154,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   39
+         TabIndex        =   40
          Top             =   2520
          Width           =   1095
       End
@@ -739,7 +2171,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   38
+         TabIndex        =   39
          Top             =   7560
          Width           =   2295
       End
@@ -748,7 +2180,7 @@ Begin VB.Form frmMain
          LargeChange     =   10
          Left            =   240
          Min             =   1
-         TabIndex        =   37
+         TabIndex        =   38
          Top             =   7200
          Value           =   1
          Width           =   2295
@@ -757,7 +2189,7 @@ Begin VB.Form frmMain
          Height          =   255
          Left            =   240
          Min             =   1
-         TabIndex        =   35
+         TabIndex        =   36
          Top             =   6720
          Value           =   1
          Width           =   2295
@@ -775,7 +2207,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   33
+         TabIndex        =   34
          Top             =   4200
          Width           =   1095
       End
@@ -792,7 +2224,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   32
+         TabIndex        =   33
          Top             =   4560
          Width           =   1095
       End
@@ -809,7 +2241,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   31
+         TabIndex        =   32
          Top             =   3840
          Width           =   1095
       End
@@ -826,7 +2258,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   30
+         TabIndex        =   31
          Top             =   4200
          Width           =   1095
       End
@@ -843,7 +2275,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   29
+         TabIndex        =   30
          Top             =   3480
          Width           =   1095
       End
@@ -860,7 +2292,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   27
+         TabIndex        =   28
          Top             =   3840
          Width           =   1095
       End
@@ -877,7 +2309,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   26
+         TabIndex        =   27
          Top             =   6120
          Width           =   1095
       End
@@ -894,7 +2326,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   25
+         TabIndex        =   26
          Top             =   5760
          Width           =   1095
       End
@@ -911,7 +2343,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   24
+         TabIndex        =   25
          Top             =   5760
          Width           =   1095
       End
@@ -928,7 +2360,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   23
+         TabIndex        =   24
          Top             =   2520
          Width           =   1095
       End
@@ -944,7 +2376,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   285
          Left            =   840
-         TabIndex        =   21
+         TabIndex        =   22
          Top             =   2160
          Width           =   495
       End
@@ -961,7 +2393,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   20
+         TabIndex        =   21
          Top             =   1320
          Width           =   1095
       End
@@ -978,7 +2410,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   19
+         TabIndex        =   20
          Top             =   1320
          Width           =   1095
       End
@@ -995,7 +2427,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   18
+         TabIndex        =   19
          Top             =   960
          Width           =   1095
       End
@@ -1012,7 +2444,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   240
-         TabIndex        =   17
+         TabIndex        =   18
          Top             =   960
          Width           =   1095
       End
@@ -1028,7 +2460,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   285
          Left            =   240
-         TabIndex        =   15
+         TabIndex        =   16
          Top             =   600
          Width           =   1095
       End
@@ -1054,7 +2486,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   1440
-         TabIndex        =   44
+         TabIndex        =   45
          Top             =   360
          Width           =   1095
       End
@@ -1073,7 +2505,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   1440
-         TabIndex        =   42
+         TabIndex        =   43
          Top             =   2160
          Width           =   1095
       End
@@ -1092,7 +2524,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   240
-         TabIndex        =   36
+         TabIndex        =   37
          Top             =   6960
          Width           =   2295
       End
@@ -1111,7 +2543,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   240
-         TabIndex        =   34
+         TabIndex        =   35
          Top             =   6480
          Width           =   2295
       End
@@ -1144,7 +2576,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   240
-         TabIndex        =   28
+         TabIndex        =   29
          Top             =   2880
          Width           =   2295
       End
@@ -1170,7 +2602,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   240
-         TabIndex        =   22
+         TabIndex        =   23
          Top             =   2160
          Width           =   1095
       End
@@ -1196,12 +2628,11 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   240
-         TabIndex        =   16
+         TabIndex        =   17
          Top             =   360
          Width           =   1095
       End
       Begin VB.Label Label28 
-         Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
          Caption         =   "Admin Panel"
          BeginProperty Font 
@@ -1216,7 +2647,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   375
          Left            =   120
-         TabIndex        =   14
+         TabIndex        =   15
          Top             =   0
          Width           =   2865
       End
@@ -1235,12 +2666,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4500
-      Left            =   2760
-      Picture         =   "frmMain.frx":0AF6
+      Left            =   3240
+      Picture         =   "frmMain.frx":11C3B6
       ScaleHeight     =   4470
       ScaleWidth      =   5970
       TabIndex        =   242
-      Top             =   1680
+      Top             =   960
       Visible         =   0   'False
       Width           =   6000
       Begin VB.Label lblTriforceClose 
@@ -1402,12 +2833,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5760
-      Left            =   2160
+      Left            =   2400
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   480
-      TabIndex        =   73
-      Top             =   600
+      TabIndex        =   74
+      Top             =   960
       Visible         =   0   'False
       Width           =   7200
       Begin VB.PictureBox picYourTrade 
@@ -1430,7 +2861,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   247
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   193
-         TabIndex        =   74
+         TabIndex        =   75
          Top             =   645
          Width           =   2895
       End
@@ -1454,7 +2885,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   247
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   193
-         TabIndex        =   75
+         TabIndex        =   76
          Top             =   645
          Width           =   2895
       End
@@ -1485,7 +2916,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H000000C0&
          Height          =   255
          Left            =   600
-         TabIndex        =   78
+         TabIndex        =   79
          Top             =   5520
          Width           =   5895
       End
@@ -1504,7 +2935,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   4920
-         TabIndex        =   77
+         TabIndex        =   78
          Top             =   4650
          Width           =   1575
       End
@@ -1523,7 +2954,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   1560
-         TabIndex        =   76
+         TabIndex        =   77
          Top             =   4650
          Width           =   1575
       End
@@ -1544,12 +2975,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   3570
-      Left            =   120
+      Left            =   240
       ScaleHeight     =   238
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   210
-      TabIndex        =   61
-      Top             =   120
+      TabIndex        =   62
+      Top             =   10320
       Visible         =   0   'False
       Width           =   3150
       Begin VB.PictureBox picSpellDescPic 
@@ -1572,13 +3003,13 @@ Begin VB.Form frmMain
          ScaleHeight     =   64
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   64
-         TabIndex        =   85
+         TabIndex        =   86
          Top             =   600
          Width           =   960
       End
       Begin VB.Label lblSpellDesc 
          BackStyle       =   0  'Transparent
-         Caption         =   """This is an example of an item's description. It  can be quite big, so we have to keep it at a decent size."""
+         Caption         =   """Default Item Description! :D"""
          BeginProperty Font 
             Name            =   "Georgia"
             Size            =   8.25
@@ -1591,7 +3022,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   1530
          Left            =   240
-         TabIndex        =   84
+         TabIndex        =   85
          Top             =   1800
          Width           =   2640
       End
@@ -1611,7 +3042,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   240
-         TabIndex        =   83
+         TabIndex        =   84
          Top             =   240
          Width           =   2805
       End
@@ -1629,11 +3060,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   2085
-      Left            =   2190
+      Left            =   2280
       ScaleHeight     =   2085
       ScaleWidth      =   7140
-      TabIndex        =   116
-      Top             =   4440
+      TabIndex        =   117
+      Top             =   4800
       Visible         =   0   'False
       Width           =   7140
       Begin VB.PictureBox picSpeechFace 
@@ -1654,7 +3085,7 @@ Begin VB.Form frmMain
          Left            =   300
          ScaleHeight     =   1500
          ScaleWidth      =   1500
-         TabIndex        =   118
+         TabIndex        =   119
          Top             =   300
          Width           =   1500
       End
@@ -1676,7 +3107,7 @@ Begin VB.Form frmMain
          Left            =   6840
          ScaleHeight     =   300
          ScaleWidth      =   300
-         TabIndex        =   117
+         TabIndex        =   118
          Top             =   0
          Width           =   300
       End
@@ -1694,7 +3125,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   1500
          Left            =   2040
-         TabIndex        =   119
+         TabIndex        =   120
          Top             =   300
          Width           =   4755
       End
@@ -1714,12 +3145,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   2295
-      Left            =   3240
+      Left            =   3360
       ScaleHeight     =   153
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   327
-      TabIndex        =   103
-      Top             =   3960
+      TabIndex        =   104
+      Top             =   2040
       Visible         =   0   'False
       Width           =   4905
       Begin VB.Label lblQuestExtra 
@@ -1738,7 +3169,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0000FFFF&
          Height          =   210
          Left            =   240
-         TabIndex        =   105
+         TabIndex        =   106
          Top             =   1920
          Visible         =   0   'False
          Width           =   540
@@ -1758,7 +3189,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   1125
          Left            =   240
-         TabIndex        =   109
+         TabIndex        =   110
          Top             =   720
          Width           =   4425
       End
@@ -1778,7 +3209,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00C0FFC0&
          Height          =   210
          Left            =   240
-         TabIndex        =   108
+         TabIndex        =   109
          Top             =   1920
          Visible         =   0   'False
          Width           =   1380
@@ -1799,7 +3230,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H008080FF&
          Height          =   210
          Left            =   4080
-         TabIndex        =   107
+         TabIndex        =   108
          Top             =   1920
          Width           =   660
       End
@@ -1818,7 +3249,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0080C0FF&
          Height          =   240
          Left            =   240
-         TabIndex        =   106
+         TabIndex        =   107
          Top             =   120
          Width           =   3255
       End
@@ -1837,7 +3268,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0080C0FF&
          Height          =   240
          Left            =   240
-         TabIndex        =   104
+         TabIndex        =   105
          Top             =   480
          Width           =   1455
       End
@@ -1858,12 +3289,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   3570
-      Left            =   120
+      Left            =   3600
       ScaleHeight     =   238
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   217
-      TabIndex        =   5
-      Top             =   120
+      TabIndex        =   6
+      Top             =   10320
       Visible         =   0   'False
       Width           =   3255
       Begin VB.PictureBox picItemDescPic 
@@ -1886,7 +3317,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   64
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   64
-         TabIndex        =   81
+         TabIndex        =   82
          Top             =   600
          Width           =   960
       End
@@ -1923,7 +3354,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   1170
          Left            =   240
-         TabIndex        =   80
+         TabIndex        =   81
          Top             =   1800
          Width           =   2640
       End
@@ -1943,7 +3374,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   150
-         TabIndex        =   6
+         TabIndex        =   7
          Top             =   210
          Width           =   2805
       End
@@ -1965,12 +3396,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4290
-      Left            =   4320
+      Left            =   8640
       ScaleHeight     =   286
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   129
-      Top             =   1560
+      Top             =   600
       Visible         =   0   'False
       Width           =   2910
       Begin VB.PictureBox picGuildInvitation 
@@ -2390,11 +3821,11 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   2085
-      Left            =   2190
+      Left            =   2280
       ScaleHeight     =   2085
       ScaleWidth      =   7140
-      TabIndex        =   90
-      Top             =   4440
+      TabIndex        =   91
+      Top             =   4680
       Visible         =   0   'False
       Width           =   7140
       Begin VB.Label lblDialogue_Button 
@@ -2416,7 +3847,7 @@ Begin VB.Form frmMain
          Height          =   210
          Index           =   1
          Left            =   3405
-         TabIndex        =   95
+         TabIndex        =   96
          Top             =   1440
          Width           =   285
       End
@@ -2436,7 +3867,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   495
          Left            =   240
-         TabIndex        =   94
+         TabIndex        =   95
          Top             =   720
          Width           =   6615
       End
@@ -2456,7 +3887,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   120
-         TabIndex        =   93
+         TabIndex        =   94
          Top             =   480
          Width           =   6855
       End
@@ -2479,7 +3910,7 @@ Begin VB.Form frmMain
          Height          =   210
          Index           =   2
          Left            =   3450
-         TabIndex        =   92
+         TabIndex        =   93
          Top             =   1320
          Width           =   195
       End
@@ -2502,77 +3933,10 @@ Begin VB.Form frmMain
          Height          =   210
          Index           =   3
          Left            =   3405
-         TabIndex        =   91
+         TabIndex        =   92
          Top             =   1560
          Width           =   285
       End
-   End
-   Begin VB.OptionButton optChatStyle 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      Caption         =   "Off"
-      BeginProperty Font 
-         Name            =   "Georgia"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   0
-      Left            =   6630
-      MaskColor       =   &H00FFFFFF&
-      TabIndex        =   348
-      Top             =   9285
-      UseMaskColor    =   -1  'True
-      Width           =   570
-   End
-   Begin VB.OptionButton optChatStyle 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      Caption         =   "2"
-      BeginProperty Font 
-         Name            =   "Georgia"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   2
-      Left            =   6210
-      MaskColor       =   &H00FFFFFF&
-      TabIndex        =   347
-      Top             =   9285
-      Width           =   420
-   End
-   Begin VB.OptionButton optChatStyle 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      Caption         =   "1"
-      BeginProperty Font 
-         Name            =   "Georgia"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Index           =   1
-      Left            =   5790
-      MaskColor       =   &H00FFFFFF&
-      TabIndex        =   346
-      Top             =   9285
-      Width           =   420
    End
    Begin VB.OptionButton ChatOpts 
       Appearance      =   0  'Flat
@@ -2674,7 +4038,7 @@ Begin VB.Form frmMain
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":9CEE
+      TextRTF         =   $"frmMain.frx":1255AE
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Georgia"
          Size            =   8.25
@@ -2706,7 +4070,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   36
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   10500
       Visible         =   0   'False
       Width           =   540
@@ -2732,7 +4096,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   36
-      TabIndex        =   87
+      TabIndex        =   88
       Top             =   10500
       Visible         =   0   'False
       Width           =   540
@@ -2753,68 +4117,22 @@ Begin VB.Form frmMain
       Left            =   12360
       ScaleHeight     =   255
       ScaleWidth      =   255
-      TabIndex        =   89
+      TabIndex        =   90
       Top             =   8280
       Width           =   255
    End
-   Begin VB.PictureBox picHotbar 
-      Appearance      =   0  'Flat
-      AutoRedraw      =   -1  'True
-      AutoSize        =   -1  'True
-      BackColor       =   &H80000006&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   540
-      Left            =   60
-      ScaleHeight     =   36
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   476
-      TabIndex        =   82
-      Top             =   9630
-      Width           =   7140
-   End
-   Begin VB.TextBox txtMyChat 
-      Appearance      =   0  'Flat
-      BackColor       =   &H000C0E10&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "Georgia"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   240
-      Left            =   60
-      MaxLength       =   200
-      TabIndex        =   1
-      Top             =   9300
-      Width           =   5580
-   End
    Begin TabDlg.SSTab HelpBoard 
       Height          =   5895
-      Left            =   2880
+      Left            =   2640
       TabIndex        =   150
-      Top             =   600
+      Top             =   1080
       Visible         =   0   'False
       Width           =   5775
       _ExtentX        =   10186
       _ExtentY        =   10398
       _Version        =   393216
       Tabs            =   5
-      Tab             =   3
+      Tab             =   2
       TabHeight       =   529
       BackColor       =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -2827,36 +4145,36 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       TabCaption(0)   =   "Teclas"
-      TabPicture(0)   =   "frmMain.frx":9D6A
+      TabPicture(0)   =   "frmMain.frx":12562A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "Picture2"
-      Tab(0).Control(1)=   "CloseHelpBoard(0)"
+      Tab(0).Control(0)=   "CloseHelpBoard(0)"
+      Tab(0).Control(1)=   "Picture2"
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Entrenar"
-      TabPicture(1)   =   "frmMain.frx":9D86
+      TabPicture(1)   =   "frmMain.frx":125646
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "CloseHelpBoard(1)"
-      Tab(1).Control(1)=   "Picture7"
+      Tab(1).Control(0)=   "Picture7"
+      Tab(1).Control(1)=   "CloseHelpBoard(1)"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Estadísticas"
-      TabPicture(2)   =   "frmMain.frx":9DA2
-      Tab(2).ControlEnabled=   0   'False
+      TabPicture(2)   =   "frmMain.frx":125662
+      Tab(2).ControlEnabled=   -1  'True
       Tab(2).Control(0)=   "CloseHelpBoard(2)"
+      Tab(2).Control(0).Enabled=   0   'False
       Tab(2).Control(1)=   "Picture8"
+      Tab(2).Control(1).Enabled=   0   'False
       Tab(2).ControlCount=   2
       TabCaption(3)   =   "Habilidades"
-      TabPicture(3)   =   "frmMain.frx":9DBE
-      Tab(3).ControlEnabled=   -1  'True
+      TabPicture(3)   =   "frmMain.frx":12567E
+      Tab(3).ControlEnabled=   0   'False
       Tab(3).Control(0)=   "CloseHelpBoard(3)"
-      Tab(3).Control(0).Enabled=   0   'False
       Tab(3).Control(1)=   "Picture9(0)"
-      Tab(3).Control(1).Enabled=   0   'False
       Tab(3).ControlCount=   2
       TabCaption(4)   =   "Mascotas"
-      TabPicture(4)   =   "frmMain.frx":9DDA
+      TabPicture(4)   =   "frmMain.frx":12569A
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "Picture9(1)"
-      Tab(4).Control(1)=   "CloseHelpBoard(4)"
+      Tab(4).Control(0)=   "CloseHelpBoard(4)"
+      Tab(4).Control(1)=   "Picture9(1)"
       Tab(4).ControlCount=   2
       Begin VB.PictureBox Picture9 
          BackColor       =   &H80000012&
@@ -2880,7 +4198,7 @@ Begin VB.Form frmMain
          Begin VB.Label lblSpells 
             Alignment       =   2  'Center
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmMain.frx":9DF6
+            Caption         =   $"frmMain.frx":1256B6
             BeginProperty Font 
                Name            =   "Georgia"
                Size            =   8.25
@@ -2922,7 +4240,7 @@ Begin VB.Form frmMain
          Begin VB.Label lblSpells 
             Alignment       =   2  'Center
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmMain.frx":9E95
+            Caption         =   $"frmMain.frx":125755
             BeginProperty Font 
                Name            =   "Georgia"
                Size            =   8.25
@@ -2964,7 +4282,7 @@ Begin VB.Form frmMain
          Begin VB.Label lblSpells 
             Alignment       =   2  'Center
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmMain.frx":9F51
+            Caption         =   $"frmMain.frx":125811
             BeginProperty Font 
                Name            =   "Georgia"
                Size            =   8.25
@@ -3017,7 +4335,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   4335
          Index           =   0
-         Left            =   120
+         Left            =   -74880
          ScaleHeight     =   4275
          ScaleWidth      =   5355
          TabIndex        =   190
@@ -3655,7 +4973,7 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   4695
-         Left            =   -74880
+         Left            =   120
          ScaleHeight     =   4635
          ScaleWidth      =   5355
          TabIndex        =   151
@@ -3903,7 +5221,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Index           =   3
-         Left            =   4680
+         Left            =   -70320
          TabIndex        =   191
          Top             =   5040
          Width           =   735
@@ -3921,7 +5239,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Index           =   2
-         Left            =   -70320
+         Left            =   4680
          TabIndex        =   169
          Top             =   5520
          Width           =   735
@@ -3984,7 +5302,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   240
-      TabIndex        =   62
+      TabIndex        =   63
       Top             =   4200
       Visible         =   0   'False
       Width           =   3600
@@ -4398,7 +5716,7 @@ Begin VB.Form frmMain
          Left            =   240
          ScaleHeight     =   255
          ScaleWidth      =   1455
-         TabIndex        =   68
+         TabIndex        =   69
          Top             =   1320
          Width           =   1455
          Begin VB.OptionButton optSOn 
@@ -4417,7 +5735,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   0
-            TabIndex        =   70
+            TabIndex        =   71
             Top             =   0
             Width           =   615
          End
@@ -4437,7 +5755,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   600
-            TabIndex        =   69
+            TabIndex        =   70
             Top             =   0
             Width           =   615
          End
@@ -4458,7 +5776,7 @@ Begin VB.Form frmMain
          Left            =   240
          ScaleHeight     =   255
          ScaleWidth      =   1455
-         TabIndex        =   65
+         TabIndex        =   66
          Top             =   840
          Width           =   1455
          Begin VB.OptionButton optMOff 
@@ -4477,7 +5795,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   600
-            TabIndex        =   67
+            TabIndex        =   68
             Top             =   0
             Width           =   615
          End
@@ -4497,7 +5815,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   0
-            TabIndex        =   66
+            TabIndex        =   67
             Top             =   0
             Width           =   615
          End
@@ -4595,7 +5913,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   120
+         TabIndex        =   121
          Top             =   2040
          Width           =   855
       End
@@ -4614,7 +5932,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   115
+         TabIndex        =   116
          Top             =   1560
          Width           =   855
       End
@@ -4634,7 +5952,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   240
-         TabIndex        =   64
+         TabIndex        =   65
          Top             =   1080
          Width           =   645
       End
@@ -4654,7 +5972,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   240
-         TabIndex        =   63
+         TabIndex        =   64
          Top             =   600
          Width           =   675
       End
@@ -4705,7 +6023,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
-      TabIndex        =   110
+      TabIndex        =   111
       Top             =   4200
       Visible         =   0   'False
       Width           =   2910
@@ -4727,7 +6045,7 @@ Begin VB.Form frmMain
          Locked          =   -1  'True
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
-         TabIndex        =   112
+         TabIndex        =   113
          Top             =   2625
          Visible         =   0   'False
          Width           =   2415
@@ -4747,7 +6065,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0080FF80&
          Height          =   2550
          Left            =   120
-         TabIndex        =   111
+         TabIndex        =   112
          Top             =   360
          Width           =   2655
       End
@@ -4794,435 +6112,6 @@ Begin VB.Form frmMain
          Width           =   315
       End
    End
-   Begin VB.PictureBox picCharacter 
-      Appearance      =   0  'Flat
-      AutoRedraw      =   -1  'True
-      AutoSize        =   -1  'True
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   4860
-      Left            =   7950
-      ScaleHeight     =   324
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   194
-      TabIndex        =   4
-      Top             =   4200
-      Visible         =   0   'False
-      Width           =   2910
-      Begin VB.CommandButton cmdCounters 
-         BackColor       =   &H80000009&
-         Caption         =   "Contador"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   1
-         Left            =   1680
-         MaskColor       =   &H00FFFFFF&
-         TabIndex        =   341
-         Top             =   4200
-         Width           =   1095
-      End
-      Begin VB.CommandButton cmdCounters 
-         BackColor       =   &H80000009&
-         Caption         =   "Muertes"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   225
-         Index           =   0
-         Left            =   1680
-         MaskColor       =   &H00FFFFFF&
-         TabIndex        =   340
-         Top             =   3960
-         Width           =   1095
-      End
-      Begin VB.PictureBox picFace 
-         Appearance      =   0  'Flat
-         AutoRedraw      =   -1  'True
-         BackColor       =   &H00000000&
-         BorderStyle     =   0  'None
-         BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   1500
-         Left            =   735
-         ScaleHeight     =   100
-         ScaleMode       =   3  'Pixel
-         ScaleWidth      =   100
-         TabIndex        =   79
-         Top             =   900
-         Width           =   1500
-      End
-      Begin VB.Label lblHP 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "100/100"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   1
-         Left            =   1680
-         TabIndex        =   345
-         Top             =   4440
-         Width           =   1125
-      End
-      Begin VB.Label lblHP 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Vida:"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   0
-         Left            =   240
-         TabIndex        =   344
-         Top             =   4440
-         Width           =   465
-      End
-      Begin VB.Label lblInvWeight 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Peso: 100%"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   195
-         Left            =   240
-         TabIndex        =   335
-         Top             =   4200
-         Width           =   1260
-      End
-      Begin VB.Label lblKillPoints 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Armada: 0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Left            =   240
-         TabIndex        =   334
-         Top             =   3960
-         Width           =   1380
-      End
-      Begin VB.Label lblPoints 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Left            =   2400
-         TabIndex        =   86
-         Top             =   2970
-         Width           =   120
-      End
-      Begin VB.Label lblTrainStat 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "+"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   3
-         Left            =   1380
-         TabIndex        =   50
-         Top             =   2955
-         Width           =   105
-      End
-      Begin VB.Label lblTrainStat 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "+"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   5
-         Left            =   2550
-         TabIndex        =   49
-         Top             =   2730
-         Width           =   105
-      End
-      Begin VB.Label lblTrainStat 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "+"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   2
-         Left            =   1380
-         TabIndex        =   48
-         Top             =   2730
-         Width           =   105
-      End
-      Begin VB.Label lblTrainStat 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "+"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   4
-         Left            =   2550
-         TabIndex        =   47
-         Top             =   2505
-         Width           =   105
-      End
-      Begin VB.Label lblTrainStat 
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "+"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   1
-         Left            =   1380
-         TabIndex        =   46
-         Top             =   2505
-         Width           =   105
-      End
-      Begin VB.Label lblCharStat 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   3
-         Left            =   1230
-         TabIndex        =   12
-         Top             =   2970
-         Width           =   120
-      End
-      Begin VB.Label lblCharStat 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   5
-         Left            =   2400
-         TabIndex        =   11
-         Top             =   2760
-         Width           =   120
-      End
-      Begin VB.Label lblCharStat 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   2
-         Left            =   1230
-         TabIndex        =   10
-         Top             =   2760
-         Width           =   120
-      End
-      Begin VB.Label lblCharStat 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   4
-         Left            =   2400
-         TabIndex        =   9
-         Top             =   2550
-         Width           =   120
-      End
-      Begin VB.Label lblCharStat 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "0"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   210
-         Index           =   1
-         Left            =   1230
-         TabIndex        =   8
-         Top             =   2520
-         Width           =   120
-      End
-      Begin VB.Label lblCharName 
-         Alignment       =   2  'Center
-         AutoSize        =   -1  'True
-         BackStyle       =   0  'Transparent
-         Caption         =   "Empty"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FFFFFF&
-         Height          =   225
-         Left            =   120
-         TabIndex        =   7
-         Top             =   495
-         Width           =   2640
-      End
-   End
    Begin VB.PictureBox picParty 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -5244,7 +6133,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
-      TabIndex        =   96
+      TabIndex        =   97
       Top             =   4200
       Visible         =   0   'False
       Width           =   2910
@@ -5327,7 +6216,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   375
          Left            =   1560
-         TabIndex        =   102
+         TabIndex        =   103
          Top             =   3480
          Width           =   1095
       End
@@ -5346,7 +6235,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   375
          Left            =   240
-         TabIndex        =   101
+         TabIndex        =   102
          Top             =   3480
          Width           =   1095
       End
@@ -5366,7 +6255,7 @@ Begin VB.Form frmMain
          Height          =   255
          Index           =   4
          Left            =   240
-         TabIndex        =   100
+         TabIndex        =   101
          Top             =   2670
          Width           =   2415
       End
@@ -5386,7 +6275,7 @@ Begin VB.Form frmMain
          Height          =   255
          Index           =   3
          Left            =   240
-         TabIndex        =   99
+         TabIndex        =   100
          Top             =   1935
          Width           =   2415
       End
@@ -5406,7 +6295,7 @@ Begin VB.Form frmMain
          Height          =   255
          Index           =   2
          Left            =   240
-         TabIndex        =   98
+         TabIndex        =   99
          Top             =   1200
          Width           =   2415
       End
@@ -5426,7 +6315,7 @@ Begin VB.Form frmMain
          Height          =   255
          Index           =   1
          Left            =   240
-         TabIndex        =   97
+         TabIndex        =   98
          Top             =   465
          Width           =   2415
       End
@@ -5452,7 +6341,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
-      TabIndex        =   53
+      TabIndex        =   54
       Top             =   4200
       Visible         =   0   'False
       Width           =   2910
@@ -6231,929 +7120,6 @@ Begin VB.Form frmMain
          Width           =   2895
       End
    End
-   Begin TabDlg.SSTab WorldMap 
-      Height          =   6255
-      Left            =   1200
-      TabIndex        =   255
-      Top             =   240
-      Visible         =   0   'False
-      Width           =   9045
-      _ExtentX        =   15954
-      _ExtentY        =   11033
-      _Version        =   393216
-      Tabs            =   2
-      TabsPerRow      =   2
-      TabHeight       =   529
-      BackColor       =   -2147483641
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Georgia"
-         Size            =   14.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      TabCaption(0)   =   "Hyrule"
-      TabPicture(0)   =   "frmMain.frx":A02F
-      Tab(0).ControlEnabled=   -1  'True
-      Tab(0).Control(0)=   "MiniMapHyrule(0)"
-      Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).ControlCount=   1
-      TabCaption(1)   =   "Términa"
-      TabPicture(1)   =   "frmMain.frx":A04B
-      Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "MiniMapTermina(1)"
-      Tab(1).ControlCount=   1
-      Begin VB.PictureBox MiniMapTermina 
-         BackColor       =   &H00404000&
-         BorderStyle     =   0  'None
-         BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   5520
-         Index           =   1
-         Left            =   -74760
-         Picture         =   "frmMain.frx":A067
-         ScaleHeight     =   5520
-         ScaleWidth      =   8580
-         TabIndex        =   278
-         Top             =   480
-         Width           =   8580
-         Begin VB.OptionButton NoneTermina 
-            BackColor       =   &H00404000&
-            Caption         =   "Nada"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   1
-            Left            =   4320
-            TabIndex        =   282
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.OptionButton DungeonsTermina 
-            BackColor       =   &H00404000&
-            Caption         =   "Templos"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   1
-            Left            =   3000
-            TabIndex        =   281
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.OptionButton WorldsTermina 
-            BackColor       =   &H00404000&
-            Caption         =   "Regiones"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   1
-            Left            =   240
-            TabIndex        =   280
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.OptionButton CitiesTermina 
-            BackColor       =   &H00404000&
-            Caption         =   "Ciudades"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   1
-            Left            =   1560
-            TabIndex        =   279
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo de la Torre de Piedra"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   540
-            Index           =   9
-            Left            =   6240
-            TabIndex        =   295
-            Top             =   0
-            Visible         =   0   'False
-            Width           =   2355
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo de la Gran Bahía"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   540
-            Index           =   8
-            Left            =   240
-            TabIndex        =   294
-            Top             =   1320
-            Visible         =   0   'False
-            Width           =   1515
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo Nevado"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   7
-            Left            =   5280
-            TabIndex        =   293
-            Top             =   960
-            Visible         =   0   'False
-            Width           =   1995
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo del Pantano"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   6
-            Left            =   3600
-            TabIndex        =   292
-            Top             =   4440
-            Visible         =   0   'False
-            Width           =   2595
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Ciudad Zora"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   9
-            Left            =   960
-            TabIndex        =   291
-            Top             =   3360
-            Visible         =   0   'False
-            Width           =   1395
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Refugio Goron"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   8
-            Left            =   4440
-            TabIndex        =   290
-            Top             =   600
-            Visible         =   0   'False
-            Width           =   1635
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Ciudad Reloj"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   7
-            Left            =   3600
-            TabIndex        =   289
-            Top             =   3360
-            Visible         =   0   'False
-            Width           =   1515
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Valle Ikana"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   10
-            Left            =   6600
-            TabIndex        =   288
-            Top             =   3000
-            Visible         =   0   'False
-            Width           =   1395
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Gran Bahía"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   9
-            Left            =   720
-            TabIndex        =   287
-            Top             =   2760
-            Visible         =   0   'False
-            Width           =   1275
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Cumbre Nevada"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   8
-            Left            =   3840
-            TabIndex        =   286
-            Top             =   120
-            Visible         =   0   'False
-            Width           =   1995
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Pantano"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   7
-            Left            =   4080
-            TabIndex        =   285
-            Top             =   3600
-            Visible         =   0   'False
-            Width           =   1395
-         End
-         Begin VB.Label CloseWorldMap 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Cerrar"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   255
-            Index           =   1
-            Left            =   7680
-            TabIndex        =   283
-            Top             =   5160
-            Width           =   735
-         End
-      End
-      Begin VB.PictureBox MiniMapHyrule 
-         BackColor       =   &H00004000&
-         BorderStyle     =   0  'None
-         BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   5520
-         Index           =   0
-         Left            =   240
-         Picture         =   "frmMain.frx":97CAB
-         ScaleHeight     =   5520
-         ScaleWidth      =   8580
-         TabIndex        =   256
-         Top             =   480
-         Width           =   8580
-         Begin VB.OptionButton CitiesHyrule 
-            BackColor       =   &H00004000&
-            Caption         =   "Ciudades"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   0
-            Left            =   1560
-            TabIndex        =   260
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.OptionButton WorldsHyrule 
-            BackColor       =   &H00004000&
-            Caption         =   "Regiones"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   0
-            Left            =   240
-            TabIndex        =   259
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.OptionButton DungeonsHyrule 
-            BackColor       =   &H00004000&
-            Caption         =   "Templos"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   0
-            Left            =   3000
-            TabIndex        =   258
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.OptionButton NoneHyrule 
-            BackColor       =   &H00004000&
-            Caption         =   "Nada"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H8000000E&
-            Height          =   210
-            Index           =   0
-            Left            =   4320
-            TabIndex        =   257
-            Top             =   5160
-            Width           =   1215
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo de las Sombras"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   540
-            Index           =   5
-            Left            =   7080
-            TabIndex        =   284
-            Top             =   120
-            Visible         =   0   'False
-            Width           =   1455
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Kakariko"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   1
-            Left            =   6720
-            TabIndex        =   277
-            Top             =   840
-            Visible         =   0   'False
-            Width           =   1065
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Kokiri"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   3
-            Left            =   3120
-            TabIndex        =   276
-            Top             =   3000
-            Visible         =   0   'False
-            Width           =   765
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Hyrule"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   2
-            Left            =   4080
-            TabIndex        =   275
-            Top             =   240
-            Visible         =   0   'False
-            Width           =   855
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Zoras"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   5
-            Left            =   7200
-            TabIndex        =   274
-            Top             =   2160
-            Visible         =   0   'False
-            Width           =   705
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Gorons"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   4
-            Left            =   5640
-            TabIndex        =   273
-            Top             =   960
-            Visible         =   0   'False
-            Width           =   825
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Bosques Perdidos"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   1
-            Left            =   2160
-            TabIndex        =   272
-            Top             =   3720
-            Visible         =   0   'False
-            Width           =   1995
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Montaña de la Muerte"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   585
-            Index           =   2
-            Left            =   5520
-            TabIndex        =   271
-            Top             =   1320
-            Visible         =   0   'False
-            Width           =   1425
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Lago Hylia"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   3
-            Left            =   360
-            TabIndex        =   270
-            Top             =   3480
-            Visible         =   0   'False
-            Width           =   1275
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Rio Zora"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   4
-            Left            =   5880
-            TabIndex        =   269
-            Top             =   2400
-            Visible         =   0   'False
-            Width           =   1035
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Rancho Lon Lon"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   5
-            Left            =   4080
-            TabIndex        =   268
-            Top             =   3000
-            Visible         =   0   'False
-            Width           =   1875
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo del Bosque"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   1
-            Left            =   1800
-            TabIndex        =   267
-            Top             =   4560
-            Visible         =   0   'False
-            Width           =   2235
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo del Fuego"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   540
-            Index           =   2
-            Left            =   5400
-            TabIndex        =   266
-            Top             =   120
-            Visible         =   0   'False
-            Width           =   1215
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo del Agua"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   3
-            Left            =   120
-            TabIndex        =   265
-            Top             =   2160
-            Visible         =   0   'False
-            Width           =   2055
-         End
-         Begin VB.Label CloseWorldMap 
-            BackStyle       =   0  'Transparent
-            Caption         =   "Cerrar"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   8.25
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00FFFFFF&
-            Height          =   255
-            Index           =   0
-            Left            =   7680
-            TabIndex        =   264
-            Top             =   5160
-            Width           =   735
-         End
-         Begin VB.Label lblDungeons 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Templo del Espíritu"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   4
-            Left            =   120
-            TabIndex        =   263
-            Top             =   120
-            Visible         =   0   'False
-            Width           =   2295
-         End
-         Begin VB.Label lblWorlds 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Cañón Gerudo"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   6
-            Left            =   1680
-            TabIndex        =   262
-            Top             =   480
-            Visible         =   0   'False
-            Width           =   1755
-         End
-         Begin VB.Label lblCities 
-            Alignment       =   2  'Center
-            BackColor       =   &H00A4D7DB&
-            BorderStyle     =   1  'Fixed Single
-            Caption         =   "Gerudo"
-            BeginProperty Font 
-               Name            =   "Georgia"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   700
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
-            ForeColor       =   &H00000000&
-            Height          =   300
-            Index           =   6
-            Left            =   720
-            TabIndex        =   261
-            Top             =   1200
-            Visible         =   0   'False
-            Width           =   885
-         End
-      End
-   End
    Begin VB.PictureBox picShop 
       Appearance      =   0  'Flat
       AutoSize        =   -1  'True
@@ -7174,7 +7140,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   341
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   275
-      TabIndex        =   59
+      TabIndex        =   60
       Top             =   1320
       Visible         =   0   'False
       Width           =   4125
@@ -7198,7 +7164,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   211
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   193
-         TabIndex        =   60
+         TabIndex        =   61
          Top             =   630
          Width           =   2895
       End
@@ -7248,7 +7214,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   36
-      TabIndex        =   72
+      TabIndex        =   73
       Top             =   10500
       Visible         =   0   'False
       Width           =   540
@@ -7270,12 +7236,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5760
-      Left            =   2040
+      Left            =   2160
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   480
-      TabIndex        =   71
-      Top             =   720
+      TabIndex        =   72
+      Top             =   840
       Visible         =   0   'False
       Width           =   7200
    End
@@ -7298,7 +7264,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   608
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   800
-      TabIndex        =   121
+      TabIndex        =   1
       Top             =   0
       Visible         =   0   'False
       Width           =   12000
@@ -7345,10 +7311,10 @@ Begin VB.Form frmMain
             Width           =   615
          End
          Begin VB.Image imgMPBar 
-            Height          =   20
-            Left            =   30
+            Height          =   135
+            Left            =   0
             Top             =   0
-            Width           =   4320
+            Width           =   4200
          End
       End
       Begin VB.PictureBox PicBars 
@@ -7370,7 +7336,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   300
          ScaleWidth      =   4350
          TabIndex        =   314
-         Top             =   150
+         Top             =   120
          Width           =   4380
          Begin VB.Label lblEXP 
             Alignment       =   1  'Right Justify
@@ -7390,13 +7356,13 @@ Begin VB.Form frmMain
             Height          =   210
             Left            =   2400
             TabIndex        =   315
-            Top             =   45
+            Top             =   0
             Width           =   1845
          End
          Begin VB.Image imgEXPBar 
-            Height          =   240
+            Height          =   390
             Left            =   0
-            Top             =   30
+            Top             =   0
             Width           =   4350
          End
       End
@@ -7437,12 +7403,12 @@ Begin VB.Form frmMain
          _Version        =   393216
       End
    End
-   Begin VB.Label lblGold 
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "0 Rupias"
+   Begin VB.PictureBox picLoad 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
       BeginProperty Font 
-         Name            =   "Georgia"
+         Name            =   "MS Sans Serif"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
@@ -7450,12 +7416,35 @@ Begin VB.Form frmMain
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
-      Height          =   210
-      Left            =   900
-      TabIndex        =   328
-      Top             =   11250
-      Width           =   1905
+      ForeColor       =   &H80000008&
+      Height          =   9120
+      Left            =   0
+      ScaleHeight     =   608
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   800
+      TabIndex        =   199
+      Top             =   -1080
+      Visible         =   0   'False
+      Width           =   12000
+      Begin VB.Label Label2 
+         BackStyle       =   0  'Transparent
+         Caption         =   "...Cargando Mapa..."
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000E&
+         Height          =   495
+         Left            =   4440
+         TabIndex        =   200
+         Top             =   4200
+         Width           =   3255
+      End
    End
    Begin VB.Image imgButton 
       Height          =   435
@@ -7513,6 +7502,26 @@ Begin VB.Form frmMain
       Top             =   9240
       Width           =   1035
    End
+   Begin VB.Label lblGold 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "0 Rupias"
+      BeginProperty Font 
+         Name            =   "Georgia"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   210
+      Left            =   900
+      TabIndex        =   328
+      Top             =   11250
+      Width           =   1905
+   End
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -7548,11 +7557,11 @@ errorhandler:
     Err.Clear
     Exit Sub
 End Sub
-Private Sub CloseHelpBoard_Click(Index As Integer)
+Private Sub CloseHelpBoard_Click(index As Integer)
 frmMain.HelpBoard.Visible = False
 End Sub
 
-Private Sub CloseWorldMap_Click(Index As Integer)
+Private Sub CloseWorldMap_Click(index As Integer)
     frmMain.WorldMap.Visible = False
     'play sound
     PlaySound Sound_ButtonClose
@@ -7623,11 +7632,11 @@ Private Sub cmdAKick_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.text)) < 1 Then
+    If Len(Trim$(txtAName.Text)) < 1 Then
         Exit Sub
     End If
 
-    SendKick Trim$(txtAName.text)
+    SendKick Trim$(txtAName.Text)
     
     ' Error handler
     Exit Sub
@@ -7656,15 +7665,15 @@ If GetPlayerAccess(MyIndex) < ADMIN_CREATOR Then
 Exit Sub
 End If
 
-If Len(Trim$(txtAName.text)) < 2 Then
+If Len(Trim$(txtAName.Text)) < 2 Then
 Exit Sub
 End If
 
-If IsNumeric(Trim$(txtAName.text)) Or IsNumeric(Trim$(txtAAccess.text)) Then
+If IsNumeric(Trim$(txtAName.Text)) Or IsNumeric(Trim$(txtAAccess.Text)) Then
 Exit Sub
 End If
 
-SendSetName Trim$(txtAName.text), (Trim$(txtAAccess.text))
+SendSetName Trim$(txtAName.Text), (Trim$(txtAAccess.Text))
 
 ' Error handler
 Exit Sub
@@ -7707,11 +7716,17 @@ Private Sub cmdChatDisplay_Click()
     frmChatDisplay.Show
 End Sub
 
+Private Sub cmdClose_Click()
+picAdmin.Visible = False
+
+frmMain.Width = 12090
+End Sub
+
 Private Sub cmdCode_Click()
     frmCode.Show
 End Sub
 
-Private Sub cmdCounters_Click(Index As Integer)
+Private Sub cmdCounters_Click(index As Integer)
 'Kill Counter
 Dim totalkills As Long
 Dim totaldeaths As Long
@@ -7720,20 +7735,20 @@ Dim alldeaths As Long
 
     combatdeaths = Player(MyIndex).Dead + Player(MyIndex).NpcDead
     alldeaths = combatdeaths + Player(MyIndex).EnviroDead
-        
-    Select Case Index
+
+    Select Case index
         Case 0
-            Call AddText("-Contador de Muertes Cometidas-", DarkGrey)
-            Call AddText("Muertes a Jugadores: " + Str(Player(MyIndex).Kill), White)
-            Call AddText("Muertes a Criaturas: " + Str(Player(MyIndex).NpcKill), White)
-            Call AddText("Muertes en Total: " + Str(totalkills), White)
+            Call AddText("-Contador de Muertes Cometidas-", DarkGrey, True)
+            Call AddText(GetTranslation("Muertes a Jugadores: ") & " " + Str(Player(MyIndex).Kill), White)
+            Call AddText(GetTranslation("Muertes a Criaturas: ") & " " + Str(Player(MyIndex).NpcKill), White)
+            Call AddText(GetTranslation("Muertes en Total: ") + Str(totalkills), White)
         Case 1
-            Call AddText("-Contador de Muertes Sufridas-", DarkGrey)
-            Call AddText("Asesinado por Jugadores: " + Str(Player(MyIndex).Dead), White)
-            Call AddText("Asesinado por Criaturas: " + Str(Player(MyIndex).NpcDead), White)
-            Call AddText("Muertes Totales en Combate: " + Str(combatdeaths), White)
-            Call AddText("Muertes Accidentales: " + Str(Player(MyIndex).EnviroDead), White)
-            Call AddText("Muertes Totales: " + Str(alldeaths), White)
+            Call AddText("-Contador de Muertes Sufridas-", DarkGrey, True)
+            Call AddText(GetTranslation("Asesinado por Jugadores: ") & " " + Str(Player(MyIndex).Dead), White)
+            Call AddText(GetTranslation("Asesinado por Criaturas: ") & " " + Str(Player(MyIndex).NpcDead), White)
+            Call AddText(GetTranslation("Muertes Totales en Combate: ") & " " + Str(combatdeaths), White)
+            Call AddText(GetTranslation("Muertes Accidentales: ") & " " + Str(Player(MyIndex).EnviroDead), White)
+            Call AddText(GetTranslation("Muertes Totales: ") & " " + Str(alldeaths), White)
     End Select
     'play sound
     PlaySound Sound_ButtonClick2
@@ -7803,6 +7818,12 @@ Private Sub cmdVideoOptions_Click()
     frmVideo.Show
 End Sub
 
+Private Sub Form_Resize()
+ 'picScreen.Width = frmMain.Width / 15.5 ' Width in tiles * 32
+ '   picScreen.Height = frmMain.Height / 18 ' Height in tiles * 32
+ '   ReInitSurfaces = True
+End Sub
+
 Private Sub HelpBoardButton_Click()
 If frmMain.HelpBoard.Visible = False Then
 frmMain.HelpBoard.Visible = True
@@ -7819,10 +7840,26 @@ Dim sRECT As DxVBLib.RECT
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     ' move GUI
-    picAdmin.Left = 600
+    'picAdmin.Left = 600
     picScreen.Width = 800 ' Width in tiles * 32
     picScreen.Height = 608 ' Height in tiles * 32
     
+    Dim e As Control
+    
+    For Each e In Me.Controls
+        If (TypeOf e Is Label) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CheckBox) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is OptionButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+    Next
+        
+        SetFocusOnChat
+        
     ' Error handler
     Exit Sub
 errorhandler:
@@ -7912,7 +7949,7 @@ End If
 End If
 End Sub
 Private Sub lblInvWeight_Click()
-    AddText "Peso: " & GetPlayerWeight(MyIndex) & " / " & GetPlayerMaxWeight(MyIndex), BrightGreen
+    AddText "Weight: " & GetPlayerWeight(MyIndex) & " / " & GetPlayerMaxWeight(MyIndex), BrightGreen, True
 End Sub
 
 Private Sub lblPetAttack_Click()
@@ -8070,9 +8107,9 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub optChatStyle_Click(Index As Integer)
+Private Sub optChatStyle_Click(index As Integer)
 
-Select Case Index
+Select Case index
     Case 0
         Options.ChatToScreen = 0
         frmMain.txtChat.Visible = False
@@ -8150,14 +8187,14 @@ Dim i As Long
     Options.SafeMode = NO
     SaveOptions
     SendSafeMode MyIndex, Options.SafeMode
-    AddText "CUIDADO, Seguridad Desactivada, ahora podrás matar a otros usuarios civiles.", BrightRed
+    AddText "CUIDADO, Seguridad Desactivada, ahora podrás matar a otros usuarios civiles.", BrightRed, True
 End Sub
 Private Sub optSafeOn_Click()
 Dim i As Long
     Options.SafeMode = YES
     SaveOptions
     SendSafeMode MyIndex, Options.SafeMode
-    AddText "Seguridad Activada, ahora no atacarás a civiles por accidente.", BrightGreen
+    'AddText "Seguridad Activada, ahora no atacarás a civiles por accidente.", BrightGreen, True
 End Sub
 
 Private Sub PartyChat_Click()
@@ -8196,7 +8233,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub imgButton_Click(Index As Integer)
+Private Sub imgButton_Click(index As Integer)
 Dim Buffer As clsBuffer
 Dim i As Long
     
@@ -8205,7 +8242,7 @@ Dim i As Long
     
     
      
-    Select Case Index
+    Select Case index
         Case 1
             If Not picInventory.Visible Then
                 'show the window
@@ -8272,7 +8309,7 @@ Dim i As Long
                 SendTradeRequest
                 PlaySound Sound_ButtonClick
             Else
-                AddText "Objetivo inválido.", BrightRed
+                AddText "Objetivo inválido.", BrightRed, True
             End If
                 'play sound
                 PlaySound Sound_ButtonClick
@@ -8324,22 +8361,22 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub imgButton_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub imgButton_MouseMove(index As Integer, Button As Integer, Shift As Integer, X As Single, y As Single)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     ' reset other buttons
-    resetButtons_Main Index
+    resetButtons_Main index
     
     ' change the button we're hovering on
-    If Not MainButton(Index).State = 2 Then ' make sure we're not clicking
-        changeButtonState_Main Index, 1 ' hover
+    If Not MainButton(index).State = 2 Then ' make sure we're not clicking
+        changeButtonState_Main index, 1 ' hover
     End If
     
     ' play sound
-    If Not LastButtonSound_Main = Index Then
+    If Not LastButtonSound_Main = index Then
         PlaySound Sound_ButtonHover
-        LastButtonSound_Main = Index
+        LastButtonSound_Main = index
     End If
     
     ' Error handler
@@ -8350,7 +8387,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub imgButton_MouseUp(Index As Integer, Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub imgButton_MouseUp(index As Integer, Button As Integer, Shift As Integer, X As Single, y As Single)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
         
@@ -8365,15 +8402,15 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub imgButton_MouseDown(Index As Integer, Button As Integer, Shift As Integer, X As Single, y As Single)
+Private Sub imgButton_MouseDown(index As Integer, Button As Integer, Shift As Integer, X As Single, y As Single)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     ' reset other buttons
-    resetButtons_Main Index
+    resetButtons_Main index
     
     ' change the button we're hovering on
-    changeButtonState_Main Index, 2 ' clicked
+    changeButtonState_Main index, 2 ' clicked
     
     ' Error handler
     Exit Sub
@@ -8388,7 +8425,7 @@ Private Sub lblCurrencyCancel_Click()
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     picCurrency.Visible = False
-    txtCurrency.text = vbNullString
+    txtCurrency.Text = vbNullString
     tmpCurrencyItem = 0
     CurrencyMenu = 0 ' clear
     
@@ -8451,29 +8488,29 @@ Private Sub lblCurrencyOk_Click()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If IsNumeric(txtCurrency.text) Then
+    If IsNumeric(txtCurrency.Text) Then
         If CurrencyMenu = 3 Then
-            If Val(txtCurrency.text) > GetBankItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.text = GetBankItemValue(MyIndex, tmpCurrencyItem)
-        ElseIf Val(txtCurrency.text) > GetPlayerInvItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.text = GetPlayerInvItemValue(MyIndex, tmpCurrencyItem)
+            If Val(txtCurrency.Text) > GetBankItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.Text = GetBankItemValue(MyIndex, tmpCurrencyItem)
+        ElseIf Val(txtCurrency.Text) > GetPlayerInvItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.Text = GetPlayerInvItemValue(MyIndex, tmpCurrencyItem)
         End If
         Select Case CurrencyMenu
             Case 1 ' drop item
-                SendDropItem tmpCurrencyItem, Val(txtCurrency.text)
+                SendDropItem tmpCurrencyItem, Val(txtCurrency.Text)
             Case 2 ' deposit item
-                DepositItem tmpCurrencyItem, Val(txtCurrency.text)
+                DepositItem tmpCurrencyItem, Val(txtCurrency.Text)
             Case 3 ' withdraw item
-                WithdrawItem tmpCurrencyItem, Val(txtCurrency.text)
+                WithdrawItem tmpCurrencyItem, Val(txtCurrency.Text)
             Case 4 ' offer trade item
-                TradeItem tmpCurrencyItem, Val(txtCurrency.text)
+                TradeItem tmpCurrencyItem, Val(txtCurrency.Text)
         End Select
     Else
-        AddText "¡Escribe una cantidad válida!", BrightRed
+        AddText "¡Escribe una cantidad válida!", BrightRed, True
         Exit Sub
     End If
     
     picCurrency.Visible = False
     tmpCurrencyItem = 0
-    txtCurrency.text = vbNullString
+    txtCurrency.Text = vbNullString
     CurrencyMenu = 0 ' clear
     
     ' Error handler
@@ -8492,12 +8529,12 @@ Private Sub imgShopBuy_Click()
     ShopAction = 0
     'play sound
     PlaySound Sound_ButtonEnding
-    AddText "Compra parada", White
+    AddText "Compra parada", White, True
     Else
     ShopAction = 1 ' buying an item
     'play sound
     PlaySound Sound_ButtonInitiating
-    AddText "Compra iniciada. Escoge los objetos a comprar", White
+    AddText "Compra iniciada. Escoge los objetos a comprar", White, True
     End If
 
     ' Error handler
@@ -8516,12 +8553,12 @@ Private Sub imgShopSell_Click()
     ShopAction = 0
     'play sound
     PlaySound Sound_ButtonEnding
-    AddText "Venta parada", White
+    AddText "Venta parada", White, True
     Else
     ShopAction = 2 ' selling an item
     'play sound
     PlaySound Sound_ButtonInitiating
-    AddText "Venta iniciada. Escoge los objetos a vender", White
+    AddText "Venta iniciada. Escoge los objetos a vender", White, True
     End If
     
     ' Error handler
@@ -8532,12 +8569,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub lblDialogue_Button_Click(Index As Integer)
+Private Sub lblDialogue_Button_Click(index As Integer)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     ' call the handler
-    dialogueHandler Index
+    dialogueHandler index
     
     picDialogue.Visible = False
     dialogueIndex = 0
@@ -8560,9 +8597,9 @@ Private Sub lblPartyInvite_Click()
     
     If myTargetType = TARGET_TYPE_PLAYER And myTarget <> MyIndex Then
         SendPartyRequest
-        AddText "Se ha enviado una petición de equipo.", BrightRed
+        AddText "Se ha enviado una petición de equipo.", BrightRed, True
     Else
-        AddText "Objetivo inválido.", BrightRed
+        AddText "Objetivo inválido.", BrightRed, True
     End If
     
     'play sound
@@ -8583,7 +8620,7 @@ Private Sub lblPartyLeave_Click()
     If Party.Leader > 0 Then
         SendPartyLeave
     Else
-        AddText "No estás en un equipo.", BrightRed
+        AddText "No estás en un equipo.", BrightRed, True
     End If
     
     'play sound
@@ -8599,17 +8636,17 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub lblTrainStat_Click(Index As Integer)
+Private Sub lblTrainStat_Click(index As Integer)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Select Case Index
+    Select Case index
     Case Is <= 5
         If GetPlayerPOINTS(MyIndex) = 0 Then Exit Sub
-        SendTrainStat Index
+        SendTrainStat index
     Case Is <= 10
         If GetPlayerPetPOINTS(MyIndex) = 0 Then Exit Sub
-        Call SendTrainPetStat(Index - 5)
+        Call SendTrainPetStat(index - 5)
     End Select
     ' Error handler
     Exit Sub
@@ -8884,6 +8921,7 @@ End Sub
 Private Sub picQuestLog_MouseUp(Button As Integer, Shift As Integer, X As Single, y As Single)
     Dragging = False
 End Sub
+
 Private Sub picScreen_MouseDown(Button As Integer, Shift As Integer, X As Single, y As Single)
 Dim sRECT As DxVBLib.RECT
     ' If debug mode, handle error then exit out
@@ -8906,6 +8944,10 @@ Dim sRECT As DxVBLib.RECT
     End If
 
     Call SetFocusOnChat
+    
+    If Options.WASD = 1 Then
+        ChatFocus = False
+    End If
     
     Call CheckCustomSpritePosition(X, y)
     
@@ -9031,7 +9073,7 @@ Dim shopItem As Long
         Select Case ShopAction
             Case 0 ' no action, give cost
                 With Shop(InShop).TradeItem(shopItem)
-                    AddText "Puedes comprar éste objeto por " & .CostValue & " " & Trim$(GetShopPriceName(InShop, shopItem)) & ".", White
+                    AddText GetTranslation("Puedes comprar éste objeto por ") & " " & .CostValue & " " & Trim$(GetShopPriceName(InShop, shopItem)) & ".", White
                 End With
             Case 1 ' buy item
                 ' buy item code
@@ -9134,7 +9176,7 @@ Dim spellnum As Long
         End If
     ElseIf Button = 2 Then ' right click
         If spellnum <> 0 Then
-            Dialogue "Forget Spell", "¿Estás seguro de que deseas olvidar la habilidad " & Trim$(Spell(PlayerSpells(spellnum)).Name) & "?", DIALOGUE_TYPE_FORGET, True, spellnum
+            Dialogue "Forget Spell", "¿Estás seguro de que deseas olvidar la habilidad " & Trim$(Spell(PlayerSpells(spellnum)).TranslatedName) & "?", DIALOGUE_TYPE_FORGET, True, spellnum
             Exit Sub
         End If
     End If
@@ -9371,7 +9413,7 @@ Private Sub scrlAItem_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    lblAItem.Caption = "Item: " & Trim$(Item(scrlAItem.value).Name) & ", " & scrlAItem.value
+    lblAItem.Caption = "Item: " & Trim$(Item(scrlAItem.value).TranslatedName) & ", " & scrlAItem.value
     If isItemStackable(scrlAItem.value) Then
         scrlAAmount.enabled = True
         Exit Sub
@@ -9445,10 +9487,23 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
+If Options.WASD = 1 Then
+    If ChatFocus = False Then
+    'wasd
+        If KeyAscii = 119 Or KeyAscii = 97 Or KeyAscii = 115 Or KeyAscii = 100 Then Exit Sub
+    'wasd with shift (caps?)
+        If KeyAscii = 87 Or KeyAscii = 65 Or KeyAscii = 83 Or KeyAscii = 68 Then Exit Sub
+    End If
+End If
+
     Call HandleKeyPresses(KeyAscii)
 
     ' prevents textbox on error ding sound
     If KeyAscii = vbKeyReturn Or KeyAscii = vbKeyEscape Then
+        If Options.WASD = 1 Then
+            ChatFocus = Not ChatFocus
+            If ChatFocus = True Then frmMain.txtMyChat.SetFocus Else frmMain.picScreen.SetFocus
+        End If
         KeyAscii = 0
     End If
 
@@ -9470,6 +9525,7 @@ Dim i As Long
         Case vbKeyInsert
             If Player(MyIndex).Access > 0 Then
                 picAdmin.Visible = Not picAdmin.Visible
+                If picAdmin.Visible = True Then frmMain.Width = 14835 Else frmMain.Width = 12090
             End If
         Case vbKeyEnd
             TakePicture
@@ -9506,6 +9562,16 @@ errorhandler:
     Err.Clear
     Exit Sub
 End Sub
+
+Private Sub Socket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+
+If Number = 10061 Then Exit Sub
+
+MsgBox Number & ": " & Description
+DestroyGame
+
+End Sub
+
 Private Sub txtMyChat_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -9556,9 +9622,9 @@ Private Sub picInventory_DblClick()
                     multiplier = Shop(InShop).BuyRate / 100
                     value = Item(GetPlayerInvItemNum(MyIndex, InvNum)).Price * multiplier
                     If value > 0 Then
-                        AddText "Puedes vender éste objeto por " & value & " rupias.", White
+                        AddText "Puedes vender éste objeto por " & value & " rupias.", White, True
                     Else
-                        AddText "La tienda no quiere éste objeto.", BrightRed
+                        AddText "La tienda no quiere éste objeto.", BrightRed, True
                     End If
                 Case 2 ' 2 = sell
                     SellItem InvNum
@@ -9573,7 +9639,7 @@ Private Sub picInventory_DblClick()
                 CurrencyMenu = 2 ' deposit
                 lblCurrency.Caption = "¿Cuánto quieres depositar?"
                 tmpCurrencyItem = InvNum
-                txtCurrency.text = vbNullString
+                txtCurrency.Text = vbNullString
                 picCurrency.Visible = True
                 txtCurrency.SetFocus
                 Exit Sub
@@ -9605,7 +9671,7 @@ Private Sub picInventory_DblClick()
                 CurrencyMenu = 4 ' offer in trade
                 lblCurrency.Caption = "¿Cuánto quieres comerciar?"
                 tmpCurrencyItem = InvNum
-                txtCurrency.text = vbNullString
+                txtCurrency.Text = vbNullString
                 picCurrency.Visible = True
                 txtCurrency.SetFocus
                 Exit Sub
@@ -9811,7 +9877,7 @@ Private Sub picInventory_MouseDown(Button As Integer, Shift As Integer, X As Sin
                         CurrencyMenu = 1 ' drop
                         lblCurrency.Caption = "¿Cuánto quieres tirar?"
                         tmpCurrencyItem = InvNum
-                        txtCurrency.text = vbNullString
+                        txtCurrency.Text = vbNullString
                         picCurrency.Visible = True
                         txtCurrency.SetFocus
                     End If
@@ -10091,15 +10157,15 @@ Private Sub cmdAWarp2Me_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.text)) < 1 Then
+    If Len(Trim$(txtAName.Text)) < 1 Then
         Exit Sub
     End If
 
-    If IsNumeric(Trim$(txtAName.text)) Then
+    If IsNumeric(Trim$(txtAName.Text)) Then
         Exit Sub
     End If
 
-    WarpToMe Trim$(txtAName.text)
+    WarpToMe Trim$(txtAName.Text)
     
     ' Error handler
     Exit Sub
@@ -10118,15 +10184,15 @@ Private Sub cmdAWarpMe2_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.text)) < 1 Then
+    If Len(Trim$(txtAName.Text)) < 1 Then
         Exit Sub
     End If
 
-    If IsNumeric(Trim$(txtAName.text)) Then
+    If IsNumeric(Trim$(txtAName.Text)) Then
         Exit Sub
     End If
 
-    WarpMeTo Trim$(txtAName.text)
+    WarpMeTo Trim$(txtAName.Text)
     
     ' Error handler
     Exit Sub
@@ -10147,21 +10213,21 @@ Dim N As Long
         Exit Sub
     End If
 
-    If Len(Trim$(txtAMap.text)) < 1 Then
+    If Len(Trim$(txtAMap.Text)) < 1 Then
         Exit Sub
     End If
 
-    If Not IsNumeric(Trim$(txtAMap.text)) Then
+    If Not IsNumeric(Trim$(txtAMap.Text)) Then
         Exit Sub
     End If
 
-    N = CLng(Trim$(txtAMap.text))
+    N = CLng(Trim$(txtAMap.Text))
 
     ' Check to make sure its a valid map #
     If N > 0 And N <= MAX_MAPS Then
         Call WarpTo(N)
     Else
-        Call AddText("Número de mapa no válido.", Red)
+        Call AddText("Número de mapa no válido.", Red, True)
     End If
     
     ' Error handler
@@ -10181,18 +10247,18 @@ If GetPlayerAccess(MyIndex) < ADMIN_MAPPER Then
 Exit Sub
 End If
 
-If Len(Trim$(txtASprite.text)) < 1 Then
+If Len(Trim$(txtASprite.Text)) < 1 Then
 Exit Sub
 End If
 
-If Not IsNumeric(Trim$(txtASprite.text)) Then
+If Not IsNumeric(Trim$(txtASprite.Text)) Then
 Exit Sub
 End If
 
-If Len(Trim$(txtAName.text)) > 1 Then
-SendSetSprite CLng(Trim$(txtASprite.text)), txtAName.text
+If Len(Trim$(txtAName.Text)) > 1 Then
+SendSetSprite CLng(Trim$(txtASprite.Text)), txtAName.Text
 Else
-SendSetSprite CLng(Trim$(txtASprite.text)), GetPlayerName(MyIndex)
+SendSetSprite CLng(Trim$(txtASprite.Text)), GetPlayerName(MyIndex)
 End If
 
 ' Error handler
@@ -10249,11 +10315,11 @@ Private Sub cmdABan_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.text)) < 1 Then
+    If Len(Trim$(txtAName.Text)) < 1 Then
         Exit Sub
     End If
 
-    SendBan Trim$(txtAName.text)
+    SendBan Trim$(txtAName.Text)
     
     ' Error handler
     Exit Sub
@@ -10367,15 +10433,15 @@ Private Sub cmdAAccess_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.text)) < 2 Then
+    If Len(Trim$(txtAName.Text)) < 2 Then
         Exit Sub
     End If
 
-    If IsNumeric(Trim$(txtAName.text)) Or Not IsNumeric(Trim$(txtAAccess.text)) Then
+    If IsNumeric(Trim$(txtAName.Text)) Or Not IsNumeric(Trim$(txtAAccess.Text)) Then
         Exit Sub
     End If
 
-    SendSetAccess Trim$(txtAName.text), CLng(Trim$(txtAAccess.text))
+    SendSetAccess Trim$(txtAName.Text), CLng(Trim$(txtAAccess.Text))
     
     ' Error handler
     Exit Sub
@@ -10441,7 +10507,7 @@ Dim bankNum As Long
                 CurrencyMenu = 3 ' withdraw
                 lblCurrency.Caption = "¿Cuánto quieres retirar?"
                 tmpCurrencyItem = bankNum
-                txtCurrency.text = vbNullString
+                txtCurrency.Text = vbNullString
                 picCurrency.Visible = True
                 txtCurrency.SetFocus
                 Exit Sub
@@ -10645,9 +10711,9 @@ End Sub
 '    PlaySound Sound_ButtonClick
 'End Sub
 
-Private Sub imgQuestButton_Click(Index As Integer)
-    If Trim$(lstQuestLog.text) = vbNullString Then Exit Sub
-    LoadQuestlogBox Index
+Private Sub imgQuestButton_Click(index As Integer)
+    If Trim$(lstQuestLog.Text) = vbNullString Then Exit Sub
+    LoadQuestlogBox index
     
     'play sound
     PlaySound Sound_ButtonQuest
@@ -10689,7 +10755,7 @@ Private Sub lblGuildInv_Click()
 If myTargetType = TARGET_TYPE_PLAYER And myTarget <> MyIndex Then
 Call GuildCommand(2, Player(myTarget).Name)
 Else
-AddText "El usuario no se puede invitar al clan o no ha sido seleccionado.", BrightRed
+AddText "El usuario no se puede invitar al clan o no ha sido seleccionado.", BrightRed, True
 End If
 End Sub
 
@@ -10731,7 +10797,7 @@ lblGuildDisband.Caption = "Deshacer Clan"
 End Sub
 
 Private Sub lblGuildCAccept_Click()
-Call GuildCommand(1, txtGuildC.text)
+Call GuildCommand(1, txtGuildC.Text)
 frmGuildC.Visible = False
 picGuild.Visible = False
 picGuildInvitation.Visible = False
@@ -10773,7 +10839,11 @@ Private Sub ClearPics()
             picGuild.Visible = False
 End Sub
 
-Private Sub WorldsHyrule_Click(Index As Integer)
+Private Sub txtMyChat_Click()
+ChatFocus = True
+End Sub
+
+Private Sub WorldsHyrule_Click(index As Integer)
         lblWorlds(1).Visible = True
         lblWorlds(2).Visible = True
         lblWorlds(3).Visible = True
@@ -10795,7 +10865,7 @@ Private Sub WorldsHyrule_Click(Index As Integer)
         PlaySound Sound_ButtonChange
 End Sub
 
-Private Sub CitiesHyrule_Click(Index As Integer)
+Private Sub CitiesHyrule_Click(index As Integer)
         lblWorlds(1).Visible = False
         lblWorlds(2).Visible = False
         lblWorlds(3).Visible = False
@@ -10816,7 +10886,7 @@ Private Sub CitiesHyrule_Click(Index As Integer)
         ' play sound
         PlaySound Sound_ButtonChange
 End Sub
-Private Sub DungeonsHyrule_Click(Index As Integer)
+Private Sub DungeonsHyrule_Click(index As Integer)
         lblWorlds(1).Visible = False
         lblWorlds(2).Visible = False
         lblWorlds(3).Visible = False
@@ -10837,7 +10907,7 @@ Private Sub DungeonsHyrule_Click(Index As Integer)
         ' play sound
         PlaySound Sound_ButtonChange
 End Sub
-Private Sub NoneHyrule_Click(Index As Integer)
+Private Sub NoneHyrule_Click(index As Integer)
         lblWorlds(1).Visible = False
         lblWorlds(2).Visible = False
         lblWorlds(3).Visible = False
@@ -10859,7 +10929,7 @@ Private Sub NoneHyrule_Click(Index As Integer)
         PlaySound Sound_ButtonChange
 End Sub
 
-Private Sub WorldsTermina_Click(Index As Integer)
+Private Sub WorldsTermina_Click(index As Integer)
         lblWorlds(7).Visible = True
         lblWorlds(8).Visible = True
         lblWorlds(9).Visible = True
@@ -10874,7 +10944,7 @@ Private Sub WorldsTermina_Click(Index As Integer)
         ' play sound
         PlaySound Sound_ButtonChange
 End Sub
-Private Sub CitiesTermina_Click(Index As Integer)
+Private Sub CitiesTermina_Click(index As Integer)
         lblWorlds(7).Visible = False
         lblWorlds(8).Visible = False
         lblWorlds(9).Visible = False
@@ -10889,7 +10959,7 @@ Private Sub CitiesTermina_Click(Index As Integer)
         ' play sound
         PlaySound Sound_ButtonChange
 End Sub
-Private Sub DungeonsTermina_Click(Index As Integer)
+Private Sub DungeonsTermina_Click(index As Integer)
         lblWorlds(7).Visible = False
         lblWorlds(8).Visible = False
         lblWorlds(9).Visible = False
@@ -10904,7 +10974,7 @@ Private Sub DungeonsTermina_Click(Index As Integer)
         ' play sound
         PlaySound Sound_ButtonChange
 End Sub
-Private Sub NoneTermina_Click(Index As Integer)
+Private Sub NoneTermina_Click(index As Integer)
         lblWorlds(7).Visible = False
         lblWorlds(8).Visible = False
         lblWorlds(9).Visible = False

@@ -271,7 +271,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub chkLoseExp_Click()
-    Actions(EditorIndex).Data4 = chkLoseExp.Value '1 = don't lose exp, 0 = lose exp
+    Actions(EditorIndex).Data4 = chkLoseExp.value '1 = don't lose exp, 0 = lose exp
 End Sub
 
 Private Sub cmbActionType_Click()
@@ -311,7 +311,7 @@ Dim tmpIndex As Long
     
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Actions(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Actions(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ActionsEditorInit
@@ -370,8 +370,8 @@ Private Sub optVitalNum_Click()
 End Sub
 
 Private Sub scrlMap_Change()
-    Actions(EditorIndex).Data1 = scrlMap.Value
-    lblMap.Caption = "Map: " & scrlMap.Value
+    Actions(EditorIndex).Data1 = scrlMap.value
+    lblMap.Caption = "Map: " & scrlMap.value
     scrlX.Max = MAX_BYTE
     scrlY.Max = MAX_BYTE
 End Sub
@@ -379,8 +379,8 @@ End Sub
 Private Sub scrlVital_Change()
 'Find vital
 'Change text
-    Actions(EditorIndex).Data1 = scrlVital.Value
-    lblVitalName.Caption = "Vital " & VitalsEnumToString(scrlVital.Value)
+    Actions(EditorIndex).Data1 = scrlVital.value
+    lblVitalName.Caption = "Vital " & VitalsEnumToString(scrlVital.value)
 
 
 End Sub
@@ -388,8 +388,8 @@ End Sub
 Private Sub scrlVitalNum_Change()
     
     
-    Actions(EditorIndex).Data3 = scrlVitalNum.Value
-    lblVitalNum.Caption = "Vital Num: " & scrlVitalNum.Value
+    Actions(EditorIndex).Data3 = scrlVitalNum.value
+    lblVitalNum.Caption = "Vital Num: " & scrlVitalNum.value
 
     
         
@@ -397,24 +397,24 @@ End Sub
 
 Private Sub scrlX_Change()
     
-    Actions(EditorIndex).Data2 = scrlX.Value
-    lblX.Caption = "X: " & scrlX.Value
+    Actions(EditorIndex).Data2 = scrlX.value
+    lblX.Caption = "X: " & scrlX.value
     
 End Sub
 
 Private Sub scrlY_Change()
 
-    Actions(EditorIndex).Data3 = scrlY.Value
-    lblY.Caption = "Y: " & scrlY.Value
+    Actions(EditorIndex).Data3 = scrlY.value
+    lblY.Caption = "Y: " & scrlY.value
     
 End Sub
 
 Private Sub txtVitalAbstract_Change()
 
     
-    If IsNumeric(txtVitalAbstract.text) Then
-        If txtVitalAbstract.text > 0 Then
-            Actions(EditorIndex).Data3 = Val(txtVitalAbstract.text)
+    If IsNumeric(txtVitalAbstract.Text) Then
+        If txtVitalAbstract.Text > 0 Then
+            Actions(EditorIndex).Data3 = Val(txtVitalAbstract.Text)
         End If
     End If
     
@@ -437,10 +437,10 @@ End If
 
 End Function
 
-Private Sub ActionsShowWindow(ByVal Index As Long)
+Private Sub ActionsShowWindow(ByVal index As Long)
 
     Call ClearActionTypeFrames
-    Select Case Index
+    Select Case index
     Case 0
         frmSubVital.Visible = True
     Case 1
@@ -462,9 +462,9 @@ Dim tmpIndex As Long
     
     If EditorIndex = 0 Then Exit Sub
     tmpIndex = lstIndex.ListIndex
-    Actions(EditorIndex).Name = Trim$(txtName.text)
+    Actions(EditorIndex).Name = Trim$(txtName.Text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Actions(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Actions(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler

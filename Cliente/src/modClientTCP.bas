@@ -15,7 +15,7 @@ Sub TcpInit()
 
     ' connect
     frmMain.Socket.RemoteHost = Options.ip
-    frmMain.Socket.RemotePort = Options.Port
+    frmMain.Socket.RemotePort = Options.port
 
     ' Error handler
     Exit Sub
@@ -172,6 +172,11 @@ Dim Buffer As clsBuffer
     Buffer.WriteLong CNewAccount
     Buffer.WriteString Name
     Buffer.WriteString Password
+    
+    Buffer.WriteLong App.Major
+    Buffer.WriteLong App.Minor
+    Buffer.WriteLong App.Revision
+    
     SendData Buffer.ToArray()
     Set Buffer = Nothing
     
@@ -272,7 +277,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub SayMsg(ByVal text As String)
+Public Sub SayMsg(ByVal Text As String)
 Dim Buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
@@ -280,7 +285,7 @@ Dim Buffer As clsBuffer
     
     Set Buffer = New clsBuffer
     Buffer.WriteLong CSayMsg
-    Buffer.WriteString text
+    Buffer.WriteString Text
     SendData Buffer.ToArray()
     Set Buffer = Nothing
     
@@ -292,7 +297,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub BroadcastMsg(ByVal text As String)
+Public Sub BroadcastMsg(ByVal Text As String)
 Dim Buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
@@ -300,7 +305,7 @@ Dim Buffer As clsBuffer
     
     Set Buffer = New clsBuffer
     Buffer.WriteLong CBroadcastMsg
-    Buffer.WriteString text
+    Buffer.WriteString Text
     SendData Buffer.ToArray()
     Set Buffer = Nothing
     
@@ -312,7 +317,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub EmoteMsg(ByVal text As String)
+Public Sub EmoteMsg(ByVal Text As String)
 Dim Buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
@@ -320,7 +325,7 @@ Dim Buffer As clsBuffer
     
     Set Buffer = New clsBuffer
     Buffer.WriteLong CEmoteMsg
-    Buffer.WriteString text
+    Buffer.WriteString Text
     SendData Buffer.ToArray()
     Set Buffer = Nothing
     
@@ -332,7 +337,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub PlayerMsg(ByVal text As String, ByVal MsgTo As String)
+Public Sub PlayerMsg(ByVal Text As String, ByVal MsgTo As String)
 Dim Buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
@@ -341,7 +346,7 @@ Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
     Buffer.WriteLong CPlayerMsg
     Buffer.WriteString MsgTo
-    Buffer.WriteString text
+    Buffer.WriteString Text
     SendData Buffer.ToArray()
     Set Buffer = Nothing
     
@@ -2171,12 +2176,12 @@ errorhandler:
         Exit Sub
 End Sub
 
-Public Sub SendPartyChatMsg(ByVal text As String)
+Public Sub SendPartyChatMsg(ByVal Text As String)
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
     
     Buffer.WriteLong CPartyChatMsg
-    Buffer.WriteString text
+    Buffer.WriteString Text
     
     SendData Buffer.ToArray()
     Set Buffer = Nothing
@@ -2459,15 +2464,15 @@ End Sub
 Sub SendSpecialCommand(ByRef Command() As String)
 Dim Buffer As clsBuffer
 Set Buffer = New clsBuffer
-Dim size As Byte
-size = UBound(Command) - LBound(Command) + 1
+Dim Size As Byte
+Size = UBound(Command) - LBound(Command) + 1
 
 Buffer.WriteLong CSpecialCommand
-Buffer.WriteByte size
+Buffer.WriteByte Size
 
 Dim i As Byte
 i = 0
-While i < size
+While i < Size
     Buffer.WriteString Trim$(Command(i))
     i = i + 1
 Wend
@@ -2476,7 +2481,18 @@ SendData Buffer.ToArray()
 Set Buffer = Nothing
 
 End Sub
+Sub SendBugReport(ByVal Report As String)
 
+Dim Buffer As clsBuffer
+Set Buffer = New clsBuffer
+
+Buffer.WriteLong CBugReport
+Buffer.WriteString Report
+
+SendData Buffer.ToArray()
+Set Buffer = Nothing
+
+End Sub
 
 Sub SendCode(ByVal code As String)
 Dim Buffer As clsBuffer
@@ -2491,7 +2507,7 @@ Set Buffer = Nothing
 End Sub
 
 
-Sub SendFSpellActivacion(ByVal MyIndex As Long)
+Sub SendFSpellActiEmptyn(ByVal MyIndex As Long)
 Dim Buffer As clsBuffer
 Set Buffer = New clsBuffer
 

@@ -322,10 +322,10 @@ Private Sub cmdCenterLayer_Click()
     End If
     
     With DDSD_Character(sprite)
-        Dim Dir As Byte
+        Dim dir As Byte
         Dim spritetop As Byte
-        For Dir = 0 To MAX_DIRECTIONS - 1
-            Select Case Dir
+        For dir = 0 To MAX_DIRECTIONS - 1
+            Select Case dir
                 Case DIR_UP
                     spritetop = 3
                 Case DIR_DOWN
@@ -336,11 +336,11 @@ Private Sub cmdCenterLayer_Click()
                     spritetop = 2
             End Select
             
-            scrlDir.value = Dir
+            scrlDir.value = dir
             
-            txtX.text = CStr((.lWidth / 4) / 2)
+            txtX.Text = CStr((.lWidth / 4) / 2)
             Call txtX_Validate(False)
-            txtY.text = CStr((.lHeight / 4) / 2 + spritetop * (.lHeight / 4))
+            txtY.Text = CStr((.lHeight / 4) / 2 + spritetop * (.lHeight / 4))
             Call txtY_Validate(False)
         Next
     
@@ -432,8 +432,8 @@ Private Sub scrlAnimto_Change()
     SetAnim value
 End Sub
 
-Public Sub LoadAnim(ByVal Dir As Byte, ByVal Anim As Byte)
-    scrlAnimto.value = CustomSprites(EditorIndex).Layers(GetLayerNum).fixed.EnabledAnims(Dir, Anim)
+Public Sub LoadAnim(ByVal dir As Byte, ByVal Anim As Byte)
+    scrlAnimto.value = CustomSprites(EditorIndex).Layers(GetLayerNum).fixed.EnabledAnims(dir, Anim)
 End Sub
 
 Public Sub SetAnim(ByVal value As Byte)
@@ -448,8 +448,8 @@ Private Sub scrlDir_Change()
     If Not IsLayerLegal Then Exit Sub
     
     With CustomSprites(EditorIndex).Layers(GetLayerNum)
-        txtX.text = CStr(.CentersPositions(scrlDir.value).X)
-        txtY.text = CStr(.CentersPositions(scrlDir.value).Y)
+        txtX.Text = CStr(.CentersPositions(scrlDir.value).X)
+        txtY.Text = CStr(.CentersPositions(scrlDir.value).y)
     End With
     
     scrlAnims.value = 0
@@ -476,7 +476,7 @@ Dim tmpIndex As Long
     
     If EditorIndex = 0 Then Exit Sub
     tmpIndex = lstIndex.ListIndex
-    CustomSprites(EditorIndex).Name = Trim$(txtName.text)
+    CustomSprites(EditorIndex).Name = Trim$(txtName.Text)
     lstIndex.RemoveItem EditorIndex - 1
     lstIndex.AddItem EditorIndex & ": " & CustomSprites(EditorIndex).Name, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
@@ -557,9 +557,9 @@ End Sub
 Private Sub txtX_Validate(Cancel As Boolean)
 If Not IsLayerLegal Then Exit Sub
 
-If IsNumeric(txtX.text) Then
-    If Len(txtX.text) <= MAX_INTEGER Then
-        CustomSprites(EditorIndex).Layers(GetLayerNum).CentersPositions(scrlDir.value).X = CInt(Trim$(txtX.text))
+If IsNumeric(txtX.Text) Then
+    If Len(txtX.Text) <= MAX_INTEGER Then
+        CustomSprites(EditorIndex).Layers(GetLayerNum).CentersPositions(scrlDir.value).X = CInt(Trim$(txtX.Text))
     End If
 End If
 
@@ -568,9 +568,9 @@ End Sub
 Private Sub txtY_Validate(Cancel As Boolean)
 If Not IsLayerLegal Then Exit Sub
 
-If IsNumeric(txtX.text) Then
-    If Len(txtX.text) <= MAX_INTEGER Then
-        CustomSprites(EditorIndex).Layers(GetLayerNum).CentersPositions(scrlDir.value).Y = CInt(txtY.text)
+If IsNumeric(txtX.Text) Then
+    If Len(txtX.Text) <= MAX_INTEGER Then
+        CustomSprites(EditorIndex).Layers(GetLayerNum).CentersPositions(scrlDir.value).y = CInt(txtY.Text)
     End If
 End If
 
@@ -605,8 +605,8 @@ Public Sub UpdateInfo()
     scrlDir.value = 0
     scrlAnims.value = 0
     
-    txtX.text = CStr(GetLayerCenterX(CustomSprites(EditorIndex).Layers(GetLayerNum), scrlDir.value))
-    txtY.text = CStr(GetLayerCenterY(CustomSprites(EditorIndex).Layers(GetLayerNum), scrlDir.value))
+    txtX.Text = CStr(GetLayerCenterX(CustomSprites(EditorIndex).Layers(GetLayerNum), scrlDir.value))
+    txtY.Text = CStr(GetLayerCenterY(CustomSprites(EditorIndex).Layers(GetLayerNum), scrlDir.value))
 
 End Sub
 

@@ -101,6 +101,10 @@ errorhandler:
     Exit Sub
 End Sub
 
+Public Sub MoveReadHead(ByVal nLength As Long)
+    ReadHead = ReadHead + nLength
+End Sub
+
 Public Sub WriteByte(ByVal nByte As Byte)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -320,11 +324,11 @@ errorhandler:
     Exit Function
 End Function
 
-Public Function ReadConstString(ByVal size As Long, Optional MoveReadHead As Boolean = True) As String
+Public Function ReadConstString(ByVal Size As Long, Optional MoveReadHead As Boolean = True) As String
 Dim sLength As Long
 Dim sBytes() As Byte
     
-    sLength = size
+    sLength = Size
     If sLength <= 0 Then
         If MoveReadHead Then ReadHead = ReadHead + 4
         Exit Function

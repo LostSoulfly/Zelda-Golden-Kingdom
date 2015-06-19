@@ -1287,7 +1287,7 @@ Dim N As Long
     
     For N = 1 To MAX_MAP_NPCS
         If map.NPC(N) > 0 Then
-            lstNpc.AddItem N & ": " & NPC(map.NPC(N)).Name
+            lstNpc.AddItem N & ": " & NPC(map.NPC(N)).TranslatedName
         Else
             lstNpc.AddItem N & ": No Npc"
         End If
@@ -1498,7 +1498,7 @@ Private Sub optItem_Click()
 
     scrlMapItem.Max = MAX_ITEMS
     scrlMapItem.value = 1
-    lblMapItem.Caption = Trim$(Item(scrlMapItem.value).Name) & " x" & scrlMapItemValue.value
+    lblMapItem.Caption = Trim$(Item(scrlMapItem.value).TranslatedName) & " x" & scrlMapItemValue.value
     EditorMap_BltMapItem
     
     ' Error handler
@@ -1521,7 +1521,7 @@ Private Sub optKey_Click()
     scrlMapKey.value = 1
     chkMapKey.value = 1
     EditorMap_BltKey
-    lblMapKey.Caption = "Item: " & Trim$(Item(scrlMapKey.value).Name)
+    lblMapKey.Caption = "Item: " & Trim$(Item(scrlMapKey.value).TranslatedName)
     
     ' Error handler
     Exit Sub
@@ -1596,7 +1596,7 @@ End Sub
 
 Private Sub scrlDoor_Change()
 If scrlDoor.value > 0 Then
-lblDoor.Caption = "Door/Switch: " & Doors(scrlDoor.value).Name
+lblDoor.Caption = "Door/Switch: " & Doors(scrlDoor.value).TranslatedName
 Else
 lblDoor.Caption = "Door/Switch: None"
 End If
@@ -1698,7 +1698,7 @@ Private Sub scrlMapItem_Change()
     End If
         
     EditorMap_BltMapItem
-    lblMapItem.Caption = Trim$(Item(scrlMapItem.value).Name) & " x" & scrlMapItemValue.value
+    lblMapItem.Caption = Trim$(Item(scrlMapItem.value).TranslatedName) & " x" & scrlMapItemValue.value
     
     ' Error handler
     Exit Sub
@@ -1726,7 +1726,7 @@ Private Sub scrlMapItemValue_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblMapItem.Caption = Trim$(Item(scrlMapItem.value).Name) & " x" & scrlMapItemValue.value
+    lblMapItem.Caption = Trim$(Item(scrlMapItem.value).TranslatedName) & " x" & scrlMapItemValue.value
     
     ' Error handler
     Exit Sub
@@ -1754,7 +1754,7 @@ Private Sub scrlMapKey_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblMapKey.Caption = "Item: " & Trim$(Item(scrlMapKey.value).Name)
+    lblMapKey.Caption = "Item: " & Trim$(Item(scrlMapKey.value).TranslatedName)
     
     ' Error handler
     Exit Sub
@@ -1903,7 +1903,7 @@ Private Sub scrlResource_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblResource.Caption = "Resource: " & Resource(scrlResource.value).Name
+    lblResource.Caption = "Resource: " & Resource(scrlResource.value).TranslatedName
     
     ' Error handler
     Exit Sub

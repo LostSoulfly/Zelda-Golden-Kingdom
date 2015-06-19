@@ -6,11 +6,14 @@ Public Function GetMapData(ByRef MapT As MapRec) As Byte()
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
     With MapT
+        Buffer.WriteConstString "v.2"
         Buffer.WriteConstString .Name
+        If Len(Trim$(Replace(.TranslatedName, vbNullChar, ""))) = 0 Then .TranslatedName = GetTranslation(.Name)
+        Buffer.WriteConstString .TranslatedName
         Buffer.WriteConstString .Music
         
         Buffer.WriteLong .Revision
-        Buffer.WriteByte .Moral
+        Buffer.WriteByte .moral
         
         Buffer.WriteLong .Up
         Buffer.WriteLong .Down
@@ -54,18 +57,24 @@ Public Function GetMapData(ByRef MapT As MapRec) As Byte()
     End With
     
     GetMapData = Buffer.ToArray
+    'Debug.Print Buffer.ToString
     Set Buffer = Nothing
 End Function
 
 Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
+    Dim newVer As Boolean
     Buffer.WriteBytes Data
     With map
+        If Buffer.ReadConstString(3, False) = "v.2" Then newVer = True: Buffer.MoveReadHead 3
         .Name = Buffer.ReadConstString(NAME_LENGTH)
+        'small patch.. not a safe fix!
+         If newVer = True Then .TranslatedName = Buffer.ReadConstString(NAME_LENGTH)
+         If newVer = False Then .TranslatedName = GetTranslation(.Name)
         .Music = Buffer.ReadConstString(NAME_LENGTH)
         .Revision = Buffer.ReadLong
-        .Moral = Buffer.ReadByte
+        .moral = Buffer.ReadByte
         .Up = Buffer.ReadLong
         .Down = Buffer.ReadLong
         .Left = Buffer.ReadLong

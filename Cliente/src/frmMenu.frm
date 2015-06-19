@@ -18,12 +18,35 @@ Begin VB.Form frmMenu
    Icon            =   "frmMenu.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   MinButton       =   0   'False
    ScaleHeight     =   352
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   515
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.CommandButton Command3 
+      Caption         =   "Custom Server"
+      Height          =   255
+      Left            =   5880
+      TabIndex        =   38
+      Top             =   840
+      Width           =   1575
+   End
+   Begin VB.CommandButton Command2 
+      Caption         =   "Troll Server"
+      Height          =   255
+      Left            =   5880
+      TabIndex        =   37
+      Top             =   600
+      Width           =   1575
+   End
+   Begin VB.CommandButton Command1 
+      Caption         =   "Normal Server"
+      Height          =   255
+      Left            =   5880
+      TabIndex        =   36
+      Top             =   360
+      Width           =   1575
+   End
    Begin VB.PictureBox picCharacter 
       AutoSize        =   -1  'True
       BackColor       =   &H00C0C0C0&
@@ -345,7 +368,7 @@ Begin VB.Form frmMenu
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Index           =   11
+         Index           =   6
          Left            =   1200
          TabIndex        =   14
          Top             =   2040
@@ -385,7 +408,7 @@ Begin VB.Form frmMenu
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Index           =   9
+         Index           =   7
          Left            =   1200
          TabIndex        =   11
          Top             =   1680
@@ -718,12 +741,22 @@ Begin VB.Form frmMenu
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Index           =   0
+         Index           =   1
          Left            =   1200
          TabIndex        =   2
          Top             =   1440
          Width           =   1215
       End
+   End
+   Begin VB.Label lblVer 
+      Alignment       =   1  'Right Justify
+      BackStyle       =   0  'Transparent
+      ForeColor       =   &H0000FFFF&
+      Height          =   255
+      Left            =   5400
+      TabIndex        =   39
+      Top             =   4200
+      Width           =   1815
    End
    Begin VB.Image imgButton 
       Height          =   465
@@ -811,19 +844,89 @@ Dim lblClassInfo As String
     Else
     frmMenu.lblClassInfo.Caption = "Clase sin información"
     End If
+    
+    frmMenu.lblClassInfo.Caption = GetTranslation(frmMenu.lblClassInfo.Caption)
+    
+End Sub
+
+Private Sub Command1_Click()
+DestroyTCP
+Options.ip = "trollparty.org"
+Options.port = "4000"
+frmMain.Caption = Options.Game_Name & " - Normal Server"
+TcpInit
+End Sub
+
+Private Sub Command2_Click()
+
+If MsgBox("The 'Troll Server' is an evil place where everyone is an admin" & vbNewLine & "However, kicking/banning is disabled." & vbNewLine & _
+    "You may edit maps, items, spells, quests, whatever." & vbNewLine & "You can even kill other players." & vbNewLine & _
+    "type /admin in chat, or press the Insert key to open the admin menu." & vbNewLine & vbNewLine & _
+    "Would you like to play on this server?", vbYesNo, "Play on the Troll Server?") = vbNo Then Exit Sub
+    
+
+DestroyTCP
+Options.ip = "trollparty.org"
+Options.port = "4001"
+frmMain.Caption = Options.Game_Name & " - Troll Server"
+TcpInit
+End Sub
+
+Private Sub Command3_Click()
+DestroyTCP
+
+Dim ip As String, port As String
+ip = InputBox("Please enter a custom server's Address..", "Server Address", "trollparty.org")
+If LenB(ip) <= 0 Then Exit Sub
+port = InputBox("Please enter a server port..", "Server Port", "4000")
+If LenB(port) <= 0 Then Exit Sub
+
+frmMain.Caption = Options.Game_Name
+
+Options.ip = ip
+Options.port = port
+
+TcpInit
 End Sub
 
 Private Sub form_load()
     Dim tmpTxt As String, tmpArray() As String, i As Long
-
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
+    
+    Dim e As Control
+    
+    For Each e In Me.Controls
+        If (TypeOf e Is Label) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CheckBox) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is OptionButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+    Next
+    
+    lblVer.Caption = "Ver. " & App.Major & "." & App.Minor & "." & App.Revision
+    
+    'For i = 1 To lblBlank.UBound
+    '    With lblBlank(i)
+    '        .Caption = GetTranslation(.Caption)
+    '    End With
+    'Next i
+    
+    'With lblCAccept
+    '.Caption = GetTranslation(.Caption)
+    'End With
+    
+    
     
     ' general menu stuff
     Me.Caption = Options.Game_Name
     
     ' load news
-    Open App.Path & "\data files\news.txt" For Input As #1
+    Open App.Path & "\data\news.txt" For Input As #1
         Line Input #1, tmpTxt
     Close #1
     ' split breaks
@@ -1096,16 +1199,16 @@ Private Sub picLogin_MouseMove(Button As Integer, Shift As Integer, X As Single,
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    If ServerStatus.Caption = "Conectando..." Or ServerStatus.Caption = "¡Online!" Then
+    If ServerStatus.Caption = "Connecting.." Or ServerStatus.Caption = "Online!" Then
         Exit Sub
     End If
-    ServerStatus.Caption = "Conectando..."
+    ServerStatus.Caption = "Connecting.."
     ServerStatus.ForeColor = RGB(250, 200, 100)
         
     resetButtons_Menu
     
     If ConnectToServer(1) Then
-        ServerStatus.Caption = "¡Online!"
+        ServerStatus.Caption = "Online!"
         ServerStatus.ForeColor = RGB(0, 250, 0)
     Else
         ServerStatus.Caption = "...Offline"
@@ -1146,6 +1249,10 @@ errorhandler:
     HandleError "picRegister_MouseMove", "frmMenu", Err.Number, Err.Description, Err.Source, Err.HelpContext
     Err.Clear
     Exit Sub
+End Sub
+
+Private Sub ServerStatus_Change()
+'ServerStatus.Caption = GetTranslation(ServerStatus.Caption)
 End Sub
 
 ' Register

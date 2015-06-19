@@ -873,7 +873,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Private TempTask As Long
 
-Private Sub Form_Load()
+Private Sub form_load()
     scrlTotalTasks.Max = MAX_TASKS
     scrlNPC.Max = MAX_NPCS
     scrlItem.Max = MAX_ITEMS
@@ -911,7 +911,7 @@ Private Sub cmdDelete_Click()
     ClearQuest EditorIndex
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Quest(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Quest(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     QuestEditorInit
 End Sub
@@ -921,42 +921,42 @@ Private Sub lstIndex_Click()
 End Sub
 
 Private Sub scrlOptimalLevel_Change()
-    Quest(EditorIndex).Level = scrlOptimalLevel.Value
-    lblOptimalLevel.Caption = "Optimal lvl: " & scrlOptimalLevel.Value
+    Quest(EditorIndex).Level = scrlOptimalLevel.value
+    lblOptimalLevel.Caption = "Optimal lvl: " & scrlOptimalLevel.value
 End Sub
 
 Private Sub scrlTotalTasks_Change()
     Dim i As Long
     
-    lblSelected = "Selected Task: " & scrlTotalTasks.Value
+    lblSelected = "Selected Task: " & scrlTotalTasks.value
     
-    LoadTask EditorIndex, scrlTotalTasks.Value
+    LoadTask EditorIndex, scrlTotalTasks.value
 End Sub
 
-Private Sub optTask_Click(Index As Integer)
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).Order = Index
-    LoadTask EditorIndex, scrlTotalTasks.Value
+Private Sub optTask_Click(index As Integer)
+    Quest(EditorIndex).Task(scrlTotalTasks.value).Order = index
+    LoadTask EditorIndex, scrlTotalTasks.value
 End Sub
 
 Private Sub txtName_Validate(Cancel As Boolean)
     Dim tmpIndex As Long
     tmpIndex = lstIndex.ListIndex
-    Quest(EditorIndex).Name = Trim$(txtName.text)
+    Quest(EditorIndex).Name = Trim$(txtName.Text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Quest(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Quest(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
 End Sub
 
 Private Sub txtQuestLog_Change()
-    Quest(EditorIndex).QuestLog = Trim$(txtQuestLog.text)
+    Quest(EditorIndex).QuestLog = Trim$(txtQuestLog.Text)
 End Sub
 
 Private Sub txtTaskLog_Change()
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).TaskLog = Trim$(txtTaskLog.text)
+    Quest(EditorIndex).Task(scrlTotalTasks.value).TaskLog = Trim$(txtTaskLog.Text)
 End Sub
 
 Private Sub chkRepeat_Click()
-    If chkRepeat.Value = 1 Then
+    If chkRepeat.value = 1 Then
         Quest(EditorIndex).Repeat = 1
     Else
         Quest(EditorIndex).Repeat = 0
@@ -964,243 +964,243 @@ Private Sub chkRepeat_Click()
 End Sub
 
 Private Sub scrlReqLevel_Change()
-    lblReqLevel.Caption = "Level: " & scrlReqLevel.Value
-    Quest(EditorIndex).RequiredLevel = scrlReqLevel.Value
+    lblReqLevel.Caption = "Level: " & scrlReqLevel.value
+    Quest(EditorIndex).RequiredLevel = scrlReqLevel.value
 End Sub
 
 Private Sub scrlReqQuest_Change()
-    If Not scrlReqQuest.Value = 0 Then
-        If Not Trim$(Quest(scrlReqQuest.Value).Name) = "" Then
-            lblReqQuest.Caption = "Quest: " & Trim$(Quest(scrlReqQuest.Value).Name)
+    If Not scrlReqQuest.value = 0 Then
+        If Not Trim$(Quest(scrlReqQuest.value).Name) = "" Then
+            lblReqQuest.Caption = "Quest: " & Trim$(Quest(scrlReqQuest.value).TranslatedName)
         Else
             lblReqQuest.Caption = "Quest: None"
         End If
     Else
         lblReqQuest.Caption = "Quest: None"
     End If
-    Quest(EditorIndex).RequiredQuest = scrlReqQuest.Value
+    Quest(EditorIndex).RequiredQuest = scrlReqQuest.value
 End Sub
 
 'Alatar v1.2
 
 Private Sub scrlReqItem_Change()
-    lblReqItem.Caption = "Item Needed: " & scrlReqItem.Value & " (" & scrlReqItemValue.Value & ")"
+    lblReqItem.Caption = "Item Needed: " & scrlReqItem.value & " (" & scrlReqItemValue.value & ")"
 End Sub
 
 Private Sub scrlReqItemValue_Change()
-    lblReqItem.Caption = "Item Needed: " & scrlReqItem.Value & " (" & scrlReqItemValue.Value & ")"
+    lblReqItem.Caption = "Item Needed: " & scrlReqItem.value & " (" & scrlReqItemValue.value & ")"
 End Sub
 
 Private Sub cmdReqItem_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstReqItem.ListIndex + 1 'the selected item
-    If Index = 0 Then Exit Sub
-    If scrlReqItem.Value < 1 Or scrlReqItem.Value > MAX_ITEMS Then Exit Sub
-    If Trim$(Item(scrlReqItem.Value).Name) = "" Then Exit Sub
+    index = lstReqItem.ListIndex + 1 'the selected item
+    If index = 0 Then Exit Sub
+    If scrlReqItem.value < 1 Or scrlReqItem.value > MAX_ITEMS Then Exit Sub
+    If Trim$(Item(scrlReqItem.value).Name) = "" Then Exit Sub
     
-    Quest(EditorIndex).RequiredItem(Index).Item = scrlReqItem.Value
-    Quest(EditorIndex).RequiredItem(Index).Value = scrlReqItemValue.Value
+    Quest(EditorIndex).RequiredItem(index).Item = scrlReqItem.value
+    Quest(EditorIndex).RequiredItem(index).value = scrlReqItemValue.value
     UpdateQuestRequirementItems
 End Sub
 
 Private Sub cmdReqItemRemove_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstReqItem.ListIndex + 1
-    If Index = 0 Then Exit Sub
+    index = lstReqItem.ListIndex + 1
+    If index = 0 Then Exit Sub
     
-    Quest(EditorIndex).RequiredItem(Index).Item = 0
-    Quest(EditorIndex).RequiredItem(Index).Value = 1
+    Quest(EditorIndex).RequiredItem(index).Item = 0
+    Quest(EditorIndex).RequiredItem(index).value = 1
     UpdateQuestRequirementItems
 End Sub
 
 Private Sub scrlReqClass_Change()
-    If scrlReqClass.Value < 1 Or scrlReqClass.Value > Max_Classes Then
+    If scrlReqClass.value < 1 Or scrlReqClass.value > Max_Classes Then
         lblReqClass.Caption = "Class: 0"
     Else
-        lblReqClass.Caption = "Class: " & scrlReqClass.Value & " (" & Trim$(Class(scrlReqClass.Value).Name) & ")"
+        lblReqClass.Caption = "Class: " & scrlReqClass.value & " (" & Trim$(Class(scrlReqClass.value).TranslatedName) & ")"
     End If
 End Sub
 
 Private Sub cmdReqClass_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstReqClass.ListIndex + 1 'the selected class
-    If Index = 0 Then Exit Sub
-    If scrlReqClass.Value < 1 Or scrlReqClass.Value > Max_Classes Then Exit Sub
-    If Trim$(Class(scrlReqClass.Value).Name) = "" Then Exit Sub
+    index = lstReqClass.ListIndex + 1 'the selected class
+    If index = 0 Then Exit Sub
+    If scrlReqClass.value < 1 Or scrlReqClass.value > Max_Classes Then Exit Sub
+    If Trim$(Class(scrlReqClass.value).Name) = "" Then Exit Sub
     
-    Quest(EditorIndex).RequiredClass(Index) = scrlReqClass.Value
+    Quest(EditorIndex).RequiredClass(index) = scrlReqClass.value
     UpdateQuestClass
 End Sub
 
 Private Sub cmdReqClassRemove_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstReqClass.ListIndex + 1
-    If Index = 0 Then Exit Sub
+    index = lstReqClass.ListIndex + 1
+    If index = 0 Then Exit Sub
     
-    Quest(EditorIndex).RequiredClass(Index) = 0
+    Quest(EditorIndex).RequiredClass(index) = 0
     UpdateQuestClass
 End Sub
 
 '/Alatar v1.2
 
 Private Sub scrlExp_Change()
-    lblExp = "Experience Reward: " & scrlExp.Value
-    Quest(EditorIndex).RewardExp = scrlExp.Value
+    lblExp = "Experience Reward: " & scrlExp.value
+    Quest(EditorIndex).RewardExp = scrlExp.value
 End Sub
 
 Private Sub scrlItemRew_Change()
-    lblItemRew.Caption = "Item Reward: " & scrlItemRew.Value & " (" & scrlItemRewValue.Value & ")"
+    lblItemRew.Caption = "Item Reward: " & scrlItemRew.value & " (" & scrlItemRewValue.value & ")"
 End Sub
 
 Private Sub scrlItemRewValue_Change()
-    lblItemRew.Caption = "Item Reward: " & scrlItemRew.Value & " (" & scrlItemRewValue.Value & ")"
+    lblItemRew.Caption = "Item Reward: " & scrlItemRew.value & " (" & scrlItemRewValue.value & ")"
 End Sub
 
 'Alatar v1.2
 Private Sub cmdItemRew_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstItemRew.ListIndex + 1 'the selected item
-    If Index = 0 Then Exit Sub
-    If scrlItemRew.Value < 1 Or scrlItemRew.Value > MAX_ITEMS Then Exit Sub
-    If Trim$(Item(scrlItemRew.Value).Name) = "" Then Exit Sub
+    index = lstItemRew.ListIndex + 1 'the selected item
+    If index = 0 Then Exit Sub
+    If scrlItemRew.value < 1 Or scrlItemRew.value > MAX_ITEMS Then Exit Sub
+    If Trim$(Item(scrlItemRew.value).Name) = "" Then Exit Sub
     
-    Quest(EditorIndex).RewardItem(Index).Item = scrlItemRew.Value
-    Quest(EditorIndex).RewardItem(Index).Value = scrlItemRewValue.Value
+    Quest(EditorIndex).RewardItem(index).Item = scrlItemRew.value
+    Quest(EditorIndex).RewardItem(index).value = scrlItemRewValue.value
     UpdateQuestRewardItems
 End Sub
 
 Private Sub cmdItemRewRemove_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstItemRew.ListIndex + 1
-    If Index = 0 Then Exit Sub
+    index = lstItemRew.ListIndex + 1
+    If index = 0 Then Exit Sub
     
-    Quest(EditorIndex).RewardItem(Index).Item = 0
-    Quest(EditorIndex).RewardItem(Index).Value = 1
+    Quest(EditorIndex).RewardItem(index).Item = 0
+    Quest(EditorIndex).RewardItem(index).value = 1
     UpdateQuestRewardItems
 End Sub
 '/Alatar v1.2
 
-Private Sub txtSpeech_Change(Index As Integer)
-    Quest(EditorIndex).Speech(Index) = Trim$(txtSpeech(Index).text)
+Private Sub txtSpeech_Change(index As Integer)
+    Quest(EditorIndex).Speech(index) = Trim$(txtSpeech(index).Text)
 End Sub
 
 Private Sub txtTaskSpeech_Change()
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).Speech = Trim$(txtTaskSpeech.text)
+    Quest(EditorIndex).Task(scrlTotalTasks.value).Speech = Trim$(txtTaskSpeech.Text)
 End Sub
 
 'Alatar v1.2
 Private Sub scrlGiveItem_Change()
-    lblGiveItem = "Give Item on Start: " & scrlGiveItem.Value & " (" & scrlGiveItemValue.Value & ")"
+    lblGiveItem = "Give Item on Start: " & scrlGiveItem.value & " (" & scrlGiveItemValue.value & ")"
 End Sub
 
 Private Sub scrlGiveItemValue_Change()
-    lblGiveItem = "Give Item on Start: " & scrlGiveItem.Value & " (" & scrlGiveItemValue.Value & ")"
+    lblGiveItem = "Give Item on Start: " & scrlGiveItem.value & " (" & scrlGiveItemValue.value & ")"
 End Sub
 
 Private Sub cmdGiveItem_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstGiveItem.ListIndex + 1 'the selected item
-    If Index = 0 Then Exit Sub
-    If scrlGiveItem.Value < 1 Or scrlGiveItem.Value > MAX_ITEMS Then Exit Sub
-    If Trim$(Item(scrlGiveItem.Value).Name) = "" Then Exit Sub
+    index = lstGiveItem.ListIndex + 1 'the selected item
+    If index = 0 Then Exit Sub
+    If scrlGiveItem.value < 1 Or scrlGiveItem.value > MAX_ITEMS Then Exit Sub
+    If Trim$(Item(scrlGiveItem.value).Name) = "" Then Exit Sub
     
-    Quest(EditorIndex).GiveItem(Index).Item = scrlGiveItem.Value
-    Quest(EditorIndex).GiveItem(Index).Value = scrlGiveItemValue.Value
+    Quest(EditorIndex).GiveItem(index).Item = scrlGiveItem.value
+    Quest(EditorIndex).GiveItem(index).value = scrlGiveItemValue.value
     UpdateQuestGiveItems
 End Sub
 
 Private Sub cmdGiveItemRemove_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstGiveItem.ListIndex + 1
-    If Index = 0 Then Exit Sub
+    index = lstGiveItem.ListIndex + 1
+    If index = 0 Then Exit Sub
     
-    Quest(EditorIndex).GiveItem(Index).Item = 0
-    Quest(EditorIndex).GiveItem(Index).Value = 1
+    Quest(EditorIndex).GiveItem(index).Item = 0
+    Quest(EditorIndex).GiveItem(index).value = 1
     UpdateQuestGiveItems
 End Sub
 
 Private Sub scrlTakeItem_Change()
-    lblTakeItem = "Take Item on the End: " & scrlTakeItem.Value & " (" & scrlTakeItemValue.Value & ")"
+    lblTakeItem = "Take Item on the End: " & scrlTakeItem.value & " (" & scrlTakeItemValue.value & ")"
 End Sub
 
 Private Sub scrlTakeItemValue_Change()
-    lblTakeItem = "Take Item on the End: " & scrlTakeItem.Value & " (" & scrlTakeItemValue.Value & ")"
+    lblTakeItem = "Take Item on the End: " & scrlTakeItem.value & " (" & scrlTakeItemValue.value & ")"
 End Sub
 
 Private Sub cmdTakeItem_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstTakeItem.ListIndex + 1 'the selected item
-    If Index = 0 Then Exit Sub
-    If scrlTakeItem.Value < 1 Or scrlTakeItem.Value > MAX_ITEMS Then Exit Sub
-    If Trim$(Item(scrlTakeItem.Value).Name) = "" Then Exit Sub
+    index = lstTakeItem.ListIndex + 1 'the selected item
+    If index = 0 Then Exit Sub
+    If scrlTakeItem.value < 1 Or scrlTakeItem.value > MAX_ITEMS Then Exit Sub
+    If Trim$(Item(scrlTakeItem.value).Name) = "" Then Exit Sub
     
-    Quest(EditorIndex).TakeItem(Index).Item = scrlTakeItem.Value
-    Quest(EditorIndex).TakeItem(Index).Value = scrlTakeItemValue.Value
+    Quest(EditorIndex).TakeItem(index).Item = scrlTakeItem.value
+    Quest(EditorIndex).TakeItem(index).value = scrlTakeItemValue.value
     UpdateQuestTakeItems
 End Sub
 
 Private Sub cmdTakeItemRemove_Click()
-    Dim Index As Long
+    Dim index As Long
     
-    Index = lstTakeItem.ListIndex + 1
-    If Index = 0 Then Exit Sub
+    index = lstTakeItem.ListIndex + 1
+    If index = 0 Then Exit Sub
     
-    Quest(EditorIndex).TakeItem(Index).Item = 0
-    Quest(EditorIndex).TakeItem(Index).Value = 1
+    Quest(EditorIndex).TakeItem(index).Item = 0
+    Quest(EditorIndex).TakeItem(index).value = 1
     UpdateQuestTakeItems
 End Sub
 '/Alatar v1.2
 
 Private Sub scrlAmount_Change()
-    lblAmount.Caption = "Amount: " & scrlAmount.Value
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).amount = scrlAmount.Value
+    lblAmount.Caption = "Amount: " & scrlAmount.value
+    Quest(EditorIndex).Task(scrlTotalTasks.value).amount = scrlAmount.value
 End Sub
 
 Private Sub scrlNPC_Change()
-    lblNPC.Caption = "NPC: " & scrlNPC.Value
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).NPC = scrlNPC.Value
+    lblNPC.Caption = "NPC: " & scrlNPC.value
+    Quest(EditorIndex).Task(scrlTotalTasks.value).NPC = scrlNPC.value
 End Sub
 
 Private Sub scrlItem_Change()
-    lblItem.Caption = "Item: " & scrlItem.Value
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).Item = scrlItem.Value
+    lblItem.Caption = "Item: " & scrlItem.value
+    Quest(EditorIndex).Task(scrlTotalTasks.value).Item = scrlItem.value
 End Sub
 
 Private Sub scrlMap_Change()
-    lblMap.Caption = "Map: " & scrlMap.Value
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).map = scrlMap.Value
+    lblMap.Caption = "Map: " & scrlMap.value
+    Quest(EditorIndex).Task(scrlTotalTasks.value).map = scrlMap.value
 End Sub
 
 Private Sub scrlResource_Change()
-    lblResource.Caption = "Resource: " & scrlResource.Value
-    Quest(EditorIndex).Task(scrlTotalTasks.Value).Resource = scrlResource.Value
+    lblResource.Caption = "Resource: " & scrlResource.value
+    Quest(EditorIndex).Task(scrlTotalTasks.value).Resource = scrlResource.value
 End Sub
 
 Private Sub chkEnd_Click()
-    If chkEnd.Value = 1 Then
-        Quest(EditorIndex).Task(scrlTotalTasks.Value).QuestEnd = True
+    If chkEnd.value = 1 Then
+        Quest(EditorIndex).Task(scrlTotalTasks.value).QuestEnd = True
     Else
-        Quest(EditorIndex).Task(scrlTotalTasks.Value).QuestEnd = False
+        Quest(EditorIndex).Task(scrlTotalTasks.value).QuestEnd = False
     End If
 End Sub
 
-Private Sub optShowFrame_Click(Index As Integer)
+Private Sub optShowFrame_Click(index As Integer)
     fraGeneral.Visible = False
     fraRequirements.Visible = False
     fraRewards.Visible = False
     fraTasks.Visible = False
     
-    If optShowFrame(Index).Value = True Then
-        Select Case Index
+    If optShowFrame(index).value = True Then
+        Select Case index
             Case 0
                 fraGeneral.Visible = True
             Case 1

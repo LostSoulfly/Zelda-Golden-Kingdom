@@ -2,102 +2,106 @@ Attribute VB_Name = "modUseFulData"
 
 
 Sub SetSpellUsefulData(ByVal spellnum As Long, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     
     With Spell(spellnum)
-    .Name = buffer.ReadString
-    .Desc = buffer.ReadString
-    .Sound = buffer.ReadString
+    .Name = Buffer.ReadString
+    .TranslatedName = Buffer.ReadString
+    .Desc = Buffer.ReadString
+    .Sound = Buffer.ReadString
     
-    .MPCost = buffer.ReadLong
-    .CDTime = buffer.ReadLong
-    .Icon = buffer.ReadLong
-    .CastTime = buffer.ReadLong
+    .MPCost = Buffer.ReadLong
+    .CDTime = Buffer.ReadLong
+    .Icon = Buffer.ReadLong
+    .CastTime = Buffer.ReadLong
     End With
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Sub SetNPCUsefulData(ByVal NPCNum As Long, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     
     With NPC(NPCNum)
-    .Name = buffer.ReadString
-    .Sound = buffer.ReadString
-    .sprite = buffer.ReadLong
+    .Name = Buffer.ReadString
+    .TranslatedName = Buffer.ReadString
+    .Sound = Buffer.ReadString
+    .sprite = Buffer.ReadLong
     
-    .Behaviour = buffer.ReadByte
+    .Behaviour = Buffer.ReadByte
     Dim i As Byte
     For i = 1 To Stats.Stat_Count - 1
-        .stat(i) = buffer.ReadByte
+        .stat(i) = Buffer.ReadByte
     Next
-    .HP = buffer.ReadLong
-    .QuestNum = buffer.ReadLong
-    .Speed = buffer.ReadLong
-    .Level = buffer.ReadLong
+    .HP = Buffer.ReadLong
+    .QuestNum = Buffer.ReadLong
+    .Speed = Buffer.ReadLong
+    .Level = Buffer.ReadLong
     End With
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Sub SetItemUsefulData(ByVal ItemNum As Long, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     
     With Item(ItemNum)
-    .Name = buffer.ReadString
-    .Desc = buffer.ReadString
-    .Sound = buffer.ReadString
+    .Name = Buffer.ReadString
+    .TranslatedName = Buffer.ReadString
+    .Desc = Buffer.ReadString
+    .Sound = Buffer.ReadString
     
-    .Pic = buffer.ReadLong
-    .Type = buffer.ReadByte
-    .Price = buffer.ReadLong
-    .Rarity = buffer.ReadByte
-    .Speed = buffer.ReadLong
-    .Paperdoll = buffer.ReadLong
-    .ProjecTile.Pic = buffer.ReadLong
-    .Weight = buffer.ReadLong
+    .Pic = Buffer.ReadLong
+    .Type = Buffer.ReadByte
+    .Price = Buffer.ReadLong
+    .Rarity = Buffer.ReadByte
+    .Speed = Buffer.ReadLong
+    .Paperdoll = Buffer.ReadLong
+    .ProjecTile.Pic = Buffer.ReadLong
+    .Weight = Buffer.ReadLong
 
     End With
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Sub SetResourceUsefulData(ByVal ResourceNum As Long, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     
     With Resource(ResourceNum)
-    .ResourceImage = buffer.ReadLong
-    .ExhaustedImage = buffer.ReadLong
-    .WalkableNormal = buffer.ReadByte
-    .WalkableExhausted = buffer.ReadByte
+    .Name = ""
+    .ResourceImage = Buffer.ReadLong
+    .ExhaustedImage = Buffer.ReadLong
+    .WalkableNormal = Buffer.ReadByte
+    .WalkableExhausted = Buffer.ReadByte
     End With
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Sub SetAnimationUseFulData(ByVal AnimNum As Long, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     
     With Animation(AnimNum)
-    .Sound = buffer.ReadString
+    .Sound = Buffer.ReadString
     Dim i As Byte
     For i = 0 To 1
-        .sprite(i) = buffer.ReadLong
-        .Frames(i) = buffer.ReadLong
-        .LoopCount(i) = buffer.ReadLong
-        .looptime(i) = buffer.ReadLong
+        .sprite(i) = Buffer.ReadLong
+        .Frames(i) = Buffer.ReadLong
+        .LoopCount(i) = Buffer.ReadLong
+        .looptime(i) = Buffer.ReadLong
     Next
     End With
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub

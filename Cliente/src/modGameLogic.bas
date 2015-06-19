@@ -16,16 +16,11 @@ Dim tmr250 As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-
-    
     ' *** Start GameLoop ***
     Do While InGame
         tick = GetTickCount                            ' Set the inital tick
         ElapsedTime = tick - FrameTime                 ' Set the time difference for time-based movement
         FrameTime = tick                               ' Set the time second loop time to the first.
-
-        
-
 
     'Send Speed
     If SpeedHack_Timer > 0 And SpeedHack_Timer < tick Then
@@ -168,7 +163,7 @@ Dim tmr250 As Long
             InGame = IsConnected
             Call CheckKeys ' Check to make sure they aren't trying to auto do anything
 
-            If GetForegroundWindow() = frmMain.hWnd Then
+            If GetForegroundWindow() = frmMain.hwnd Then
                 Call CheckInputKeys ' Check which keys were pressed
             End If
             
@@ -575,6 +570,11 @@ Dim d As Long
     If Player(MyIndex).Moving <> 0 Then
         CanMove = False
         Exit Function
+    End If
+
+    If Player(MyIndex).LagDirections.IsEmpty Then
+        Player(MyIndex).automatizedmove = False
+        Player(MyIndex).Started = False
     End If
 
     If Player(MyIndex).automatizedmove Or Player(MyIndex).Started Then
@@ -1245,7 +1245,7 @@ Public Sub UpdateDrawMapName()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    DrawMapNameX = Camera.Left + ((MAX_MAPX + 1) * PIC_X / 2) - getWidth(TexthDC, Trim$(map.Name))
+    DrawMapNameX = Camera.Left + ((MAX_MAPX + 1) * PIC_X / 2) - getWidth(TexthDC, (map.TranslatedName))
     DrawMapNameY = Camera.Top + 1
 
     Select Case map.moral
@@ -1303,13 +1303,13 @@ Dim Buffer As clsBuffer
     
     ' dont let them forget a spell which is in CD
     If SpellCD(spellslot) > 0 Then
-        AddText "¡No puedes olvidar una habilidad mientras se recarga!", BrightRed
+        AddText "¡No puedes olvidar una habilidad mientras se recarga!", BrightRed, True
         Exit Sub
     End If
     
     ' dont let them forget a spell which is buffered
     If SpellBuffer = spellslot Then
-        AddText "¡No puedes olvidar una habilidad mientras la usas!", BrightRed
+        AddText "¡No puedes olvidar una habilidad mientras la usas!", BrightRed, True
         Exit Sub
     End If
     
@@ -1320,7 +1320,7 @@ Dim Buffer As clsBuffer
         SendData Buffer.ToArray()
         Set Buffer = Nothing
     Else
-        AddText "Vacío", BrightRed
+        AddText "Vacío", BrightRed, True
     End If
     
     ' Error handler
@@ -1352,7 +1352,7 @@ Dim Buffer As clsBuffer
     ' Check if player has enough MP
     If GetPlayerVital(MyIndex, Vitals.mp) < Spell(PlayerSpells(spellslot)).MPCost Then
         'Call AddText("No tienes suficiente MP para lanzar " & Trim$(Spell(PlayerSpells(spellslot)).Name) & ".", BrightRed)
-        CreateActionMsg "¡Sin puntos de magia suficientes!", BrightRed, ACTIONMSG_SCROLL, GetPlayerX(MyIndex) * 32, GetPlayerY(MyIndex) * 32
+        CreateActionMsg "¡Sin puntos de magia suficientes!", BrightRed, ACTIONMSG_SCROLL, GetPlayerX(MyIndex) * 32, GetPlayerY(MyIndex) * 32, True
         Exit Sub
     End If
 
@@ -1367,11 +1367,11 @@ Dim Buffer As clsBuffer
                 SpellBuffer = spellslot
                 SpellBufferTimer = GetTickCount
             Else
-                Call AddText("No puedes invocar mientras corres.", BrightRed)
+                Call AddText("No puedes invocar mientras corres.", BrightRed, True)
             End If
         End If
     Else
-        Call AddText("Vacío", BrightRed)
+        Call AddText("Vacío", BrightRed, True)
     End If
 
     ' Error handler
@@ -1405,17 +1405,17 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub DevMsg(ByVal text As String, ByVal Color As Byte)
+Public Sub DevMsg(ByVal Text As String, ByVal Color As Byte)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     If InGame Then
         If GetPlayerAccess(MyIndex) > ADMIN_DEVELOPER Then
-            Call AddText(text, Color)
+            Call AddText(Text, Color)
         End If
     End If
 
-    Debug.Print text
+    Debug.Print Text
     
     ' Error handler
     Exit Sub
@@ -1526,8 +1526,8 @@ Dim i As Long
         
         If LastSpellDesc = spellnum Then Exit Sub
         
-        .lblSpellName.Caption = Trim$(Spell(spellnum).Name)
-        .lblSpellDesc.Caption = Trim$(Spell(spellnum).Desc)
+        .lblSpellName.Caption = Trim$(Spell(spellnum).TranslatedName)
+        .lblSpellDesc.Caption = GetTranslation(Trim$(Spell(spellnum).Desc), True)
         BltSpellDesc spellnum
     End With
     ' Error handler
@@ -1546,12 +1546,12 @@ Dim Name As String
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    FirstLetter = LCase$(Left$(Trim$(Item(ItemNum).Name), 1))
+    FirstLetter = LCase$(Left$(Trim$(Item(ItemNum).TranslatedName), 1))
    
     If FirstLetter = "$" Then
-        Name = (Mid$(Trim$(Item(ItemNum).Name), 2, Len(Trim$(Item(ItemNum).Name)) - 1))
+        Name = (Mid$(Trim$(Item(ItemNum).TranslatedName), 2, Len(Trim$(Item(ItemNum).TranslatedName)) - 1))
     Else
-        Name = Trim$(Item(ItemNum).Name)
+        Name = Trim$(Item(ItemNum).TranslatedName)
     End If
     
     ' check for off-screen
@@ -1586,10 +1586,12 @@ Dim Name As String
         End Select
         
         ' set captions
-        .lblItemName.Caption = Name
-        .lblItemDesc.Caption = Trim$(Item(ItemNum).Desc)
         
-        .lblItemWeight.Caption = "Peso: " & Item(ItemNum).Weight
+        .lblItemName.Caption = Name
+        
+        .lblItemDesc.Caption = GetTranslation(Trim$(Item(ItemNum).Desc), True)
+
+        .lblItemWeight.Caption = "Weight: " & Item(ItemNum).Weight
         ' render the item
         BltItemDesc ItemNum
     End With
@@ -1631,8 +1633,14 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub CreateActionMsg(ByVal message As String, ByVal Color As Integer, ByVal MsgType As Byte, ByVal X As Long, ByVal y As Long)
+Public Sub CreateActionMsg(ByVal message As String, ByVal Color As Integer, ByVal MsgType As Byte, ByVal X As Long, ByVal y As Long, Optional blTranslate As Boolean = False)
 Dim i As Long
+
+    If Not IsNumeric(message) Then
+        If blTranslate = True Then message = GetTranslation(message)
+    Else
+        If message = 0 Then Exit Sub
+    End If
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -2014,6 +2022,9 @@ Public Sub Dialogue(ByVal diTitle As String, ByVal diText As String, ByVal diInd
     ' exit out if we've already got a dialogue open
     If dialogueIndex > 0 Then Exit Sub
     
+    diTitle = GetTranslation(diTitle)
+    diText = GetTranslation(diText)
+    
     ' set global dialogue index
     dialogueIndex = diIndex
     
@@ -2333,11 +2344,11 @@ If ActualPet < 1 Or ActualPet > MAX_PLAYER_PETS Then Exit Sub
         End If
         
         If NPCNum > 0 Then
-            .lblChoosePet.Caption = "Nombre: " & Trim$(NPC(NPCNum).Name)
-            .lblPetName.Caption = Trim$(NPC(NPCNum).Name)
+            .lblChoosePet.Caption = "Name: " & Trim$(NPC(NPCNum).TranslatedName)
+            .lblPetName.Caption = Trim$(NPC(NPCNum).TranslatedName)
         Else
-            .lblChoosePet.Caption = "Nombre:"
-            .lblPetName.Caption = "Vacio"
+            .lblChoosePet.Caption = "Name:"
+            .lblPetName.Caption = "Empty"
         End If
         'Lvl
         If Player(index).Pet(ActualPet).Level > 0 Then
@@ -2709,31 +2720,34 @@ End Select
 End Function
 
 
-Sub ProcessAttack()
+Sub ProcessAttack(Optional blResourceOnly As Boolean = False)
 Dim attackspeed As Long
 
-    If ControlDown Then
+    If ControlDown Or blResourceOnly Then
         
         If SpellBuffer > 0 Then Exit Sub ' currently casting a spell, can't attack
         If BlockedActions(aAttack) Then Exit Sub  ' stunned, can't attack
 
         ' speed from weapon
         If GetPlayerEquipment(MyIndex, Weapon) > 0 Then
-            SendFSpellActivacion (MyIndex)
+            SendFSpellActiEmptyn (MyIndex)
             attackspeed = Item(GetPlayerEquipment(MyIndex, Weapon)).Speed
         Else
             attackspeed = 1000
         End If
         
-        
-                
-
         If Player(MyIndex).AttackTimer + attackspeed < GetTickCount Then
             If Player(MyIndex).Attacking = 0 Then
                 With Player(MyIndex)
                     .Attacking = 1
                     .AttackTimer = GetTickCount
                 End With
+                
+                If blResourceOnly = True Then
+                    CheckResource
+                    'CheckAttack
+                    Exit Sub
+                End If
                 
                 If Not CheckAttackNPC Then
                     If Not CheckResource Then
@@ -2887,7 +2901,7 @@ End Function
 
 Public Sub DisplayWeightPercent()
     If GetPlayerMaxWeight(MyIndex) > 0 Then
-        frmMain.lblInvWeight.Caption = "Peso: " & CLng(GetPlayerWeight(MyIndex) / GetPlayerMaxWeight(MyIndex) * 100) & "%"
+        frmMain.lblInvWeight.Caption = "Weight: " & CLng(GetPlayerWeight(MyIndex) / GetPlayerMaxWeight(MyIndex) * 100) & "%"
     End If
 End Sub
 
@@ -2987,10 +3001,12 @@ End Function
 
 Function GetShopPriceName(ByVal Shopnum As Long, ByVal shopslot As Long) As String
     If Shop(Shopnum).PriceType = SHItem Then
-        GetShopPriceName = Item(Shop(Shopnum).TradeItem(shopslot).CostItem).Name
+        GetShopPriceName = Item(Shop(Shopnum).TradeItem(shopslot).CostItem).TranslatedName
     Else
         GetShopPriceName = ShopTypeToStr(Shop(Shopnum).PriceType)
     End If
+    GetShopPriceName = GetShopPriceName
+    
 End Function
 
 

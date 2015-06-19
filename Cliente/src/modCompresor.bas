@@ -22,13 +22,14 @@ Public Function GetSize(Source() As Byte) As Long
     GetSize = qlz_size_decompressed(Source(0))
 End Function
 
-Public Function Decompress(Source() As Byte) As Byte()
+Public Function Decompress(Source() As Byte, Optional ByRef blFail As Boolean) As Byte()
     Dim dst() As Byte
     Dim r As Long
-    Dim size As Long
-    size = GetSize(Source)
-    If size < 20 * 1000000 Then ' Visual Basic can crash if you allocate too long strings
-        ReDim dst(0 To size - 1)
+    Dim Size As Long
+    Size = GetSize(Source)
+    If Size = 0 Then blFail = True: Exit Function
+    If Size < 20 * 1000000 Then ' Visual Basic can crash if you allocate too long strings
+        ReDim dst(0 To Size - 1)
         r = qlz_decompress(Source(0), dst(0))
         ReDim Preserve dst(0 To r - 1)
         Decompress = dst

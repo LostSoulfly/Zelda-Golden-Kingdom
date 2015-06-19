@@ -1240,7 +1240,7 @@ Dim tmpIndex As Long
     
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Item(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Item(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ItemEditorInit
@@ -1449,7 +1449,7 @@ End Sub
 
 Private Sub scrlAmmo_Change()
 If scrlAmmo.value > 0 Then
-lblammo.Caption = "Weapon: " + Item(scrlAmmo.value).Name
+lblammo.Caption = "Weapon: " + Item(scrlAmmo.value).TranslatedName
 Else
 lblammo.Caption = "Weapon: None"
 End If
@@ -1466,7 +1466,7 @@ Dim sString As String
     If scrlAnim.value = 0 Then
         sString = "None"
     Else
-        sString = Trim$(Animation(scrlAnim.value).Name)
+        sString = Trim$(Animation(scrlAnim.value).TranslatedName)
     End If
     lblAnim.Caption = "Anim: " & sString
     Item(EditorIndex).Animation = scrlAnim.value
@@ -1528,7 +1528,7 @@ If scrlItem.value = 0 Then
          Exit Sub
 End If
 
-lblItem.Caption = "Item: " & Item(scrlItem.value).Name
+lblItem.Caption = "Item: " & Item(scrlItem.value).TranslatedName
 Item(EditorIndex).ConsumeItem = scrlItem.value
 End Sub
 
@@ -1697,7 +1697,7 @@ Private Sub scrlSpell_Change()
     If EditorIndex = 0 Or EditorIndex > MAX_ITEMS Then Exit Sub
     
     If Len(Trim$(Spell(scrlSpell.value).Name)) > 0 Then
-        lblSpellName.Caption = "Name: " & Trim$(Spell(scrlSpell.value).Name)
+        lblSpellName.Caption = "Name: " & Trim$(Spell(scrlSpell.value).TranslatedName)
     Else
         lblSpellName.Caption = "Name: None"
     End If
@@ -1741,7 +1741,7 @@ Private Sub spinImpactar_Change()
     If spinImpactar.value > 0 Then
 
         If Len(Trim$(Spell(spinImpactar.value).Name)) > 0 Then
-            lblImpactar.Caption = "Impactar: " & Trim$(Spell(spinImpactar.value).Name)
+            lblImpactar.Caption = "Impactar: " & Trim$(Spell(spinImpactar.value).TranslatedName)
         End If
 
     Else
@@ -1785,7 +1785,7 @@ Dim tmpIndex As Long
     tmpIndex = lstIndex.ListIndex
     Item(EditorIndex).Name = Trim$(txtName.text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Item(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Item(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler
@@ -1888,7 +1888,7 @@ Private Sub scrlContainer_Change()
     If scrlContainer.value = 0 Then
         lblContainer.Caption = "Item: 0"
     Else
-        lblContainer.Caption = "Item: " & Item(scrlContainer.value).Name
+        lblContainer.Caption = "Item: " & Item(scrlContainer.value).TranslatedName
     End If
     Item(EditorIndex).Container(scrlContainerIndex.value).ItemNum = scrlContainer.value
     

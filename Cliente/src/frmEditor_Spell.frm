@@ -670,7 +670,7 @@ Dim tmpIndex As Long
     
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Spell(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Spell(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     SpellEditorInit
@@ -756,7 +756,7 @@ Private Sub scrlAnim_Change()
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If scrlAnim.value > 0 Then
-        lblAnim.Caption = "Animation: " & Trim$(Animation(scrlAnim.value).Name)
+        lblAnim.Caption = "Animation: " & Trim$(Animation(scrlAnim.value).TranslatedName)
     Else
         lblAnim.Caption = "Animation: None"
     End If
@@ -775,7 +775,7 @@ Private Sub scrlAnimCast_Change()
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If scrlAnimCast.value > 0 Then
-        lblAnimCast.Caption = "Cast Anim: " & Trim$(Animation(scrlAnimCast.value).Name)
+        lblAnimCast.Caption = "Cast Anim: " & Trim$(Animation(scrlAnimCast.value).TranslatedName)
     Else
         lblAnimCast.Caption = "Cast Anim: None"
     End If
@@ -1105,7 +1105,7 @@ Dim tmpIndex As Long
     tmpIndex = lstIndex.ListIndex
     Spell(EditorIndex).Name = Trim$(txtName.text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Spell(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Spell(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler

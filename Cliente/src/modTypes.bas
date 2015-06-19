@@ -42,13 +42,14 @@ Private Type OptionsRec
     Password As String * NAME_LENGTH
     Username As String * ACCOUNT_LENGTH
     ip As String
-    Port As Long
+    port As Long
     MenuMusic As String
     Music As Byte
     Sound As Byte
     Debug As Byte
     Names As Byte
     Level As Byte
+    WASD As Byte
     Chat As Byte
     SafeMode As Byte
     DefaultVolume As Byte
@@ -56,6 +57,7 @@ Private Type OptionsRec
     MiniMap As Byte
     MappingMode As Byte
     ChatToScreen As Byte
+    DllRegistered As Byte
 End Type
 
 Public Type PartyRec
@@ -93,6 +95,7 @@ End Type
 
 Public Type DoorRec
     Name As String * NAME_LENGTH
+    
     DoorType As Long
     
     WarpMap As Long
@@ -106,6 +109,8 @@ Public Type DoorRec
     Time As Long
     
     InitialState As Boolean
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Public Type PlayerPetRec
@@ -257,6 +262,7 @@ End Type
 
 Public Type MapRec
     Name As String * NAME_LENGTH
+    
     Music As String * NAME_LENGTH
     
     Revision As Long
@@ -282,6 +288,8 @@ Public Type MapRec
     NPCSProperties(1 To MAX_MAP_NPCS) As MapNPCPropertiesRec
     
     AllowedStates(1 To Max_States - 1) As Boolean
+
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type ClassRec
@@ -292,6 +300,8 @@ Private Type ClassRec
     Face As Long
     ' For client use
     vital(1 To Vitals.Vital_Count - 1) As Long
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type ContainerRec
@@ -309,6 +319,7 @@ End Type
 
 Private Type ItemRec
     Name As String * NAME_LENGTH
+    
     Desc As String * 255
     Sound As String * NAME_LENGTH
     
@@ -354,7 +365,7 @@ Private Type ItemRec
     Impactar As ImpactarRec
     ExtraHP As Long
     
-    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type MapItemRec
@@ -375,6 +386,7 @@ End Type
 
 Private Type NpcRec
     Name As String * NAME_LENGTH
+    
     AttackSay As String * 100
     Sound As String * NAME_LENGTH
     
@@ -396,6 +408,8 @@ Private Type NpcRec
     '/ALATAR
     Drops(1 To MAX_NPC_DROPS) As NpcDropRec
     Speed As Long
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 
@@ -431,13 +445,17 @@ End Type
 
 Private Type ShopRec
     Name As String * NAME_LENGTH
+    
     BuyRate As Long
     TradeItem(1 To MAX_TRADES) As TradeItemRec
     PriceType As Byte 'references shop prices type
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type SpellRec
     Name As String * NAME_LENGTH
+    
     Desc As String * 255
     Sound As String * NAME_LENGTH
     
@@ -468,6 +486,8 @@ Private Type SpellRec
     StatDamage As Byte
     StatDefense As Byte
     ChangeState As Byte
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type TempTileRec
@@ -491,6 +511,7 @@ End Type
 
 Private Type ResourceRec
     Name As String * NAME_LENGTH
+    
     SuccessMessage As String * NAME_LENGTH
     EmptyMessage As String * NAME_LENGTH
     Sound As String * NAME_LENGTH
@@ -498,7 +519,6 @@ Private Type ResourceRec
     ResourceType As Integer
     ResourceImage As Long
     ExhaustedImage As Long
-    'ItemReward As Long
     ToolRequired As Long
     health As Long
     RespawnTime As Long
@@ -509,9 +529,11 @@ Private Type ResourceRec
     WalkableExhausted As Boolean
     
     Rewards(1 To MAX_RESOURCE_REWARDS) As ResourceRewardRec
+    
     ' True = say item name when reward, False = Say specificated caption
     ItemSuccessMessage As Boolean
     
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type ActionMsgRec
@@ -534,12 +556,15 @@ End Type
 
 Private Type AnimationRec
     Name As String * NAME_LENGTH
+    
     Sound As String * NAME_LENGTH
     
     sprite(0 To 1) As Long
     Frames(0 To 1) As Long
     LoopCount(0 To 1) As Long
     looptime(0 To 1) As Long
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Private Type AnimInstanceRec
@@ -564,7 +589,7 @@ Public Type HotbarRec
 End Type
 
 Public Type ButtonRec
-    FileName As String
+    Filename As String
     State As Byte
 End Type
 
@@ -603,6 +628,7 @@ End Type
 
 Public Type ActionRec
     Name As String * NAME_LENGTH
+
     Type As Byte
     Moment As MomentType
     Data1 As Long
@@ -610,6 +636,8 @@ Public Type ActionRec
     Data3 As Long
     Data4 As Long
     range As Byte
+    
+    TranslatedName As String * NAME_LENGTH
 End Type
 
 Public Type PetRec
@@ -768,7 +796,7 @@ Public Type SwitchRec
 End Type
 
 Private Type ChatRec
-    text As String
+    Text As String
     colour As Long
 End Type
 

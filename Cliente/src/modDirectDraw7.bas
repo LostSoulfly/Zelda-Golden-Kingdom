@@ -114,7 +114,7 @@ Public Function InitDirectDraw() As Boolean
     Set DD = DX7.DirectDrawCreate(vbNullString)
     
     ' Windowed
-    DD.SetCooperativeLevel frmMain.hWnd, DDSCL_NORMAL
+    DD.SetCooperativeLevel frmMain.hwnd, DDSCL_NORMAL
 
     ' Init type and set the primary surface
     With DDSD_Primary
@@ -128,7 +128,7 @@ Public Function InitDirectDraw() As Boolean
     Set DD_Clip = DD.CreateClipper(0)
     
     ' Associate the picture hwnd with the clipper
-    DD_Clip.SetHWnd frmMain.picScreen.hWnd
+    DD_Clip.SetHWnd frmMain.picScreen.hwnd
     
     ' Have the blits to the screen clipped to the picture box
     DDS_Primary.SetClipper DD_Clip
@@ -170,21 +170,21 @@ Dim rec As DxVBLib.RECT
     Set DDS_BackBuffer = DD.CreateSurface(DDSD_BackBuffer)
     
     ' load persistent surfaces
-    If FileExist(App.Path & "\data files\graphics\door.bmp", True) Then Call InitDDSurf("door", DDSD_Door, DDS_Door)
-    If FileExist(App.Path & "\data files\graphics\direction.bmp", True) Then Call InitDDSurf("direction", DDSD_Direction, DDS_Direction)
-    If FileExist(App.Path & "\data files\graphics\target.bmp", True) Then Call InitDDSurf("target", DDSD_Target, DDS_Target)
-    If FileExist(App.Path & "\data files\graphics\misc.bmp", True) Then Call InitDDSurf("misc", DDSD_Misc, DDS_Misc)
-    If FileExist(App.Path & "\data files\graphics\blood.bmp", True) Then Call InitDDSurf("blood", DDSD_Blood, DDS_Blood)
-    If FileExist(App.Path & "\data files\graphics\bars.bmp", True) Then Call InitDDSurf("bars", DDSD_Bars, DDS_Bars)
-    If FileExist(App.Path & "\data files\graphics\chatbubble.bmp", True) Then Call InitDDSurf("chatbubble", DDSD_ChatBubble, DDS_ChatBubble)
-    If FileExist(App.Path & "\data files\graphics\rain.bmp", True) Then Call InitDDSurf("rain", DDSD_Rain, DDS_Rain)
-    If FileExist(App.Path & "\data files\graphics\snow.bmp", True) Then Call InitDDSurf("snow", DDSD_Snow, DDS_Snow)
-    If FileExist(App.Path & "\data files\graphics\sandstorm.bmp", True) Then Call InitDDSurf("sandstorm", DDSD_Sandstorm, DDS_Sandstorm)
-    If FileExist(App.Path & "\data files\graphics\rupee.bmp", True) Then Call InitDDSurf("Rupee", DDSD_Rupee, DDS_Rupee)
-    If FileExist(App.Path & "\data files\graphics\hearts.bmp", True) Then Call InitDDSurf("Hearts", DDSD_Hearts, DDS_Hearts)
-    If FileExist(App.Path & "\data files\graphics\health.bmp", True) Then Call InitDDSurf("Health", DDSD_Health, DDS_Health)
-    If FileExist(App.Path & "\data files\graphics\hearts.bmp", True) Then Call InitDDSurf("MagicBar", DDSD_MagicBar, DDS_MagicBar)
-    If FileExist(App.Path & "\data files\graphics\minimap.bmp", True) Then Call InitDDSurf("minimap", DDSD_MiniMap, DDS_MiniMap)
+    If FileExist(App.Path & "\data\graphics\door.bmp", True) Then Call InitDDSurf("door", DDSD_Door, DDS_Door)
+    If FileExist(App.Path & "\data\graphics\direction.bmp", True) Then Call InitDDSurf("direction", DDSD_Direction, DDS_Direction)
+    If FileExist(App.Path & "\data\graphics\target.bmp", True) Then Call InitDDSurf("target", DDSD_Target, DDS_Target)
+    If FileExist(App.Path & "\data\graphics\misc.bmp", True) Then Call InitDDSurf("misc", DDSD_Misc, DDS_Misc)
+    If FileExist(App.Path & "\data\graphics\blood.bmp", True) Then Call InitDDSurf("blood", DDSD_Blood, DDS_Blood)
+    If FileExist(App.Path & "\data\graphics\bars.bmp", True) Then Call InitDDSurf("bars", DDSD_Bars, DDS_Bars)
+    If FileExist(App.Path & "\data\graphics\chatbubble.bmp", True) Then Call InitDDSurf("chatbubble", DDSD_ChatBubble, DDS_ChatBubble)
+    If FileExist(App.Path & "\data\graphics\rain.bmp", True) Then Call InitDDSurf("rain", DDSD_Rain, DDS_Rain)
+    If FileExist(App.Path & "\data\graphics\snow.bmp", True) Then Call InitDDSurf("snow", DDSD_Snow, DDS_Snow)
+    If FileExist(App.Path & "\data\graphics\sandstorm.bmp", True) Then Call InitDDSurf("sandstorm", DDSD_Sandstorm, DDS_Sandstorm)
+    If FileExist(App.Path & "\data\graphics\rupee.bmp", True) Then Call InitDDSurf("Rupee", DDSD_Rupee, DDS_Rupee)
+    If FileExist(App.Path & "\data\graphics\hearts.bmp", True) Then Call InitDDSurf("Hearts", DDSD_Hearts, DDS_Hearts)
+    If FileExist(App.Path & "\data\graphics\health.bmp", True) Then Call InitDDSurf("Health", DDSD_Health, DDS_Health)
+    If FileExist(App.Path & "\data\graphics\hearts.bmp", True) Then Call InitDDSurf("MagicBar", DDSD_MagicBar, DDS_MagicBar)
+    If FileExist(App.Path & "\data\graphics\minimap.bmp", True) Then Call InitDDSurf("minimap", DDSD_MiniMap, DDS_MiniMap)
      
     ' count the blood sprites
     BloodCount = DDSD_Blood.lWidth / 32
@@ -232,12 +232,12 @@ errorhandler:
 End Sub
 
 ' Initializing a surface, using a bitmap
-Public Sub InitDDSurf(FileName As String, ByRef SurfDesc As DDSURFACEDESC2, ByRef Surf As DirectDrawSurface7)
+Public Sub InitDDSurf(Filename As String, ByRef SurfDesc As DDSURFACEDESC2, ByRef Surf As DirectDrawSurface7)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     ' Set path
-    FileName = App.Path & GFX_PATH & FileName & GFX_EXT
+    Filename = App.Path & GFX_PATH & Filename & GFX_EXT
 
     ' Destroy surface if it exist
     If Not Surf Is Nothing Then
@@ -250,7 +250,7 @@ Public Sub InitDDSurf(FileName As String, ByRef SurfDesc As DDSURFACEDESC2, ByRe
     SurfDesc.ddsCaps.lCaps = DDSD_Temp.ddsCaps.lCaps
     
     ' init object
-    Set Surf = DD.CreateSurfaceFromFile(FileName, SurfDesc)
+    Set Surf = DD.CreateSurfaceFromFile(Filename, SurfDesc)
     
     ' Set mask
     Call SetMaskColorFromPixel(Surf, 0, 0)
@@ -778,13 +778,13 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub BltBlood(ByVal Index As Long)
+Public Sub BltBlood(ByVal index As Long)
 Dim rec As DxVBLib.RECT
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    With Blood(Index)
+    With Blood(index)
         ' check if we should be seeing it
         If .Timer + 20000 < GetTickCount Then Exit Sub
         
@@ -804,7 +804,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub BltAnimation(ByVal Index As Long, ByVal layer As Long)
+Public Sub BltAnimation(ByVal index As Long, ByVal layer As Long)
 Dim sprite As Long
 Dim sRECT As DxVBLib.RECT
 Dim dRECT As DxVBLib.RECT
@@ -818,16 +818,16 @@ Dim lockindex As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If AnimInstance(Index).Animation = 0 Then
-        ClearAnimInstance Index
+    If AnimInstance(index).Animation = 0 Then
+        ClearAnimInstance index
         Exit Sub
     End If
     
-    sprite = Animation(AnimInstance(Index).Animation).sprite(layer)
+    sprite = Animation(AnimInstance(index).Animation).sprite(layer)
     
     If sprite < 1 Or sprite > NumAnimations Then Exit Sub
     
-    FrameCount = Animation(AnimInstance(Index).Animation).Frames(layer)
+    FrameCount = Animation(AnimInstance(index).Animation).Frames(layer)
     
     AnimationTimer(sprite) = GetTickCount + SurfaceTimerMax
     
@@ -841,15 +841,15 @@ Dim lockindex As Long
     
     sRECT.Top = 0
     sRECT.Bottom = Height
-    sRECT.Left = (AnimInstance(Index).FrameIndex(layer) - 1) * Width
+    sRECT.Left = (AnimInstance(index).FrameIndex(layer) - 1) * Width
     sRECT.Right = sRECT.Left + Width
     
     ' change x or y if locked
-    If AnimInstance(Index).LockType > TARGET_TYPE_NONE Then ' if <> none
+    If AnimInstance(index).LockType > TARGET_TYPE_NONE Then ' if <> none
         ' is a player
-        If AnimInstance(Index).LockType = TARGET_TYPE_PLAYER Then
+        If AnimInstance(index).LockType = TARGET_TYPE_PLAYER Then
             ' quick save the index
-            lockindex = AnimInstance(Index).lockindex
+            lockindex = AnimInstance(index).lockindex
             ' check if is ingame
             If IsPlaying(lockindex) Then
                 ' check if on same map
@@ -858,14 +858,14 @@ Dim lockindex As Long
                     X = (GetPlayerX(lockindex) * PIC_X) + 16 - (Width / 2) + Player(lockindex).XOffset
                     y = (GetPlayerY(lockindex) * PIC_Y) + 16 - (Height / 2) + Player(lockindex).YOffset
                 Else
-                    ClearAnimInstance Index
+                    ClearAnimInstance index
                 End If
             Else
-                ClearAnimInstance Index
+                ClearAnimInstance index
             End If
-        ElseIf AnimInstance(Index).LockType = TARGET_TYPE_NPC Then
+        ElseIf AnimInstance(index).LockType = TARGET_TYPE_NPC Then
             ' quick save the index
-            lockindex = AnimInstance(Index).lockindex
+            lockindex = AnimInstance(index).lockindex
             ' check if NPC exists
             If MapNpc(lockindex).num > 0 Then
                 ' check if alive
@@ -875,19 +875,19 @@ Dim lockindex As Long
                     y = (MapNpc(lockindex).y * PIC_Y) + 16 - (Height / 2) + MapNpc(lockindex).YOffset
                 Else
                     ' npc not alive anymore, kill the animation
-                    ClearAnimInstance Index
+                    ClearAnimInstance index
                     Exit Sub
                 End If
             Else
                 ' npc not alive anymore, kill the animation
-                ClearAnimInstance Index
+                ClearAnimInstance index
                 Exit Sub
             End If
         End If
     Else
         ' no lock, default x + y
-        X = (AnimInstance(Index).X * 32) + 16 - (Width / 2)
-        y = (AnimInstance(Index).y * 32) + 16 - (Height / 2)
+        X = (AnimInstance(index).X * 32) + 16 - (Width / 2)
+        y = (AnimInstance(index).y * 32) + 16 - (Height / 2)
     End If
     
     X = ConvertMapX(X)
@@ -940,7 +940,7 @@ Dim Maxframes As Byte
     
     ' if it's not us then don't render
     If MapItem(ItemNum).PlayerName <> vbNullString Then
-        If MapItem(ItemNum).PlayerName <> Trim$(GetPlayerName(MyIndex)) Then Exit Sub
+        If MapItem(ItemNum).PlayerName <> (GetPlayerName(MyIndex)) Then Exit Sub
     End If
     
     ' get the picture
@@ -1064,7 +1064,7 @@ Dim X As Long, y As Long, i As Long, rec As RECT
     
     
     ' let them know we did it
-    AddText "Foto del mapa #" & GetPlayerMap(MyIndex) & " guardada.", BrightGreen
+    AddText "Foto del mapa #" & GetPlayerMap(MyIndex) & " guardada.", BrightGreen, True
     
     ' Error handler
     Exit Sub
@@ -1512,7 +1512,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub BltPlayer(ByVal Index As Long)
+Public Sub BltPlayer(ByVal index As Long)
 Dim Anim As Byte, i As Long, X As Long, y As Long
 Dim sprite As Long, spritetop As Long
 Dim rec As DxVBLib.RECT
@@ -1522,7 +1522,7 @@ Dim attackspeed As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    sprite = GetPlayerSprite(Index)
+    sprite = GetPlayerSprite(index)
 
     If sprite < 1 Or sprite > NumCharacters Then Exit Sub
     
@@ -1533,40 +1533,40 @@ Dim attackspeed As Long
     End If
 
     ' speed from weapon
-    If GetPlayerEquipment(Index, Weapon) > 0 Then
-        attackspeed = Item(GetPlayerEquipment(Index, Weapon)).Speed
+    If GetPlayerEquipment(index, Weapon) > 0 Then
+        attackspeed = Item(GetPlayerEquipment(index, Weapon)).Speed
     Else
         attackspeed = 1000
     End If
 
     ' Reset frame
-    If Player(Index).step = 3 Then
+    If Player(index).step = 3 Then
         Anim = 0
-    ElseIf Player(Index).step = 1 Then
+    ElseIf Player(index).step = 1 Then
         Anim = 2
     End If
     
     ' Check for attacking animation
-    If Player(Index).AttackTimer + (attackspeed / 2) > GetTickCount Then
-        If Player(Index).Attacking = 1 Then
+    If Player(index).AttackTimer + (attackspeed / 2) > GetTickCount Then
+        If Player(index).Attacking = 1 Then
             Anim = 3
         End If
     Else
         ' If not attacking, walk normally
-        Select Case GetPlayerDir(Index)
+        Select Case GetPlayerDir(index)
             Case DIR_UP
-                If (Player(Index).YOffset > 8) Then Anim = Player(Index).step
+                If (Player(index).YOffset > 8) Then Anim = Player(index).step
             Case DIR_DOWN
-                If (Player(Index).YOffset < -8) Then Anim = Player(Index).step
+                If (Player(index).YOffset < -8) Then Anim = Player(index).step
             Case DIR_LEFT
-                If (Player(Index).XOffset > 8) Then Anim = Player(Index).step
+                If (Player(index).XOffset > 8) Then Anim = Player(index).step
             Case DIR_RIGHT
-                If (Player(Index).XOffset < -8) Then Anim = Player(Index).step
+                If (Player(index).XOffset < -8) Then Anim = Player(index).step
         End Select
     End If
 
     ' Check to see if we want to stop making him attack
-    With Player(Index)
+    With Player(index)
         If .AttackTimer + attackspeed < GetTickCount Then
             .Attacking = 0
             .AttackTimer = 0
@@ -1574,7 +1574,7 @@ Dim attackspeed As Long
     End With
 
     ' Set the left
-    Select Case GetPlayerDir(Index)
+    Select Case GetPlayerDir(index)
         Case DIR_UP
             spritetop = 3
         Case DIR_RIGHT
@@ -1593,26 +1593,26 @@ Dim attackspeed As Long
     End With
 
     ' Calculate the X
-    X = GetPlayerX(Index) * PIC_X + Player(Index).XOffset - ((DDSD_Character(sprite).lWidth / 4 - 32) / 2)
+    X = GetPlayerX(index) * PIC_X + Player(index).XOffset - ((DDSD_Character(sprite).lWidth / 4 - 32) / 2)
 
     ' Is the player's height more than 32..?
     If (DDSD_Character(sprite).lHeight) > 32 Then
         ' Create a 32 pixel offset for larger sprites
-        y = GetPlayerY(Index) * PIC_Y + Player(Index).YOffset - ((DDSD_Character(sprite).lHeight / 4) - 32)
+        y = GetPlayerY(index) * PIC_Y + Player(index).YOffset - ((DDSD_Character(sprite).lHeight / 4) - 32)
     Else
         ' Proceed as normal
-        y = GetPlayerY(Index) * PIC_Y + Player(Index).YOffset
+        y = GetPlayerY(index) * PIC_Y + Player(index).YOffset
     End If
 
     ' render the actual sprite
     Call BltSprite(sprite, X, y, rec)
     
-    If Not Player(Index).MovementSprite Then
+    If Not Player(index).MovementSprite Then
     ' check for paperdolling
         For i = 1 To UBound(PaperdollOrder)
-            If GetPlayerEquipment(Index, PaperdollOrder(i)) > 0 Then
-                If Item(GetPlayerEquipment(Index, PaperdollOrder(i))).Paperdoll > 0 Then
-                    Call BltPaperdoll(X, y, Item(GetPlayerEquipment(Index, PaperdollOrder(i))).Paperdoll, Anim, spritetop)
+            If GetPlayerEquipment(index, PaperdollOrder(i)) > 0 Then
+                If Item(GetPlayerEquipment(index, PaperdollOrder(i))).Paperdoll > 0 Then
+                    Call BltPaperdoll(X, y, Item(GetPlayerEquipment(index, PaperdollOrder(i))).Paperdoll, Anim, spritetop)
                 End If
             End If
         Next
@@ -2037,7 +2037,7 @@ Dim tmpItem As Long, amountModifier As Long
     If Not InGame Then Exit Sub
     
     ' reset gold label
-    frmMain.lblGold.Caption = "0 Rupias"
+    frmMain.lblGold.Caption = "0 " & GetTranslation("Rupias")
     frmMain.lblGold.ForeColor = QBColor(White)
     
     frmMain.picInventory.Cls
@@ -2060,11 +2060,11 @@ Dim tmpItem As Long, amountModifier As Long
                             GoTo NextLoop
                         Else
                             ' if amount = all currency, remove from inventory
-                            If TradeYourOffer(X).Value = GetPlayerInvItemValue(MyIndex, i) Then
+                            If TradeYourOffer(X).value = GetPlayerInvItemValue(MyIndex, i) Then
                                 GoTo NextLoop
                             Else
                                 ' not all, change modifier to show change in currency count
-                                amountModifier = TradeYourOffer(X).Value
+                                amountModifier = TradeYourOffer(X).value
                             End If
                         End If
                     End If
@@ -2184,11 +2184,11 @@ Dim colour As Long
                 Engine_BltToDC DDS_Item(itempic), rec, rec_pos, frmMain.picYourTrade, False
 
                 ' If item is a stack - draw the amount you have
-                If TradeYourOffer(i).Value > 1 Then
+                If TradeYourOffer(i).value > 1 Then
                     y = rec_pos.Top + 22
                     X = rec_pos.Left - 4
                     
-                    amount = TradeYourOffer(i).Value
+                    amount = TradeYourOffer(i).value
                     
                     ' Draw currency but with k, m, b etc. using a convertion function
                     If amount < 1000000 Then
@@ -2235,11 +2235,11 @@ Dim colour As Long
                 Engine_BltToDC DDS_Item(itempic), rec, rec_pos, frmMain.picTheirTrade, False
 
                 ' If item is a stack - draw the amount you have
-                If TradeTheirOffer(i).Value > 1 Then
+                If TradeTheirOffer(i).value > 1 Then
                     y = rec_pos.Top + 22
                     X = rec_pos.Left - 4
                     
-                    amount = TradeTheirOffer(i).Value
+                    amount = TradeTheirOffer(i).value
                     ' Draw currency but with k, m, b etc. using a convertion function
                     If amount < 1000000 Then
                         colour = QBColor(White)
@@ -2606,7 +2606,7 @@ Dim dRECT As DxVBLib.RECT
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     ' find tileset number
-    Tileset = frmEditor_Map.scrlTileSet.Value
+    Tileset = frmEditor_Map.scrlTileSet.value
     
     ' exit out if doesn't exist
     If Tileset < 0 Or Tileset > NumTileSets Then Exit Sub
@@ -2643,7 +2643,7 @@ Dim rec As DxVBLib.RECT
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If frmEditor_Map.optBlock.Value Then Exit Sub
+    If frmEditor_Map.optBlock.value Then Exit Sub
 
     With rec
         .Top = 0
@@ -2673,7 +2673,7 @@ Dim Width As Long, Height As Long
 
     If frmMenu.cmbClass.ListIndex = -1 Then Exit Sub
     
-    If frmMenu.optMale.Value = True Then
+    If frmMenu.optMale.value = True Then
         sprite = Class(frmMenu.cmbClass.ListIndex + 1).MaleSprite(newCharSprite)
     Else
         sprite = Class(frmMenu.cmbClass.ListIndex + 1).FemaleSprite(newCharSprite)
@@ -2724,7 +2724,7 @@ Dim dRECT As DxVBLib.RECT
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    ItemNum = Item(frmEditor_Map.scrlMapItem.Value).Pic
+    ItemNum = Item(frmEditor_Map.scrlMapItem.value).Pic
 
     If ItemNum < 1 Or ItemNum > NumItems Then
         frmEditor_Map.picMapItem.Cls
@@ -2763,7 +2763,7 @@ Dim dRECT As DxVBLib.RECT
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    ItemNum = Item(frmEditor_Map.scrlMapKey.Value).Pic
+    ItemNum = Item(frmEditor_Map.scrlMapKey.value).Pic
 
     If ItemNum < 1 Or ItemNum > NumItems Then
         frmEditor_Map.picMapKey.Cls
@@ -2802,7 +2802,7 @@ Dim dRECT As DxVBLib.RECT
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    ItemNum = frmEditor_Item.scrlPic.Value
+    ItemNum = frmEditor_Item.scrlPic.value
 
     If ItemNum < 1 Or ItemNum > NumItems Then
         frmEditor_Item.picItem.Cls
@@ -2843,7 +2843,7 @@ Dim dRECT As DxVBLib.RECT
 
     frmEditor_Item.picPaperdoll.Cls
     
-    sprite = frmEditor_Item.scrlPaperdoll.Value
+    sprite = frmEditor_Item.scrlPaperdoll.value
 
     If sprite < 1 Or sprite > NumPaperdolls Then
         frmEditor_Item.picPaperdoll.Cls
@@ -2882,7 +2882,7 @@ Dim dRECT As DxVBLib.RECT
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    iconnum = frmEditor_Spell.scrlIcon.Value
+    iconnum = frmEditor_Spell.scrlIcon.value
     
     If iconnum < 1 Or iconnum > NumSpellIcons Then
         frmEditor_Spell.picSprite.Cls
@@ -2928,7 +2928,7 @@ Dim ShouldRender As Boolean
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     For i = 0 To 1
-        Animationnum = frmEditor_Animation.scrlSprite(i).Value
+        Animationnum = frmEditor_Animation.scrlSprite(i).value
         
         If Animationnum < 1 Or Animationnum > NumAnimations Then
             frmEditor_Animation.picSprite(i).Cls
@@ -2959,9 +2959,9 @@ Dim ShouldRender As Boolean
                     Call InitDDSurf("animations\" & Animationnum, DDSD_Animation(Animationnum), DDS_Animation(Animationnum))
                 End If
                 
-                If frmEditor_Animation.scrlFrameCount(i).Value > 0 Then
+                If frmEditor_Animation.scrlFrameCount(i).value > 0 Then
                     ' total width divided by frame count
-                    Width = DDSD_Animation(Animationnum).lWidth / frmEditor_Animation.scrlFrameCount(i).Value
+                    Width = DDSD_Animation(Animationnum).lWidth / frmEditor_Animation.scrlFrameCount(i).value
                     Height = DDSD_Animation(Animationnum).lHeight
                     
                     sRECT.Top = 0
@@ -2996,7 +2996,7 @@ Dim dRECT As DxVBLib.RECT
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    sprite = frmEditor_NPC.scrlSprite.Value
+    sprite = frmEditor_NPC.scrlSprite.value
 
     If sprite < 1 Or sprite > NumCharacters Then
         frmEditor_NPC.picSprite.Cls
@@ -3036,7 +3036,7 @@ Dim dRECT As DxVBLib.RECT
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     ' normal sprite
-    sprite = frmEditor_Resource.scrlNormalPic.Value
+    sprite = frmEditor_Resource.scrlNormalPic.value
 
     If sprite < 1 Or sprite > NumResources Then
         frmEditor_Resource.picNormalPic.Cls
@@ -3057,7 +3057,7 @@ Dim dRECT As DxVBLib.RECT
     End If
 
     ' exhausted sprite
-    sprite = frmEditor_Resource.scrlExhaustedPic.Value
+    sprite = frmEditor_Resource.scrlExhaustedPic.value
 
     If sprite < 1 Or sprite > NumResources Then
         frmEditor_Resource.picExhaustedPic.Cls
@@ -3236,7 +3236,7 @@ Dim rec_pos As DxVBLib.RECT
     
     ' blit out a square at mouse cursor
     If InMapEditor Then
-        If frmEditor_Map.optBlock.Value = True Then
+        If frmEditor_Map.optBlock.value = True Then
             For X = TileView.Left To TileView.Right
                 For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(X, y) Then
@@ -3341,14 +3341,14 @@ End If
     
     ' draw FPS
     If BFPS Then
-        Call DrawText(TexthDC, Camera.Right - (Len("FPS: " & GameFPS) * 8), Camera.Top + 20, Trim$("FPS: " & GameFPS), QBColor(Yellow))
+        Call DrawText(TexthDC, Camera.Right - (Len("FPS: " & GameFPS) * 9), Camera.Top + 30, ("FPS: " & GameFPS), QBColor(Yellow))
     End If
 
     ' draw cursor, player X and Y locations
     If BLoc Then
-        Call DrawText(TexthDC, Camera.Left, Camera.Top + 60, Trim$("cur x: " & CurX & " y: " & CurY), QBColor(Yellow))
-        Call DrawText(TexthDC, Camera.Left, Camera.Top + 75, Trim$("loc x: " & GetPlayerX(MyIndex) & " y: " & GetPlayerY(MyIndex)), QBColor(Yellow))
-        Call DrawText(TexthDC, Camera.Left, Camera.Top + 90, Trim$(" (map #" & GetPlayerMap(MyIndex) & ")"), QBColor(Yellow))
+        Call DrawText(TexthDC, Camera.Left, Camera.Top + 60, ("cur x: " & CurX & " y: " & CurY), QBColor(Yellow))
+        Call DrawText(TexthDC, Camera.Left, Camera.Top + 75, ("loc x: " & GetPlayerX(MyIndex) & " y: " & GetPlayerY(MyIndex)), QBColor(Yellow))
+        Call DrawText(TexthDC, Camera.Left, Camera.Top + 90, (" (map #" & GetPlayerMap(MyIndex) & ")"), QBColor(Yellow))
     End If
 
     
@@ -3386,22 +3386,22 @@ End If
     End If
 
     ' Draw map name
-    Call DrawText(TexthDC, DrawMapNameX, DrawMapNameY, map.Name, DrawMapNameColor)
+    Call DrawText(TexthDC, DrawMapNameX, DrawMapNameY, (map.TranslatedName), DrawMapNameColor)
     
     If Not Options.MappingMode = 1 Then
     
         'Draw rupees
         If HasMaxGold Then
-                Call DrawText(TexthDC, Camera.Left + 700, Camera.Top + 580, Trim$(frmMain.lblGold.Caption), QBColor(BrightGreen))
+                Call DrawText(TexthDC, Camera.Left + 700, Camera.Top + 580, (frmMain.lblGold.Caption), QBColor(BrightGreen))
             Else
-                Call DrawText(TexthDC, Camera.Left + 700, Camera.Top + 580, Trim$(frmMain.lblGold.Caption), QBColor(White))
+                Call DrawText(TexthDC, Camera.Left + 700, Camera.Top + 580, (frmMain.lblGold.Caption), QBColor(White))
         End If
         
         'show secure mode
         If Options.SafeMode = 1 Then
-            Call DrawText(TexthDC, Camera.Right - 305, Camera.Top + 35, Trim$("Modo Seguro Activado"), QBColor(BrightGreen))
+            'Call DrawText(TexthDC, Camera.Right - 305, Camera.Top + 35, Trim$("Modo Seguro Activado"), QBColor(BrightGreen))
         Else
-            Call DrawText(TexthDC, Camera.Right - 305, Camera.Top + 35, Trim$("Modo Seguro Desactivado"), QBColor(BrightRed))
+            Call DrawText(TexthDC, Camera.Right - 305, Camera.Top + 35, GetTranslation("Modo Seguro Desactivado"), QBColor(BrightRed))
         End If
     End If
     
@@ -3444,7 +3444,7 @@ End If
     End With
     
     ' Flip and render
-    DX7.GetWindowRect frmMain.picScreen.hWnd, rec_pos
+    DX7.GetWindowRect frmMain.picScreen.hwnd, rec_pos
     DDS_Primary.Blt rec_pos, DDS_BackBuffer, rec, DDBLT_WAIT
     
     ' Error handler
@@ -3770,7 +3770,7 @@ errorhandler:
 End Sub
 
 ' player Projectiles
-Public Sub BltProjectile(ByVal Index As Long, ByVal PlayerProjectile As Long)
+Public Sub BltProjectile(ByVal index As Long, ByVal PlayerProjectile As Long)
 Dim X As Long, y As Long, PicNum As Long, i As Long
 Dim rec As DxVBLib.RECT
 
@@ -3778,64 +3778,64 @@ Dim rec As DxVBLib.RECT
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     ' check for subscript error
-    If Index < 1 Or PlayerProjectile < 1 Or PlayerProjectile > MAX_PLAYER_PROJECTILES Then Exit Sub
+    If index < 1 Or PlayerProjectile < 1 Or PlayerProjectile > MAX_PLAYER_PROJECTILES Then Exit Sub
     
     ' check to see if it's time to move the Projectile
-    If GetTickCount > Player(Index).ProjecTile(PlayerProjectile).TravelTime Then
-        With Player(Index).ProjecTile(PlayerProjectile)
+    If GetTickCount > Player(index).ProjecTile(PlayerProjectile).TravelTime Then
+        With Player(index).ProjecTile(PlayerProjectile)
             ' set next travel time and the current position and then set the actual direction based on RMXP arrow tiles.
             Select Case .direction
                 ' down
                 Case 0
                     .y = .y + 1
                     ' check if they reached maxrange
-                    If .y = (GetPlayerY(Index) + .range) + 1 Then ClearProjectile Index, PlayerProjectile: Exit Sub
+                    If .y = (GetPlayerY(index) + .range) + 1 Then ClearProjectile index, PlayerProjectile: Exit Sub
                 ' up
                 Case 1
                     .y = .y - 1
                     ' check if they reached maxrange
-                    If .y = (GetPlayerY(Index) - .range) - 1 Then ClearProjectile Index, PlayerProjectile: Exit Sub
+                    If .y = (GetPlayerY(index) - .range) - 1 Then ClearProjectile index, PlayerProjectile: Exit Sub
                 ' right
                 Case 2
                     .X = .X + 1
                     ' check if they reached max range
-                    If .X = (GetPlayerX(Index) + .range) + 1 Then ClearProjectile Index, PlayerProjectile: Exit Sub
+                    If .X = (GetPlayerX(index) + .range) + 1 Then ClearProjectile index, PlayerProjectile: Exit Sub
                 ' left
                 Case 3
                     .X = .X - 1
                     ' check if they reached maxrange
-                    If .X = (GetPlayerX(Index) - .range) - 1 Then ClearProjectile Index, PlayerProjectile: Exit Sub
+                    If .X = (GetPlayerX(index) - .range) - 1 Then ClearProjectile index, PlayerProjectile: Exit Sub
             End Select
             .TravelTime = GetTickCount + .Speed
         End With
     End If
     
     ' set the x, y & pic values for future reference
-    X = Player(Index).ProjecTile(PlayerProjectile).X
-    y = Player(Index).ProjecTile(PlayerProjectile).y
-    PicNum = Player(Index).ProjecTile(PlayerProjectile).Pic
+    X = Player(index).ProjecTile(PlayerProjectile).X
+    y = Player(index).ProjecTile(PlayerProjectile).y
+    PicNum = Player(index).ProjecTile(PlayerProjectile).Pic
     
     ' check if left map
     If X > map.MaxX Or y > map.MaxY Or X < 0 Or y < 0 Then
-        ClearProjectile Index, PlayerProjectile
+        ClearProjectile index, PlayerProjectile
         Exit Sub
     End If
     
     ' check if we hit a block
     If map.Tile(X, y).Type = TILE_TYPE_BLOCKED Then
-        ClearProjectile Index, PlayerProjectile
+        ClearProjectile index, PlayerProjectile
         Exit Sub
     End If
     
     ' check if we hit an item
     If map.Tile(X, y).Type = TILE_TYPE_ITEM Then
-        ClearProjectile Index, PlayerProjectile
+        ClearProjectile index, PlayerProjectile
         Exit Sub
     End If
     
     ' check if we hit a resource
     If map.Tile(X, y).Type = TILE_TYPE_RESOURCE Then
-        ClearProjectile Index, PlayerProjectile
+        ClearProjectile index, PlayerProjectile
         Exit Sub
     End If
     
@@ -3844,7 +3844,7 @@ Dim rec As DxVBLib.RECT
         If X = GetPlayerX(i) And y = GetPlayerY(i) Then
             ' they're hit, remove it
             If Not X = Player(MyIndex).X Or Not y = GetPlayerY(MyIndex) Then
-                ClearProjectile Index, PlayerProjectile
+                ClearProjectile index, PlayerProjectile
                 Exit Sub
             End If
         End If
@@ -3854,7 +3854,7 @@ Dim rec As DxVBLib.RECT
     For i = 1 To MAX_MAP_NPCS
         If X = MapNpc(i).X And y = MapNpc(i).y Then
             ' they're hit, remove it
-            ClearProjectile Index, PlayerProjectile
+            ClearProjectile index, PlayerProjectile
             Exit Sub
         End If
     Next
@@ -3868,7 +3868,7 @@ Dim rec As DxVBLib.RECT
     With rec
         .Top = 0
         .Bottom = SIZE_Y
-        .Left = Player(Index).ProjecTile(PlayerProjectile).direction * SIZE_X
+        .Left = Player(index).ProjecTile(PlayerProjectile).direction * SIZE_X
         .Right = .Left + SIZE_X
     End With
 
@@ -3883,7 +3883,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub DrawChatBubble(ByVal Index As Long)
+Public Sub DrawChatBubble(ByVal index As Long)
 Dim theArray() As String, X As Long, y As Long, i As Long, MaxWidth As Long, xwidth As Long, yheight As Long, colour As Long, x3 As Long, y3 As Long
     
 Dim MMx As Long
@@ -3973,7 +3973,7 @@ End With
 
     Call DDS_BackBuffer.SetForeColor(RGB(255, 255, 255))
 
-    With chatBubble(Index)
+    With chatBubble(index)
         If .targetType = TARGET_TYPE_PLAYER Then
             ' it's a player
             If GetPlayerMap(.target) = GetPlayerMap(MyIndex) Then
@@ -4085,12 +4085,12 @@ If amount = GetPlayerMaxMoney(MyIndex) Then
 Else
     colour = QBColor(White)
 End If
-frmMain.lblGold.Caption = Format$(amount, "#,###,###,###") & " Rupias"
+frmMain.lblGold.Caption = Format$(amount, "#,###,###,###") & " " & GetTranslation("Rupias")
 frmMain.lblGold.ForeColor = colour
 End Sub
 
 
-Public Sub BltPlayerCustomSpriteLayer(ByVal Index As Long, ByRef layer As SpriteLayer)
+Public Sub BltPlayerCustomSpriteLayer(ByVal index As Long, ByRef layer As SpriteLayer)
 Dim Anim As Byte, i As Long, X As Long, y As Long
 Dim spritetop As Long
 Dim rec As DxVBLib.RECT
@@ -4103,7 +4103,7 @@ Dim sprite As Long
 
     'get the sprite
     If IsLayerUsingPlayerSprite(layer) Then
-        sprite = GetPlayerSprite(Index)
+        sprite = GetPlayerSprite(index)
     Else
         sprite = GetLayerSprite(layer)
     End If
@@ -4117,8 +4117,8 @@ Dim sprite As Long
     End If
 
     ' speed from weapon
-    If GetPlayerEquipment(Index, Weapon) > 0 Then
-        attackspeed = Item(GetPlayerEquipment(Index, Weapon)).Speed
+    If GetPlayerEquipment(index, Weapon) > 0 Then
+        attackspeed = Item(GetPlayerEquipment(index, Weapon)).Speed
     Else
         attackspeed = 1000
     End If
@@ -4127,35 +4127,35 @@ Dim sprite As Long
     'no fixed anim set, find it then
 
     ' Reset frame
-    If Player(Index).step = 3 Then
+    If Player(index).step = 3 Then
         Anim = 0
-    ElseIf Player(Index).step = 1 Then
+    ElseIf Player(index).step = 1 Then
         Anim = 2
     End If
 
     ' Check for attacking animation
-    If Player(Index).AttackTimer + (attackspeed / 2) > GetTickCount Then
-        If Player(Index).Attacking = 1 Then
+    If Player(index).AttackTimer + (attackspeed / 2) > GetTickCount Then
+        If Player(index).Attacking = 1 Then
             Anim = 3
         End If
     Else
         ' If not attacking, walk normally
-        Select Case GetPlayerDir(Index)
+        Select Case GetPlayerDir(index)
             Case DIR_UP
-                If (Player(Index).YOffset > 8) Then Anim = Player(Index).step
+                If (Player(index).YOffset > 8) Then Anim = Player(index).step
             Case DIR_DOWN
-                If (Player(Index).YOffset < -8) Then Anim = Player(Index).step
+                If (Player(index).YOffset < -8) Then Anim = Player(index).step
             Case DIR_LEFT
-                If (Player(Index).XOffset > 8) Then Anim = Player(Index).step
+                If (Player(index).XOffset > 8) Then Anim = Player(index).step
             Case DIR_RIGHT
-                If (Player(Index).XOffset < -8) Then Anim = Player(Index).step
+                If (Player(index).XOffset < -8) Then Anim = Player(index).step
         End Select
     End If
     
     
 
     ' Check to see if we want to stop making him attack
-    With Player(Index)
+    With Player(index)
         If .AttackTimer + attackspeed < GetTickCount Then
             .Attacking = 0
             .AttackTimer = 0
@@ -4165,7 +4165,7 @@ Dim sprite As Long
     
     Dim dir As Byte
     
-    dir = GetPlayerDir(Index)
+    dir = GetPlayerDir(index)
     
     Dim XCenter As Long
     Dim YCenter As Long
@@ -4205,27 +4205,27 @@ Dim sprite As Long
     
     ' Calculate the X
     If Not IsLayerUsingCenter(layer) Then
-        X = GetPlayerX(Index) * PIC_X + Player(Index).XOffset - ((DDSD_Character(sprite).lWidth / 4 - 32) / 2)
+        X = GetPlayerX(index) * PIC_X + Player(index).XOffset - ((DDSD_Character(sprite).lWidth / 4 - 32) / 2)
         
         ' Is the player's height more than 32..?
         If (DDSD_Character(sprite).lHeight) > 32 Then
             ' Create a 32 pixel offset for larger sprites
-            y = GetPlayerY(Index) * PIC_Y + Player(Index).YOffset - ((DDSD_Character(sprite).lHeight / 4) - 32)
+            y = GetPlayerY(index) * PIC_Y + Player(index).YOffset - ((DDSD_Character(sprite).lHeight / 4) - 32)
         Else
             ' Proceed as normal
-            y = GetPlayerY(Index) * PIC_Y + Player(Index).YOffset
+            y = GetPlayerY(index) * PIC_Y + Player(index).YOffset
         End If
     Else
          XCenter = XCenter - 16
-         X = GetPlayerX(Index) * PIC_X + Player(Index).XOffset - XCenter
+         X = GetPlayerX(index) * PIC_X + Player(index).XOffset - XCenter
          
          ' Is the player's height more than 32..?
         If (DDSD_Character(sprite).lHeight) > 32 Then
             ' Create a 32 pixel offset for larger sprites
-            y = GetPlayerY(Index) * PIC_Y + Player(Index).YOffset - YCenter
+            y = GetPlayerY(index) * PIC_Y + Player(index).YOffset - YCenter
         Else
             ' Proceed as normal
-            y = GetPlayerY(Index) * PIC_Y + Player(Index).YOffset
+            y = GetPlayerY(index) * PIC_Y + Player(index).YOffset
         End If
     End If
     
@@ -4236,12 +4236,12 @@ Dim sprite As Long
     ' render the actual sprite
     Call BltSprite(sprite, X, y, rec)
     
-    If GetPlayerSprite(Index) = sprite Then
+    If GetPlayerSprite(index) = sprite Then
     ' check for paperdolling
     For i = 1 To UBound(PaperdollOrder)
-        If GetPlayerEquipment(Index, PaperdollOrder(i)) > 0 Then
-            If Item(GetPlayerEquipment(Index, PaperdollOrder(i))).Paperdoll > 0 Then
-                Call BltPaperdoll(X, y, Item(GetPlayerEquipment(Index, PaperdollOrder(i))).Paperdoll, Anim, spritetop)
+        If GetPlayerEquipment(index, PaperdollOrder(i)) > 0 Then
+            If Item(GetPlayerEquipment(index, PaperdollOrder(i))).Paperdoll > 0 Then
+                Call BltPaperdoll(X, y, Item(GetPlayerEquipment(index, PaperdollOrder(i))).Paperdoll, Anim, spritetop)
             End If
         End If
     Next
@@ -4256,27 +4256,27 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub BltPlayerCustomSprite(ByVal Index As Long, ByVal CustomSprite As Byte)
+Public Sub BltPlayerCustomSprite(ByVal index As Long, ByVal CustomSprite As Byte)
     
     Dim i As Byte
     
     For i = 1 To GetCustomSpriteNLayers(CustomSprites(CustomSprite))
-        Call BltPlayerCustomSpriteLayer(Index, GetCustomSpriteLayer(CustomSprites(CustomSprite), i))
+        Call BltPlayerCustomSpriteLayer(index, GetCustomSpriteLayer(CustomSprites(CustomSprite), i))
     Next
     
     
 End Sub
 
-Public Sub ComputeBltPlayer(ByVal Index As Long)
+Public Sub ComputeBltPlayer(ByVal index As Long)
 
     Dim CustomSprite As Byte
     'CustomSprite = Player(Index).CustomSprite
-    CustomSprite = GetPlayerCustomSprite(Index)
+    CustomSprite = GetPlayerCustomSprite(index)
 
     If CustomSprite = 0 Or CustomSprite > MAX_CUSTOM_SPRITES Then
-        Call BltPlayer(Index)
+        Call BltPlayer(index)
     Else
-        Call BltPlayerCustomSprite(Index, CustomSprite)
+        Call BltPlayerCustomSprite(index, CustomSprite)
     End If
 End Sub
 
@@ -4350,7 +4350,7 @@ If NumResources > 0 Then
 End If
 
 End Sub
-Public Sub BltRupee(ByVal Index As Long)
+Public Sub BltRupee(ByVal index As Long)
 Dim rec As DxVBLib.RECT
   ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -4368,7 +4368,7 @@ errorhandler:
     Err.Clear
     Exit Sub
 End Sub
-Public Sub BltHearts(ByVal Index As Long)
+Public Sub BltHearts(ByVal index As Long)
 Dim rec As DxVBLib.RECT
   ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -4386,7 +4386,7 @@ errorhandler:
     Err.Clear
     Exit Sub
 End Sub
-Public Sub BltHealth(ByVal Index As Long)
+Public Sub BltHealth(ByVal index As Long)
 Dim rec As DxVBLib.RECT
   ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -4404,7 +4404,7 @@ errorhandler:
     Err.Clear
     Exit Sub
 End Sub
-Public Sub BltMagicBar(ByVal Index As Long)
+Public Sub BltMagicBar(ByVal index As Long)
 Dim rec As DxVBLib.RECT
   ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler

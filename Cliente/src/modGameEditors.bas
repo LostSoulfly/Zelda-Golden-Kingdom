@@ -35,7 +35,7 @@ Dim smusic() As String
     ' set shops for the shop attribute
     frmEditor_Map.cmbShop.AddItem "None"
     For i = 1 To MAX_SHOPS
-        frmEditor_Map.cmbShop.AddItem i & ": " & Shop(i).Name
+        frmEditor_Map.cmbShop.AddItem i & ": " & Shop(i).TranslatedName
     Next
     
     ' we're not in a shop
@@ -74,7 +74,7 @@ Dim i As Long
     ' finished populating
     
     With frmEditor_MapProperties
-        .txtName.text = Trim$(map.Name)
+        .txtName.Text = Trim$(map.Name)
         .InitAllowedStates
         ' find the music we have set
         If .lstMusic.ListCount >= 0 Then
@@ -87,14 +87,14 @@ Dim i As Long
         End If
         
         ' rest of it
-        .txtUp.text = CStr(map.Up)
-        .txtDown.text = CStr(map.Down)
-        .txtLeft.text = CStr(map.Left)
-        .txtRight.text = CStr(map.Right)
+        .txtUp.Text = CStr(map.Up)
+        .txtDown.Text = CStr(map.Down)
+        .txtLeft.Text = CStr(map.Left)
+        .txtRight.Text = CStr(map.Right)
         .cmbMoral.ListIndex = map.moral
-        .txtBootMap.text = CStr(map.BootMap)
-        .txtBootX.text = CStr(map.BootX)
-        .txtBootY.text = CStr(map.BootY)
+        .txtBootMap.Text = CStr(map.BootMap)
+        .txtBootX.Text = CStr(map.BootX)
+        .txtBootY.Text = CStr(map.BootY)
         .CmbWeather.ListIndex = map.Weather
         
         'Init movement and actions
@@ -102,7 +102,7 @@ Dim i As Long
             If X = 0 Then
             .cmbAction.AddItem X & ": No Action"
             Else
-            .cmbAction.AddItem X & ": " & Trim$(Actions(X).Name)
+            .cmbAction.AddItem X & ": " & Trim$(Actions(X).TranslatedName)
             End If
         Next
         For X = 0 To MAX_MOVEMENTS
@@ -117,19 +117,19 @@ Dim i As Long
         If map.NPCSProperties(1).Action > 0 Then
             .cmbAction.ListIndex = map.NPCSProperties(1).Action
         Else
-            .cmbAction.text = "No Action"
+            .cmbAction.Text = "No Action"
         End If
         If map.NPCSProperties(1).movement > 0 Then
             .cmbMovement.ListIndex = map.NPCSProperties(1).movement
         Else
-            .cmbMovement.text = "No Movement"
+            .cmbMovement.Text = "No Movement"
         End If
 
         ' show the map npcs
         .lstNpcs.Clear
         For X = 1 To MAX_MAP_NPCS
             If map.NPC(X) > 0 Then
-                .lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).Name)
+                .lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).TranslatedName)
             Else
                 .lstNpcs.AddItem X & ": No NPC"
             End If
@@ -140,7 +140,7 @@ Dim i As Long
         .cmbNpc.Clear
         .cmbNpc.AddItem "No NPC"
         For X = 1 To MAX_NPCS
-            .cmbNpc.AddItem X & ": " & Trim$(NPC(X).Name)
+            .cmbNpc.AddItem X & ": " & Trim$(NPC(X).TranslatedName)
         Next
         
         ' set the combo box properly
@@ -152,8 +152,8 @@ Dim i As Long
     
         ' show the current map
         .lblMap.Caption = "Current map: " & GetPlayerMap(MyIndex)
-        .txtMaxX.text = map.MaxX
-        .txtMaxY.text = map.MaxY
+        .txtMaxX.Text = map.MaxX
+        .txtMaxY.Text = map.MaxY
         
 
     End With
@@ -389,16 +389,16 @@ End Sub
 
 Function GetScriptData(ByVal DataNum As Long) As Long
     With frmEditor_Map
-    Dim S As String
+    Dim s As String
     Select Case DataNum
     Case 1
-        S = .txtData1
+        s = .txtData1
     Case 2
-        S = .txtData2
+        s = .txtData2
     End Select
     
-    If IsNumeric(S) Then
-        GetScriptData = CLng(S)
+    If IsNumeric(s) Then
+        GetScriptData = CLng(s)
     Else
         GetScriptData = 0
     End If
@@ -855,12 +855,12 @@ Dim index As Byte
     ItemEditorInitRanges
 
     With Item(EditorIndex)
-        frmEditor_Item.txtName.text = Trim$(.Name)
+        frmEditor_Item.txtName.Text = Trim$(.Name)
         If .Pic > frmEditor_Item.scrlPic.Max Then .Pic = 0
         frmEditor_Item.scrlPic.value = .Pic
         frmEditor_Item.cmbType.ListIndex = .Type
         frmEditor_Item.scrlAnim.value = .Animation
-        frmEditor_Item.txtDesc.text = Trim$(.Desc)
+        frmEditor_Item.txtDesc.Text = Trim$(.Desc)
         frmEditor_Item.scrlAmmo.value = Item(EditorIndex).ammo
         
         If Item(EditorIndex).ammoreq = 0 Or Item(EditorIndex).ammoreq = 1 Then
@@ -985,7 +985,7 @@ End If
         frmEditor_Item.cmbClassReq.AddItem "None"
 
         For i = 1 To Max_Classes
-            frmEditor_Item.cmbClassReq.AddItem Class(i).Name
+            frmEditor_Item.cmbClassReq.AddItem Class(i).TranslatedName
         Next
 
         frmEditor_Item.cmbClassReq.ListIndex = .ClassReq
@@ -1102,7 +1102,7 @@ Dim SoundSet As Boolean
     ' finished populating
 
     With Animation(EditorIndex)
-        frmEditor_Animation.txtName.text = Trim$(.Name)
+        frmEditor_Animation.txtName.Text = Trim$(.Name)
         
         ' find the sound we have set
         If frmEditor_Animation.cmbSound.ListCount >= 0 Then
@@ -1235,11 +1235,11 @@ Dim SoundSet As Boolean
     Next
     
     With frmEditor_NPC
-        .txtName.text = Trim$(NPC(EditorIndex).Name)
-        .txtAttackSay.text = Trim$(NPC(EditorIndex).AttackSay)
+        .txtName.Text = Trim$(NPC(EditorIndex).Name)
+        .txtAttackSay.Text = Trim$(NPC(EditorIndex).AttackSay)
         If NPC(EditorIndex).sprite < 0 Or NPC(EditorIndex).sprite > .scrlSprite.Max Then NPC(EditorIndex).sprite = 0
         .scrlSprite.value = NPC(EditorIndex).sprite
-        .txtSpawnSecs.text = CStr(NPC(EditorIndex).SpawnSecs)
+        .txtSpawnSecs.Text = CStr(NPC(EditorIndex).SpawnSecs)
         .cmbBehaviour.ListIndex = NPC(EditorIndex).Behaviour
         .scrlRange.value = NPC(EditorIndex).range
         
@@ -1248,10 +1248,10 @@ Dim SoundSet As Boolean
         .scrlSpell.value = NPC(EditorIndex).Spell(SpellIndex)
         
         
-        .txtHP.text = NPC(EditorIndex).HP
-        .txtEXP.text = NPC(EditorIndex).Exp
-        .txtLevel.text = NPC(EditorIndex).Level
-        .txtDamage.text = NPC(EditorIndex).Damage
+        .txtHP.Text = NPC(EditorIndex).HP
+        .txtEXP.Text = NPC(EditorIndex).Exp
+        .txtLevel.Text = NPC(EditorIndex).Level
+        .txtDamage.Text = NPC(EditorIndex).Damage
         .chkQuest.value = NPC(EditorIndex).Quest
         .scrlQuest.value = NPC(EditorIndex).QuestNum
         If NPC(EditorIndex).Speed >= .scrlNpcSpeed.Min And NPC(EditorIndex).Speed <= .scrlNpcSpeed.Max Then
@@ -1261,7 +1261,7 @@ Dim SoundSet As Boolean
         .scrlSpellNum.value = 1
         
         'Init editor with dropped item nº 1
-        .txtChance.text = CStr(DropsInfo(1).Chances)
+        .txtChance.Text = CStr(DropsInfo(1).Chances)
         .scrlNum.value = DropsInfo(1).Number
         .scrlValue.value = DropsInfo(1).value
         
@@ -1385,13 +1385,14 @@ Dim SoundSet As Boolean
     Next
     
     With frmEditor_Resource
+        .scrlRewards.value = .scrlRewards.Min
         .scrlExhaustedPic.Max = NumResources
         .scrlNormalPic.Max = NumResources
         .scrlAnimation.Max = MAX_ANIMATIONS
         
-        .txtName.text = Trim$(Resource(EditorIndex).Name)
-        .txtMessage.text = Trim$(Resource(EditorIndex).SuccessMessage)
-        .txtMessage2.text = Trim$(Resource(EditorIndex).EmptyMessage)
+        .txtName.Text = Trim$(Resource(EditorIndex).Name)
+        .txtMessage.Text = Trim$(Resource(EditorIndex).SuccessMessage)
+        .txtMessage2.Text = Trim$(Resource(EditorIndex).EmptyMessage)
         .cmbType.ListIndex = Resource(EditorIndex).ResourceType
         .scrlNormalPic.value = Resource(EditorIndex).ResourceImage
         .scrlExhaustedPic.value = Resource(EditorIndex).ExhaustedImage
@@ -1504,7 +1505,7 @@ Dim i As Long
     If frmEditor_Shop.Visible = False Then Exit Sub
     EditorIndex = frmEditor_Shop.lstIndex.ListIndex + 1
     
-    frmEditor_Shop.txtName.text = Trim$(Shop(EditorIndex).Name)
+    frmEditor_Shop.txtName.Text = Trim$(Shop(EditorIndex).Name)
     If Shop(EditorIndex).BuyRate > 0 Then
         frmEditor_Shop.scrlBuy.value = Shop(EditorIndex).BuyRate
     Else
@@ -1517,8 +1518,8 @@ Dim i As Long
     frmEditor_Shop.cmbCostItem.AddItem "None"
 
     For i = 1 To MAX_ITEMS
-        frmEditor_Shop.cmbItem.AddItem i & ": " & Trim$(Item(i).Name)
-        frmEditor_Shop.cmbCostItem.AddItem i & ": " & Trim$(Item(i).Name)
+        frmEditor_Shop.cmbItem.AddItem i & ": " & Trim$(Item(i).TranslatedName)
+        frmEditor_Shop.cmbCostItem.AddItem i & ": " & Trim$(Item(i).TranslatedName)
     Next
 
     frmEditor_Shop.cmbItem.ListIndex = 0
@@ -1555,9 +1556,9 @@ Dim i As Long
                 frmEditor_Shop.lstTradeItem.AddItem "Empty Trade Slot"
             Else
                 If Shop(EditorIndex).PriceType = SHItem Then
-                    frmEditor_Shop.lstTradeItem.AddItem i & ": " & .ItemValue & "x " & Trim$(Item(.Item).Name) & " for " & .CostValue & "x " & Trim$(Item(.CostItem).Name)
+                    frmEditor_Shop.lstTradeItem.AddItem i & ": " & .ItemValue & "x " & Trim$(Item(.Item).TranslatedName) & " for " & .CostValue & "x " & Trim$(Item(.CostItem).TranslatedName)
                 Else
-                    frmEditor_Shop.lstTradeItem.AddItem i & ": " & .ItemValue & "x " & Trim$(Item(.Item).Name) & " for " & .CostValue & " puntos"
+                    frmEditor_Shop.lstTradeItem.AddItem i & ": " & .ItemValue & "x " & Trim$(Item(.Item).TranslatedName) & " for " & .CostValue & " " & GetTranslation(" puntos")
                 End If
             End If
         End With
@@ -1667,14 +1668,14 @@ Dim SoundSet As Boolean
         .cmbClass.Clear
         .cmbClass.AddItem "None"
         For i = 1 To Max_Classes
-            .cmbClass.AddItem Trim$(Class(i).Name)
+            .cmbClass.AddItem Trim$(Class(i).TranslatedName)
         Next
         .cmbClass.ListIndex = Spell(EditorIndex).ClassReq
 
         
         ' set values
-        .txtName.text = Trim$(Spell(EditorIndex).Name)
-        .txtDesc.text = Trim$(Spell(EditorIndex).Desc)
+        .txtName.Text = Trim$(Spell(EditorIndex).Name)
+        .txtDesc.Text = Trim$(Spell(EditorIndex).Desc)
         .cmbType.ListIndex = Spell(EditorIndex).Type
         .cmdPercent.value = BTI(Spell(EditorIndex).UsePercent)
         CheckMPScroll Spell(EditorIndex).UsePercent
@@ -1855,7 +1856,7 @@ Public Sub DoorEditorInit()
    
         With frmEditor_Doors
    
-                .txtName.text = Doors(EditorIndex).Name
+                .txtName.Text = Doors(EditorIndex).Name
                 If Doors(EditorIndex).DoorType = 0 Then
                         .optDoor(0).value = True
                 ElseIf Doors(EditorIndex).DoorType = 1 Then
@@ -1947,13 +1948,13 @@ Dim SoundSet As Boolean
     
     
         
-        .txtMovementName.text = Trim$(Movements(EditorIndex).Name)
+        .txtMovementName.Text = Trim$(Movements(EditorIndex).Name)
         Select Case Movements(EditorIndex).Type
             Case Onlydirectional
             
-                .cmbMovementType.text = "OnlyDirectional" 'Only Directional
+                .cmbMovementType.Text = "OnlyDirectional" 'Only Directional
                 If Movements(EditorIndex).MovementsTable.nelem > 0 Then
-                    .cmbOnlyDirectionDir.text = DirtoStr(Movements(EditorIndex).MovementsTable.vect(1).Data.direction)
+                    .cmbOnlyDirectionDir.Text = DirtoStr(Movements(EditorIndex).MovementsTable.vect(1).Data.direction)
                 End If
                 
                 .frmCustom.Visible = False
@@ -1963,8 +1964,8 @@ Dim SoundSet As Boolean
             
             Case ByDirection
                 
-                .cmbMovementType.text = "Custom" 'custom
-                .cmbCustomType.text = "ByDirection" 'bydirection
+                .cmbMovementType.Text = "Custom" 'custom
+                .cmbCustomType.Text = "ByDirection" 'bydirection
                 .frmCustom.Visible = True
                 .frmNumMovements.Visible = True
                 .frmDirection.Visible = True
@@ -1973,15 +1974,15 @@ Dim SoundSet As Boolean
                 If Movements(EditorIndex).MovementsTable.nelem > 0 Then
                     .scrlMovements.Min = 1
                     .scrlMovements.Max = Movements(EditorIndex).MovementsTable.nelem
-                    .cmbDirection.text = DirtoStr(Movements(EditorIndex).MovementsTable.vect(1).Data.direction)
+                    .cmbDirection.Text = DirtoStr(Movements(EditorIndex).MovementsTable.vect(1).Data.direction)
                 End If
                 .cmdAddtoList.Visible = True
                 .chkRepeat.value = BTI(Movements(EditorIndex).Repeat)
                 
             Case Bytile
             
-                .cmbMovementType.text = "Custom" 'custom
-                .cmbCustomType.text = "ByTiles" 'bytile
+                .cmbMovementType.Text = "Custom" 'custom
+                .cmbCustomType.Text = "ByTiles" 'bytile
                 .frmCustom.Visible = True
                 .frmNumTiles.Visible = True
                 .frmOnlyDirectional.Visible = False
@@ -1991,7 +1992,7 @@ Dim SoundSet As Boolean
                 If Movements(EditorIndex).MovementsTable.nelem > 0 Then
                     .scrlMovements.Min = 1
                     .scrlMovements.Max = Movements(EditorIndex).MovementsTable.nelem
-                    .cmbDirection.text = DirtoStr(Movements(EditorIndex).MovementsTable.vect(1).Data.direction)
+                    .cmbDirection.Text = DirtoStr(Movements(EditorIndex).MovementsTable.vect(1).Data.direction)
                     .lblNumTiles.Caption = "Tiles: " & Movements(EditorIndex).MovementsTable.vect(1).Data.NumberOfTiles
                 End If
                 .cmdAddtoList.Visible = True
@@ -1999,8 +2000,8 @@ Dim SoundSet As Boolean
             
             Case Random
             
-                .cmbMovementType.text = "Custom" 'Custom
-                .cmbCustomType.text = "Random" 'Random
+                .cmbMovementType.Text = "Custom" 'Custom
+                .cmbCustomType.Text = "Random" 'Random
                 .frmCustom.Visible = True
                 .frmNumMovements.Visible = False
                 .frmDirection.Visible = False
@@ -2075,11 +2076,11 @@ Dim i As Long
         .scrlX.Max = MAX_BYTE 'Player must know map max X/Y, otherwise server will correct that info
         .scrlY.Max = MAX_BYTE
         .scrlVital.Max = Vitals.Vital_Count - 1
-        .txtName.text = Trim$(Actions(EditorIndex).Name)
+        .txtName.Text = Trim$(Actions(EditorIndex).Name)
         .cmbActionType.ListIndex = Actions(EditorIndex).Type
         'Call ClearActionTypeFrames
         
-        If .txtName.text = vbNullString Then
+        If .txtName.Text = vbNullString Then
             Actions(EditorIndex).Data1 = 0
             Actions(EditorIndex).Data2 = 0
             Actions(EditorIndex).Data3 = 0
@@ -2102,7 +2103,7 @@ Dim i As Long
                     
                 ElseIf Actions(EditorIndex).Data2 = 1 Then
                     
-                    .txtVitalAbstract.text = CStr(Actions(EditorIndex).Data3)
+                    .txtVitalAbstract.Text = CStr(Actions(EditorIndex).Data3)
                     .optVitalAbstract.value = True
                     
                 End If
@@ -2181,7 +2182,7 @@ Dim i As Long
     .scrlPoints.Max = MAX_PET_POINTS_PERLVL
     .scrlExp.Max = 15
     
-        .txtName.text = Trim$(Pet(EditorIndex).Name)
+        .txtName.Text = Trim$(Pet(EditorIndex).Name)
         .scrlNpcNum.value = Pet(EditorIndex).NPCNum
         .scrlMaxLevel.value = Pet(EditorIndex).MaxLevel
         .scrlPoints.value = Pet(EditorIndex).PointsProgression
@@ -2243,7 +2244,7 @@ Dim i As Long
             Call AddEmptyLayer(CustomSprites(EditorIndex))
         End If
         
-        .txtName.text = Trim$(CustomSprites(EditorIndex).Name)
+        .txtName.Text = Trim$(CustomSprites(EditorIndex).Name)
         
         .scrlLayers.Min = 1
         .scrlLayers.Max = GetCustomSpriteNLayers(CustomSprites(EditorIndex))
@@ -2264,8 +2265,8 @@ Dim i As Long
         .scrlAnims.Max = MAX_SPRITE_ANIMS - 1
         .scrlAnims.value = 0
         
-        .txtX.text = CStr(GetLayerCenterX(CustomSprites(EditorIndex).Layers(1), .scrlDir.value))
-        .txtY.text = CStr(GetLayerCenterY(CustomSprites(EditorIndex).Layers(1), .scrlDir.value))
+        .txtX.Text = CStr(GetLayerCenterX(CustomSprites(EditorIndex).Layers(1), .scrlDir.value))
+        .txtY.Text = CStr(GetLayerCenterY(CustomSprites(EditorIndex).Layers(1), .scrlDir.value))
         
         '.chkEnableAnim = BTI(IsAnimEnabled(GetSpriteLayerFixed(CustomSprites(EditorIndex).Layers(1)), 0))
     End With

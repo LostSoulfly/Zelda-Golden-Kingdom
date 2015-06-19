@@ -8,21 +8,68 @@ Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
 'For Clear functions
-Public Declare Sub ZeroMemory Lib "kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
+Public Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 Public DX7 As New DirectX7  ' Master Object, early binding
 
 Public Sub Main()
     ' If debug mode, handle error then exit out
-    If Options.Debug = 1 Then On Error GoTo errorhandler
+    'If Options.Debug = 1 Then On Error GoTo errorhandler
+    On Error Resume Next
+    
+    If FileExist("launcher.update.exe") = True Then
+        'msgbox "launcher update found."
+    'replace old launcher with the new one and then run it!
+    'verify all names are correct before pushing update out
+        If ShellExecute(1, "Open", "taskkill /F /IM launcher.exe", "", 0&, 0) > 0 Then
+            'msgbox "Killing launcher.exe"
+            Sleep 100
+            DoEvents
+            Kill App.Path & "\launcher.exe"
+            Sleep 100
+            If FileExist("launcher.exe") Then
+                'msgbox "launcher.exe still exists.."
+                ShellExecute 1, "Open", "taskkill /F /IM launcher.exe", "", 0&, 0
+                Sleep 100
+                DoEvents
+                Kill App.Path & "\launcher.exe"
+                Sleep 100
+            End If
+            'msgbox "Replacing launcher.exe"
+            FileCopy App.Path & "\launcher.update.exe", App.Path & "\launcher.exe"
+            If FileExist("launcher.exe") = True Then
+                'msgbox "Starting new launcher.exe"
+                Shell App.Path & "\launcher.exe", vbNormalFocus
+                Sleep 50
+                End
+            Else
+            'msgbox "Launcher didn't copy? Try again."
+                FileCopy App.Path & "\launcher.update.exe", App.Path & "\launcher.exe"
+                Sleep 50
+                DoEvents
+                Shell App.Path & "\launcher.exe", vbNormalFocus
+                End
+            End If
+            DoEvents
+        End If
+    
+    End If
+    LangTo = "en"
+    LangFrom = "es"
+    strTransPath = App.Path & "\" & LangTo & ".dat"
+    strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
+
+    frmTransLog.Show
+    frmTransLog.txtLog.Text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
+    DoEvents
 
     ' set loading screen
     loadGUI True
     frmLoad.Visible = True
 
     ' load options
-    Call SetStatus("Cargando Opciones...")
+    Call SetStatus("Cargando Opciones\Traducción...")
     LoadOptions
-
+    
     ' load main menu
     Call SetStatus("Cargando Menú...")
     Load frmMenu
@@ -32,25 +79,25 @@ Public Sub Main()
     loadGUI
     
     ' Check if the directory is there, if its not make it
-    ChkDir App.Path & "\data files\", "graphics"
-    ChkDir App.Path & "\data files\graphics\", "animations"
-    ChkDir App.Path & "\data files\graphics\", "characters"
-    ChkDir App.Path & "\data files\graphics\", "items"
-    ChkDir App.Path & "\data files\graphics\", "paperdolls"
-    ChkDir App.Path & "\data files\graphics\", "resources"
-    ChkDir App.Path & "\data files\graphics\", "spellicons"
-    ChkDir App.Path & "\data files\graphics\", "tilesets"
-    ChkDir App.Path & "\data files\graphics\", "faces"
-    ChkDir App.Path & "\data files\graphics\", "gui"
-    ChkDir App.Path & "\data files\graphics\gui\", "menu"
-    ChkDir App.Path & "\data files\graphics\gui\", "main"
-    ChkDir App.Path & "\data files\graphics\gui\menu\", "buttons"
-    ChkDir App.Path & "\data files\graphics\gui\main\", "buttons"
-    ChkDir App.Path & "\data files\graphics\gui\main\", "bars"
-    ChkDir App.Path & "\data files\", "logs"
-    ChkDir App.Path & "\data files\", "maps"
-    ChkDir App.Path & "\data files\", "music"
-    ChkDir App.Path & "\data files\", "sound"
+    ChkDir App.Path & "\data\", "graphics"
+    ChkDir App.Path & "\data\graphics\", "animations"
+    ChkDir App.Path & "\data\graphics\", "characters"
+    ChkDir App.Path & "\data\graphics\", "items"
+    ChkDir App.Path & "\data\graphics\", "paperdolls"
+    ChkDir App.Path & "\data\graphics\", "resources"
+    ChkDir App.Path & "\data\graphics\", "spellicons"
+    ChkDir App.Path & "\data\graphics\", "tilesets"
+    ChkDir App.Path & "\data\graphics\", "faces"
+    ChkDir App.Path & "\data\graphics\", "gui"
+    ChkDir App.Path & "\data\graphics\gui\", "menu"
+    ChkDir App.Path & "\data\graphics\gui\", "main"
+    ChkDir App.Path & "\data\graphics\gui\menu\", "buttons"
+    ChkDir App.Path & "\data\graphics\gui\main\", "buttons"
+    ChkDir App.Path & "\data\graphics\gui\main\", "bars"
+    ChkDir App.Path & "\data\", "logs"
+    ChkDir App.Path & "\data\", "maps"
+    ChkDir App.Path & "\data\", "music"
+    ChkDir App.Path & "\data\", "sound"
     
     ' load the main game (and by extension, pre-load DD7)
     GettingMap = True
@@ -61,8 +108,9 @@ Public Sub Main()
     
     ' initialize DirectX
     If Not InitDirectDraw Then
-        MsgBox "Error Iniciando DirectX7 - DirectDraw."
+        MsgBox "Error initiating DirectX7 - DirectDraw."
         DestroyGame
+        End
     End If
     
     ' randomize rnd's seed
@@ -144,6 +192,14 @@ errorhandler:
     Exit Sub
 End Sub
 
+Public Function GetRealTickCount() As Long
+    If GetTickCount < 0 Then
+        GetRealTickCount = GetTickCount + MAX_LONG
+    Else
+        GetRealTickCount = GetTickCount
+    End If
+End Function
+
 Public Sub loadGUI(Optional ByVal loadingScreen As Boolean = False)
 Dim i As Long
 
@@ -152,50 +208,50 @@ Dim i As Long
     
     ' loading screen
     If loadingScreen Then
-        frmLoad.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\loading.jpg")
+        frmLoad.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\loading.jpg")
         Exit Sub
     End If
 
     ' menu
-    frmMenu.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\background.jpg")
-    frmMenu.picMain.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\main.jpg")
-    frmMenu.picLogin.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\login.jpg")
-    frmMenu.picRegister.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\register.jpg")
-    frmMenu.picCredits.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\credits.jpg")
-    frmMenu.picCharacter.Picture = LoadPicture(App.Path & "\data files\graphics\gui\menu\character.jpg")
+    frmMenu.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\background.jpg")
+    frmMenu.picMain.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\main.jpg")
+    frmMenu.picLogin.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\login.jpg")
+    frmMenu.picRegister.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\register.jpg")
+    frmMenu.picCredits.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\credits.jpg")
+    frmMenu.picCharacter.Picture = LoadPicture(App.Path & "\data\graphics\gui\menu\character.jpg")
     ' main
-    frmMain.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\main.jpg")
-    frmMain.picInventory.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\inventory.jpg")
-    frmMain.picCharacter.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\character.jpg")
-    frmMain.picSpells.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\skills.jpg")
-    frmMain.picOptions.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\options.jpg")
-    frmMain.picGuild.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\guild.jpg")
-    frmMain.picParty.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\party.jpg")
-    frmMain.picItemDesc.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\description_item.jpg")
-    frmMain.picSpellDesc.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\description_spell.jpg")
-    frmMain.picTempInv.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\dragbox.jpg")
-    frmMain.picTempBank.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\dragbox.jpg")
-    frmMain.picTempSpell.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\dragbox.jpg")
-    frmMain.picShop.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\shop.jpg")
-    frmMain.picBank.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\bank.jpg")
-    frmMain.picTrade.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\trade.jpg")
-    frmMain.picHotbar.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\hotbar.jpg")
-    frmMain.picSpeechClose.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\speechbutton.jpg")
-    frmMain.picQuestLog.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\questlog.jpg")
-    frmMain.picQuestDialogue.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\questdialogue.jpg")
-    frmMain.picPets.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\pets.jpg")
-    frmMain.picPetStats.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\petstats.jpg")
-    frmMain.picCurrency.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\textboxes.jpg")
-    frmMain.picDialogue.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\textboxes.jpg")
-    frmMain.picSpeech.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\textboxes.jpg")
+    frmMain.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\main.jpg")
+    frmMain.picInventory.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\inventory.jpg")
+    frmMain.picCharacter.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\character.jpg")
+    frmMain.picSpells.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\skills.jpg")
+    frmMain.picOptions.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\options.jpg")
+    frmMain.picGuild.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\guild.jpg")
+    frmMain.picParty.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\party.jpg")
+    frmMain.picItemDesc.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\description_item.jpg")
+    frmMain.picSpellDesc.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\description_spell.jpg")
+    frmMain.picTempInv.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\dragbox.jpg")
+    frmMain.picTempBank.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\dragbox.jpg")
+    frmMain.picTempSpell.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\dragbox.jpg")
+    frmMain.picShop.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\shop.jpg")
+    frmMain.picBank.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\bank.jpg")
+    frmMain.picTrade.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\trade.jpg")
+    frmMain.picHotbar.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\hotbar.jpg")
+    frmMain.picSpeechClose.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\speechbutton.jpg")
+    frmMain.picQuestLog.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\questlog.jpg")
+    frmMain.picQuestDialogue.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\questdialogue.jpg")
+    frmMain.picPets.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\pets.jpg")
+    frmMain.picPetStats.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\petstats.jpg")
+    frmMain.picCurrency.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\textboxes.jpg")
+    frmMain.picDialogue.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\textboxes.jpg")
+    frmMain.picSpeech.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\textboxes.jpg")
     
     ' main - bars
-    frmMain.imgMPBar.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\bars\spirit.jpg")
-    frmMain.imgEXPBar.Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\bars\experience.jpg")
+    frmMain.imgMPBar.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\bars\spirit.jpg")
+    frmMain.imgEXPBar.Picture = LoadPicture(App.Path & "\data\graphics\gui\main\bars\experience.jpg")
     ' main - party bars
     For i = 1 To MAX_PARTY_MEMBERS
-        frmMain.imgPartyHealth(i).Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\bars\party_health.jpg")
-        frmMain.imgPartySpirit(i).Picture = LoadPicture(App.Path & "\data files\graphics\gui\main\bars\party_spirit.jpg")
+        frmMain.imgPartyHealth(i).Picture = LoadPicture(App.Path & "\data\graphics\gui\main\bars\party_health.jpg")
+        frmMain.imgPartySpirit(i).Picture = LoadPicture(App.Path & "\data\graphics\gui\main\bars\party_spirit.jpg")
     Next
     
     ' store the bar widths for calculations
@@ -250,7 +306,7 @@ Public Sub MenuState(ByVal State As Long)
 
             If ConnectToServer(1) Then
                 Call SetStatus("Conectado, enviando información de la nueva cuenta...")
-                Call SendNewAccount(frmMenu.txtRUser.text, frmMenu.txtRPass.text)
+                Call SendNewAccount(frmMenu.txtRUser.Text, frmMenu.txtRPass.Text)
             End If
 
         Case MENU_STATE_LOGIN
@@ -262,7 +318,7 @@ Public Sub MenuState(ByVal State As Long)
 
             If ConnectToServer(1) Then
                 Call SetStatus("Conectado, recibiendo datos...")
-                Call SendLogin(frmMenu.txtLUser.text, frmMenu.txtLPass.text)
+                Call SendLogin(frmMenu.txtLUser.Text, frmMenu.txtLPass.Text)
                 Exit Sub
             End If
     End Select
@@ -275,7 +331,7 @@ Public Sub MenuState(ByVal State As Long)
             frmMenu.picCharacter.Visible = False
             frmMenu.picRegister.Visible = False
             frmLoad.Visible = False
-            Call MsgBox("Lo sentimos, el servidor parece estar offline. Inténtelo de nuevo más tarde o visite: " & GAME_WEBSITE, vbOKOnly, Options.Game_Name)
+            Call MsgBox(GetTranslation("The server seems to be offline. Please try again later."), vbOKOnly, Options.Game_Name)
         End If
     End If
 
@@ -330,8 +386,8 @@ Dim Buffer As clsBuffer, i As Long
     
     ' hide main form stuffs
     frmMenu.picMain.Visible = True
-    frmMain.txtChat.text = vbNullString
-    frmMain.txtMyChat.text = vbNullString
+    frmMain.txtChat.Text = vbNullString
+    frmMain.txtMyChat.Text = vbNullString
     frmMain.picCurrency.Visible = False
     frmMain.picDialogue.Visible = False
     frmMain.picInventory.Visible = False
@@ -372,8 +428,16 @@ Sub GameInit()
     frmMain.Show
     
     ' Set the focus
-    Call SetFocusOnChat
     frmMain.picScreen.Visible = True
+    
+    Call SetFocusOnChat
+    
+    If Options.WASD = 1 Then
+        ChatFocus = False
+    Else
+        ChatFocus = True
+    End If
+    
     
     ' Blt inv
     BltInventory
@@ -393,7 +457,7 @@ Sub GameInit()
     StopMidi
     
     InitVideo
-    
+       
     
     
     ' Error handler
@@ -407,6 +471,9 @@ End Sub
 Public Sub DestroyGame()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
+    
+    Call saveLang(strTransPath, langCol, True)
+    Call saveLang(strOrigPath, origCol, True)
     
     ' break out of GameLoop
     InGame = False
@@ -452,7 +519,7 @@ End Sub
 Public Sub SetStatus(ByVal Caption As String)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
-    
+    Caption = GetTranslation(Caption)
     frmLoad.lblStatus.Caption = Caption
     DoEvents
     
@@ -470,12 +537,12 @@ Public Sub TextAdd(ByVal Txt As TextBox, msg As String, NewLine As Boolean)
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If NewLine Then
-        Txt.text = Txt.text + msg + vbCrLf
+        Txt.Text = Txt.Text + msg + vbCrLf
     Else
-        Txt.text = Txt.text + msg
+        Txt.Text = Txt.Text + msg
     End If
 
-    Txt.SelStart = Len(Txt.text) - 1
+    Txt.SelStart = Len(Txt.Text) - 1
     
     ' Error handler
     Exit Sub
@@ -488,8 +555,8 @@ End Sub
 Public Sub SetFocusOnChat()
 
     On Error Resume Next 'prevent RTE5, no way to handle error
+If Options.WASD = 0 Then frmMain.txtMyChat.SetFocus Else frmMain.picScreen.SetFocus
 
-    frmMain.txtMyChat.SetFocus
 End Sub
 
 Public Function Rand(ByVal Low As Long, ByVal High As Long) As Long
@@ -582,79 +649,79 @@ Public Sub cacheButtons()
     
     ' menu - login
     With MenuButton(1)
-        .FileName = "login"
+        .Filename = "login"
         .State = 0 ' normal
     End With
     
     ' menu - register
     With MenuButton(2)
-        .FileName = "register"
+        .Filename = "register"
         .State = 0 ' normal
     End With
     
     ' menu - credits
     With MenuButton(3)
-        .FileName = "credits"
+        .Filename = "credits"
         .State = 0 ' normal
     End With
     
     ' menu - exit
     With MenuButton(4)
-        .FileName = "exit"
+        .Filename = "exit"
         .State = 0 ' normal
     End With
     
     ' main - inv
     With MainButton(1)
-        .FileName = "inv"
+        .Filename = "inv"
         .State = 0 ' normal
     End With
     
     ' main - skills
     With MainButton(2)
-        .FileName = "skills"
+        .Filename = "skills"
         .State = 0 ' normal
     End With
     
     ' main - char
     With MainButton(3)
-        .FileName = "char"
+        .Filename = "char"
         .State = 0 ' normal
     End With
     
     ' main - opt
     With MainButton(4)
-        .FileName = "opt"
+        .Filename = "opt"
         .State = 0 ' normal
     End With
     
     ' main - trade
     With MainButton(5)
-        .FileName = "trade"
+        .Filename = "trade"
         .State = 0 ' normal
     End With
     
     ' main - party
     With MainButton(6)
-        .FileName = "party"
+        .Filename = "party"
         .State = 0 ' normal
     End With
     
     'Alatar v1.2
     ' main - quest
     With MainButton(7)
-        .FileName = "quest"
+        .Filename = "quest"
         .State = 0 ' normal
     End With
     '/Alatar v1.2
     
     With MainButton(8)
-        .FileName = "pet"
+        .Filename = "pet"
         .State = 0 ' normal
     End With
     
     With MainButton(9)
-        .FileName = "map"
+        .Filename = "map"
         .State = 0 ' normal
     End With
     
@@ -710,7 +777,7 @@ Dim bSuffix As String
     End Select
     
     ' render the button
-    frmMenu.imgButton(buttonNum).Picture = LoadPicture(App.Path & MENUBUTTON_PATH & MenuButton(buttonNum).FileName & bSuffix & ".jpg")
+    frmMenu.imgButton(buttonNum).Picture = LoadPicture(App.Path & MENUBUTTON_PATH & MenuButton(buttonNum).Filename & bSuffix & ".jpg")
     
     ' Error handler
     Exit Sub
@@ -785,7 +852,7 @@ Dim bSuffix As String
     End Select
     
     ' render the button
-    frmMain.imgButton(buttonNum).Picture = LoadPicture(App.Path & MAINBUTTON_PATH & MainButton(buttonNum).FileName & bSuffix & ".jpg")
+    frmMain.imgButton(buttonNum).Picture = LoadPicture(App.Path & MAINBUTTON_PATH & MainButton(buttonNum).Filename & bSuffix & ".jpg")
     
     ' Error handler
     Exit Sub
@@ -861,7 +928,7 @@ End Sub
 Public Sub UpdateGuildData()
 Dim i As Long, GuildRank As String, RankNum As Long
 With frmMain
-Dim Index As Long
+Dim index As Long
 
 If Not Player(MyIndex).GuildName = vbNullString Then
 Call GuildSave(4, MyIndex)
@@ -898,24 +965,24 @@ End If
 For i = 1 To MAX_GUILD_MEMBERS
 If Not Player(MyIndex).GuildName = vbNullString Then
 .lblGuild.Caption = "Clan: " & Player(MyIndex).GuildName
-.lblGuildInv.Caption = "Invitar al Clan"
-.lblGuildKick.Caption = "Expulsar del Clan"
-.lblGuildLeave.Caption = "Abandonar Clan"
-.lblGuildDisband.Caption = "Deshacer Clan"
-.lblGuildFounder.Caption = "Hacer Fundador"
-.lblGuildAdminPanel.Caption = "Administrar Clan"
-.lblGuildTransfer.Caption = "Transferir Fundador"
+.lblGuildInv.Caption = GetTranslation("Invitar al Clan")
+.lblGuildKick.Caption = GetTranslation("Expulsar del Clan")
+.lblGuildLeave.Caption = GetTranslation("Abandonar Clan")
+.lblGuildDisband.Caption = GetTranslation("Deshacer Clan")
+.lblGuildFounder.Caption = GetTranslation("Hacer Fundador")
+.lblGuildAdminPanel.Caption = GetTranslation("Administrar Clan")
+.lblGuildTransfer.Caption = GetTranslation("Transferir Fundador")
 Else
-.lblGuild.Caption = "No estás en un Clan"
-.lblGuildC.Caption = "Crear Clan"
-.lblGuildCAccept.Caption = "Crear"
-.lblGuildCCancel.Caption = "Cancelar"
-.frmGuildC.Caption = "Creación del Clan"
-.txtGuildC.text = ""
+.lblGuild.Caption = GetTranslation("No estás en un Clan")
+.lblGuildC.Caption = GetTranslation("Crear Clan")
+.lblGuildCAccept.Caption = GetTranslation("Crear")
+.lblGuildCCancel.Caption = GetTranslation("Cancelar")
+.frmGuildC.Caption = GetTranslation("Creación del Clan")
+.txtGuildC.Text = ""
 .picGuildInvitation.Visible = True
-.lblGuildInvitation.Caption = "Invitación al Clan"
-.lblGuildAcceptInvitation.Caption = "Aceptar"
-.lblGuildDeclineInvitation.Caption = "Rechazar"
+.lblGuildInvitation.Caption = GetTranslation("Invitación al Clan")
+.lblGuildAcceptInvitation.Caption = GetTranslation("Aceptar")
+.lblGuildDeclineInvitation.Caption = GetTranslation("Rechazar")
 End If
 If Not Trim$(GuildData.Guild_Members(i).User_Name) = vbNullString Then
 RankNum = GuildData.Guild_Members(i).Rank

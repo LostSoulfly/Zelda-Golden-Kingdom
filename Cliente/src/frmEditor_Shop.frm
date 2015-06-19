@@ -308,7 +308,7 @@ Private Sub cmdSave_Click()
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     If LenB(Trim$(txtName)) = 0 Then
-        Call MsgBox("Nombre requerido.")
+        Call MsgBox("Name requerido.")
     Else
         Call ShopEditorOk
     End If
@@ -336,16 +336,16 @@ errorhandler:
 End Sub
 
 Private Sub cmdUpdate_Click()
-Dim Index As Long
+Dim index As Long
 Dim tmpPos As Long
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     tmpPos = lstTradeItem.ListIndex
-    Index = lstTradeItem.ListIndex + 1
-    If Index = 0 Then Exit Sub
-    With Shop(EditorIndex).TradeItem(Index)
+    index = lstTradeItem.ListIndex + 1
+    If index = 0 Then Exit Sub
+    With Shop(EditorIndex).TradeItem(index)
         .Item = cmbItem.ListIndex
         .ItemValue = Val(txtItemValue.text)
         .CostItem = cmbCostItem.ListIndex
@@ -362,13 +362,13 @@ errorhandler:
 End Sub
 
 Private Sub cmdDeleteTrade_Click()
-Dim Index As Long
+Dim index As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Index = lstTradeItem.ListIndex + 1
-    If Index = 0 Then Exit Sub
-    With Shop(EditorIndex).TradeItem(Index)
+    index = lstTradeItem.ListIndex + 1
+    If index = 0 Then Exit Sub
+    With Shop(EditorIndex).TradeItem(index)
         .Item = 0
         .ItemValue = 0
         .CostItem = 0
@@ -422,7 +422,7 @@ Dim tmpIndex As Long
     tmpIndex = lstIndex.ListIndex
     Shop(EditorIndex).Name = Trim$(txtName.text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Shop(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Shop(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler

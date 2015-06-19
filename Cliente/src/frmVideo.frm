@@ -87,13 +87,39 @@ Private Sub cmdAccept_Click()
 End Sub
 
 Private Sub form_load()
-    chkActivateVideo.Value = BTI(RecordingActived)
-    scrlVideoSeconds.Value = Maxframes \ 4
+    chkActivateVideo.value = BTI(RecordingActived)
+    scrlVideoSeconds.value = Maxframes \ 4
+    
+        Dim e As Control
+    
+    For Each e In Me.Controls
+        If (TypeOf e Is Label) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CheckBox) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is OptionButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is Frame) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CommandButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is TextBox) Then
+            e.text = GetTranslation(e.text)
+        End If
+    Next
+    
+    Me.Caption = GetTranslation(Me.Caption)
+    
     
 End Sub
 
 Private Sub chkActivateVideo_Click()
-    If ITB(chkActivateVideo.Value) Then
+    If ITB(chkActivateVideo.value) Then
         Activate = True
     Else
         Activate = False
@@ -104,7 +130,7 @@ End Sub
 
 Private Sub scrlVideoSeconds_Change()
     Dim seconds As Long
-    seconds = scrlVideoSeconds.Value
+    seconds = scrlVideoSeconds.value
     If seconds > 0 And seconds <= 10 Then
         lblVideoSeconds.Caption = "Segundos Memorizados: " & seconds
         NewFrames = seconds * 4

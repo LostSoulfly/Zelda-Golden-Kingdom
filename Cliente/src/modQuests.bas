@@ -38,22 +38,22 @@ End Type
 'Alatar v1.2
 Private Type QuestRequiredItemRec
     Item As Long
-    Value As Long
+    value As Long
 End Type
 
 Private Type QuestGiveItemRec
     Item As Long
-    Value As Long
+    value As Long
 End Type
 
 Private Type QuestTakeItemRec
     Item As Long
-    Value As Long
+    value As Long
 End Type
 
 Private Type QuestRewardItemRec
     Item As Long
-    Value As Long
+    value As Long
 End Type
 '/Alatar v1.2
 
@@ -72,6 +72,7 @@ End Type
 Public Type QuestRec
     'Alatar v1.2
     Name As String * 30
+    
     Repeat As Long
     QuestLog As String
     Speech(1 To 3) As String
@@ -91,6 +92,7 @@ Public Type QuestRec
     Level As Long
     '/Alatar v1.2
  
+ TranslatedName As String * 30
 End Type
 
 ' ////////////
@@ -107,9 +109,9 @@ Dim i As Long
         'Alatar v1.2
         .txtName = Trim$(Quest(EditorIndex).Name)
         If Quest(EditorIndex).Repeat = 1 Then
-            .chkRepeat.Value = 1
+            .chkRepeat.value = 1
         Else
-            .chkRepeat.Value = 0
+            .chkRepeat.value = 0
         End If
         .txtQuestLog = Trim$(Quest(EditorIndex).QuestLog)
         For i = 1 To 3
@@ -139,13 +141,13 @@ Dim i As Long
         '    End If
         'Next
         
-        .scrlReqLevel.Value = Quest(EditorIndex).RequiredLevel
-        .scrlReqQuest.Value = Quest(EditorIndex).RequiredQuest
+        .scrlReqLevel.value = Quest(EditorIndex).RequiredLevel
+        .scrlReqQuest.value = Quest(EditorIndex).RequiredQuest
         For i = 1 To 5
-            .scrlReqClass.Value = Quest(EditorIndex).RequiredClass(i)
+            .scrlReqClass.value = Quest(EditorIndex).RequiredClass(i)
         Next
         
-        .scrlExp.Value = Quest(EditorIndex).RewardExp
+        .scrlExp.value = Quest(EditorIndex).RewardExp
         
         UpdateQuestOptimalLevel
         
@@ -159,7 +161,7 @@ Dim i As Long
         '/Alatar v1.2
         
         'load task nº1
-        .scrlTotalTasks.Value = 1
+        .scrlTotalTasks.value = 1
         LoadTask EditorIndex, 1
         
     End With
@@ -177,9 +179,9 @@ Sub UpdateQuestOptimalLevel()
     .scrlOptimalLevel.Max = MAX_LEVELS
     
     If lvl >= 0 And lvl <= MAX_LEVELS Then
-        .scrlOptimalLevel.Value = lvl
+        .scrlOptimalLevel.value = lvl
     Else
-        .scrlOptimalLevel.Value = 0
+        .scrlOptimalLevel.value = 0
     End If
     End With
 End Sub
@@ -195,7 +197,7 @@ Public Sub UpdateQuestGiveItems()
             If .Item = 0 Then
                 frmEditor_Quest.lstGiveItem.AddItem "-"
             Else
-                frmEditor_Quest.lstGiveItem.AddItem Trim$(Trim$(Item(.Item).Name) & ":" & .Value)
+                frmEditor_Quest.lstGiveItem.AddItem Trim$(Trim$(Item(.Item).TranslatedName) & ":" & .value)
             End If
         End With
     Next
@@ -211,7 +213,7 @@ Public Sub UpdateQuestTakeItems()
             If .Item = 0 Then
                 frmEditor_Quest.lstTakeItem.AddItem "-"
             Else
-                frmEditor_Quest.lstTakeItem.AddItem Trim$(Trim$(Item(.Item).Name) & ":" & .Value)
+                frmEditor_Quest.lstTakeItem.AddItem Trim$(Trim$(Item(.Item).TranslatedName) & ":" & .value)
             End If
         End With
     Next
@@ -227,7 +229,7 @@ Public Sub UpdateQuestRewardItems()
             If .Item = 0 Then
                 frmEditor_Quest.lstItemRew.AddItem "-"
             Else
-                frmEditor_Quest.lstItemRew.AddItem Trim$(Trim$(Item(.Item).Name) & ":" & .Value)
+                frmEditor_Quest.lstItemRew.AddItem Trim$(Trim$(Item(.Item).TranslatedName) & ":" & .value)
             End If
         End With
     Next
@@ -243,7 +245,7 @@ Public Sub UpdateQuestRequirementItems()
             If .Item = 0 Then
                 frmEditor_Quest.lstReqItem.AddItem "-"
             Else
-                frmEditor_Quest.lstReqItem.AddItem Trim$(Trim$(Item(.Item).Name) & ":" & .Value)
+                frmEditor_Quest.lstReqItem.AddItem Trim$(Trim$(Item(.Item).TranslatedName) & ":" & .value)
             End If
         End With
     Next
@@ -258,7 +260,7 @@ Public Sub UpdateQuestClass()
         If Quest(EditorIndex).RequiredClass(i) = 0 Then
             frmEditor_Quest.lstReqClass.AddItem "-"
         Else
-            frmEditor_Quest.lstReqClass.AddItem Trim$(Trim$(Class(Quest(EditorIndex).RequiredClass(i)).Name))
+            frmEditor_Quest.lstReqClass.AddItem Trim$(Trim$(Class(Quest(EditorIndex).RequiredClass(i)).TranslatedName))
         End If
     Next
 End Sub
@@ -295,9 +297,9 @@ End Sub
 ' // DATABASE //
 ' //////////////
 
-Sub ClearQuest(ByVal Index As Long)
-    Call ZeroMemory(ByVal VarPtr(Quest(Index)), LenB(Quest(Index)))
-    Quest(Index).Name = vbNullString
+Sub ClearQuest(ByVal index As Long)
+    Call ZeroMemory(ByVal VarPtr(Quest(index)), LenB(Quest(index)))
+    Quest(index).Name = vbNullString
 End Sub
 
 Sub ClearQuests()
@@ -313,63 +315,63 @@ End Sub
 ' ////////////////////
 
 Public Sub SendRequestEditQuest()
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
-    Set buffer = New clsBuffer
-    buffer.WriteLong CRequestEditQuest
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CRequestEditQuest
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
     
 End Sub
 
 Public Sub SendSaveQuest(ByVal QuestNum As Long)
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 'Dim QuestSize As Long
 Dim QuestData() As Byte
 
-    Set buffer = New clsBuffer
+    Set Buffer = New clsBuffer
     'QuestSize = LenB(Quest(QuestNum))
     'ReDim QuestData(QuestSize - 1)
     'CopyMemory QuestData(0), ByVal VarPtr(Quest(QuestNum)), QuestSize
     QuestData = GetQuestData(QuestNum)
-    buffer.WriteLong CSaveQuest
-    buffer.WriteLong QuestNum
+    Buffer.WriteLong CSaveQuest
+    Buffer.WriteLong QuestNum
     'Buffer.WriteLong QuestSize
-    buffer.WriteBytes QuestData
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Buffer.WriteBytes QuestData
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
     
 End Sub
 
 Sub SendRequestQuests()
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
-    Set buffer = New clsBuffer
-    buffer.WriteLong CRequestQuests
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CRequestQuests
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
     
 End Sub
 
 Public Sub UpdateQuestLog()
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     
-    Set buffer = New clsBuffer
-    buffer.WriteLong CQuestLogUpdate
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CQuestLogUpdate
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
     
 End Sub
 
 Public Sub PlayerHandleQuest(ByVal QuestNum As Long, ByVal Order As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong CPlayerHandleQuest
-    buffer.WriteLong QuestNum
-    buffer.WriteLong Order '1=accept quest, 2=cancel quest
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Buffer.WriteLong CPlayerHandleQuest
+    Buffer.WriteLong QuestNum
+    Buffer.WriteLong Order '1=accept quest, 2=cancel quest
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 ' ///////////////
@@ -404,6 +406,12 @@ Public Function GetQuestNum(ByVal QuestName As String) As Long
             GetQuestNum = i
             Exit For
         End If
+        
+        If Trim$(Quest(i).TranslatedName) = Trim$(QuestName) Then
+            GetQuestNum = i
+            Exit For
+        End If
+        
     Next
 End Function
 
@@ -418,16 +426,16 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
     
     With frmEditor_Quest
         'Load the task type
-        .optTask(TaskToLoad.Order).Value = True
+        .optTask(TaskToLoad.Order).value = True
         'Load textboxes
         .txtTaskSpeech.text = vbNullString
         .txtTaskLog.text = "" & Trim$(TaskToLoad.TaskLog)
         'Set scrolls to 0 and disable them so they can be enabled when needed
-        .scrlNPC.Value = 0
-        .scrlItem.Value = 0
-        .scrlMap.Value = 0
-        .scrlResource.Value = 0
-        .scrlAmount.Value = 0
+        .scrlNPC.value = 0
+        .scrlItem.value = 0
+        .scrlMap.value = 0
+        .scrlResource.value = 0
+        .scrlAmount.value = 0
         .txtTaskSpeech.enabled = False
         .scrlNPC.enabled = False
         .scrlItem.enabled = False
@@ -436,9 +444,9 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
         .scrlAmount.enabled = False
         
         If TaskToLoad.QuestEnd = True Then
-            .chkEnd.Value = 1
+            .chkEnd.value = 1
         Else
-            .chkEnd.Value = 0
+            .chkEnd.value = 0
         End If
         
         Select Case TaskToLoad.Order
@@ -446,58 +454,61 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
                 
             Case QUEST_TYPE_GOSLAY '1
                 .scrlNPC.enabled = True
-                .scrlNPC.Value = TaskToLoad.NPC
+                .scrlNPC.value = TaskToLoad.NPC
                 .scrlAmount.enabled = True
-                .scrlAmount.Value = TaskToLoad.amount
+                .scrlAmount.value = TaskToLoad.amount
                 
             Case QUEST_TYPE_GOGATHER '2
                 .scrlItem.enabled = True
-                .scrlItem.Value = TaskToLoad.Item
+                .scrlItem.value = TaskToLoad.Item
                 .scrlAmount.enabled = True
-                .scrlAmount.Value = TaskToLoad.amount
+                .scrlAmount.value = TaskToLoad.amount
                 
             Case QUEST_TYPE_GOTALK '3
                 .scrlNPC.enabled = True
-                .scrlNPC.Value = TaskToLoad.NPC
+                .scrlNPC.value = TaskToLoad.NPC
                 .txtTaskSpeech.enabled = True
                 .txtTaskSpeech.text = "" & Trim$(TaskToLoad.Speech)
                 
             Case QUEST_TYPE_GOREACH '4
                 .scrlMap.enabled = True
-                .scrlMap.Value = TaskToLoad.map
+                .scrlMap.value = TaskToLoad.map
             
             Case QUEST_TYPE_GOGIVE '5
                 .scrlItem.enabled = True
-                .scrlItem.Value = TaskToLoad.Item
+                .scrlItem.value = TaskToLoad.Item
                 .scrlAmount.enabled = True
-                .scrlAmount.Value = TaskToLoad.amount
+                .scrlAmount.value = TaskToLoad.amount
                 .scrlNPC.enabled = True
-                .scrlNPC.Value = TaskToLoad.NPC
+                .scrlNPC.value = TaskToLoad.NPC
                 .txtTaskSpeech.enabled = True
                 .txtTaskSpeech.text = "" & Trim$(TaskToLoad.Speech)
             
             Case QUEST_TYPE_GOKILL '6
                 .scrlAmount.enabled = True
-                .scrlAmount.Value = TaskToLoad.amount
+                .scrlAmount.value = TaskToLoad.amount
                 
             Case QUEST_TYPE_GOTRAIN '7
                 .scrlResource.enabled = True
-                .scrlResource.Value = TaskToLoad.Resource
+                .scrlResource.value = TaskToLoad.Resource
                 .scrlAmount.enabled = True
-                .scrlAmount.Value = TaskToLoad.amount
+                .scrlAmount.value = TaskToLoad.amount
             
             Case QUEST_TYPE_GOGET '8
                 .scrlNPC.enabled = True
-                .scrlNPC.Value = TaskToLoad.NPC
+                .scrlNPC.value = TaskToLoad.NPC
                 .scrlItem.enabled = True
-                .scrlItem.Value = TaskToLoad.Item
+                .scrlItem.value = TaskToLoad.Item
                 .scrlAmount.enabled = True
-                .scrlAmount.Value = TaskToLoad.amount
+                .scrlAmount.value = TaskToLoad.amount
                 .txtTaskSpeech.enabled = True
                 .txtTaskSpeech.text = "" & Trim$(TaskToLoad.Speech)
             
         End Select
+    
     End With
+    
+    
 End Sub
 
 Public Sub RefreshQuestLog()
@@ -506,7 +517,7 @@ Public Sub RefreshQuestLog()
     frmMain.lstQuestLog.Clear
     For i = 1 To MAX_QUESTS
         If QuestInProgress(i) Or QuestCompleted(i) Then
-            frmMain.lstQuestLog.AddItem Trim$(Quest(i).Name)
+            frmMain.lstQuestLog.AddItem Trim$(Quest(i).TranslatedName)
         End If
     Next
     
@@ -527,7 +538,7 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
         
         Select Case ButtonPressed
             Case 1 'Actual Task
-                .lblQuestSubtitle = "Tarea Actual [" + Trim$(Player(MyIndex).PlayerQuest(QuestNum).ActualTask) + "]"
+                .lblQuestSubtitle = GetTranslation("Tarea Actual ") & " [" + Trim$(Player(MyIndex).PlayerQuest(QuestNum).ActualTask) + "]"
                 If QuestCompleted(QuestNum) = False Then
                     .lblQuestSay = Trim$(Quest(QuestNum).Task(Player(MyIndex).PlayerQuest(QuestNum).ActualTask).TaskLog)
                 Else
@@ -535,7 +546,7 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
                 End If
                 
             Case 2 'Last Speech
-                .lblQuestSubtitle = "Último discurso"
+                .lblQuestSubtitle = GetTranslation("Último discurso")
                 If Player(MyIndex).PlayerQuest(QuestNum).ActualTask > 1 Then
                     .lblQuestSay = Trim$(Quest(QuestNum).Task(Player(MyIndex).PlayerQuest(QuestNum).ActualTask - 1).Speech)
                     If .lblQuestSay = "" Then
@@ -546,21 +557,21 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
                 End If
             
             Case 3 'Quest Status
-                .lblQuestSubtitle = "Estado de la Quest"
+                .lblQuestSubtitle = GetTranslation("Estado de la Quest")
                 If Player(MyIndex).PlayerQuest(QuestNum).Status = QUEST_STARTED Then
-                    .lblQuestSay = "Misión en progreso. Paso " & Player(MyIndex).PlayerQuest(QuestNum).ActualTask & "."
-                    .lblQuestExtra = "Cancelar Quest"
+                    .lblQuestSay = GetTranslation("Misión en progreso. Paso " & Player(MyIndex).PlayerQuest(QuestNum).ActualTask & ".")
+                    .lblQuestExtra = GetTranslation("Cancelar Quest")
                     .lblQuestExtra.Visible = True
                 ElseIf QuestCompleted(QuestNum) Then
-                    .lblQuestSay = "Completada"
+                    .lblQuestSay = GetTranslation("Completada")
                 End If
                 
             Case 4 'Quest Log (Main Task)
-                .lblQuestSubtitle = "Tarea principal"
+                .lblQuestSubtitle = GetTranslation("Tarea principal")
                 .lblQuestSay = Trim$(Quest(QuestNum).QuestLog)
             
             Case 5 'Requirements
-                .lblQuestSubtitle = "Requerimientos"
+                .lblQuestSubtitle = GetTranslation("Requerimientos")
                 QuestSay = "Nivel: "
                 If Quest(QuestNum).RequiredLevel > 0 Then
                     QuestSay = QuestSay & "" & Quest(QuestNum).RequiredLevel & vbNewLine & "Quest: "
@@ -568,7 +579,7 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
                     QuestSay = QuestSay & " Nada." & vbNewLine & "Quest: "
                 End If
                 If Quest(QuestNum).RequiredQuest > 0 Then
-                    QuestSay = QuestSay & "" & Trim$(Quest(Quest(QuestNum).RequiredQuest).Name) & vbNewLine & "Clase: "
+                    QuestSay = QuestSay & "" & Trim$(Quest(Quest(QuestNum).RequiredQuest).TranslatedName) & vbNewLine & "Clase: "
                 Else
                     QuestSay = QuestSay & " Nada." & vbNewLine & "Clase: "
                 End If
@@ -580,17 +591,17 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
                 QuestSay = QuestSay & vbNewLine & "Items:"
                 For i = 1 To MAX_QUESTS_ITEMS
                     If Quest(QuestNum).RequiredItem(i).Item > 0 Then
-                        QuestSay = QuestSay & " " & Trim$(Item(Quest(QuestNum).RequiredItem(i).Item).Name) & "(" & Trim$(Quest(QuestNum).RequiredItem(i).Value) & ")"
+                        QuestSay = QuestSay & " " & Trim$(Item(Quest(QuestNum).RequiredItem(i).Item).TranslatedName) & "(" & Trim$(Quest(QuestNum).RequiredItem(i).value) & ")"
                     End If
                 Next
                 .lblQuestSay = QuestSay
             
             Case 6 'Rewards
-                .lblQuestSubtitle = "Recompensa"
+                .lblQuestSubtitle = GetTranslation("Recompensa")
                 QuestSay = "Experiencia: " & Quest(QuestNum).RewardExp & vbNewLine & "Items:"
                 For i = 1 To MAX_QUESTS_ITEMS
                     If Quest(QuestNum).RewardItem(i).Item > 0 Then
-                        QuestSay = QuestSay & " " & Trim$(Item(Quest(QuestNum).RewardItem(i).Item).Name) & "(" & Trim$(Quest(QuestNum).RewardItem(i).Value) & ")"
+                        QuestSay = QuestSay & " " & Trim$(Item(Quest(QuestNum).RewardItem(i).Item).TranslatedName) & "(" & Trim$(Quest(QuestNum).RewardItem(i).value) & ")"
                     End If
                 Next
                 .lblQuestSay = QuestSay
@@ -599,14 +610,14 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
                 Exit Sub
         End Select
         
-        .lblQuestName = Trim$(Quest(QuestNum).Name)
+        .lblQuestName = Trim$(Quest(QuestNum).TranslatedName)
         .picQuestDialogue.Visible = True
         
     End With
 End Sub
 
 Public Sub RunQuestDialogueExtraLabel()
-    If frmMain.lblQuestExtra = "Cancelar Quest" Then
+    If frmMain.lblQuestExtra = GetTranslation("Cancelar Quest") Then
         PlayerHandleQuest GetQuestNum(Trim$(frmMain.lblQuestName.Caption)), 2
         frmMain.lblQuestExtra = "Extra"
         frmMain.lblQuestExtra.Visible = False
@@ -617,109 +628,110 @@ End Sub
 
 
 Function GetQuestData(ByVal QuestNum As Long) As Byte()
-Dim buffer As clsBuffer, i As Long
-Set buffer = New clsBuffer
+Dim Buffer As clsBuffer, i As Long
+Set Buffer = New clsBuffer
 
 With Quest(QuestNum)
-     buffer.WriteString .Name
-     buffer.WriteLong .Repeat
-     buffer.WriteString .QuestLog
+     Buffer.WriteString .Name
+     Buffer.WriteLong .Repeat
+     Buffer.WriteString .QuestLog
     
     For i = 1 To 3
-         buffer.WriteString .Speech(i)
+         Buffer.WriteString .Speech(i)
     Next
     
     For i = 1 To MAX_QUESTS_ITEMS
-         buffer.WriteLong .GiveItem(i).Item
-         buffer.WriteLong .GiveItem(i).Value
+         Buffer.WriteLong .GiveItem(i).Item
+         Buffer.WriteLong .GiveItem(i).value
         
-         buffer.WriteLong .TakeItem(i).Item
-         buffer.WriteLong .TakeItem(i).Value
+         Buffer.WriteLong .TakeItem(i).Item
+         Buffer.WriteLong .TakeItem(i).value
         
-         buffer.WriteLong .RequiredItem(i).Item
-         buffer.WriteLong .RequiredItem(i).Value
+         Buffer.WriteLong .RequiredItem(i).Item
+         Buffer.WriteLong .RequiredItem(i).value
         
-         buffer.WriteLong .RewardItem(i).Item
-         buffer.WriteLong .RewardItem(i).Value
+         Buffer.WriteLong .RewardItem(i).Item
+         Buffer.WriteLong .RewardItem(i).value
     Next
     
-     buffer.WriteLong .RequiredLevel
-     buffer.WriteLong .RequiredQuest
+     Buffer.WriteLong .RequiredLevel
+     Buffer.WriteLong .RequiredQuest
     For i = 1 To 5
-         buffer.WriteLong .RequiredClass(i)
+         Buffer.WriteLong .RequiredClass(i)
     Next
     
-     buffer.WriteLong .RewardExp
+     Buffer.WriteLong .RewardExp
     
     For i = 1 To MAX_TASKS
-         buffer.WriteLong .Task(i).Order
-         buffer.WriteLong .Task(i).NPC
-         buffer.WriteLong .Task(i).Item
-        buffer.WriteLong .Task(i).map
-         buffer.WriteLong .Task(i).Resource
-        buffer.WriteLong .Task(i).amount
-         buffer.WriteString .Task(i).Speech
-         buffer.WriteString .Task(i).TaskLog
-         buffer.WriteByte .Task(i).QuestEnd
+         Buffer.WriteLong .Task(i).Order
+         Buffer.WriteLong .Task(i).NPC
+         Buffer.WriteLong .Task(i).Item
+        Buffer.WriteLong .Task(i).map
+         Buffer.WriteLong .Task(i).Resource
+        Buffer.WriteLong .Task(i).amount
+         Buffer.WriteString .Task(i).Speech
+         Buffer.WriteString .Task(i).TaskLog
+         Buffer.WriteByte .Task(i).QuestEnd
     Next
     
-    buffer.WriteLong .Level
+    Buffer.WriteLong .Level
 End With
-GetQuestData = buffer.ToArray()
-Set buffer = Nothing
+GetQuestData = Buffer.ToArray()
+Set Buffer = Nothing
 End Function
 
 Sub SetQuestData(ByRef Data() As Byte, ByVal QuestNum As Long)
-Dim buffer As clsBuffer
-Set buffer = New clsBuffer
-buffer.WriteBytes Data
+Dim Buffer As clsBuffer
+Set Buffer = New clsBuffer
+Buffer.WriteBytes Data
     
     
     With Quest(QuestNum)
-    .Name = buffer.ReadString
-    .Repeat = buffer.ReadLong
-    .QuestLog = buffer.ReadString
+    .Name = Buffer.ReadString
+    .TranslatedName = Buffer.ReadString
+    .Repeat = Buffer.ReadLong
+    .QuestLog = Buffer.ReadString
     
     Dim i As Long
     
     For i = 1 To 3
-       .Speech(i) = buffer.ReadString
+       .Speech(i) = Buffer.ReadString
     Next
     
     For i = 1 To MAX_QUESTS_ITEMS
-        .GiveItem(i).Item = buffer.ReadLong
-        .GiveItem(i).Value = buffer.ReadLong
+        .GiveItem(i).Item = Buffer.ReadLong
+        .GiveItem(i).value = Buffer.ReadLong
         
-        .TakeItem(i).Item = buffer.ReadLong
-        .TakeItem(i).Value = buffer.ReadLong
+        .TakeItem(i).Item = Buffer.ReadLong
+        .TakeItem(i).value = Buffer.ReadLong
         
-        .RequiredItem(i).Item = buffer.ReadLong
-        .RequiredItem(i).Value = buffer.ReadLong
+        .RequiredItem(i).Item = Buffer.ReadLong
+        .RequiredItem(i).value = Buffer.ReadLong
         
-        .RewardItem(i).Item = buffer.ReadLong
-        .RewardItem(i).Value = buffer.ReadLong
+        .RewardItem(i).Item = Buffer.ReadLong
+        .RewardItem(i).value = Buffer.ReadLong
     Next
     
-    .RequiredLevel = buffer.ReadLong
-    .RequiredQuest = buffer.ReadLong
+    .RequiredLevel = Buffer.ReadLong
+    .RequiredQuest = Buffer.ReadLong
     For i = 1 To 5
-        .RequiredClass(i) = buffer.ReadLong
+        .RequiredClass(i) = Buffer.ReadLong
     Next
     
-    .RewardExp = buffer.ReadLong
+    .RewardExp = Buffer.ReadLong
     
     For i = 1 To MAX_TASKS
-        .Task(i).Order = buffer.ReadLong
-        .Task(i).NPC = buffer.ReadLong
-        .Task(i).Item = buffer.ReadLong
-        .Task(i).map = buffer.ReadLong
-        .Task(i).Resource = buffer.ReadLong
-        .Task(i).amount = buffer.ReadLong
-        .Task(i).Speech = buffer.ReadString
-        .Task(i).TaskLog = buffer.ReadString
-        .Task(i).QuestEnd = buffer.ReadByte
+        .Task(i).Order = Buffer.ReadLong
+        .Task(i).NPC = Buffer.ReadLong
+        .Task(i).Item = Buffer.ReadLong
+        .Task(i).map = Buffer.ReadLong
+        .Task(i).Resource = Buffer.ReadLong
+        .Task(i).amount = Buffer.ReadLong
+        .Task(i).Speech = Buffer.ReadString
+        .Task(i).TaskLog = Buffer.ReadString
+        .Task(i).QuestEnd = Buffer.ReadByte
     Next
     
-    .Level = buffer.ReadLong
+    .Level = Buffer.ReadLong
     End With
 End Sub

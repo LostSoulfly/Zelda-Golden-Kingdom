@@ -33,7 +33,7 @@ Begin VB.Form frmGuildAdmin
          Width           =   975
       End
       Begin VB.CommandButton Command1 
-         Caption         =   "Grados"
+         Caption         =   "Ranks"
          Height          =   255
          Left            =   480
          TabIndex        =   1
@@ -241,7 +241,7 @@ Begin VB.Form frmGuildAdmin
       End
       Begin VB.Label Label11 
          Caption         =   "Mensaje del Día:"
-         Height          =   495
+         Height          =   975
          Left            =   240
          TabIndex        =   24
          Top             =   1560
@@ -257,7 +257,7 @@ Begin VB.Form frmGuildAdmin
       End
       Begin VB.Label Label9 
          Caption         =   "Los reclutas comienzan en Grado:"
-         Height          =   255
+         Height          =   495
          Left            =   240
          TabIndex        =   20
          Top             =   840
@@ -265,7 +265,7 @@ Begin VB.Form frmGuildAdmin
       End
       Begin VB.Label Label8 
          Caption         =   "Color del Clan:"
-         Height          =   255
+         Height          =   495
          Left            =   240
          TabIndex        =   19
          Top             =   360
@@ -318,8 +318,35 @@ Private Sub Command3_Click()
     frameMainoptions.Visible = True
 End Sub
 
-Private Sub Form_Load()
+Private Sub form_load()
  'Load all 3 on load
+
+    Dim e As Control
+    
+    For Each e In Me.Controls
+        If (TypeOf e Is Label) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CheckBox) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is OptionButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is Frame) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CommandButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is TextBox) Then
+            e.text = GetTranslation(e.text)
+        End If
+    Next
+    
+    Me.Caption = GetTranslation(Me.Caption)
+    
+
 Call Load_Guild_Admin
  
 End Sub
@@ -330,7 +357,7 @@ Public Sub Load_Guild_Admin()
 End Sub
 Public Sub Load_Menu_Options()
 scrlRecruits.Max = MAX_GUILD_RANKS
-scrlRecruits.Value = GuildData.Guild_RecruitRank
+scrlRecruits.value = GuildData.Guild_RecruitRank
 cmbColor.ListIndex = GuildData.Guild_Color
 
 txtMOTD.text = GuildData.Guild_MOTD
@@ -388,7 +415,7 @@ Else
     Next i
 End If
 
-    opAccess(GuildData.Guild_Ranks(listranks.ListIndex).RankPermission(listAccess.ListIndex)).Value = True
+    opAccess(GuildData.Guild_Ranks(listranks.ListIndex).RankPermission(listAccess.ListIndex)).value = True
 End Sub
 
 Private Sub listranks_Click()
@@ -440,13 +467,13 @@ Dim i As Integer
 
 End Sub
 
-Private Sub opAccess_Click(Index As Integer)
+Private Sub opAccess_Click(index As Integer)
 Dim HoldString As String
 
  If listranks.ListIndex = 0 Then Exit Sub
  If listAccess.ListIndex = 0 Then Exit Sub
  
- GuildData.Guild_Ranks(listranks.ListIndex).RankPermission(listAccess.ListIndex) = Index
+ GuildData.Guild_Ranks(listranks.ListIndex).RankPermission(listAccess.ListIndex) = index
  
     If GuildData.Guild_Ranks(listranks.ListIndex).RankPermission(listAccess.ListIndex) = 1 Then
         HoldString = "Can"
@@ -454,12 +481,12 @@ Dim HoldString As String
         HoldString = "Cannot"
     End If
     
-    listAccess.List(listAccess.ListIndex) = GuildData.Guild_Ranks(listranks.ListIndex).RankPermissionName(listAccess.ListIndex) & " (" & HoldString & ")"
+    listAccess.list(listAccess.ListIndex) = GuildData.Guild_Ranks(listranks.ListIndex).RankPermissionName(listAccess.ListIndex) & " (" & HoldString & ")"
 End Sub
 
 Private Sub scrlRecruits_Change()
-    lblrecruit.Caption = scrlRecruits.Value
-    GuildData.Guild_RecruitRank = scrlRecruits.Value
+    lblrecruit.Caption = scrlRecruits.value
+    GuildData.Guild_RecruitRank = scrlRecruits.value
 End Sub
 
 Private Sub txtcomment_Change()

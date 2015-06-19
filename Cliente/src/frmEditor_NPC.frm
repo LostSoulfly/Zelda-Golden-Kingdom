@@ -638,7 +638,7 @@ Dim tmpIndex As Long
     
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & NPC(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & NPC(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     NpcEditorInit
@@ -700,24 +700,24 @@ errorhandler:
 End Sub
 
 Private Sub scrlDrops_Change()
-lblDrops.Caption = "Number of Drop: " & scrlDrops.Value
-Call updateDrops(scrlDrops.Value)
+lblDrops.Caption = "Number of Drop: " & scrlDrops.value
+Call updateDrops(scrlDrops.value)
 End Sub
 Private Sub scrlNpcSpeed_Change()
 Dim Speed As String
 ' set caption
-lblNpcSpeed.Caption = "Speed: " & scrlNpcSpeed.Value
-NPC(EditorIndex).Speed = scrlNpcSpeed.Value
+lblNpcSpeed.Caption = "Speed: " & scrlNpcSpeed.value
+NPC(EditorIndex).Speed = scrlNpcSpeed.value
 End Sub
 
 Private Sub scrlSpell_Change()
-    lblSpellNum.Caption = "Num: " & scrlSpell.Value
-    If scrlSpell.Value > 0 Then
-        lblSpellName.Caption = "Spell: " & Trim$(Spell(scrlSpell.Value).Name)
+    lblSpellNum.Caption = "Num: " & scrlSpell.value
+    If scrlSpell.value > 0 Then
+        lblSpellName.Caption = "Spell: " & Trim$(Spell(scrlSpell.value).TranslatedName)
     Else
         lblSpellName.Caption = "Spell: None"
     End If
-    NPC(EditorIndex).Spell(SpellIndex) = scrlSpell.Value
+    NPC(EditorIndex).Spell(SpellIndex) = scrlSpell.value
 End Sub
 
 Private Sub lstIndex_Click()
@@ -739,9 +739,9 @@ Dim sString As String
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    If scrlAnimation.Value = 0 Then sString = "None" Else sString = Trim$(Animation(scrlAnimation.Value).Name)
+    If scrlAnimation.value = 0 Then sString = "None" Else sString = Trim$(Animation(scrlAnimation.value).TranslatedName)
     lblAnimation.Caption = "Anim: " & sString
-    NPC(EditorIndex).Animation = scrlAnimation.Value
+    NPC(EditorIndex).Animation = scrlAnimation.value
     
     ' Error handler
     Exit Sub
@@ -752,18 +752,18 @@ errorhandler:
 End Sub
 
 Public Sub scrlSpellNum_Change()
-    SpellIndex = scrlSpellNum.Value
+    SpellIndex = scrlSpellNum.value
     fraSpell.Caption = "Spell - " & SpellIndex
-    scrlSpell.Value = NPC(EditorIndex).Spell(SpellIndex)
+    scrlSpell.value = NPC(EditorIndex).Spell(SpellIndex)
 End Sub
 
 Private Sub scrlSprite_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblSprite.Caption = "Sprite: " & scrlSprite.Value
+    lblSprite.Caption = "Sprite: " & scrlSprite.value
     Call EditorNpc_BltSprite
-    NPC(EditorIndex).sprite = scrlSprite.Value
+    NPC(EditorIndex).sprite = scrlSprite.value
     
     ' Error handler
     Exit Sub
@@ -777,8 +777,8 @@ Private Sub scrlRange_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblRange.Caption = "Range: " & scrlRange.Value
-    NPC(EditorIndex).range = scrlRange.Value
+    lblRange.Caption = "Range: " & scrlRange.value
+    NPC(EditorIndex).range = scrlRange.value
     
     ' Error handler
     Exit Sub
@@ -792,16 +792,16 @@ Private Sub scrlNum_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblNum.Caption = "Num: " & scrlNum.Value
+    lblNum.Caption = "Num: " & scrlNum.value
 
-    If scrlNum.Value > 0 Then
-        lblItemName.Caption = "Item: " & Trim$(Item(scrlNum.Value).Name)
+    If scrlNum.value > 0 Then
+        lblItemName.Caption = "Item: " & Trim$(Item(scrlNum.value).TranslatedName)
     Else
         lblItemName.Caption = "Item: "
     End If
     
-    NPC(EditorIndex).Drops(scrlDrops.Value).DropItem = CLng(scrlNum.Value)
-    DropsInfo(scrlDrops.Value).Number = CLng(scrlNum.Value)
+    NPC(EditorIndex).Drops(scrlDrops.value).DropItem = CLng(scrlNum.value)
+    DropsInfo(scrlDrops.value).Number = CLng(scrlNum.value)
     
     ' Error handler
     Exit Sub
@@ -811,12 +811,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub scrlStat_Change(Index As Integer)
+Private Sub scrlStat_Change(index As Integer)
 Dim prefix As String
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Select Case Index
+    Select Case index
         Case 1
             prefix = "Str: "
         Case 2
@@ -828,8 +828,8 @@ Dim prefix As String
         Case 5
             prefix = "Will: "
     End Select
-    lblStat(Index).Caption = prefix & scrlStat(Index).Value
-    NPC(EditorIndex).stat(Index) = scrlStat(Index).Value
+    lblStat(index).Caption = prefix & scrlStat(index).value
+    NPC(EditorIndex).stat(index) = scrlStat(index).value
     
     ' Error handler
     Exit Sub
@@ -843,9 +843,9 @@ Private Sub scrlValue_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    lblValue.Caption = "Value: " & scrlValue.Value
-    NPC(EditorIndex).Drops(scrlDrops.Value).DropItemValue = CLng(scrlValue.Value)
-    DropsInfo(scrlDrops.Value).Value = CLng(scrlValue.Value)
+    lblValue.Caption = "Value: " & scrlValue.value
+    NPC(EditorIndex).Drops(scrlDrops.value).DropItemValue = CLng(scrlValue.value)
+    DropsInfo(scrlDrops.value).value = CLng(scrlValue.value)
     
     ' Error handler
     Exit Sub
@@ -875,8 +875,8 @@ Private Sub txtChance_Change()
     
     If Not Len(txtChance.text) > 0 Then Exit Sub
     If IsNumeric(txtChance.text) Then
-        NPC(EditorIndex).Drops(scrlDrops.Value).DropChance = Val(txtChance.text)
-        DropsInfo(scrlDrops.Value).Chances = Val(txtChance.text)
+        NPC(EditorIndex).Drops(scrlDrops.value).DropChance = Val(txtChance.text)
+        DropsInfo(scrlDrops.value).Chances = Val(txtChance.text)
     End If
     
     ' Error handler
@@ -957,7 +957,7 @@ Dim tmpIndex As Long
     tmpIndex = lstIndex.ListIndex
     NPC(EditorIndex).Name = Trim$(txtName.text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & NPC(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & NPC(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler
@@ -1004,22 +1004,22 @@ End Sub
 'ALATAR
 
 Private Sub chkQuest_Click()
-    NPC(EditorIndex).Quest = chkQuest.Value
+    NPC(EditorIndex).Quest = chkQuest.value
 End Sub
 
 Private Sub scrlQuest_Change()
-    lblQuest = scrlQuest.Value
-    NPC(EditorIndex).QuestNum = scrlQuest.Value
+    lblQuest = scrlQuest.value
+    NPC(EditorIndex).QuestNum = scrlQuest.value
 End Sub
 
 Private Sub updateDrops(ByVal i As Long)
-scrlNum.Value = DropsInfo(i).Number
-scrlValue.Value = DropsInfo(i).Value
+scrlNum.value = DropsInfo(i).Number
+scrlValue.value = DropsInfo(i).value
 txtChance.text = CStr(DropsInfo(i).Chances)
-lblNum.Caption = "Num: " & scrlNum.Value
-lblValue.Caption = "Value: " & scrlValue.Value
-If scrlNum.Value > 0 Then
-        lblItemName.Caption = "Item: " & Trim$(Item(scrlNum.Value).Name)
+lblNum.Caption = "Num: " & scrlNum.value
+lblValue.Caption = "Value: " & scrlValue.value
+If scrlNum.value > 0 Then
+        lblItemName.Caption = "Item: " & Trim$(Item(scrlNum.value).TranslatedName)
 Else
         lblItemName.Caption = "Item: "
 End If

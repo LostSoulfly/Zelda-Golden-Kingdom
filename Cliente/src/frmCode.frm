@@ -45,8 +45,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdAccept_Click()
 
-    If Len(txtCode.text) < 50 And Not txtCode.text = vbNullString Then
-        SendCode txtCode.text
+    If Len(txtCode.Text) < 50 And Not txtCode.Text = vbNullString Then
+        SendCode txtCode.Text
     End If
     
     Unload Me
@@ -54,4 +54,30 @@ End Sub
 
 Private Sub form_load()
     lblCash.Caption = "Saldo Actual: " & GetBonusPoints(MyIndex) & " " & CURRENCY_NAME
+    
+    Dim e As Control
+    
+    For Each e In Me.Controls
+        If (TypeOf e Is Label) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CheckBox) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is OptionButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is Frame) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CommandButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is TextBox) Then
+            e.Text = GetTranslation(e.Text)
+        End If
+    Next
+    
+    Me.Caption = GetTranslation(Me.Caption)
+    
 End Sub

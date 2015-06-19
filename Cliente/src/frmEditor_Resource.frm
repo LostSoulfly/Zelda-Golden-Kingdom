@@ -442,21 +442,21 @@ Private Sub chkEqual_Click()
 
 If chkEqual.value = False Then Exit Sub
 
-Dim i As Byte, n As Byte
+Dim i As Byte, N As Byte
 Dim BoolVect(1 To MAX_RESOURCE_REWARDS) As Boolean
-    n = 0
+    N = 0
     For i = 1 To MAX_RESOURCE_REWARDS
         If RewardsInfo(i).Reward <> 0 Then
             BoolVect(i) = True
-            n = n + 1
+            N = N + 1
         End If
     Next
     
-    If n = 0 Then Exit Sub
+    If N = 0 Then Exit Sub
     
     For i = 1 To MAX_RESOURCE_REWARDS
         If BoolVect(i) = True Then
-            RewardsInfo(i).Chance = CByte(100 / n)
+            RewardsInfo(i).Chance = CByte(100 / N)
             Resource(EditorIndex).Rewards(i).Chance = RewardsInfo(i).Chance
         End If
     Next
@@ -508,7 +508,7 @@ Dim tmpIndex As Long
     
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Resource(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Resource(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ResourceEditorInit
@@ -586,7 +586,7 @@ Dim sString As String
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    If scrlAnimation.value = 0 Then sString = "None" Else sString = Trim$(Animation(scrlAnimation.value).Name)
+    If scrlAnimation.value = 0 Then sString = "None" Else sString = Trim$(Animation(scrlAnimation.value).TranslatedName)
     lblAnim.Caption = "Animation: " & sString
     Resource(EditorIndex).Animation = scrlAnimation.value
     
@@ -780,7 +780,7 @@ Dim tmpIndex As Long
     tmpIndex = lstIndex.ListIndex
     Resource(EditorIndex).Name = Trim$(txtName.text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Resource(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Resource(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler
@@ -810,19 +810,19 @@ errorhandler:
 End Sub
 
 Private Function CheckRewardTable() As Boolean
-Dim sum As Byte, i As Byte, n As Byte
+Dim sum As Byte, i As Byte, N As Byte
 
 sum = 0
-n = 0
+N = 0
 
 For i = 1 To MAX_RESOURCE_REWARDS
     If RewardsInfo(i).Reward > 0 Then
         sum = sum + RewardsInfo(i).Chance
-        n = n + 1
+        N = N + 1
     End If
 Next
 
-If sum = 100 Or n = 0 Then
+If sum = 100 Or N = 0 Then
     CheckRewardTable = True
 Else
     CheckRewardTable = False
@@ -835,13 +835,13 @@ Select Case cmbRewardType.ListIndex + 1
 
 Case REWARD_ITEM
     If scrlReward.value > 0 Then
-        lblReward.Caption = "Item Reward: " & Trim$(Item(scrlReward.value).Name) & "," & scrlReward.value
+        lblReward.Caption = "Item Reward: " & Trim$(Item(scrlReward.value).TranslatedName) & "," & scrlReward.value
     Else
         lblReward.Caption = "Item Reward: None"
     End If
 Case REWARD_SPAWN_NPC
     If scrlReward.value > 0 Then
-        lblReward.Caption = "Spawn NPC: " & Trim$(NPC(scrlReward.value).Name) & "," & scrlReward.value
+        lblReward.Caption = "Spawn NPC: " & Trim$(NPC(scrlReward.value).TranslatedName) & "," & scrlReward.value
     Else
         lblReward.Caption = "Spawn NPC: None"
     End If

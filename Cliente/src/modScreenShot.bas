@@ -114,21 +114,21 @@ Private Declare Function BitBlt Lib "GDI32" ( _
 ' in a window, because the origin of the DC is the upper-left
 ' corner of the window instead of the client area.
 Private Declare Function GetWindowDC Lib "USER32" ( _
-    ByVal hWnd As Long) As Long
+    ByVal hwnd As Long) As Long
 
 ' Retrieves a handle to a display DC for the Client area of
 ' a specified window or for the entire screen.  You can use
 ' the returned handle in subsequent GDI functions to draw in
 ' the DC.
 Private Declare Function GetDC Lib "USER32" ( _
-    ByVal hWnd As Long) As Long
+    ByVal hwnd As Long) As Long
 
 ' Releases a DC, freeing it for use by other applications.
 ' The effect of the ReleaseDC function depends on the type
 ' of DC.  It frees only common and window DCs.  It has no
 ' effect on class or private DCs.
 Private Declare Function ReleaseDC Lib "USER32" ( _
-    ByVal hWnd As Long, ByVal hDC As Long) As Long
+    ByVal hwnd As Long, ByVal hDC As Long) As Long
 
 ' Deletes the specified DC.
 Private Declare Function DeleteDC Lib "GDI32" ( _
@@ -139,7 +139,7 @@ Private Declare Function DeleteDC Lib "GDI32" ( _
 ' coordinates that are relative to the upper-left corner
 ' of the screen.
 Private Declare Function GetWindowRect Lib "USER32" ( _
-    ByVal hWnd As Long, lpRect As RECT) As Long
+    ByVal hwnd As Long, lpRect As RECT) As Long
 
 ' Returns a handle to the Desktop window.  The desktop
 ' window covers the entire screen and is the area on top
@@ -334,7 +334,7 @@ hWndScreen = GetDesktopWindow()
 '
 With Screen
     Set CaptureScreen = CaptureWindow(hWndScreen, False, 0, 0, _
-            .width \ .TwipsPerPixelX, .height \ .TwipsPerPixelY)
+            .Width \ .TwipsPerPixelX, .Height \ .TwipsPerPixelY)
 End With
 End Function
 
@@ -343,9 +343,9 @@ Public Function CaptureForm(frm As Form) As Picture
 ' Capture the entire form.
 '
 With frm
-    Set CaptureForm = CaptureWindow(.hWnd, False, 0, 0, _
-            .ScaleX(.width, vbTwips, vbPixels), _
-            .ScaleY(.height, vbTwips, vbPixels))
+    Set CaptureForm = CaptureWindow(.hwnd, False, 0, 0, _
+            .ScaleX(.Width, vbTwips, vbPixels), _
+            .ScaleY(.Height, vbTwips, vbPixels))
 End With
 End Function
 
@@ -354,7 +354,7 @@ Public Function CaptureClient(frm As Form) As Picture
 ' Capture the client area of the form.
 '
 With frm
-    Set CaptureClient = CaptureWindow(.hWnd, True, 0, 0, _
+    Set CaptureClient = CaptureWindow(.hwnd, True, 0, 0, _
             .ScaleX(.ScaleWidth, .ScaleMode, vbPixels), _
             .ScaleY(.ScaleHeight, .ScaleMode, vbPixels))
 End With
@@ -366,7 +366,7 @@ Public Function CaptureFreeArea(frm As Form, numTop, numLeft, numHeigth, numWidt
 '
 With frm
    
-    Set CaptureFreeArea = CaptureWindow(.hWnd, True, numTop, numLeft, _
+    Set CaptureFreeArea = CaptureWindow(.hwnd, True, numTop, numLeft, _
             .ScaleX(numWidth, .ScaleMode, vbPixels), _
             .ScaleY(numHeigth, .ScaleMode, vbPixels))
 End With
@@ -413,7 +413,7 @@ Const vbHiMetric As Integer = 8
 ' Determine if picture should be printed in landscape
 ' or portrait and set the orientation.
 '
-If Pic.height >= Pic.width Then
+If Pic.Height >= Pic.Width Then
     Prn.Orientation = vbPRORPortrait   'Taller than wide
 Else
     Prn.Orientation = vbPRORLandscape  'Wider than tall
@@ -421,7 +421,7 @@ End If
 '
 ' Calculate device independent Width to Height ratio for picture.
 '
-PicRatio = Pic.width / Pic.height
+PicRatio = Pic.Width / Pic.Height
 '
 ' Calculate the dimentions of the printable area in HiMetric.
 '
@@ -477,10 +477,10 @@ Sub PrintVideo()
     If Not DirExists(DirName) Then
         MkDir (DirName)
     End If
-    Dim FileName As String
+    Dim Filename As String
     For i = 1 To Video.Count
-        FileName = DirName + "\pic" & i & ".jpg"
-        SavePicture Video.Item(i), FileName
+        Filename = DirName + "\pic" & i & ".jpg"
+        SavePicture Video.Item(i), Filename
     Next
     
     ClearVideo
@@ -515,21 +515,21 @@ Sub TakePicture()
     End If
     
     
-    Dim FileName As String
-    FileName = DirName + "\" + GetPrintableDateName(d)
+    Dim Filename As String
+    Filename = DirName + "\" + GetPrintableDateName(d)
     
     Dim i As Long
     i = 1
-    Do While FileExists(FileName + ".jpg") And i < 10
+    Do While FileExists(Filename + ".jpg") And i < 10
         If i = 1 Then
-            FileName = FileName + "(" & i & ")"
+            Filename = Filename + "(" & i & ")"
         Else
-            FileName = Replace(FileName, "(" & i - 1 & ")", "(" & i & ")")
+            Filename = Replace(Filename, "(" & i - 1 & ")", "(" & i & ")")
         End If
         i = i + 1
     Loop
     
-    SavePicture a, FileName + ".jpg"
+    SavePicture a, Filename + ".jpg"
 End Sub
 
 Function GetPrintableDateName(ByVal d As Date) As String
@@ -546,9 +546,9 @@ Function DirExists(DirName As String) As Boolean
 errorhandler:
 End Function
 
-Public Function FileExists(FileName As String) As Boolean
+Public Function FileExists(Filename As String) As Boolean
     On Error GoTo errorhandler
-    FileExists = (GetAttr(FileName) And vbDirectory) = 0
+    FileExists = (GetAttr(Filename) And vbDirectory) = 0
 errorhandler:
 End Function
 

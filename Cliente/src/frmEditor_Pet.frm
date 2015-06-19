@@ -149,44 +149,44 @@ Attribute VB_Exposed = False
 
 
 Private Sub scrlExp_Change()
-    Pet(EditorIndex).ExpProgression = scrlExp.Value
-    lblExp.Caption = "Exp Progression: " & scrlExp.Value
+    Pet(EditorIndex).ExpProgression = scrlExp.value
+    lblExp.Caption = "Exp Progression: " & scrlExp.value
 End Sub
 
 Private Sub scrlMaxLevel_Change()
-    Pet(EditorIndex).MaxLevel = scrlMaxLevel.Value
-    lblMaxLvl.Caption = "Max Lvl: " & scrlMaxLevel.Value
+    Pet(EditorIndex).MaxLevel = scrlMaxLevel.value
+    lblMaxLvl.Caption = "Max Lvl: " & scrlMaxLevel.value
 End Sub
 
 Private Sub scrlNpcNum_Change()
-    Pet(EditorIndex).NPCNum = scrlNpcNum.Value
-    If scrlNpcNum.Value <> 0 Then
-        lblNpcNum.Caption = "NPC: " & scrlNpcNum.Value & ", " & NPC(scrlNpcNum.Value).Name
+    Pet(EditorIndex).NPCNum = scrlNpcNum.value
+    If scrlNpcNum.value <> 0 Then
+        lblNpcNum.Caption = "NPC: " & scrlNpcNum.value & ", " & NPC(scrlNpcNum.value).TranslatedName
     Else
         lblNpcNum.Caption = "NPC: 0"
     End If
 End Sub
 
 Private Sub scrlPoints_Change()
-    Pet(EditorIndex).PointsProgression = scrlPoints.Value
-    lblPoints.Caption = "Points Progression: " & GetPointsProgressionString(scrlPoints.Value)
+    Pet(EditorIndex).PointsProgression = scrlPoints.value
+    lblPoints.Caption = "Points Progression: " & GetPointsProgressionString(scrlPoints.value)
 End Sub
 
 Public Function GetPointsProgressionString(ByVal points As Byte) As String
 Dim sum As Double
-Dim n As Byte
+Dim N As Byte
 
 If points < 0 Or points > MAX_PET_POINTS_PERLVL Then Exit Function
 
 sum = 0
-n = 0
+N = 0
 
 Do While sum < points
     sum = sum + CDbl(MAX_PET_POINTS_PERLVL / 5)
-    n = n + 1
+    N = N + 1
 Loop
 
-Select Case n
+Select Case N
 Case 1
     GetPointsProgressionString = "Very Low"
 Case 2
@@ -205,8 +205,8 @@ End Select
 End Function
 
 Private Sub scrlTame_Change()
-    Pet(EditorIndex).TamePoints = scrlTame.Value
-    lblTame.Caption = "TamePoints: " & scrlTame.Value
+    Pet(EditorIndex).TamePoints = scrlTame.value
+    lblTame.Caption = "TamePoints: " & scrlTame.value
 End Sub
 
 Private Sub txtName_Validate(Cancel As Boolean)

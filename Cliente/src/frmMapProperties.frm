@@ -469,7 +469,7 @@ If lstNpcs.ListIndex >= 0 Then
     lstNpcs.Clear
     For X = 1 To MAX_MAP_NPCS
         If map.NPC(X) > 0 Then
-        lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).Name)
+        lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).TranslatedName)
         Else
             lstNpcs.AddItem X & ": No NPC"
         End If
@@ -497,7 +497,7 @@ If lstNpcs.ListIndex >= 0 Then
         lstNpcs.Clear
         For X = 1 To MAX_MAP_NPCS
             If map.NPC(X) > 0 Then
-            lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).Name)
+            lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).TranslatedName)
             Else
                 lstNpcs.AddItem X & ": No NPC"
             End If
@@ -541,7 +541,7 @@ Private Sub cmdOk_Click()
     Dim i As Long
     Dim sTemp As Long
     Dim X As Long, x2 As Long
-    Dim Y As Long, y2 As Long
+    Dim y As Long, y2 As Long
     Dim tempArr() As TileRec
     
     ' If debug mode, handle error then exit out
@@ -584,8 +584,8 @@ Private Sub cmdOk_Click()
         If y2 > .MaxY Then y2 = .MaxY
 
         For X = 0 To x2
-            For Y = 0 To y2
-                .Tile(X, Y) = tempArr(X, Y)
+            For y = 0 To y2
+                .Tile(X, y) = tempArr(X, y)
             Next
         Next
 
@@ -691,7 +691,7 @@ Dim X As Long, tmpIndex As Long
     lstNpcs.Clear
     For X = 1 To MAX_MAP_NPCS
         If map.NPC(X) > 0 Then
-        lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).Name)
+        lstNpcs.AddItem X & ": " & Trim$(NPC(map.NPC(X)).TranslatedName)
         Else
             lstNpcs.AddItem X & ": No NPC"
         End If

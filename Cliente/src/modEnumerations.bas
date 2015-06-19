@@ -311,6 +311,7 @@ Public Enum ClientPackets
     CCode
     CSpeedAck
     CSFImpactar
+    CBugReport
     ' Make sure CMSG_COUNT is below everything else
     CMSG_COUNT
 End Enum

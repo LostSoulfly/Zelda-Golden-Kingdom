@@ -93,14 +93,42 @@ Attribute VB_Exposed = False
 
 
 Private Sub chkActivateChat_Click()
-    HideIncomingMessages = ITB(chkActivateChat.Value)
+    HideIncomingMessages = ITB(chkActivateChat.value)
 End Sub
 
 Private Sub chkChat_Click(Index As Integer)
-    Options.ActivatedChats(Index + 1) = chkChat(Index).Value
+    Options.ActivatedChats(Index + 1) = chkChat(Index).value
 End Sub
 
 Private Sub cmdAccept_Click()
     ClearChat
     SaveOptions
+End Sub
+
+Private Sub form_load()
+    Dim e As Control
+    
+    For Each e In Me.Controls
+        If (TypeOf e Is Label) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CheckBox) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is OptionButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is Frame) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is CommandButton) Then
+            e.Caption = GetTranslation(e.Caption)
+        End If
+        If (TypeOf e Is TextBox) Then
+            e.text = GetTranslation(e.text)
+        End If
+    Next
+    
+    Me.Caption = GetTranslation(Me.Caption)
+    
 End Sub

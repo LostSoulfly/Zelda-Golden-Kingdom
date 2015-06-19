@@ -7,12 +7,12 @@ Private Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivat
 
 
 Public Sub HandleError(ByVal procName As String, ByVal contName As String, ByVal erNumber, ByVal erDesc, ByVal erSource, ByVal erHelpContext)
-Dim FileName As String
+Dim Filename As String
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    FileName = App.Path & "\data files\logs\errors.txt"
-    Open FileName For Append As #1
+    Filename = App.Path & "\data\logs\errors.txt"
+    Open Filename For Append As #1
         Print #1, "The following error occured at '" & procName & "' in '" & contName & "'."
         Print #1, "Run-time error '" & erNumber & "': " & erDesc & "."
         Print #1, ""
@@ -40,18 +40,18 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Function FileExist(ByVal FileName As String, Optional RAW As Boolean = False) As Boolean
+Public Function FileExist(ByVal Filename As String, Optional RAW As Boolean = False) As Boolean
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If Not RAW Then
-        If LenB(dir(App.Path & "\" & FileName)) > 0 Then
+        If LenB(dir(App.Path & "\" & Filename)) > 0 Then
             FileExist = True
         End If
 
     Else
 
-        If LenB(dir(FileName)) > 0 Then
+        If LenB(dir(Filename)) > 0 Then
             FileExist = True
         End If
     End If
@@ -101,35 +101,36 @@ errorhandler:
 End Sub
 
 Public Sub SaveOptions()
-Dim FileName As String
+Dim Filename As String
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    FileName = App.Path & "\Data Files\config.ini"
+    Filename = App.Path & "\data\config.ini"
     
-    Call PutVar(FileName, "Options", "Game_Name", Trim$(Options.Game_Name))
-    Call PutVar(FileName, "Options", "Username", Trim$(Options.Username))
-    Call PutVar(FileName, "Options", "Password", Trim$(Options.Password))
-    Call PutVar(FileName, "Options", "SavePass", Str(Options.SavePass))
-    Call PutVar(FileName, "Options", "IP", Options.ip)
-    Call PutVar(FileName, "Options", "Port", Str(Options.Port))
-    Call PutVar(FileName, "Options", "MenuMusic", Trim$(Options.MenuMusic))
-    Call PutVar(FileName, "Options", "Music", Str(Options.Music))
-    Call PutVar(FileName, "Options", "Sound", Str(Options.Sound))
-    Call PutVar(FileName, "Options", "Debug", Str(Options.Debug))
-    Call PutVar(FileName, "Options", "Names", Str(Options.Names))
-    Call PutVar(FileName, "Options", "Level", Str(Options.Level))
-    Call PutVar(FileName, "Options", "Chat", Str(Options.Chat))
-    Call PutVar(FileName, "Options", "SafeMode", Str(Options.SafeMode))
-    Call PutVar(FileName, "Options", "DefaultVolume", Str(Options.DefaultVolume))
-    Call PutVar(FileName, "Options", "MiniMap", Str(Options.MiniMap))
-    Call PutVar(FileName, "Options", "MappingMode", Str(Options.MappingMode))
-    Call PutVar(FileName, "Options", "ChatToScreen", Str(Options.ChatToScreen))
+    Call PutVar(Filename, "Options", "Game_Name", Trim$(Options.Game_Name))
+    Call PutVar(Filename, "Options", "Username", Trim$(Options.Username))
+    Call PutVar(Filename, "Options", "Password", Trim$(Options.Password))
+    Call PutVar(Filename, "Options", "SavePass", Str(Options.SavePass))
+    Call PutVar(Filename, "Options", "IP", Options.ip)
+    Call PutVar(Filename, "Options", "Port", Str(Options.port))
+    Call PutVar(Filename, "Options", "MenuMusic", Trim$(Options.MenuMusic))
+    Call PutVar(Filename, "Options", "Music", Str(Options.Music))
+    Call PutVar(Filename, "Options", "Sound", Str(Options.Sound))
+    Call PutVar(Filename, "Options", "Debug", Str(Options.Debug))
+    Call PutVar(Filename, "Options", "Names", Str(Options.Names))
+    Call PutVar(Filename, "Options", "Level", Str(Options.Level))
+    Call PutVar(Filename, "Options", "WASD", Str(Options.WASD))
+    Call PutVar(Filename, "Options", "Chat", Str(Options.Chat))
+    Call PutVar(Filename, "Options", "SafeMode", Str(Options.SafeMode))
+    Call PutVar(Filename, "Options", "DefaultVolume", Str(Options.DefaultVolume))
+    Call PutVar(Filename, "Options", "MiniMap", Str(Options.MiniMap))
+    Call PutVar(Filename, "Options", "MappingMode", Str(Options.MappingMode))
+    Call PutVar(Filename, "Options", "ChatToScreen", Str(Options.ChatToScreen))
     
     Dim i As Byte
     For i = 1 To ChatType.ChatType_Count - 1
-        Call PutVar(FileName, "ChatOptions", Str(i), Str(BTI(Options.ActivatedChats(i))))
+        Call PutVar(Filename, "ChatOptions", Str(i), Str(BTI(Options.ActivatedChats(i))))
     Next
     
     ' Error handler
@@ -141,30 +142,32 @@ errorhandler:
 End Sub
 
 Public Sub LoadOptions()
-Dim FileName As String
+Dim Filename As String
 Dim i As Byte
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    FileName = App.Path & "\Data Files\config.ini"
+    Filename = App.Path & "\data\config.ini"
     
-    If Not FileExist(FileName, True) Then
-        Options.Game_Name = "Eclipse Origins"
+    If Not FileExist(Filename, True) Then
+        Options.Game_Name = "Legend of Zelda: The United Dorado"
         Options.Password = vbNullString
         Options.SavePass = 0
         Options.Username = vbNullString
-        Options.ip = "127.0.0.1"
-        Options.Port = 7001
+        Options.ip = "trollparty.org"
+        Options.port = 4000
         Options.MenuMusic = vbNullString
         Options.Music = 1
         Options.Sound = 1
         Options.Debug = 0
         Options.Names = 1
         Options.Level = 0
+        Options.WASD = 1
         Options.Chat = 1
         Options.SafeMode = NO
         Options.DefaultVolume = 50
         Options.MiniMap = 1
+
         Options.MappingMode = 0
         Options.ChatToScreen = 1
         For i = 1 To ChatType.ChatType_Count - 1
@@ -172,26 +175,27 @@ Dim i As Byte
         Next
         SaveOptions
     Else
-        Options.Game_Name = GetVar(FileName, "Options", "Game_Name")
-        Options.Username = GetVar(FileName, "Options", "Username")
-        Options.Password = GetVar(FileName, "Options", "Password")
-        Options.SavePass = Val(GetVar(FileName, "Options", "SavePass"))
-        Options.ip = GetVar(FileName, "Options", "IP")
-        Options.Port = Val(GetVar(FileName, "Options", "Port"))
-        Options.MenuMusic = GetVar(FileName, "Options", "MenuMusic")
-        Options.Music = GetVar(FileName, "Options", "Music")
-        Options.Sound = GetVar(FileName, "Options", "Sound")
-        Options.Debug = GetVar(FileName, "Options", "Debug")
-        Options.Names = GetVar(FileName, "Options", "Names")
-        Options.Level = GetVar(FileName, "Options", "Level")
-        Options.Chat = GetVar(FileName, "Options", "Chat")
-        Options.SafeMode = GetVar(FileName, "Options", "SafeMode")
-        Options.DefaultVolume = GetVar(FileName, "Options", "DefaultVolume")
-        Options.MiniMap = GetVar(FileName, "Options", "MiniMap")
-        Options.MappingMode = GetVar(FileName, "Options", "MappingMode")
-        Options.ChatToScreen = GetVar(FileName, "Options", "ChatToScreen")
+        Options.Game_Name = GetVar(Filename, "Options", "Game_Name")
+        Options.Username = GetVar(Filename, "Options", "Username")
+        Options.Password = GetVar(Filename, "Options", "Password")
+        Options.SavePass = Val(GetVar(Filename, "Options", "SavePass"))
+        Options.ip = GetVar(Filename, "Options", "IP")
+        Options.port = Val(GetVar(Filename, "Options", "Port"))
+        Options.MenuMusic = GetVar(Filename, "Options", "MenuMusic")
+        Options.Music = GetVar(Filename, "Options", "Music")
+        Options.Sound = GetVar(Filename, "Options", "Sound")
+        Options.Debug = 0 'GetVar(Filename, "Options", "Debug")
+        Options.Names = GetVar(Filename, "Options", "Names")
+        Options.Level = GetVar(Filename, "Options", "Level")
+        Options.WASD = GetVar(Filename, "Options", "WASD")
+        Options.Chat = GetVar(Filename, "Options", "Chat")
+        Options.SafeMode = GetVar(Filename, "Options", "SafeMode")
+        Options.DefaultVolume = GetVar(Filename, "Options", "DefaultVolume")
+        Options.MiniMap = GetVar(Filename, "Options", "MiniMap")
+        Options.MappingMode = GetVar(Filename, "Options", "MappingMode")
+        Options.ChatToScreen = GetVar(Filename, "Options", "ChatToScreen")
         For i = 1 To ChatType.ChatType_Count - 1
-           Options.ActivatedChats(i) = STB(GetVar(FileName, "ChatOptions", Str(i)))
+           Options.ActivatedChats(i) = STB(GetVar(Filename, "ChatOptions", Str(i)))
         Next
     End If
     
@@ -265,7 +269,7 @@ errorhandler:
 End Sub
 
 Public Sub SaveMap(ByVal mapnum As Long)
-Dim FileName As String
+Dim Filename As String
 Dim f As Long
 Dim X As Long
 Dim y As Long
@@ -273,10 +277,10 @@ Dim y As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    FileName = App.Path & MAP_PATH & "map" & mapnum & MAP_EXT
+    Filename = App.Path & MAP_PATH & "map" & mapnum & MAP_EXT
 
     f = FreeFile
-    Open FileName For Binary As #f
+    Open Filename For Binary As #f
     Put #f, , map.Name
     Put #f, , map.Music
     Put #f, , map.Revision
@@ -323,7 +327,7 @@ errorhandler:
 End Sub
 
 Public Sub LoadMap(ByVal mapnum As Long)
-Dim FileName As String
+Dim Filename As String
 Dim f As Long
 Dim X As Long
 Dim y As Long
@@ -331,10 +335,10 @@ Dim y As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    FileName = App.Path & MAP_PATH & "map" & mapnum & MAP_EXT
+    Filename = App.Path & MAP_PATH & "map" & mapnum & MAP_EXT
     ClearMap
     f = FreeFile
-    Open FileName For Binary As #f
+    Open Filename For Binary As #f
     Get #f, , map.Name
     Get #f, , map.Music
     Get #f, , map.Revision
@@ -372,6 +376,10 @@ Dim y As Long
         Get #f, , map.AllowedStates(X)
     
     Next
+    
+    'map.Name = Trim$(map.Name)
+    'map.Music = Trim$(map.Music)
+    'map.TranslatedName = map.Name
 
     Close #f
     ClearTempTile
@@ -600,12 +608,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearPlayer(ByVal Index As Long)
+Sub ClearPlayer(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(Player(Index)), LenB(Player(Index)))
-    Player(Index).Name = vbNullString
+    Call ZeroMemory(ByVal VarPtr(Player(index)), LenB(Player(index)))
+    Player(index).Name = vbNullString
     
     ' Error handler
     Exit Sub
@@ -615,14 +623,14 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearItem(ByVal Index As Long)
+Sub ClearItem(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(Item(Index)), LenB(Item(Index)))
-    Item(Index).Name = vbNullString
-    Item(Index).Desc = vbNullString
-    Item(Index).Sound = "None."
+    Call ZeroMemory(ByVal VarPtr(Item(index)), LenB(Item(index)))
+    Item(index).Name = vbNullString
+    Item(index).Desc = vbNullString
+    Item(index).Sound = "None."
     
     ' Error handler
     Exit Sub
@@ -650,11 +658,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearAnimInstance(ByVal Index As Long)
+Sub ClearAnimInstance(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(AnimInstance(Index)), LenB(AnimInstance(Index)))
+    Call ZeroMemory(ByVal VarPtr(AnimInstance(index)), LenB(AnimInstance(index)))
     
     ' Error handler
     Exit Sub
@@ -664,13 +672,13 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearAnimation(ByVal Index As Long)
+Sub ClearAnimation(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(Animation(Index)), LenB(Animation(Index)))
-    Animation(Index).Name = vbNullString
-    Animation(Index).Sound = "None."
+    Call ZeroMemory(ByVal VarPtr(Animation(index)), LenB(Animation(index)))
+    Animation(index).Name = vbNullString
+    Animation(index).Sound = "None."
     
     ' Error handler
     Exit Sub
@@ -698,13 +706,13 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearNPC(ByVal Index As Long)
+Sub ClearNPC(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(NPC(Index)), LenB(NPC(Index)))
-    NPC(Index).Name = vbNullString
-    NPC(Index).Sound = "None."
+    Call ZeroMemory(ByVal VarPtr(NPC(index)), LenB(NPC(index)))
+    NPC(index).Name = vbNullString
+    NPC(index).Sound = "None."
     
     ' Error handler
     Exit Sub
@@ -732,14 +740,14 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearSpell(ByVal Index As Long)
+Sub ClearSpell(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(Spell(Index)), LenB(Spell(Index)))
-    Spell(Index).Name = vbNullString
-    Spell(Index).Desc = vbNullString
-    Spell(Index).Sound = "None."
+    Call ZeroMemory(ByVal VarPtr(Spell(index)), LenB(Spell(index)))
+    Spell(index).Name = vbNullString
+    Spell(index).Desc = vbNullString
+    Spell(index).Sound = "None."
     
     ' Error handler
     Exit Sub
@@ -767,12 +775,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearShop(ByVal Index As Long)
+Sub ClearShop(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(Shop(Index)), LenB(Shop(Index)))
-    Shop(Index).Name = vbNullString
+    Call ZeroMemory(ByVal VarPtr(Shop(index)), LenB(Shop(index)))
+    Shop(index).Name = vbNullString
     
     ' Error handler
     Exit Sub
@@ -800,15 +808,16 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearResource(ByVal Index As Long)
+Sub ClearResource(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(Resource(Index)), LenB(Resource(Index)))
-    Resource(Index).Name = vbNullString
-    Resource(Index).SuccessMessage = vbNullString
-    Resource(Index).EmptyMessage = vbNullString
-    Resource(Index).Sound = "None."
+    Call ZeroMemory(ByVal VarPtr(Resource(index)), LenB(Resource(index)))
+    Resource(index).Name = vbNullString
+    Resource(index).TranslatedName = vbNullString
+    Resource(index).SuccessMessage = vbNullString
+    Resource(index).EmptyMessage = vbNullString
+    Resource(index).Sound = "None."
     
     ' Error handler
     Exit Sub
@@ -836,11 +845,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearMapItem(ByVal Index As Long)
+Sub ClearMapItem(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(MapItem(Index)), LenB(MapItem(Index)))
+    Call ZeroMemory(ByVal VarPtr(MapItem(index)), LenB(MapItem(index)))
     
     ' Error handler
     Exit Sub
@@ -886,11 +895,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearMapNpc(ByVal Index As Long)
+Sub ClearMapNpc(ByVal index As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Call ZeroMemory(ByVal VarPtr(MapNpc(Index)), LenB(MapNpc(Index)))
+    Call ZeroMemory(ByVal VarPtr(MapNpc(index)), LenB(MapNpc(index)))
     
     ' Error handler
     Exit Sub
@@ -921,12 +930,12 @@ End Sub
 ' **********************
 ' ** Player functions **
 ' **********************
-Function GetPlayerName(ByVal Index As Long) As String
+Function GetPlayerName(ByVal index As Long) As String
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerName = Trim$(Player(Index).Name)
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerName = Trim$(Player(index).Name)
     
     ' Error handler
     Exit Function
@@ -936,12 +945,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerName(ByVal Index As Long, ByVal Name As String)
+Sub SetPlayerName(ByVal index As Long, ByVal Name As String)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).Name = Name
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).Name = Name
     
     ' Error handler
     Exit Sub
@@ -951,12 +960,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerClass(ByVal Index As Long) As Long
+Function GetPlayerClass(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerClass = Player(Index).Class
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerClass = Player(index).Class
     
     ' Error handler
     Exit Function
@@ -966,12 +975,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerClass(ByVal Index As Long, ByVal ClassNum As Long)
+Sub SetPlayerClass(ByVal index As Long, ByVal ClassNum As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).Class = ClassNum
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).Class = ClassNum
     
     ' Error handler
     Exit Sub
@@ -981,12 +990,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerSprite(ByVal Index As Long) As Long
+Function GetPlayerSprite(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerSprite = Player(Index).sprite
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerSprite = Player(index).sprite
     
     ' Error handler
     Exit Function
@@ -996,12 +1005,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerSprite(ByVal Index As Long, ByVal sprite As Long)
+Sub SetPlayerSprite(ByVal index As Long, ByVal sprite As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).sprite = sprite
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).sprite = sprite
     
     ' Error handler
     Exit Sub
@@ -1011,12 +1020,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerLevel(ByVal Index As Long) As Long
+Function GetPlayerLevel(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerLevel = Player(Index).Level
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerLevel = Player(index).Level
     
     ' Error handler
     Exit Function
@@ -1026,12 +1035,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerLevel(ByVal Index As Long, ByVal Level As Long)
+Sub SetPlayerLevel(ByVal index As Long, ByVal Level As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).Level = Level
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).Level = Level
     
     ' Error handler
     Exit Sub
@@ -1041,12 +1050,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerExp(ByVal Index As Long) As Long
+Function GetPlayerExp(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerExp = Player(Index).Exp
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerExp = Player(index).Exp
     
     ' Error handler
     Exit Function
@@ -1056,12 +1065,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerExp(ByVal Index As Long, ByVal Exp As Long)
+Sub SetPlayerExp(ByVal index As Long, ByVal Exp As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).Exp = Exp
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).Exp = Exp
     
     ' Error handler
     Exit Sub
@@ -1071,12 +1080,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerAccess(ByVal Index As Long) As Long
+Function GetPlayerAccess(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerAccess = Player(Index).Access
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerAccess = Player(index).Access
     
     ' Error handler
     Exit Function
@@ -1086,12 +1095,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerAccess(ByVal Index As Long, ByVal Access As Long)
+Sub SetPlayerAccess(ByVal index As Long, ByVal Access As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).Access = Access
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).Access = Access
     
     ' Error handler
     Exit Sub
@@ -1101,12 +1110,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerPK(ByVal Index As Long) As Long
+Function GetPlayerPK(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerPK = Player(Index).PK
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerPK = Player(index).PK
     
     ' Error handler
     Exit Function
@@ -1116,12 +1125,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerPK(ByVal Index As Long, ByVal PK As Long)
+Sub SetPlayerPK(ByVal index As Long, ByVal PK As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).PK = PK
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).PK = PK
     
     ' Error handler
     Exit Sub
@@ -1131,12 +1140,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerVital(ByVal Index As Long, ByVal vital As Vitals) As Long
+Function GetPlayerVital(ByVal index As Long, ByVal vital As Vitals) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerVital = Player(Index).vital(vital)
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerVital = Player(index).vital(vital)
     
     ' Error handler
     Exit Function
@@ -1146,15 +1155,15 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerVital(ByVal Index As Long, ByVal vital As Vitals, ByVal value As Long)
+Sub SetPlayerVital(ByVal index As Long, ByVal vital As Vitals, ByVal value As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).vital(vital) = value
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).vital(vital) = value
 
-    If GetPlayerVital(Index, vital) > GetPlayerMaxVital(Index, vital) Then
-        Player(Index).vital(vital) = GetPlayerMaxVital(Index, vital)
+    If GetPlayerVital(index, vital) > GetPlayerMaxVital(index, vital) Then
+        Player(index).vital(vital) = GetPlayerMaxVital(index, vital)
     End If
 
     ' Error handler
@@ -1165,13 +1174,13 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerMaxVital(ByVal Index As Long, ByVal vital As Vitals) As Long
+Function GetPlayerMaxVital(ByVal index As Long, ByVal vital As Vitals) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
+    If index > MAX_PLAYERS Then Exit Function
     
-    GetPlayerMaxVital = Player(Index).MaxVital(vital)
+    GetPlayerMaxVital = Player(index).MaxVital(vital)
 
     ' Error handler
     Exit Function
@@ -1181,12 +1190,12 @@ errorhandler:
     Exit Function
 End Function
 
-Function GetPlayerStat(ByVal Index As Long, stat As Stats) As Long
+Function GetPlayerStat(ByVal index As Long, stat As Stats) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerStat = Player(Index).stat(stat)
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerStat = Player(index).stat(stat)
     
     ' Error handler
     Exit Function
@@ -1196,14 +1205,14 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerStat(ByVal Index As Long, stat As Stats, ByVal value As Long)
+Sub SetPlayerStat(ByVal index As Long, stat As Stats, ByVal value As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
+    If index > MAX_PLAYERS Then Exit Sub
     If value <= 0 Then value = 1
     If value > MAX_BYTE Then value = MAX_BYTE
-    Player(Index).stat(stat) = value
+    Player(index).stat(stat) = value
     
     ' Error handler
     Exit Sub
@@ -1213,12 +1222,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerPOINTS(ByVal Index As Long) As Long
+Function GetPlayerPOINTS(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerPOINTS = Player(Index).points
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerPOINTS = Player(index).points
     
     ' Error handler
     Exit Function
@@ -1228,12 +1237,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerPOINTS(ByVal Index As Long, ByVal points As Long)
+Sub SetPlayerPOINTS(ByVal index As Long, ByVal points As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).points = points
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).points = points
     
     ' Error handler
     Exit Sub
@@ -1243,12 +1252,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerMap(ByVal Index As Long) As Long
+Function GetPlayerMap(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Or Index <= 0 Then Exit Function
-    GetPlayerMap = Player(Index).map
+    If index > MAX_PLAYERS Or index <= 0 Then Exit Function
+    GetPlayerMap = Player(index).map
     
     ' Error handler
     Exit Function
@@ -1258,12 +1267,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerMap(ByVal Index As Long, ByVal mapnum As Long)
+Sub SetPlayerMap(ByVal index As Long, ByVal mapnum As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).map = mapnum
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).map = mapnum
     
     ' Error handler
     Exit Sub
@@ -1273,12 +1282,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerX(ByVal Index As Long) As Long
+Function GetPlayerX(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerX = Player(Index).X
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerX = Player(index).X
     
     ' Error handler
     Exit Function
@@ -1288,12 +1297,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerX(ByVal Index As Long, ByVal X As Long)
+Sub SetPlayerX(ByVal index As Long, ByVal X As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).X = X
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).X = X
     
     ' Error handler
     Exit Sub
@@ -1303,12 +1312,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerY(ByVal Index As Long) As Long
+Function GetPlayerY(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerY = Player(Index).y
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerY = Player(index).y
     
     ' Error handler
     Exit Function
@@ -1318,12 +1327,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerY(ByVal Index As Long, ByVal y As Long)
+Sub SetPlayerY(ByVal index As Long, ByVal y As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).y = y
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).y = y
     
     ' Error handler
     Exit Sub
@@ -1333,12 +1342,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerDir(ByVal Index As Long) As Long
+Function GetPlayerDir(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerDir = Player(Index).dir
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerDir = Player(index).dir
     
     ' Error handler
     Exit Function
@@ -1348,12 +1357,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerDir(ByVal Index As Long, ByVal dir As Long)
+Sub SetPlayerDir(ByVal index As Long, ByVal dir As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).dir = dir
+    If index > MAX_PLAYERS Then Exit Sub
+    Player(index).dir = dir
     
     ' Error handler
     Exit Sub
@@ -1363,11 +1372,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerInvItemNum(ByVal Index As Long, ByVal invslot As Long) As Long
+Function GetPlayerInvItemNum(ByVal index As Long, ByVal invslot As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
+    If index > MAX_PLAYERS Then Exit Function
     If invslot = 0 Then Exit Function
     GetPlayerInvItemNum = PlayerInv(invslot).num
     
@@ -1379,11 +1388,11 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerInvItemNum(ByVal Index As Long, ByVal invslot As Long, ByVal ItemNum As Long)
+Sub SetPlayerInvItemNum(ByVal index As Long, ByVal invslot As Long, ByVal ItemNum As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
+    If index > MAX_PLAYERS Then Exit Sub
     PlayerInv(invslot).num = ItemNum
     
     ' Error handler
@@ -1394,11 +1403,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerInvItemValue(ByVal Index As Long, ByVal invslot As Long) As Long
+Function GetPlayerInvItemValue(ByVal index As Long, ByVal invslot As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
+    If index > MAX_PLAYERS Then Exit Function
     GetPlayerInvItemValue = PlayerInv(invslot).value
     
     ' Error handler
@@ -1409,11 +1418,11 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerInvItemValue(ByVal Index As Long, ByVal invslot As Long, ByVal ItemValue As Long)
+Sub SetPlayerInvItemValue(ByVal index As Long, ByVal invslot As Long, ByVal ItemValue As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
+    If index > MAX_PLAYERS Then Exit Sub
     PlayerInv(invslot).value = ItemValue
     
     ' Error handler
@@ -1424,12 +1433,12 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerEquipment(ByVal Index As Long, ByVal EquipmentSlot As Equipment) As Long
+Function GetPlayerEquipment(ByVal index As Long, ByVal EquipmentSlot As Equipment) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    GetPlayerEquipment = Player(Index).Equipment(EquipmentSlot)
+    If index > MAX_PLAYERS Then Exit Function
+    GetPlayerEquipment = Player(index).Equipment(EquipmentSlot)
     
     ' Error handler
     Exit Function
@@ -1439,12 +1448,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerEquipment(ByVal Index As Long, ByVal InvNum As Long, ByVal EquipmentSlot As Equipment)
+Sub SetPlayerEquipment(ByVal index As Long, ByVal InvNum As Long, ByVal EquipmentSlot As Equipment)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index < 1 Or Index > MAX_PLAYERS Then Exit Sub
-    Player(Index).Equipment(EquipmentSlot) = InvNum
+    If index < 1 Or index > MAX_PLAYERS Then Exit Sub
+    Player(index).Equipment(EquipmentSlot) = InvNum
     
     ' Error handler
     Exit Sub
@@ -1482,11 +1491,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Sub ClearProjectile(ByVal Index As Long, ByVal PlayerProjectile As Long)
+Sub ClearProjectile(ByVal index As Long, ByVal PlayerProjectile As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    With Player(Index).ProjecTile(PlayerProjectile)
+    With Player(index).ProjecTile(PlayerProjectile)
         .direction = 0
         .Pic = 0
         .TravelTime = 0
@@ -1532,12 +1541,12 @@ Dim d As String
             End If
 End Function
 
-Sub ClearDoor(ByVal Index As Long)
+Sub ClearDoor(ByVal index As Long)
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
 
-        Call ZeroMemory(ByVal VarPtr(Doors(Index)), LenB(Doors(Index)))
-        Doors(Index).Name = vbNullString
+        Call ZeroMemory(ByVal VarPtr(Doors(index)), LenB(Doors(index)))
+        Doors(index).Name = vbNullString
    
         ' Error handler
         Exit Sub
@@ -1564,12 +1573,12 @@ errorhandler:
         Err.Clear
         Exit Sub
 End Sub
-Sub ClearMovement(ByVal Index As Long)
+Sub ClearMovement(ByVal index As Long)
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
 
-        Call ZeroMemory(ByVal VarPtr(Movements(Index)), LenB(Movements(Index)))
-        Movements(Index).Name = vbNullString
+        Call ZeroMemory(ByVal VarPtr(Movements(index)), LenB(Movements(index)))
+        Movements(index).Name = vbNullString
    
         ' Error handler
         Exit Sub
@@ -1596,12 +1605,12 @@ errorhandler:
         Exit Sub
 End Sub
 
-Sub ClearAction(ByVal Index As Long)
+Sub ClearAction(ByVal index As Long)
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
 
-        Call ZeroMemory(ByVal VarPtr(Actions(Index)), LenB(Actions(Index)))
-        Actions(Index).Name = vbNullString
+        Call ZeroMemory(ByVal VarPtr(Actions(index)), LenB(Actions(index)))
+        Actions(index).Name = vbNullString
    
         ' Error handler
         Exit Sub
@@ -1628,12 +1637,12 @@ errorhandler:
         Exit Sub
 End Sub
 
-Function GetPlayerVisible(ByVal Index As Long) As Long
+Function GetPlayerVisible(ByVal index As Long) As Long
 ' If debug mode, handle error then exit out
 If Options.Debug = 1 Then On Error GoTo errorhandler
 
-If Index > MAX_PLAYERS Then Exit Function
-GetPlayerVisible = Player(Index).Visible
+If index > MAX_PLAYERS Then Exit Function
+GetPlayerVisible = Player(index).Visible
 
 ' Error handler
 Exit Function
@@ -1643,12 +1652,12 @@ Err.Clear
 Exit Function
 End Function
 
-Sub SetPlayerVisible(ByVal Index As Long, ByVal Visible As Long)
+Sub SetPlayerVisible(ByVal index As Long, ByVal Visible As Long)
 ' If debug mode, handle error then exit out
 If Options.Debug = 1 Then On Error GoTo errorhandler
 
-If Index > MAX_PLAYERS Then Exit Sub
-Player(Index).Visible = Visible
+If index > MAX_PLAYERS Then Exit Sub
+Player(index).Visible = Visible
 
 ' Error handler
 Exit Sub
@@ -1658,12 +1667,12 @@ Err.Clear
 Exit Sub
 End Sub
 
-Sub ClearPet(ByVal Index As Long)
+Sub ClearPet(ByVal index As Long)
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
 
-        Call ZeroMemory(ByVal VarPtr(Pet(Index)), LenB(Pet(Index)))
-        Pet(Index).Name = vbNullString
+        Call ZeroMemory(ByVal VarPtr(Pet(index)), LenB(Pet(index)))
+        Pet(index).Name = vbNullString
    
         ' Error handler
         Exit Sub
@@ -1690,13 +1699,13 @@ errorhandler:
         Exit Sub
 End Sub
 
-Function GetPlayerPetStat(ByVal Index As Long, stat As Stats) As Long
+Function GetPlayerPetStat(ByVal index As Long, stat As Stats) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
-    If Player(Index).ActualPet < 1 Or Player(Index).ActualPet > MAX_PLAYER_PETS Then Exit Function
-    GetPlayerPetStat = Player(Index).Pet(Player(Index).ActualPet).StatsAdd(stat)
+    If index > MAX_PLAYERS Then Exit Function
+    If Player(index).ActualPet < 1 Or Player(index).ActualPet > MAX_PLAYER_PETS Then Exit Function
+    GetPlayerPetStat = Player(index).Pet(Player(index).ActualPet).StatsAdd(stat)
     
     ' Error handler
     Exit Function
@@ -1706,15 +1715,15 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerPetStat(ByVal Index As Long, stat As Stats, ByVal value As Long)
+Sub SetPlayerPetStat(ByVal index As Long, stat As Stats, ByVal value As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
+    If index > MAX_PLAYERS Then Exit Sub
     If value <= 0 Then value = 1
     If value > MAX_BYTE Then value = MAX_BYTE
-    If Player(Index).ActualPet < 1 Or Player(Index).ActualPet > MAX_PLAYER_PETS Then Exit Sub
-    Player(Index).Pet(Player(Index).ActualPet).StatsAdd(stat) = value
+    If Player(index).ActualPet < 1 Or Player(index).ActualPet > MAX_PLAYER_PETS Then Exit Sub
+    Player(index).Pet(Player(index).ActualPet).StatsAdd(stat) = value
     
     ' Error handler
     Exit Sub
@@ -1724,15 +1733,15 @@ errorhandler:
     Exit Sub
 End Sub
 
-Function GetPlayerPetPOINTS(ByVal Index As Long) As Long
+Function GetPlayerPetPOINTS(ByVal index As Long) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Function
+    If index > MAX_PLAYERS Then Exit Function
     
-    If Player(Index).ActualPet < 1 Or Player(Index).ActualPet > MAX_PLAYER_PETS Then Exit Function
+    If Player(index).ActualPet < 1 Or Player(index).ActualPet > MAX_PLAYER_PETS Then Exit Function
     
-    GetPlayerPetPOINTS = Player(Index).Pet(Player(Index).ActualPet).points
+    GetPlayerPetPOINTS = Player(index).Pet(Player(index).ActualPet).points
     
     ' Error handler
     Exit Function
@@ -1742,16 +1751,16 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerPetPOINTS(ByVal Index As Long, ByVal points As Long)
+Sub SetPlayerPetPOINTS(ByVal index As Long, ByVal points As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If Index > MAX_PLAYERS Then Exit Sub
+    If index > MAX_PLAYERS Then Exit Sub
     
-    If Player(Index).ActualPet < 1 Or Player(Index).ActualPet > MAX_PLAYER_PETS Then Exit Sub
+    If Player(index).ActualPet < 1 Or Player(index).ActualPet > MAX_PLAYER_PETS Then Exit Sub
     
     
-    Player(Index).Pet(Player(Index).ActualPet).points = points
+    Player(index).Pet(Player(index).ActualPet).points = points
     
     ' Error handler
     Exit Sub
@@ -1833,63 +1842,63 @@ End Function
 
 
 Function AccountExist(ByVal Name As String) As Boolean
-    Dim FileName As String
-    FileName = "data\accounts\" & Trim(Name) & ".bin"
+    Dim Filename As String
+    Filename = "data\accounts\" & Trim$(Name) & ".bin"
 
-    If FileExist(FileName) Then
+    If FileExist(Filename) Then
         AccountExist = True
     End If
 
 End Function
 
 Sub SavePlayer(ByRef Data() As Byte, ByRef Login As String)
-    Dim FileName As String
+    Dim Filename As String
     Dim f As Long
     
     If Trim$(Login) = ".bin" Then Exit Sub
 
-    FileName = App.Path & "\data files\accounts\" & Login
+    Filename = App.Path & "\data\accounts\" & Login
     f = FreeFile
     
-    Open FileName For Binary As #f
+    Open Filename For Binary As #f
     Put #f, , Data
     Close #f
 
 End Sub
 
 Sub SaveBank(ByRef Bank As ServerBankRec, ByVal Login As String)
-    Dim FileName As String
+    Dim Filename As String
     Dim f As Long
     
 
-    FileName = App.Path & "\data files\banks\" & Trim$(Login) & ".bin"
+    Filename = App.Path & "\data\banks\" & Trim$(Login) & ".bin"
     f = FreeFile
     
-    Open FileName For Binary As #f
+    Open Filename For Binary As #f
     Put #f, , Bank
     Close #f
     
 End Sub
 
 Sub SaveGuild(ByRef Guild As ServerGuildRec, ByVal N As Long)
-    Dim FileName As String
+    Dim Filename As String
     Dim f As Long
     
 
-    FileName = App.Path & "\data files\guilds\Guild" & CStr(N) & ".dat"
+    Filename = App.Path & "\data\guilds\Guild" & CStr(N) & ".dat"
     f = FreeFile
     
-    Open FileName For Binary As #f
+    Open Filename For Binary As #f
     Put #f, , Guild
     Close #f
     
     Dim GuildName As String
     GuildName = RTrim(Guild.Guild_Name)
     
-    FileName = App.Path & "\data files\guildnames\" & GuildName & ".dat"
+    Filename = App.Path & "\data\guildnames\" & GuildName & ".dat"
     f = FreeFile
     
-    Open FileName For Binary As #f
+    Open Filename For Binary As #f
     Put #f, , ""
     Close #f
     
@@ -1901,7 +1910,7 @@ Function FindChar(ByVal Name As String) As Boolean
     Dim f As Long
     Dim s As String
     f = FreeFile
-    Open App.Path & "\data files\accounts\charlist.txt" For Input As #f
+    Open App.Path & "\data\accounts\charlist.txt" For Input As #f
 
     Do While Not EOF(f)
         Input #f, s
@@ -1917,12 +1926,12 @@ Function FindChar(ByVal Name As String) As Boolean
     Close #f
 End Function
 
-Sub ClearCustomSprite(ByVal Index As Long)
+Sub ClearCustomSprite(ByVal index As Long)
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
 
-        Call ZeroMemory(ByVal VarPtr(CustomSprites(Index)), LenB(CustomSprites(Index)))
-        CustomSprites(Index).Name = vbNullString
+        Call ZeroMemory(ByVal VarPtr(CustomSprites(index)), LenB(CustomSprites(index)))
+        CustomSprites(index).Name = vbNullString
    
         ' Error handler
         Exit Sub
@@ -1949,13 +1958,13 @@ errorhandler:
         Exit Sub
 End Sub
 
-Public Function SetPlayerCustomSprite(ByVal Index As Long, ByVal CustomSprite As Byte)
+Public Function SetPlayerCustomSprite(ByVal index As Long, ByVal CustomSprite As Byte)
     If CustomSprite > MAX_CUSTOM_SPRITES Then Exit Function
-    Player(Index).CustomSprite = CustomSprite
+    Player(index).CustomSprite = CustomSprite
 End Function
 
-Public Function GetPlayerCustomSprite(ByVal Index As Long) As Byte
-    If Player(Index).CustomSprite > MAX_CUSTOM_SPRITES Then Exit Function
-    GetPlayerCustomSprite = Player(Index).CustomSprite
+Public Function GetPlayerCustomSprite(ByVal index As Long) As Byte
+    If Player(index).CustomSprite > MAX_CUSTOM_SPRITES Then Exit Function
+    GetPlayerCustomSprite = Player(index).CustomSprite
 End Function
 

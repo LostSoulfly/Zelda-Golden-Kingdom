@@ -328,10 +328,10 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub chkInitialState_Click()
-    Doors(EditorIndex).InitialState = chkInitialState.Value
+    Doors(EditorIndex).InitialState = chkInitialState.value
 End Sub
 
-Private Sub Form_Load()
+Private Sub form_load()
 
 scrlMap.Max = MAX_MAPS
 scrlX.Max = MAX_BYTE
@@ -365,7 +365,7 @@ Dim tmpIndex As Long
     
     tmpIndex = lstIndex.ListIndex
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Doors(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Doors(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     DoorEditorInit
@@ -406,9 +406,9 @@ errorhandler:
     Exit Sub
 End Sub
 
-Private Sub optDoor_Click(Index As Integer)
-Doors(EditorIndex).DoorType = Index
-If Index = 0 Then
+Private Sub optDoor_Click(index As Integer)
+Doors(EditorIndex).DoorType = index
+If index = 0 Then
     Frame6.Visible = True
     fraToUnlock.Visible = True
     Frame5.Visible = False
@@ -419,9 +419,9 @@ Else
 End If
 End Sub
 
-Private Sub OptUnlock_Click(Index As Integer)
-Doors(EditorIndex).UnlockType = Index
-If Index = 0 Then
+Private Sub OptUnlock_Click(index As Integer)
+Doors(EditorIndex).UnlockType = index
+If index = 0 Then
     Frame4.Visible = True
 Else
     Frame4.Visible = False
@@ -429,47 +429,47 @@ End If
 End Sub
 
 Private Sub scrlKey_Change()
-If scrlKey.Value > 0 Then
-lblKey.Caption = "Key: " & Trim$(Item(scrlKey.Value).Name)
+If scrlKey.value > 0 Then
+lblKey.Caption = "Key: " & Trim$(Item(scrlKey.value).Name)
 Else
 lblKey.Caption = "Key: None"
 End If
-Doors(EditorIndex).key = scrlKey.Value
+Doors(EditorIndex).key = scrlKey.value
 End Sub
 
 
 
 Private Sub scrlMap_Change()
 
-lblMap.Caption = "Map: " & scrlMap.Value
-Doors(EditorIndex).WarpMap = scrlMap.Value
+lblMap.Caption = "Map: " & scrlMap.value
+Doors(EditorIndex).WarpMap = scrlMap.value
 
 End Sub
 
 Private Sub scrlSwitch_Change()
-If (scrlSwitch.Value > 0) Then
-lblSwitch.Caption = "Door: " & Trim$(Doors(scrlSwitch.Value).Name)
+If (scrlSwitch.value > 0) Then
+lblSwitch.Caption = "Door: " & Trim$(Doors(scrlSwitch.value).TranslatedName)
 Else
 lblSwitch.Caption = "Door: None"
 End If
-Doors(EditorIndex).Switch = scrlSwitch.Value
+Doors(EditorIndex).Switch = scrlSwitch.value
 End Sub
 
 
 
 Private Sub scrlTime_Change()
-lblTime.Caption = "Time: " & scrlTime.Value
-Doors(EditorIndex).Time = scrlTime.Value
+lblTime.Caption = "Time: " & scrlTime.value
+Doors(EditorIndex).Time = scrlTime.value
 End Sub
 
 Private Sub scrlX_Change()
-lblX.Caption = "Map x: " & scrlX.Value
-Doors(EditorIndex).WarpX = scrlX.Value
+lblX.Caption = "Map x: " & scrlX.value
+Doors(EditorIndex).WarpX = scrlX.value
 End Sub
 
 Private Sub scrlY_Change()
-lblY.Caption = "Map y: " & scrlY.Value
-Doors(EditorIndex).WarpY = scrlY.Value
+lblY.Caption = "Map y: " & scrlY.value
+Doors(EditorIndex).WarpY = scrlY.value
 End Sub
 
 Private Sub txtName_Validate(Cancel As Boolean)
@@ -480,9 +480,9 @@ Dim tmpIndex As Long
     
     If EditorIndex = 0 Then Exit Sub
     tmpIndex = lstIndex.ListIndex
-    Doors(EditorIndex).Name = Trim$(txtName.text)
+    Doors(EditorIndex).Name = Trim$(txtName.Text)
     lstIndex.RemoveItem EditorIndex - 1
-    lstIndex.AddItem EditorIndex & ": " & Doors(EditorIndex).Name, EditorIndex - 1
+    lstIndex.AddItem EditorIndex & ": " & Doors(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
     
     ' Error handler
