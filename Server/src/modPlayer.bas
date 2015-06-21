@@ -109,7 +109,7 @@ Sub JoinGame(ByVal index As Long, ByVal NeedData As Boolean)
     If GetPlayerAccess_Mode(index) <= ADMIN_MONITOR Then
         Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" se ha conectado"), BrightGreen, False)
     Else
-        Call GlobalMsg(GetPlayerName(index) & " se ha conectado", BrightGreen)
+        Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" se ha conectado"), BrightGreen, False)
     End If
     
     ' Send welcome messages

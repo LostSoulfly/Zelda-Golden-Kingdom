@@ -59,19 +59,19 @@ Begin VB.Form frmServer
       TabCaption(0)   =   "Console"
       TabPicture(0)   =   "frmServer.frx":1708A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "tmrIsServerBug"
-      Tab(0).Control(1)=   "txtChat"
+      Tab(0).Control(0)=   "lblCPS"
+      Tab(0).Control(1)=   "lblCpsLock"
       Tab(0).Control(2)=   "txtText"
-      Tab(0).Control(3)=   "lblCpsLock"
-      Tab(0).Control(4)=   "lblCPS"
+      Tab(0).Control(3)=   "txtChat"
+      Tab(0).Control(4)=   "tmrIsServerBug"
       Tab(0).ControlCount=   5
       TabCaption(1)   =   "Players"
       TabPicture(1)   =   "frmServer.frx":170A6
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "cmdDisableAdmins"
-      Tab(1).Control(1)=   "texto"
-      Tab(1).Control(2)=   "cmdCopy"
-      Tab(1).Control(3)=   "lvwInfo"
+      Tab(1).Control(0)=   "lvwInfo"
+      Tab(1).Control(1)=   "cmdCopy"
+      Tab(1).Control(2)=   "texto"
+      Tab(1).Control(3)=   "cmdDisableAdmins"
       Tab(1).ControlCount=   4
       TabCaption(2)   =   "Control "
       TabPicture(2)   =   "frmServer.frx":170C2
@@ -94,19 +94,19 @@ Begin VB.Form frmServer
       TabCaption(3)   =   "Info"
       TabPicture(3)   =   "frmServer.frx":170DE
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "lblMapTime"
-      Tab(3).Control(1)=   "lblLoopTime"
-      Tab(3).Control(2)=   "lblPacketsSent"
-      Tab(3).Control(3)=   "lblPacketsReceived"
-      Tab(3).Control(4)=   "lblBytesSent"
-      Tab(3).Control(5)=   "lblBytesReceived"
+      Tab(3).Control(0)=   "lblBytesReceived"
+      Tab(3).Control(1)=   "lblBytesSent"
+      Tab(3).Control(2)=   "lblPacketsReceived"
+      Tab(3).Control(3)=   "lblPacketsSent"
+      Tab(3).Control(4)=   "lblLoopTime"
+      Tab(3).Control(5)=   "lblMapTime"
       Tab(3).ControlCount=   6
       Begin VB.CommandButton cmdSave 
          Caption         =   "Save."
          Height          =   615
          Left            =   5640
          TabIndex        =   38
-         Top             =   2520
+         Top             =   1800
          Width           =   735
       End
       Begin VB.CheckBox chkTroll 
@@ -178,14 +178,22 @@ Begin VB.Form frmServer
          Left            =   3000
          TabIndex        =   19
          Top             =   2400
-         Width           =   2535
+         Width           =   3375
+         Begin VB.CommandButton cmdMapLinkReport 
+            Caption         =   "Map link report"
+            Height          =   495
+            Left            =   2280
+            TabIndex        =   39
+            Top             =   240
+            Width           =   975
+         End
          Begin VB.CommandButton cmdWeather 
             Caption         =   "Weather"
             Height          =   495
-            Left            =   1320
+            Left            =   1200
             TabIndex        =   21
             Top             =   240
-            Width           =   1095
+            Width           =   975
          End
          Begin VB.CommandButton CharacterEditor 
             Caption         =   "Character Editor"
@@ -193,7 +201,7 @@ Begin VB.Form frmServer
             Left            =   120
             TabIndex        =   20
             Top             =   240
-            Width           =   1095
+            Width           =   975
          End
       End
       Begin VB.Frame fraServer 
@@ -528,6 +536,25 @@ End Sub
 Private Sub cmdLoadOptions_Click()
 Call TextAdd("Options reloaded.")
 LoadOptions
+End Sub
+
+Private Sub cmdMapLinkReport_Click()
+Dim i As Long
+On Error Resume Next
+cmdMapLinkReport.Enabled = False
+Kill App.Path & "\data\logs\MAP_CHECK.log"
+    TextAdd "Checking maps for unlinked/unwarped maps.."
+    For i = 1 To MAX_MAPS
+    DoEvents
+        If CheckMapUnlinked(i) = True Then
+        'dead-end maps should be here. Next to check if any map warps here or links here..
+            If CheckMapsConnectedTo(i) = False Then
+                AddLog2 "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") is not connected anywhere! (spell warps unchecked)", "MAP_CHECK.log"
+            End If
+        End If
+    Next
+    Shell "notepad.exe " & App.Path & "\data\logs\MAP_CHECK.log", vbNormalFocus
+    cmdMapLinkReport.Enabled = True
 End Sub
 
 Private Sub cmdTransLog_Click()

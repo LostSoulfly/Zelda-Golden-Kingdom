@@ -454,9 +454,9 @@ Public Sub InitTempTile(ByVal mapnum As Long)
                 TempTile(mapnum).NumDoors = TempTile(mapnum).NumDoors + 1
                 ReDim Preserve TempTile(mapnum).Door(1 To TempTile(mapnum).NumDoors)
                 With TempTile(mapnum).Door(TempTile(mapnum).NumDoors)
-                    .doornum = map(mapnum).Tile(X, Y).Data1
+                    .DoorNum = map(mapnum).Tile(X, Y).Data1
                     .DoorTimer = 0
-                    .state = GetInitialDoorState(.doornum)
+                    .state = GetInitialDoorState(.DoorNum)
                     .X = X
                     .Y = Y
                 End With
@@ -464,7 +464,7 @@ Public Sub InitTempTile(ByVal mapnum As Long)
                 TempTile(mapnum).NumDoors = TempTile(mapnum).NumDoors + 1
                 ReDim Preserve TempTile(mapnum).Door(1 To TempTile(mapnum).NumDoors)
                 With TempTile(mapnum).Door(TempTile(mapnum).NumDoors)
-                    .doornum = -1 'use this encode
+                    .DoorNum = -1 'use this encode
                     .DoorTimer = 0
                     .state = False
                     .X = X
@@ -2067,6 +2067,8 @@ Function StrToPlayerCommands(ByVal s As String) As PlayerCommandsType
     StrToPlayerCommands = DisableAdmins
     Case "findmap"
     StrToPlayerCommands = FindMAP
+    Case "mapreport"
+    StrToPlayerCommands = MapReport
     Case "giveitem"
     StrToPlayerCommands = GiveItem
     End Select
@@ -2134,11 +2136,12 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
         For i = 1 To MAX_NPCS
             If LCase$(GetNPCName(i)) = NPCName Then
                 PlayerMsg index, GetTranslation("Numero de NPC:") & " " & i, BrightGreen, , False
-            End If
-            If LCase$(NPC(i).Name) = NPCName Then
+            ElseIf LCase$(NPC(i).Name) = NPCName Then
                 PlayerMsg index, GetTranslation("Numero de NPC:") & " " & i, BrightGreen, , False
             End If
         Next
+        
+        PlayerMsg index, "-End of NPCs-", BrightGreen, True, False
         
     Case FindMAP
         If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
@@ -2148,15 +2151,20 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
         For i = 1 To MAX_ITEMS
             If InStr(1, LCase$(item(i).Name), LCase(strSearch)) > 0 Then
                  PlayerMsg index, Trim$(item(i).TranslatedName) & " #" & i, BrightGreen, True, False
+            ElseIf InStr(1, LCase$(item(i).TranslatedName), LCase(strSearch)) > 0 Then
+                PlayerMsg index, Trim$(item(i).TranslatedName) & " #" & i, BrightGreen, True, False
             End If
         Next i
-        PlayerMsg index, "-End of Items-", BrightGreen, True, False
+        PlayerMsg index, "-End of Maps-", BrightGreen, True, False
         
     Case DownloadAdminLog
     If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         If size < 3 Then Exit Sub 'we need number of lines
         Dim nLines As Long
         nLines = CLng(s(2))
+        
+        'todo
+        'where did this go??
         
     Case InspectPlayer
         If size < 3 Then Exit Sub
@@ -2275,6 +2283,66 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
                 End If
             End If
         End If
+    
+    Case MapReport
+        If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
+        Dim l As Long, r As Long, u As Long, d As Long
+        Dim mapnum As Long
+    If size = 2 Then
+        'we've only been given the command.
+        'use the current map the player is on.
+        mapnum = GetPlayerMap(index)
+    ElseIf size = 3 Then
+        mapnum = s(2)
+    End If
+    
+        l = map(mapnum).left
+        r = map(mapnum).right
+        u = map(mapnum).Up
+        d = map(mapnum).Down
+        
+        PlayerMsg index, "Map report for " & mapnum, White, , False
+        If Not l = 0 Then PlayerMsg index, "Map Left: " & Trim$(map(l).TranslatedName) & "(" & l & ")", White, , False
+        If Not r = 0 Then PlayerMsg index, "Map Right: " & Trim$(map(r).TranslatedName) & "(" & r & ")", White, , False
+        If Not u = 0 Then PlayerMsg index, "Map Up: " & Trim$(map(u).TranslatedName) & "(" & u & ")", White, , False
+        If Not d = 0 Then PlayerMsg index, "Map Down: " & Trim$(map(d).TranslatedName) & "(" & d & ")", White, , False
+        PlayerMsg index, "~~~~~~~~~~~~~~~~~", White, , False
+        
+    'we want to check every map for a warp or link to the requested map.
+    For i = 1 To MAX_MAPS
+        With map(i)
+        
+        
+        If .left = mapnum Then
+            PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") connects to the left.", White, , False
+        End If
+        
+        If .right = mapnum Then
+            PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") connects to the right.", White, , False
+        End If
+        
+        If .Up = mapnum Then
+            PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") connects to the top.", White, , False
+        End If
+        
+        If .Down = mapnum Then
+            PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") connects to the bottom.", White, , False
+        End If
+        
+        For X = 0 To .MaxX
+            For Y = 0 To .MaxY
+                If .Tile(X, Y).Type = TILE_TYPE_WARP Then
+                    If CLng(.Tile(X, Y).Data1) = mapnum Then
+                         PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") connects by warp from X: " & X & " Y: " & Y & _
+                         " to X: " & .Tile(X, Y).Data2 & " Y: " & .Tile(X, Y).Data3, White, , False
+                    End If
+                End If
+            Next
+        Next
+        End With
+    Next
+PlayerMsg index, "-end of mapreport-", White, , False
+    
     Case GiveItem
         If GetPlayerAccess_Mode(index) < ADMIN_DEVELOPER Then Exit Sub
         Select Case (size - 1)

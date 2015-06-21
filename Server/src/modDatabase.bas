@@ -47,6 +47,25 @@ Sub AddLog(ByVal index As Long, ByVal Text As String, ByVal FN As String)
 
 End Sub
 
+Sub AddLog2(ByVal Text As String, ByVal FN As String)
+    Dim FileName As String
+    Dim F As Long
+
+    FileName = App.Path & "\data\logs\" & FN
+
+    If Not FileExist(FileName, True) Then
+        F = FreeFile
+        Open FileName For Output As #F
+        Close #F
+    End If
+
+    F = FreeFile
+    Open FileName For Append As #F
+    Print #F, Now & ": " & Text
+    Close #F
+
+End Sub
+
 ' gets a string from a text file
 Public Function GetVar(File As String, header As String, Var As String) As String
     Dim sSpaces As String   ' Max string length
@@ -405,7 +424,7 @@ Sub ClearPlayer(ByVal index As Long)
     Dim i As Long
     
     Call ZeroMemory(ByVal VarPtr(TempPlayer(index)), LenB(TempPlayer(index)))
-    Set TempPlayer(index).buffer = New clsBuffer
+    Set TempPlayer(index).Buffer = New clsBuffer
     
     Call ZeroMemory(ByVal VarPtr(player(index)), LenB(player(index)))
     player(index).login = vbNullString
@@ -991,14 +1010,14 @@ End Sub
 ' **********
 ' ** Maps **
 ' **********
-Sub SaveMap(ByVal MapNum As Long, ByRef map As MapRec)
+Sub SaveMap(ByVal mapnum As Long, ByRef map As MapRec)
     Dim FileName As String
     Dim F As Long
     Dim X As Long
     Dim Y As Long
     Dim Data() As Byte
     Data = GetMapData(map)
-    FileName = App.Path & "\data\maps\map" & MapNum & ".dat"
+    FileName = App.Path & "\data\maps\map" & mapnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
         Put #F, , Compress(Data)
@@ -1042,11 +1061,11 @@ Sub CheckMaps()
 
 End Sub
 
-Sub ClearMapItem(ByVal index As Long, ByVal MapNum As Long)
-    Call ZeroMemory(ByVal VarPtr(MapItem(MapNum, index)), LenB(MapItem(MapNum, index)))
-    MapItem(MapNum, index).playerName = vbNullString
+Sub ClearMapItem(ByVal index As Long, ByVal mapnum As Long)
+    Call ZeroMemory(ByVal VarPtr(MapItem(mapnum, index)), LenB(MapItem(mapnum, index)))
+    MapItem(mapnum, index).playerName = vbNullString
     
-    CheckMapItemHighIndex MapNum, index, False
+    CheckMapItemHighIndex mapnum, index, False
     
 End Sub
 
@@ -1062,9 +1081,9 @@ Sub ClearMapItems()
 
 End Sub
 
-Sub ClearMapNpc(ByVal index As Long, ByVal MapNum As Long)
-    ReDim MapNpc(MapNum).NPC(1 To MAX_MAP_NPCS)
-    Call ZeroMemory(ByVal VarPtr(MapNpc(MapNum).NPC(index)), LenB(MapNpc(MapNum).NPC(index)))
+Sub ClearMapNpc(ByVal index As Long, ByVal mapnum As Long)
+    ReDim MapNpc(mapnum).NPC(1 To MAX_MAP_NPCS)
+    Call ZeroMemory(ByVal VarPtr(MapNpc(mapnum).NPC(index)), LenB(MapNpc(mapnum).NPC(index)))
 End Sub
 
 Sub ClearMapNpcs()
@@ -1079,7 +1098,7 @@ Sub ClearMapNpcs()
 
 End Sub
 
-Sub BackupMap(ByVal MapNum As Long, ByVal revision As Long)
+Sub BackupMap(ByVal mapnum As Long, ByVal Revision As Long)
 On Error Resume Next
 Dim FilePath As String
 Dim BackupPath As String
@@ -1087,27 +1106,27 @@ Dim FileName As String
 Dim NewFileName As String
 
 FilePath = App.Path & "\data\maps\"
-FileName = FilePath & "map" & MapNum & ".dat"
+FileName = FilePath & "map" & mapnum & ".dat"
 BackupPath = FilePath & "revisions\"
 MkDir BackupPath
-NewFileName = FilePath & "map" & MapNum & "-" & revision & ".dat"
+NewFileName = FilePath & "map" & mapnum & "-" & Revision & ".dat"
 FileCopy FileName, NewFileName
 End Sub
 
-Sub ClearMap(ByVal MapNum As Long)
-    Call ZeroMemory(ByVal VarPtr(map(MapNum)), LenB(map(MapNum)))
+Sub ClearMap(ByVal mapnum As Long)
+    Call ZeroMemory(ByVal VarPtr(map(mapnum)), LenB(map(mapnum)))
     
-    map(MapNum).Name = vbNullString
-    map(MapNum).MaxX = MAX_MAPX
-    map(MapNum).MaxY = MAX_MAPY
-    ReDim map(MapNum).Tile(0 To map(MapNum).MaxX, 0 To map(MapNum).MaxY)
+    map(mapnum).Name = vbNullString
+    map(mapnum).MaxX = MAX_MAPX
+    map(mapnum).MaxY = MAX_MAPY
+    ReDim map(mapnum).Tile(0 To map(mapnum).MaxX, 0 To map(mapnum).MaxY)
     ' Reset the values for if a player is on the map or not
-    ClearMapReference MapNum
+    ClearMapReference mapnum
     ' Reset the map cache array for this map.
-    MapCache(MapNum).Data = vbNullString
+    MapCache(mapnum).Data = vbNullString
     
     'reset tempmap data
-    Call ZeroMemory(ByVal VarPtr(TempMap(MapNum)), LenB(TempMap(MapNum)))
+    Call ZeroMemory(ByVal VarPtr(TempMap(mapnum)), LenB(TempMap(mapnum)))
 End Sub
 
 Sub ClearMaps()
@@ -1556,14 +1575,14 @@ ErrorHandler:
 ' if an error occurs, this function returns False
 End Function
 
-Sub ClearSingleMapNpc(ByVal index As Long, ByVal MapNum As Long)
+Sub ClearSingleMapNpc(ByVal index As Long, ByVal mapnum As Long)
 
-    DeleteNPCFromMapRef MapNum, index
+    DeleteNPCFromMapRef mapnum, index
     
-    Call ZeroMemory(ByVal VarPtr(MapNpc(MapNum).NPC(index)), LenB(MapNpc(MapNum).NPC(index)))
+    Call ZeroMemory(ByVal VarPtr(MapNpc(mapnum).NPC(index)), LenB(MapNpc(mapnum).NPC(index)))
 
-    If index >= TempMap(MapNum).npc_highindex Then
-        Call SetMapNPCHighIndex(MapNum, index)
+    If index >= TempMap(mapnum).npc_highindex Then
+        Call SetMapNPCHighIndex(mapnum, index)
     End If
     
 

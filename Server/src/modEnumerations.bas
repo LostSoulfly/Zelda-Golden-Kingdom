@@ -439,6 +439,7 @@ Public Enum PlayerCommandsType
     DisableAdmins
     FindMAP
     GiveItem
+    MapReport
 End Enum
 
 
