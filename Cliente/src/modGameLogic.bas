@@ -1004,8 +1004,12 @@ Dim i As Long
             If MapNpc(i).X = X Then
                 If MapNpc(i).y = y Then
                     If NPC(MapNpc(i).num).Behaviour <> NPC_BEHAVIOUR_BLADE Then
-                        CheckDirection = True
-                        Exit Function
+                        If MapNpc(i).petData.Owner = MyIndex Then
+                            CheckDirection = False
+                        Else
+                            CheckDirection = True
+                            Exit Function
+                        End If
                     End If
                 End If
             End If

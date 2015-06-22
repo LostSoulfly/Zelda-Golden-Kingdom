@@ -51,11 +51,11 @@ If Options.WASD = 1 Then
             ControlDown = True
         End If
     End If
-Else
+End If
+
     If GetKeyState(vbKeyReturn) < 0 Then
         CheckMapGetItem
     End If
-End If
     
     If Player(MyIndex).onIce Then
         DirUp = False

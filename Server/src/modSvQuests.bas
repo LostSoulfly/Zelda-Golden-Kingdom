@@ -26,6 +26,7 @@ Public Const QUEST_COMPLETED_BUT As Byte = 3
 
 'Types
 Public Quest(1 To MAX_QUESTS) As QuestRec
+'Public Quest2(1 To MAX_QUESTS) As QuestRec2
 
 Public Type PlayerQuestRec
     Status As Long
@@ -90,6 +91,31 @@ Public Type QuestRec
     TranslatedName As String * 30
 End Type
 
+'Public Type QuestRec2
+'    'Alatar v1.2
+'    Name As String * 30
+'
+'    Repeat As Long
+'    QuestLog As String
+'    Speech(1 To 3) As String
+'    GiveItem(1 To MAX_QUESTS_ITEMS) As QuestGiveItemRec
+'    TakeItem(1 To MAX_QUESTS_ITEMS) As QuestTakeItemRec
+'
+'    RequiredLevel As Long
+'    RequiredQuest As Long
+'    RequiredClass(1 To 5) As Long
+'    RequiredItem(1 To MAX_QUESTS_ITEMS) As QuestRequiredItemRec
+'
+'    RewardExp As Long
+'    RewardItem(1 To MAX_QUESTS_ITEMS) As QuestRewardItemRec
+'
+'    Task(1 To MAX_TASKS) As TaskRec
+'    level As Long
+'    '/Alatar v1.2
+'    TranslatedName As String * 30
+'End Type
+
+
 ' //////////////
 ' // DATABASE //
 ' //////////////
@@ -109,6 +135,7 @@ Sub SaveQuest(ByVal questnum As Long)
     Open FileName For Binary As #F
     
         Put #F, , Quest(questnum)
+        Close #F
         Exit Sub
         'Alatar v1.2
         Put #F, , Quest(questnum).Name
@@ -146,52 +173,54 @@ End Sub
 Sub LoadQuests()
     Dim FileName As String
     Dim i As Integer
-    Dim F As Long, N As Long
+    Dim F As Long, n As Long
     Dim sLen As Long
     
     Call CheckQuests
 
     For i = 1 To MAX_QUESTS
-        FileName = App.Path & "\data\quests\quest" & i & ".dat"
+        FileName = App.Path & "\data\quests\quest2.0-" & i & ".dat"
         F = FreeFile
         Open FileName For Binary As #F
-        
+        If i = 26 Then
+        Debug.Print
+        End If
         Get #F, , Quest(i)
         Close #F
         'Quest(i).Name = GetTranslation(Quest(i).Name)
         'Quest(i).Speech(1) = GetTranslation(Quest(i).Speech(1))
         'Quest(i).Speech(2) = GetTranslation(Quest(i).Speech(2))
         'Quest(i).Speech(3) = GetTranslation(Quest(i).Speech(3))
-        If Trim$(Replace(Quest(i).TranslatedName, vbNullChar, "")) = "" Then Quest(i).TranslatedName = GetTranslation(Quest(i).Name)
+        'If Trim$(Replace(Quest(i).TranslatedName, vbNullChar, "")) = "" Then Quest(i).TranslatedName = GetTranslation(Quest(i).Name)
         Next
         Exit Sub
         'Alatar v1.2
         Get #F, , Quest(i).Name
         Get #F, , Quest(i).Repeat
         Get #F, , Quest(i).QuestLog
-        For N = 1 To 3
-            Get #F, , Quest(i).Speech(N)
+        For n = 1 To 3
+            Get #F, , Quest(i).Speech(n)
         Next
-        For N = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).GiveItem(N)
+        For n = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).GiveItem(n)
         Next
-        For N = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).TakeItem(N)
+        For n = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).TakeItem(n)
         Next
         Get #F, , Quest(i).RequiredLevel
         Get #F, , Quest(i).RequiredQuest
-        For N = 1 To 5
-            Get #F, , Quest(i).RequiredClass(N)
+        For n = 1 To 5
+            Get #F, , Quest(i).RequiredClass(n)
         Next
-        For N = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).RequiredItem(N)
+        For n = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).RequiredItem(n)
         Next
         Get #F, , Quest(i).RewardExp
-        For N = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).RewardItem(N)
+        For n = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).RewardItem(n)
         Next
-        For N = 1 To MAX_TASKS
-            Get #F, , Quest(i).Task(N)
+        For n = 1 To MAX_TASKS
+            Get #F, , Quest(i).Task(n)
         'Next
         
         Get #F, , Quest(i).level
@@ -199,7 +228,65 @@ Sub LoadQuests()
         Close #F
 
     Next
+        
 End Sub
+
+'Sub migrateQuests()
+'Dim FileName As String
+'Dim i As Long
+'Dim F As Long
+
+'For i = 1 To MAX_QUESTS
+'    UpdateQuest Quest(i), Quest2(i)
+'    FileName = App.Path & "\data\quests\quest2.0-" & i & ".dat"
+'    F = FreeFile
+'    Open FileName For Binary As #F
+'    Put #F, , Quest2(i)
+'    Close #F
+    'Exit Sub
+'Next
+
+'End Sub
+
+'Sub UpdateQuest(oldQuest As QuestRec, newQuest As QuestRec2)
+'Dim n As Integer
+
+'With newQuest
+'.Name = oldQuest.Name
+'.TranslatedName = GetTranslation(.Name)
+'.QuestLog = oldQuest.QuestLog
+
+'For n = 1 To 3
+'    .Speech(n) = oldQuest.Speech(n)
+'Next
+'For n = 1 To 3
+'    .Speech(n) = oldQuest.Speech(n)
+'Next
+'For n = 1 To MAX_QUESTS_ITEMS
+'    .GiveItem(n) = oldQuest.GiveItem(n)
+'Next
+'For n = 1 To MAX_QUESTS_ITEMS
+'    .TakeItem(n) = oldQuest.TakeItem(n)
+'Next
+'.RequiredLevel = oldQuest.RequiredLevel
+'.RequiredQuest = oldQuest.RequiredQuest
+'For n = 1 To 5
+'   .RequiredClass(n) = oldQuest.RequiredClass(n)
+'Next
+'For n = 1 To MAX_QUESTS_ITEMS
+'    .RequiredItem(n) = oldQuest.RequiredItem(n)
+'Next
+'.RewardExp = oldQuest.RewardExp
+'For n = 1 To MAX_QUESTS_ITEMS
+'    .RewardItem(n) = oldQuest.RewardItem(n)
+'Next
+'For n = 1 To MAX_TASKS
+'    .Task(n) = oldQuest.Task(n)
+'Next
+'.level = oldQuest.level
+'End With
+
+'End Sub
 
 Sub CheckQuests()
     Dim i As Long
@@ -213,6 +300,7 @@ End Sub
 Sub ClearQuest(ByVal index As Long)
     Call ZeroMemory(ByVal VarPtr(Quest(index)), LenB(Quest(index)))
     Quest(index).Name = vbNullString
+    'Quest(index).TranslatedName = vbNullString
     Quest(index).QuestLog = vbNullString
 End Sub
 
@@ -382,7 +470,7 @@ End Sub
 ' ///////////////
 
 Public Function CanStartQuest(ByVal index As Long, ByVal questnum As Long) As Boolean
-    Dim i As Long, N As Long
+    Dim i As Long, n As Long
     CanStartQuest = False
     If questnum < 1 Or questnum > MAX_QUESTS Then Exit Function
     If QuestInProgress(index, questnum) Then Exit Function
@@ -679,7 +767,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
 End Sub
 
 Public Sub EndQuest(ByVal index As Long, ByVal questnum As Long)
-    Dim i As Long, N As Long
+    Dim i As Long, n As Long
     
     'remove items on the end
     For i = 1 To MAX_QUESTS_ITEMS
@@ -690,7 +778,7 @@ Public Sub EndQuest(ByVal index As Long, ByVal questnum As Long)
                 If isItemStackable(Quest(questnum).TakeItem(i).item) Then
                     TakeInvItem index, Quest(questnum).TakeItem(i).item, Quest(questnum).TakeItem(i).Value
                 Else
-                    For N = 1 To Quest(questnum).TakeItem(i).Value
+                    For n = 1 To Quest(questnum).TakeItem(i).Value
                         TakeInvItem index, Quest(questnum).TakeItem(i).item, 1
                     Next
                 End If
@@ -720,7 +808,7 @@ Public Sub EndQuest(ByVal index As Long, ByVal questnum As Long)
                     GiveInvItem index, Quest(questnum).RewardItem(i).item, Quest(questnum).RewardItem(i).Value
                 Else
                 'if not, create a new loop and store the item in a new slot if is possible
-                    For N = 1 To Quest(questnum).RewardItem(i).Value
+                    For n = 1 To Quest(questnum).RewardItem(i).Value
                         If FindOpenInvSlot(index, Quest(questnum).RewardItem(i).item) = 0 Then
                             PlayerMsg index, "No tienes espacio en el inventario.", BrightRed
                             Exit For

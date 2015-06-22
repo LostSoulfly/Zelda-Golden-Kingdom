@@ -44,12 +44,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4860
-      Left            =   7950
+      Left            =   9000
       ScaleHeight     =   324
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   5
-      Top             =   4200
+      Top             =   3600
       Visible         =   0   'False
       Width           =   2910
       Begin VB.CommandButton cmdCounters 
@@ -571,7 +571,7 @@ Begin VB.Form frmMain
    End
    Begin TabDlg.SSTab WorldMap 
       Height          =   6255
-      Left            =   1320
+      Left            =   1560
       TabIndex        =   255
       Top             =   960
       Visible         =   0   'False
@@ -580,6 +580,7 @@ Begin VB.Form frmMain
       _ExtentY        =   11033
       _Version        =   393216
       Tabs            =   2
+      Tab             =   1
       TabsPerRow      =   2
       TabHeight       =   529
       BackColor       =   -2147483641
@@ -594,14 +595,14 @@ Begin VB.Form frmMain
       EndProperty
       TabCaption(0)   =   "Hyrule"
       TabPicture(0)   =   "frmMain.frx":0A4E
-      Tab(0).ControlEnabled=   -1  'True
+      Tab(0).ControlEnabled=   0   'False
       Tab(0).Control(0)=   "MiniMapHyrule(0)"
-      Tab(0).Control(0).Enabled=   0   'False
       Tab(0).ControlCount=   1
       TabCaption(1)   =   "Términa"
       TabPicture(1)   =   "frmMain.frx":0A6A
-      Tab(1).ControlEnabled=   0   'False
+      Tab(1).ControlEnabled=   -1  'True
       Tab(1).Control(0)=   "MiniMapTermina(1)"
+      Tab(1).Control(0).Enabled=   0   'False
       Tab(1).ControlCount=   1
       Begin VB.PictureBox MiniMapTermina 
          BackColor       =   &H00404000&
@@ -617,7 +618,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   5520
          Index           =   1
-         Left            =   -74760
+         Left            =   240
          Picture         =   "frmMain.frx":0A86
          ScaleHeight     =   5520
          ScaleWidth      =   8580
@@ -992,7 +993,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   5520
          Index           =   0
-         Left            =   240
+         Left            =   -74760
          Picture         =   "frmMain.frx":8E6CA
          ScaleHeight     =   5520
          ScaleWidth      =   8580
@@ -1507,11 +1508,11 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   1995
-      Left            =   2400
+      Left            =   2640
       ScaleHeight     =   1995
       ScaleWidth      =   7140
       TabIndex        =   55
-      Top             =   4920
+      Top             =   4560
       Width           =   7140
       Begin VB.TextBox txtCurrency 
          Appearance      =   0  'Flat
@@ -1608,11 +1609,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   5295
-      Left            =   2520
+      Left            =   2040
       ScaleHeight     =   5235
       ScaleWidth      =   6960
       TabIndex        =   122
-      Top             =   960
+      Top             =   1440
       Visible         =   0   'False
       Width           =   7020
       Begin VB.Label lblTutorialExit 
@@ -2666,12 +2667,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4500
-      Left            =   3240
+      Left            =   3120
       Picture         =   "frmMain.frx":11C3B6
       ScaleHeight     =   4470
       ScaleWidth      =   5970
       TabIndex        =   242
-      Top             =   960
+      Top             =   1440
       Visible         =   0   'False
       Width           =   6000
       Begin VB.Label lblTriforceClose 
@@ -2833,7 +2834,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5760
-      Left            =   2400
+      Left            =   2280
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   480
@@ -2975,12 +2976,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   3570
-      Left            =   240
+      Left            =   0
       ScaleHeight     =   238
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   210
       TabIndex        =   62
-      Top             =   10320
+      Top             =   10200
       Visible         =   0   'False
       Width           =   3150
       Begin VB.PictureBox picSpellDescPic 
@@ -3060,11 +3061,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   2085
-      Left            =   2280
+      Left            =   2640
       ScaleHeight     =   2085
       ScaleWidth      =   7140
       TabIndex        =   117
-      Top             =   4800
+      Top             =   4560
       Visible         =   0   'False
       Width           =   7140
       Begin VB.PictureBox picSpeechFace 
@@ -3145,7 +3146,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   2295
-      Left            =   3360
+      Left            =   3840
       ScaleHeight     =   153
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   327
@@ -3289,12 +3290,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   3570
-      Left            =   3600
+      Left            =   3240
       ScaleHeight     =   238
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   217
       TabIndex        =   6
-      Top             =   10320
+      Top             =   10200
       Visible         =   0   'False
       Width           =   3255
       Begin VB.PictureBox picItemDescPic 
@@ -3396,12 +3397,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4290
-      Left            =   8640
+      Left            =   9000
       ScaleHeight     =   286
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   129
-      Top             =   600
+      Top             =   1080
       Visible         =   0   'False
       Width           =   2910
       Begin VB.PictureBox picGuildInvitation 
@@ -3821,11 +3822,11 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   2085
-      Left            =   2280
+      Left            =   2640
       ScaleHeight     =   2085
       ScaleWidth      =   7140
       TabIndex        =   91
-      Top             =   4680
+      Top             =   4560
       Visible         =   0   'False
       Width           =   7140
       Begin VB.Label lblDialogue_Button 
@@ -4034,7 +4035,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   -2147483641
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
@@ -4066,12 +4066,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   540
-      Left            =   6480
+      Left            =   12120
       ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   36
       TabIndex        =   4
-      Top             =   10500
+      Top             =   8940
       Visible         =   0   'False
       Width           =   540
    End
@@ -4092,12 +4092,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   540
-      Left            =   7680
+      Left            =   13320
       ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   36
       TabIndex        =   88
-      Top             =   10500
+      Top             =   8940
       Visible         =   0   'False
       Width           =   540
    End
@@ -4114,18 +4114,19 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   12360
+      Left            =   12840
       ScaleHeight     =   255
       ScaleWidth      =   255
       TabIndex        =   90
-      Top             =   8280
+      Top             =   9960
+      Visible         =   0   'False
       Width           =   255
    End
    Begin TabDlg.SSTab HelpBoard 
       Height          =   5895
-      Left            =   2640
+      Left            =   4920
       TabIndex        =   150
-      Top             =   1080
+      Top             =   1920
       Visible         =   0   'False
       Width           =   5775
       _ExtentX        =   10186
@@ -4147,14 +4148,14 @@ Begin VB.Form frmMain
       TabCaption(0)   =   "Teclas"
       TabPicture(0)   =   "frmMain.frx":12562A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "CloseHelpBoard(0)"
-      Tab(0).Control(1)=   "Picture2"
+      Tab(0).Control(0)=   "Picture2"
+      Tab(0).Control(1)=   "CloseHelpBoard(0)"
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Entrenar"
       TabPicture(1)   =   "frmMain.frx":125646
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Picture7"
-      Tab(1).Control(1)=   "CloseHelpBoard(1)"
+      Tab(1).Control(0)=   "CloseHelpBoard(1)"
+      Tab(1).Control(1)=   "Picture7"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Estadísticas"
       TabPicture(2)   =   "frmMain.frx":125662
@@ -4167,14 +4168,14 @@ Begin VB.Form frmMain
       TabCaption(3)   =   "Habilidades"
       TabPicture(3)   =   "frmMain.frx":12567E
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "CloseHelpBoard(3)"
-      Tab(3).Control(1)=   "Picture9(0)"
+      Tab(3).Control(0)=   "Picture9(0)"
+      Tab(3).Control(1)=   "CloseHelpBoard(3)"
       Tab(3).ControlCount=   2
       TabCaption(4)   =   "Mascotas"
       TabPicture(4)   =   "frmMain.frx":12569A
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "CloseHelpBoard(4)"
-      Tab(4).Control(1)=   "Picture9(1)"
+      Tab(4).Control(0)=   "Picture9(1)"
+      Tab(4).Control(1)=   "CloseHelpBoard(4)"
       Tab(4).ControlCount=   2
       Begin VB.PictureBox Picture9 
          BackColor       =   &H80000012&
@@ -5298,12 +5299,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   7950
+      Left            =   8160
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   240
       TabIndex        =   63
-      Top             =   4200
+      Top             =   4920
       Visible         =   0   'False
       Width           =   3600
       Begin VB.PictureBox Picture4 
@@ -5993,12 +5994,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   7950
+      Left            =   8880
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   2
-      Top             =   4200
+      Top             =   4680
       Visible         =   0   'False
       Width           =   2910
    End
@@ -6019,12 +6020,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   7950
+      Left            =   9000
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   111
-      Top             =   4200
+      Top             =   4920
       Visible         =   0   'False
       Width           =   2910
       Begin VB.TextBox txtQuestTaskLog 
@@ -6129,12 +6130,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   7950
+      Left            =   8280
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   97
-      Top             =   4200
+      Top             =   4920
       Visible         =   0   'False
       Width           =   2910
       Begin VB.Image imgPartySpirit 
@@ -6337,12 +6338,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   7950
+      Left            =   9000
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   54
-      Top             =   4200
+      Top             =   4800
       Visible         =   0   'False
       Width           =   2910
    End
@@ -6363,12 +6364,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   8115
+      Left            =   9000
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   220
-      Top             =   4245
+      Top             =   4800
       Visible         =   0   'False
       Width           =   2910
       Begin VB.Frame frmPetExp 
@@ -6781,12 +6782,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   7950
+      Left            =   9000
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   203
-      Top             =   4200
+      Top             =   3720
       Visible         =   0   'False
       Width           =   2910
       Begin VB.HScrollBar scrlPet 
@@ -7136,12 +7137,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5115
-      Left            =   3600
+      Left            =   480
       ScaleHeight     =   341
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   275
       TabIndex        =   60
-      Top             =   1320
+      Top             =   1200
       Visible         =   0   'False
       Width           =   4125
       Begin VB.PictureBox picShopItems 
@@ -7188,8 +7189,8 @@ Begin VB.Form frmMain
       End
    End
    Begin MSScriptControlCtl.ScriptControl ScriptControl1 
-      Left            =   5640
-      Top             =   4200
+      Left            =   12120
+      Top             =   9600
       _ExtentX        =   1005
       _ExtentY        =   1005
    End
@@ -7210,12 +7211,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   540
-      Left            =   7080
+      Left            =   12720
       ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   36
       TabIndex        =   73
-      Top             =   10500
+      Top             =   8940
       Visible         =   0   'False
       Width           =   540
    End
@@ -7236,12 +7237,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5760
-      Left            =   2160
+      Left            =   2520
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   480
       TabIndex        =   72
-      Top             =   840
+      Top             =   960
       Visible         =   0   'False
       Width           =   7200
    End
@@ -8953,14 +8954,14 @@ Dim sRECT As DxVBLib.RECT
     
     'disable main pictures
     frmMain.picOptions.Visible = False
-    frmMain.picInventory.Visible = False
-    frmMain.picSpells.Visible = False
-    frmMain.picCharacter.Visible = False
-    frmMain.picParty.Visible = False
-    frmMain.picQuestLog.Visible = False
-    frmMain.picPets.Visible = False
-    frmMain.picPetStats.Visible = False
-    frmMain.picGuild.Visible = False
+    'frmMain.picInventory.Visible = False
+    'frmMain.picSpells.Visible = False
+    'frmMain.picCharacter.Visible = False
+    'frmMain.picParty.Visible = False
+    'frmMain.picQuestLog.Visible = False
+    'frmMain.picPets.Visible = False
+    'frmMain.picPetStats.Visible = False
+    'frmMain.picGuild.Visible = False
     frmMain.WorldMap.Visible = False
         
     picScreen.Width = 800 ' Width in tiles * 32

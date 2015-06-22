@@ -212,10 +212,7 @@ Sub ServerLoop()
 
         If Not CPSUnlock Then Sleep SleepTime
                 DoEvents
-        
-        
-
-        
+                
         ' Calculate CPS
         If TickCPS < Tick Then
             GameCPS = CPS \ 4
@@ -262,7 +259,7 @@ End Sub
 
 
 Private Sub UpdateMapLogic()
-    Dim i As Long, X As Long, mapnum As Long, N As Long, x1 As Long, y1 As Long
+    Dim i As Long, X As Long, mapnum As Long, n As Long, x1 As Long, y1 As Long
     Dim TickCount As Long, Damage As Long, DistanceX As Long, DistanceY As Long, npcnum As Long
     Dim Target As Long, TargetType As Byte, DidWalk As Boolean, Buffer As clsBuffer, Resource_index As Long
     Dim TargetX As Long, TargetY As Long, target_verify As Boolean
@@ -325,7 +322,7 @@ Private Sub UpdateMapLogic()
                         SendMapKeyToMap mapnum, .X, .Y, .state
                     End If
                 Else 'check if weight switch
-                    If GetDoorType(.doornum) = DOOR_TYPE_WEIGHTSWITCH Then
+                    If GetDoorType(.DoorNum) = DOOR_TYPE_WEIGHTSWITCH Then
                         If IsDoorOpened(mapnum, MapNumDoors) Then
                             If Not IsSomebodyOnSwitch(mapnum, MapNumDoors) Then
                                 CheckWeightSwitch mapnum, MapNumDoors
@@ -373,7 +370,7 @@ Private Sub UpdateMapLogic()
                             For i = 1 To Player_HighIndex
                                 If IsPlaying(i) Then
                                     If GetPlayerMap(i) = mapnum And MapNpc(mapnum).NPC(X).Target = 0 And GetPlayerAccess_Mode(i) <= ADMIN_MONITOR Then
-                                        N = NPC(npcnum).range
+                                        n = NPC(npcnum).range
                                         DistanceX = MapNpc(mapnum).NPC(X).X - GetPlayerX(i)
                                         DistanceY = MapNpc(mapnum).NPC(X).Y - GetPlayerY(i)
     
@@ -382,7 +379,7 @@ Private Sub UpdateMapLogic()
                                         If DistanceY < 0 Then DistanceY = DistanceY * -1
     
                                         ' Are they in range?  if so GET'M!
-                                        If DistanceX <= N And DistanceY <= N Then
+                                        If DistanceX <= n And DistanceY <= n Then
                                             If NPC(npcnum).Behaviour = NPC_BEHAVIOUR_ATTACKONSIGHT Or GetPlayerPK(i) = YES Then
                                                 If Len(Trim$(NPC(npcnum).AttackSay)) > 0 Then
                                                     'Call PlayerMsg(i, Trim$(NPC(npcnum).Name) & ": " & Trim$(NPC(npcnum).AttackSay), SayColor)

@@ -148,7 +148,7 @@ Public Const MAX_ITEM_CONTAINERS As Byte = 5
 Public Const MAX_PET_POINTS_PERLVL As Byte = 10
 
 ' Website
-Public Const GAME_WEBSITE As String = "http://zeldaelreinodorado.foroactivo.com"
+Public Const GAME_WEBSITE As String = "http://trollparty.org/Zelda/"
 
 ' text color constants
 Public Const Black As Byte = 0

@@ -238,8 +238,10 @@ Private Sub LoadGameData()
     
     'ALATAR
     Call SetStatus("Loading quests...")
+    Call ClearQuests
     Call LoadQuests
     '/ALATAR
+    'Call migrateQuests
     
     Call SetStatus("Loading Doors...")
     Call LoadDoors

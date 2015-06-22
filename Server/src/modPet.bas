@@ -96,9 +96,86 @@ Public Function PetDisband(ByVal index As Long, ByVal mapnum As Long, Optional B
     
     'Reset Target
     TempPlayer(index).TempPet.PetHasOwnTarget = 0
-    
+
 
 End Function
+
+Public Sub ChangePetMap(ByVal index As Long, ByVal OldMap As Long, ByVal mapnum As Long)
+
+'remove pet from map oldmap
+PetDisband index, OldMap, False
+
+'spawn pet on new map
+    Dim PlayerMap As Long
+    Dim i As Integer
+    Dim PetSlot As Byte
+    Dim PlayerPet As Byte
+   
+    'Prevent multiple pets for the same owner
+    If TempPlayer(index).TempPet.TempPetSlot > 1 Then Exit Sub
+    
+    'slot, 1 to MAX_PLAYER_PETS
+    PlayerPet = TempPlayer(index).TempPet.ActualPet
+    
+    'Prevent player out of range slots
+    If PlayerPet <= 0 Or PlayerPet > MAX_PLAYER_PETS Then Exit Sub
+    
+    'Prevent spawning inexistent pet
+    If player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet < 1 Or player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet > MAX_PETS Then Exit Sub
+    
+    PlayerMap = mapnum
+    PetSlot = 0
+    
+    'Prevent Boundries
+    'Select Case player(index).dir
+    'Case 0
+    '    If player(index).Y = map(PlayerMap).MaxY Then Exit Sub
+    'Case 1
+    '    If player(index).Y = 0 Then Exit Sub
+    'Case 2
+    '    If player(index).X = map(PlayerMap).MaxX Then Exit Sub
+    'Case 3
+    '    If player(index).X = 0 Then Exit Sub
+    'End Select
+    
+    If map(PlayerMap).moral = MAP_MORAL_SAFE Or map(PlayerMap).moral = MAP_MORAL_PACIFIC Then PetDisband index, OldMap, True: PlayerMsg index, "Your pet is not allowed on this map.", White, , False: Exit Sub
+    
+    For i = 1 To MAX_MAP_NPCS
+        If map(PlayerMap).NPC(i) = 0 And MapNpc(PlayerMap).NPC(i).Num = 0 Then
+            PetSlot = i
+            Exit For
+        End If
+    Next
+    
+    If PetSlot = 0 Then
+        Call PlayerMsg(index, "The map is too crowded for you to call on your pet!", Red)
+        PetDisband index, OldMap, True
+        Exit Sub
+    End If
+
+    'create the pet for the map
+    MapNpc(PlayerMap).NPC(PetSlot).Num = Pet(player(index).Pet(PlayerPet).NumPet).npcnum  'pet npc number
+    
+    'set its Pet Data
+    MapNpc(PlayerMap).NPC(PetSlot).PetData.Owner = index
+    
+    TempPlayer(index).TempPet.TempPetSlot = PetSlot
+
+    Select Case GetPlayerDir(index)
+        Case DIR_UP
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) + 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
+        Case DIR_DOWN
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) - 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
+        Case DIR_LEFT
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) + 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
+        Case DIR_RIGHT
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) - 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
+    End Select
+
+'make the pet follow the player!
+    PetFollowOwner index
+
+End Sub
 
 Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     Dim PlayerMap As Long
@@ -143,7 +220,7 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
         If player(index).X = 0 Then Exit Sub
     End Select
     
-    If map(PlayerMap).moral = MAP_MORAL_SAFE Then Exit Sub
+        If map(PlayerMap).moral = MAP_MORAL_SAFE Or map(PlayerMap).moral = MAP_MORAL_PACIFIC Then PetDisband index, OldMap, True: PlayerMsg index, "Your pet is not allowed on this map.", White, , False: Exit Sub
     
     For i = 1 To MAX_MAP_NPCS
         If map(PlayerMap).NPC(i) = 0 And MapNpc(PlayerMap).NPC(i).Num = 0 Then
@@ -162,23 +239,23 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     
     'set its Pet Data
     MapNpc(PlayerMap).NPC(PetSlot).PetData.Owner = index
-
+    
     
     TempPlayer(index).TempPet.TempPetSlot = PetSlot
        
 
     Select Case GetPlayerDir(index)
         Case DIR_UP
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) + 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) + 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
         Case DIR_DOWN
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) - 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index), GetPlayerY(index) - 1, Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
         Case DIR_LEFT
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) + 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) + 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
         Case DIR_RIGHT
-            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) - 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum)
+            Call SpawnNpc(PetSlot, PlayerMap, GetPlayerX(index) - 1, GetPlayerY(index), Pet(player(index).Pet(PlayerPet).NumPet).npcnum, True)
     End Select
     
-    
+    PetFollowOwner index
     
 End Sub
 
@@ -229,8 +306,10 @@ If PetIndex <= 0 Then
 End If
 
 If Not (GetPlayerTamePoints(index, Pet(PetIndex).npcnum) >= Pet(PetIndex).TamePoints) Then
-    Call PlayerMsg(index, "No tienes suficientes puntos de domación", BrightRed)
-    Exit Sub
+    If GetPlayerAccess(index) < ADMIN_CREATOR Then
+        Call PlayerMsg(index, "You don't have enough tame points for this pet!", BrightRed, , False)
+        Exit Sub
+    End If
 End If
 
 'Agregar pet a slot libre

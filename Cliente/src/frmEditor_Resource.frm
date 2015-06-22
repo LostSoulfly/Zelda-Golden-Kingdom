@@ -691,6 +691,7 @@ End Sub
 Private Sub scrlRewards_Change()
     SetCmbReward
     SetScrlRewardMax
+    DoEvents
     DisplaylblReward
     lblRewards.Caption = "Reward num: " & scrlRewards.value
     
@@ -746,7 +747,7 @@ Private Sub txtMessage_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Resource(EditorIndex).SuccessMessage = Trim$(txtMessage.text)
+    Resource(EditorIndex).SuccessMessage = Trim$(txtMessage.Text)
     
     ' Error handler
     Exit Sub
@@ -760,7 +761,7 @@ Private Sub txtMessage2_Change()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Resource(EditorIndex).EmptyMessage = Trim$(txtMessage2.text)
+    Resource(EditorIndex).EmptyMessage = Trim$(txtMessage2.Text)
     
     ' Error handler
     Exit Sub
@@ -778,7 +779,7 @@ Dim tmpIndex As Long
 
     If EditorIndex = 0 Then Exit Sub
     tmpIndex = lstIndex.ListIndex
-    Resource(EditorIndex).Name = Trim$(txtName.text)
+    Resource(EditorIndex).Name = Trim$(txtName.Text)
     lstIndex.RemoveItem EditorIndex - 1
     lstIndex.AddItem EditorIndex & ": " & Resource(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex

@@ -59,19 +59,19 @@ Begin VB.Form frmServer
       TabCaption(0)   =   "Console"
       TabPicture(0)   =   "frmServer.frx":1708A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "lblCPS"
-      Tab(0).Control(1)=   "lblCpsLock"
+      Tab(0).Control(0)=   "tmrIsServerBug"
+      Tab(0).Control(1)=   "txtChat"
       Tab(0).Control(2)=   "txtText"
-      Tab(0).Control(3)=   "txtChat"
-      Tab(0).Control(4)=   "tmrIsServerBug"
+      Tab(0).Control(3)=   "lblCpsLock"
+      Tab(0).Control(4)=   "lblCPS"
       Tab(0).ControlCount=   5
       TabCaption(1)   =   "Players"
       TabPicture(1)   =   "frmServer.frx":170A6
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "lvwInfo"
-      Tab(1).Control(1)=   "cmdCopy"
-      Tab(1).Control(2)=   "texto"
-      Tab(1).Control(3)=   "cmdDisableAdmins"
+      Tab(1).Control(0)=   "cmdDisableAdmins"
+      Tab(1).Control(1)=   "texto"
+      Tab(1).Control(2)=   "cmdCopy"
+      Tab(1).Control(3)=   "lvwInfo"
       Tab(1).ControlCount=   4
       TabCaption(2)   =   "Control "
       TabPicture(2)   =   "frmServer.frx":170C2
@@ -86,40 +86,30 @@ Begin VB.Form frmServer
       Tab(2).Control(3).Enabled=   0   'False
       Tab(2).Control(4)=   "cmdTransLog"
       Tab(2).Control(4).Enabled=   0   'False
-      Tab(2).Control(5)=   "chkTroll"
+      Tab(2).Control(5)=   "cmdSave"
       Tab(2).Control(5).Enabled=   0   'False
-      Tab(2).Control(6)=   "cmdSave"
-      Tab(2).Control(6).Enabled=   0   'False
-      Tab(2).ControlCount=   7
+      Tab(2).ControlCount=   6
       TabCaption(3)   =   "Info"
       TabPicture(3)   =   "frmServer.frx":170DE
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "lblBytesReceived"
-      Tab(3).Control(1)=   "lblBytesSent"
-      Tab(3).Control(2)=   "lblPacketsReceived"
-      Tab(3).Control(3)=   "lblPacketsSent"
-      Tab(3).Control(4)=   "lblLoopTime"
-      Tab(3).Control(5)=   "lblMapTime"
+      Tab(3).Control(0)=   "lblMapTime"
+      Tab(3).Control(1)=   "lblLoopTime"
+      Tab(3).Control(2)=   "lblPacketsSent"
+      Tab(3).Control(3)=   "lblPacketsReceived"
+      Tab(3).Control(4)=   "lblBytesSent"
+      Tab(3).Control(5)=   "lblBytesReceived"
       Tab(3).ControlCount=   6
       Begin VB.CommandButton cmdSave 
          Caption         =   "Save."
-         Height          =   615
-         Left            =   5640
-         TabIndex        =   38
-         Top             =   1800
-         Width           =   735
-      End
-      Begin VB.CheckBox chkTroll 
-         Caption         =   "TrollMode!"
-         Height          =   255
+         Height          =   375
          Left            =   4920
-         TabIndex        =   36
-         Top             =   2040
+         TabIndex        =   37
+         Top             =   1800
          Width           =   1455
       End
       Begin VB.CommandButton cmdTransLog 
          Caption         =   "Show TransLog"
-         Height          =   495
+         Height          =   375
          Left            =   4920
          TabIndex        =   35
          Top             =   1440
@@ -183,7 +173,7 @@ Begin VB.Form frmServer
             Caption         =   "Map link report"
             Height          =   495
             Left            =   2280
-            TabIndex        =   39
+            TabIndex        =   38
             Top             =   240
             Width           =   975
          End
@@ -206,11 +196,19 @@ Begin VB.Form frmServer
       End
       Begin VB.Frame fraServer 
          Caption         =   "Server"
-         Height          =   1815
+         Height          =   2055
          Left            =   3000
          TabIndex        =   1
          Top             =   480
          Width           =   1815
+         Begin VB.CheckBox chkTroll 
+            Caption         =   "TrollMode!"
+            Height          =   255
+            Left            =   120
+            TabIndex        =   39
+            Top             =   1680
+            Width           =   1455
+         End
          Begin VB.CheckBox chkPass 
             Caption         =   "Verify Passw."
             Height          =   255
@@ -256,7 +254,7 @@ Begin VB.Form frmServer
             Caption         =   "Options"
             Height          =   375
             Left            =   1440
-            TabIndex        =   37
+            TabIndex        =   36
             Top             =   2160
             Width           =   1215
          End
@@ -580,6 +578,7 @@ SaveActions
 Savemovements
 SavePets
 SaveCustomSprites
+
 MsgBox "Done.."
 
 End Sub

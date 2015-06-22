@@ -116,7 +116,7 @@ Dim i As Long
         .txtQuestLog = Trim$(Quest(EditorIndex).QuestLog)
         For i = 1 To 3
             '.scrlReq(i).Value = Quest(EditorIndex).Requirement(i)
-            .txtSpeech(i).text = Trim$(Quest(EditorIndex).Speech(i))
+            .txtSpeech(i).Text = Trim$(Quest(EditorIndex).Speech(i))
         Next
         'For i = 1 To MAX_QUESTS_ITEMS
         '    .scrlGiveItem.Value = Quest(EditorIndex).GiveItem(i).Item
@@ -428,8 +428,8 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
         'Load the task type
         .optTask(TaskToLoad.Order).value = True
         'Load textboxes
-        .txtTaskSpeech.text = vbNullString
-        .txtTaskLog.text = "" & Trim$(TaskToLoad.TaskLog)
+        .txtTaskSpeech.Text = vbNullString
+        .txtTaskLog.Text = "" & Trim$(TaskToLoad.TaskLog)
         'Set scrolls to 0 and disable them so they can be enabled when needed
         .scrlNPC.value = 0
         .scrlItem.value = 0
@@ -468,7 +468,7 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
                 .scrlNPC.enabled = True
                 .scrlNPC.value = TaskToLoad.NPC
                 .txtTaskSpeech.enabled = True
-                .txtTaskSpeech.text = "" & Trim$(TaskToLoad.Speech)
+                .txtTaskSpeech.Text = "" & Trim$(TaskToLoad.Speech)
                 
             Case QUEST_TYPE_GOREACH '4
                 .scrlMap.enabled = True
@@ -482,7 +482,7 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
                 .scrlNPC.enabled = True
                 .scrlNPC.value = TaskToLoad.NPC
                 .txtTaskSpeech.enabled = True
-                .txtTaskSpeech.text = "" & Trim$(TaskToLoad.Speech)
+                .txtTaskSpeech.Text = "" & Trim$(TaskToLoad.Speech)
             
             Case QUEST_TYPE_GOKILL '6
                 .scrlAmount.enabled = True
@@ -502,7 +502,7 @@ Public Sub LoadTask(ByVal QuestNum As Long, ByVal TaskNum As Long)
                 .scrlAmount.enabled = True
                 .scrlAmount.value = TaskToLoad.amount
                 .txtTaskSpeech.enabled = True
-                .txtTaskSpeech.text = "" & Trim$(TaskToLoad.Speech)
+                .txtTaskSpeech.Text = "" & Trim$(TaskToLoad.Speech)
             
         End Select
     
@@ -532,9 +532,9 @@ Public Sub LoadQuestlogBox(ByVal ButtonPressed As Integer)
     Dim QuestSay As String
     
     With frmMain
-        If Trim$(.lstQuestLog.text) = vbNullString Then Exit Sub
+        If Trim$(.lstQuestLog.Text) = vbNullString Then Exit Sub
         
-        QuestNum = GetQuestNum(Trim$(.lstQuestLog.text))
+        QuestNum = GetQuestNum(Trim$(.lstQuestLog.Text))
         
         Select Case ButtonPressed
             Case 1 'Actual Task
@@ -633,6 +633,8 @@ Set Buffer = New clsBuffer
 
 With Quest(QuestNum)
      Buffer.WriteString .Name
+     'todo wtf
+     'Buffer.WriteString .TranslatedName
      Buffer.WriteLong .Repeat
      Buffer.WriteString .QuestLog
     

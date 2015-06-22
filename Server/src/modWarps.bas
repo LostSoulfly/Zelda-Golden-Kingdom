@@ -11,11 +11,11 @@ End Sub
 
 Sub PlayerWarpByMapLimits(ByVal index As Long, ByVal dir As Byte)
     CheckPlayerStateAtWarp index, GetPlayerMap(index)
-    Dim newmap As Long
-    newmap = HasMapWarpByDir(dir, GetPlayerMap(index))
+    Dim newMap As Long
+    newMap = HasMapWarpByDir(dir, GetPlayerMap(index))
     Dim X As Long, Y As Long
     Call GetMapWarpPosition(dir, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), X, Y)
-    PlayerWarp index, newmap, X, Y
+    PlayerWarp index, newMap, X, Y
 End Sub
 
 Sub PlayerWarpByEvent(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long)
@@ -32,10 +32,10 @@ End Sub
 
 
 Sub PlayerWarp(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long, Optional ByVal SendUpdateIfSameMap As Boolean = True)
-    Dim shopnum As Long
+    'Dim shopnum As Long
     Dim OldMap As Long
     Dim i As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
 
     ' Check for subscript out of range
     If IsPlaying(index) = False Or mapnum <= 0 Or mapnum > MAX_MAPS Then
@@ -46,12 +46,11 @@ Sub PlayerWarp(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal
         'SendMapUpdate index
         'Exit Sub
     'End If
-        
+    
     ' Save old map to send erase player data to
     
     
     OldMap = GetPlayerMap(index)
-    
 
     ' Check if you are out of bounds
     If X > map(mapnum).MaxX Then X = map(mapnum).MaxX
@@ -73,10 +72,6 @@ Sub PlayerWarp(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal
     End If
     
     Call SendLeaveMap(index, OldMap)
-    
-    If TempPlayer(index).TempPet.TempPetSlot > 0 Then
-        PetDisband index, OldMap, False
-    End If
     
     If ArePlayersOnMap(OldMap) = 0 Then
         For i = 1 To MAX_MAP_NPCS
@@ -107,8 +102,6 @@ Sub PlayerWarp(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal
     Call SetPlayerMap(index, mapnum)
     Call SetPlayerX(index, X)
     Call SetPlayerY(index, Y)
-    
-    
 
     ' send player's equipment to new map
     SendMapEquipment index
@@ -122,6 +115,8 @@ Sub PlayerWarp(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal
             End If
         Next
     End If
+
+    If TempPlayer(index).TempPet.TempPetSlot > 0 Then ChangePetMap index, OldMap, mapnum
 
     ' Now we check if there were any players left on the map the player just left, and if not stop processing npcs
     

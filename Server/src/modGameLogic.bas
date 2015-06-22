@@ -181,7 +181,7 @@ Public Function Random(ByVal Low As Long, ByVal high As Long) As Long
 End Function
 
 'here
-Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVal SetX As Long, Optional ByVal SetY As Long, Optional ByVal npcnum As Long = 0)
+Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVal SetX As Long, Optional ByVal SetY As Long, Optional ByVal npcnum As Long = 0, Optional nearOwner As Boolean = False)
     Dim Buffer As clsBuffer
     Dim i As Long
     Dim X As Long
@@ -223,11 +223,57 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
             Next
         End If
         
-            
-        
         MapNpc(mapnum).NPC(mapnpcnum).dir = Int(Rnd * 4)
         
-        
+    If PetOwner > 0 Then
+        X = SetX
+        Y = SetY
+        If nearOwner = True Then
+            For i = 1 To 50
+            'we should have had x/y passed.
+
+                If X > map(mapnum).MaxX Then X = map(mapnum).MaxX
+                If Y > map(mapnum).MaxY Then Y = map(mapnum).MaxY
+                If X <= 0 Then X = 1
+                If Y <= 0 Then Y = 1
+
+                'possibly try to look in a circle/square around the player
+                'to figure out where we are able to attempt a spawn..
+                'I'll need to do some proper math for that :o
+                If Not NpcTileIsOpen(mapnum, X, Y) Then
+                X = SetX
+                Y = SetY
+                    Select Case GetPlayerDir(PetOwner)
+                        Case DIR_UP
+                            Y = Y + Random(-5, 1)
+                            X = X + Random(-5, 5)
+                        Case DIR_DOWN
+                            Y = Y - Random(-5, 1)
+                            X = X + Random(-5, 5)
+                        Case DIR_LEFT
+                            X = X + Random(-5, 1)
+                            Y = Y - Random(-5, 5)
+                        Case DIR_RIGHT
+                            X = X - Random(-5, 1)
+                            Y = Y - Random(-5, 5)
+                    End Select
+                Else
+                    MapNpc(mapnum).NPC(mapnpcnum).X = X
+                    MapNpc(mapnum).NPC(mapnpcnum).Y = Y
+                    spawned = True
+                    Exit For
+                End If
+            Next
+        End If
+    End If
+    
+    If spawned = True Then
+        If PetOwner > 0 Then
+            PlayerMsg PetOwner, "Your pet spawned at X: " & MapNpc(mapnum).NPC(mapnpcnum).X & " Y: " & MapNpc(mapnum).NPC(mapnpcnum).Y, White, , False
+        End If
+    End If
+    
+        If Not spawned Then
         For i = 1 To TempTile(mapnum).NumSpawnSites
             With TempTile(mapnum).NPCSpawnSite(i)
             If map(mapnum).Tile(.X, .Y).Data1 = mapnpcnum Then
@@ -253,6 +299,7 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
                 'End If
             'Next Y
         'Next X
+        End If
         
         If Not spawned Then
     
@@ -2146,13 +2193,13 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Case FindMAP
         If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
         Dim strSearch As String
-        strSearch = Trim$(s(1))
+        strSearch = Trim$(s(2))
         If LenB(strSearch) = 0 Then Exit Sub
-        For i = 1 To MAX_ITEMS
-            If InStr(1, LCase$(item(i).Name), LCase(strSearch)) > 0 Then
-                 PlayerMsg index, Trim$(item(i).TranslatedName) & " #" & i, BrightGreen, True, False
-            ElseIf InStr(1, LCase$(item(i).TranslatedName), LCase(strSearch)) > 0 Then
-                PlayerMsg index, Trim$(item(i).TranslatedName) & " #" & i, BrightGreen, True, False
+        For i = 1 To MAX_MAPS
+            If InStr(1, LCase$(map(i).Name), LCase(strSearch)) > 0 Then
+                 PlayerMsg index, Trim$(map(i).TranslatedName) & " #" & i, BrightGreen, True, False
+            ElseIf InStr(1, LCase$(map(i).TranslatedName), LCase(strSearch)) > 0 Then
+                PlayerMsg index, Trim$(map(i).TranslatedName) & " #" & i, BrightGreen, True, False
             End If
         Next i
         PlayerMsg index, "-End of Maps-", BrightGreen, True, False
