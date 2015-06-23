@@ -10,7 +10,7 @@ Public Type DoorRec
     WarpY As Long
     
     UnlockType As Long
-    KEY As Long
+    key As Long
     Switch As Long
     
     Time As Long
@@ -27,7 +27,7 @@ Sub CheckDoor(ByVal index As Long, ByVal X As Long, ByVal Y As Long)
     Dim Door_Num As Long
     Dim i As Long
     Dim N As Long
-    Dim KEY As Long
+    Dim key As Long
     Dim ItemNum As Long
     Dim tmpIndex As Long
     Dim TileType As Integer
@@ -45,8 +45,8 @@ Sub CheckDoor(ByVal index As Long, ByVal X As Long, ByVal Y As Long)
                 If Not IsDoorOpened(GetPlayerMap(index), TempDoorNum) Then
                     If Doors(Door_Num).UnlockType = 0 Then
                         For i = 1 To MAX_INV
-                            KEY = GetPlayerInvItemNum(index, i)
-                            If Doors(Door_Num).KEY = KEY Then
+                            key = GetPlayerInvItemNum(index, i)
+                            If Doors(Door_Num).key = key Then
                                 SetAllMapDoorNum GetPlayerMap(index), Door_Num
                                 PlayerMsg N, "Se ha desbloqueado algo", Cyan
                                 SendMapSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seSwitch, 1
@@ -93,8 +93,8 @@ Sub CheckDoor(ByVal index As Long, ByVal X As Long, ByVal Y As Long)
                 End If
             End If
         End If
-    ElseIf TileType = TILE_TYPE_key Then
-    PlayerMsg index, "running the tile_type_key attack open test.", White, True, False
+    ElseIf TileType = TILE_TYPE_KEY Then
+    'PlayerMsg index, "running the tile_type_key attack open test.", White, True, False
         Door_Num = map(GetPlayerMap(index)).Tile(X, Y).Data1
         If Door_Num <= 0 Then Exit Sub
         TempDoorNum = GetTempDoorNumberByTile(GetPlayerMap(index), X, Y)
@@ -108,7 +108,7 @@ Sub CheckDoor(ByVal index As Long, ByVal X As Long, ByVal Y As Long)
         If GetNextPositionByRef(GetPlayerDir(index), GetPlayerMap(index), X, Y) Then Exit Sub
 
         ' Check if a key exists
-        If map(GetPlayerMap(index)).Tile(X, Y).Type = TILE_TYPE_key Then
+        If map(GetPlayerMap(index)).Tile(X, Y).Type = TILE_TYPE_KEY Then
             Dim KeyToOpen As Long
             KeyToOpen = GetTempDoorNumberByTile(GetPlayerMap(index), X, Y)
             If KeyToOpen > 0 Then
@@ -142,18 +142,18 @@ Sub CheckAndOpenDoor(ByVal index As Long, ByVal X As Long, ByVal Y As Long)
 
 End Sub
 
-Sub SetAllMapDoorNum(ByVal MapNum As Long, ByVal Door_Num As Long)
+Sub SetAllMapDoorNum(ByVal mapnum As Long, ByVal Door_Num As Long)
     If Door_Num = 0 Then Exit Sub
     Dim i As Long
-    For i = 1 To TempTile(MapNum).NumDoors
-        If TempTile(MapNum).Door(i).DoorNum = Door_Num Then
-            TempTile(MapNum).Door(i).state = Not TempTile(MapNum).Door(i).state
-            If TempTile(MapNum).Door(i).state Then
-                TempTile(MapNum).Door(i).DoorTimer = GetDoorLockTime(Door_Num)
+    For i = 1 To TempTile(mapnum).NumDoors
+        If TempTile(mapnum).Door(i).DoorNum = Door_Num Then
+            TempTile(mapnum).Door(i).state = Not TempTile(mapnum).Door(i).state
+            If TempTile(mapnum).Door(i).state Then
+                TempTile(mapnum).Door(i).DoorTimer = GetDoorLockTime(Door_Num)
             Else
-                TempTile(MapNum).Door(i).DoorTimer = 0
+                TempTile(mapnum).Door(i).DoorTimer = 0
             End If
-            SendMapKeyToMap MapNum, TempTile(MapNum).Door(i).X, TempTile(MapNum).Door(i).Y, TempTile(MapNum).Door(i).state
+            SendMapKeyToMap mapnum, TempTile(mapnum).Door(i).X, TempTile(mapnum).Door(i).Y, TempTile(mapnum).Door(i).state
         End If
     Next
 End Sub
@@ -168,37 +168,37 @@ Function GetDoorLockTime(ByVal DoorNum As Long) As Long
         GetDoorLockTime = GetRealTickCount + Doors(DoorNum).Time * 1000
     End If
 End Function
-Function GetTempDoorNumberByTile(ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long) As Integer
+Function GetTempDoorNumberByTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long) As Integer
     Dim i As Integer
     
-    If OutOfBoundries(X, Y, MapNum) Then Exit Function
+    If OutOfBoundries(X, Y, mapnum) Then Exit Function
     
-    If map(MapNum).Tile(X, Y).Type <> TILE_TYPE_DOOR And map(MapNum).Tile(X, Y).Type <> TILE_TYPE_key Then Exit Function
+    If map(mapnum).Tile(X, Y).Type <> TILE_TYPE_DOOR And map(mapnum).Tile(X, Y).Type <> TILE_TYPE_KEY Then Exit Function
     
-    i = BinarySearchDoor(MapNum, 1, TempTile(MapNum).NumDoors, X, Y)
+    i = BinarySearchDoor(mapnum, 1, TempTile(mapnum).NumDoors, X, Y)
     If i > 0 Then
-        If TempTile(MapNum).Door(i).X = X And TempTile(MapNum).Door(i).Y = Y Then
+        If TempTile(mapnum).Door(i).X = X And TempTile(mapnum).Door(i).Y = Y Then
             GetTempDoorNumberByTile = i
             Exit Function
         End If
     End If
 End Function
 
-Public Function BinarySearchDoor(ByVal MapNum As Long, ByVal left As Long, ByVal right As Long, ByVal X As Long, ByVal Y As Long) As Long
+Public Function BinarySearchDoor(ByVal mapnum As Long, ByVal left As Long, ByVal right As Long, ByVal X As Long, ByVal Y As Long) As Long
     If right < left Then
         BinarySearchDoor = 0
     Else
         Dim meddle As Integer
         meddle = (left + right) \ 2
         
-        With TempTile(MapNum).Door(meddle)
+        With TempTile(mapnum).Door(meddle)
         
         Dim Ordenation As Integer
         Ordenation = PosOrdenation(X, Y, .X, .Y)
         If Ordenation = 1 Then
-            BinarySearchDoor = BinarySearchDoor(MapNum, left, meddle - 1, X, Y)
+            BinarySearchDoor = BinarySearchDoor(mapnum, left, meddle - 1, X, Y)
         ElseIf Ordenation = -1 Then
-            BinarySearchDoor = BinarySearchDoor(MapNum, meddle + 1, right, X, Y)
+            BinarySearchDoor = BinarySearchDoor(mapnum, meddle + 1, right, X, Y)
         Else
             BinarySearchDoor = meddle
         End If
@@ -209,10 +209,10 @@ Public Function BinarySearchDoor(ByVal MapNum As Long, ByVal left As Long, ByVal
         
 End Function
 
-Function GetTempDoorNumberByDoorNum(ByVal MapNum As Long, ByVal Door_Num As Long) As Long
+Function GetTempDoorNumberByDoorNum(ByVal mapnum As Long, ByVal Door_Num As Long) As Long
     Dim i As Integer
-    For i = 1 To TempTile(MapNum).NumDoors
-        If TempTile(MapNum).Door(i).DoorNum = Door_Num Then
+    For i = 1 To TempTile(mapnum).NumDoors
+        If TempTile(mapnum).Door(i).DoorNum = Door_Num Then
             GetTempDoorNumberByDoorNum = i
             Exit Function
         End If
@@ -221,18 +221,18 @@ Function GetTempDoorNumberByDoorNum(ByVal MapNum As Long, ByVal Door_Num As Long
 End Function
 
 
-Function IsDoorOpened(ByVal MapNum As Long, ByVal TempDoorNum As Long) As Boolean
-    If TempDoorNum < 1 Or TempDoorNum > TempTile(MapNum).NumDoors Then Exit Function
+Function IsDoorOpened(ByVal mapnum As Long, ByVal TempDoorNum As Long) As Boolean
+    If TempDoorNum < 1 Or TempDoorNum > TempTile(mapnum).NumDoors Then Exit Function
     
-    If TempTile(MapNum).Door(TempDoorNum).state Then
+    If TempTile(mapnum).Door(TempDoorNum).state Then
         IsDoorOpened = True
     End If
 End Function
 
-Function CanRenderTempDoor(ByVal MapNum As Long, ByVal TempDoorNum As Long) As Boolean
-    If MapNum = 0 Or TempDoorNum = 0 Then Exit Function
+Function CanRenderTempDoor(ByVal mapnum As Long, ByVal TempDoorNum As Long) As Boolean
+    If mapnum = 0 Or TempDoorNum = 0 Then Exit Function
     Dim DoorNum As Long
-    DoorNum = TempTile(MapNum).Door(TempDoorNum).DoorNum
+    DoorNum = TempTile(mapnum).Door(TempDoorNum).DoorNum
     If DoorNum > 0 Then
         If Doors(DoorNum).DoorType = DOOR_TYPE_DOOR Then
             CanRenderTempDoor = True
@@ -252,49 +252,49 @@ Function GetDoorType(ByVal DoorNum As Long) As Byte
     GetDoorType = Doors(DoorNum).DoorType
 End Function
 
-Sub ChangeAllMapDoorNum(ByVal MapNum As Long, ByVal DoorNum As Long)
+Sub ChangeAllMapDoorNum(ByVal mapnum As Long, ByVal DoorNum As Long)
     Dim i As Long
-    For i = 1 To TempTile(MapNum).NumDoors
-        If TempTile(MapNum).Door(i).DoorNum = DoorNum Then
-            TempTile(MapNum).Door(i).state = Not (TempTile(MapNum).Door(i).state)
-            TempTile(MapNum).Door(i).DoorTimer = 0
-            SendMapKeyToMap MapNum, TempTile(MapNum).Door(i).X, TempTile(MapNum).Door(i).Y, TempTile(MapNum).Door(i).state
+    For i = 1 To TempTile(mapnum).NumDoors
+        If TempTile(mapnum).Door(i).DoorNum = DoorNum Then
+            TempTile(mapnum).Door(i).state = Not (TempTile(mapnum).Door(i).state)
+            TempTile(mapnum).Door(i).DoorTimer = 0
+            SendMapKeyToMap mapnum, TempTile(mapnum).Door(i).X, TempTile(mapnum).Door(i).Y, TempTile(mapnum).Door(i).state
         End If
     Next
 End Sub
 
-Sub ChangeWeightSwitchState(ByVal MapNum As Long, ByVal TempDoorNum As Long)
-    With TempTile(MapNum).Door(TempDoorNum)
+Sub ChangeWeightSwitchState(ByVal mapnum As Long, ByVal TempDoorNum As Long)
+    With TempTile(mapnum).Door(TempDoorNum)
     .state = Not (.state)
     Dim Switch As Long
     Switch = Doors(.DoorNum).Switch
-    Call ChangeAllMapDoorNum(MapNum, Switch)
-    SendSoundToMap MapNum, .X, .Y, seSwitch, 1
+    Call ChangeAllMapDoorNum(mapnum, Switch)
+    SendSoundToMap mapnum, .X, .Y, seSwitch, 1
     End With
 End Sub
 
-Sub CheckWeightSwitch(ByVal MapNum As Long, ByVal TempDoorNum As Long)
+Sub CheckWeightSwitch(ByVal mapnum As Long, ByVal TempDoorNum As Long)
     If TempDoorNum > 0 Then
         Dim DoorNum As Long
-        DoorNum = TempTile(MapNum).Door(TempDoorNum).DoorNum
+        DoorNum = TempTile(mapnum).Door(TempDoorNum).DoorNum
         If GetDoorType(DoorNum) = DOOR_TYPE_WEIGHTSWITCH Then
-            Call ChangeWeightSwitchState(MapNum, TempDoorNum)
+            Call ChangeWeightSwitchState(mapnum, TempDoorNum)
         End If
     End If
 End Sub
 
-Function IsSomebodyOnSwitch(ByVal MapNum As Long, ByVal TempDoorNum As Long) As Boolean
+Function IsSomebodyOnSwitch(ByVal mapnum As Long, ByVal TempDoorNum As Long) As Boolean
 
-If MapNum = 0 Or TempDoorNum = 0 Then Exit Function
-With TempTile(MapNum).Door(TempDoorNum)
+If mapnum = 0 Or TempDoorNum = 0 Then Exit Function
+With TempTile(mapnum).Door(TempDoorNum)
 
-If GetMapRefNPCNumByTile(GetMapRef(MapNum), .X, .Y) > 0 Then
+If GetMapRefNPCNumByTile(GetMapRef(mapnum), .X, .Y) > 0 Then
     IsSomebodyOnSwitch = True
     Exit Function
 End If
 
 
-If FindPlayerByPos(MapNum, .X, .Y) > 0 Then
+If FindPlayerByPos(mapnum, .X, .Y) > 0 Then
     IsSomebodyOnSwitch = True
     Exit Function
 End If
@@ -304,12 +304,12 @@ End With
 
 End Function
 
-Function IsTempDoorWalkable(ByVal MapNum As Long, ByVal TempDoorNum As Long) As Boolean
-    If Not MapNum > 0 And TempDoorNum > 0 Then Exit Function
-    With TempTile(MapNum).Door(TempDoorNum)
+Function IsTempDoorWalkable(ByVal mapnum As Long, ByVal TempDoorNum As Long) As Boolean
+    If Not mapnum > 0 And TempDoorNum > 0 Then Exit Function
+    With TempTile(mapnum).Door(TempDoorNum)
     Select Case GetDoorType(.DoorNum)
     Case DOOR_TYPE_DOOR
-        IsTempDoorWalkable = IsDoorOpened(MapNum, TempDoorNum)
+        IsTempDoorWalkable = IsDoorOpened(mapnum, TempDoorNum)
     Case DOOR_TYPE_SWITCH
         IsTempDoorWalkable = False
     Case DOOR_TYPE_WEIGHTSWITCH

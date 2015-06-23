@@ -267,11 +267,11 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
         End If
     End If
     
-    If spawned = True Then
-        If PetOwner > 0 Then
-            PlayerMsg PetOwner, "Your pet spawned at X: " & MapNpc(mapnum).NPC(mapnpcnum).X & " Y: " & MapNpc(mapnum).NPC(mapnpcnum).Y, White, , False
-        End If
-    End If
+    'If spawned = True Then
+    '    If PetOwner > 0 Then
+    '        PlayerMsg PetOwner, "Your pet has followed you.", White, , False
+    '    End If
+    'End If
     
         If Not spawned Then
         For i = 1 To TempTile(mapnum).NumSpawnSites
