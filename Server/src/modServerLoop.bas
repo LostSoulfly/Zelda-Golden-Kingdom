@@ -247,6 +247,7 @@ Sub CheckPetActions(ByVal index As Long)
                         ' Player left map or game, set target to 0
                         MapNpc(mapnum).NPC(X).Target = 0
                         MapNpc(mapnum).NPC(X).TargetType = 0 ' clear
+                        PetFollowOwner MapNpc(mapnum).NPC(X).PetData.Owner
                     End If
                 ElseIf TargetType = TARGET_TYPE_NPC Then 'npc
                         'Npc vs Npc
@@ -259,7 +260,7 @@ End Sub
 
 
 Private Sub UpdateMapLogic()
-    Dim i As Long, X As Long, mapnum As Long, n As Long, x1 As Long, y1 As Long
+    Dim i As Long, X As Long, mapnum As Long, N As Long, x1 As Long, y1 As Long
     Dim TickCount As Long, Damage As Long, DistanceX As Long, DistanceY As Long, npcnum As Long
     Dim Target As Long, TargetType As Byte, DidWalk As Boolean, Buffer As clsBuffer, Resource_index As Long
     Dim TargetX As Long, TargetY As Long, target_verify As Boolean
@@ -370,7 +371,7 @@ Private Sub UpdateMapLogic()
                             For i = 1 To Player_HighIndex
                                 If IsPlaying(i) Then
                                     If GetPlayerMap(i) = mapnum And MapNpc(mapnum).NPC(X).Target = 0 And GetPlayerAccess_Mode(i) <= ADMIN_MONITOR Then
-                                        n = NPC(npcnum).range
+                                        N = NPC(npcnum).range
                                         DistanceX = MapNpc(mapnum).NPC(X).X - GetPlayerX(i)
                                         DistanceY = MapNpc(mapnum).NPC(X).Y - GetPlayerY(i)
     
@@ -379,7 +380,7 @@ Private Sub UpdateMapLogic()
                                         If DistanceY < 0 Then DistanceY = DistanceY * -1
     
                                         ' Are they in range?  if so GET'M!
-                                        If DistanceX <= n And DistanceY <= n Then
+                                        If DistanceX <= N And DistanceY <= N Then
                                             If NPC(npcnum).Behaviour = NPC_BEHAVIOUR_ATTACKONSIGHT Or GetPlayerPK(i) = YES Then
                                                 If Len(Trim$(NPC(npcnum).AttackSay)) > 0 Then
                                                     'Call PlayerMsg(i, Trim$(NPC(npcnum).Name) & ": " & Trim$(NPC(npcnum).AttackSay), SayColor)
@@ -445,6 +446,7 @@ Private Sub UpdateMapLogic()
                                 ' Player left map or game, set target to 0
                                 MapNpc(mapnum).NPC(X).Target = 0
                                 MapNpc(mapnum).NPC(X).TargetType = 0 ' clear
+                                PetFollowOwner MapNpc(mapnum).NPC(X).PetData.Owner
                             End If
                         ElseIf TargetType = 2 Then 'npc
                                 'Npc vs Npc

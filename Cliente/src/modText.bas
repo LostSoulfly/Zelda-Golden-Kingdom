@@ -29,16 +29,16 @@ errorhandler:
     Exit Sub
 End Sub
 ' GDI text drawing onto buffer
-Public Sub DrawText(ByVal hDC As Long, ByVal X, ByVal y, ByVal text As String, Color As Long)
+Public Sub DrawText(ByVal hDC As Long, ByVal X, ByVal y, ByVal Text As String, Color As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     Call SelectObject(hDC, GameFont)
     Call SetBkMode(hDC, vbTransparent)
     Call SetTextColor(hDC, 0)
-    Call TextOut(hDC, X + 1, y + 1, text, Len(text))
+    Call TextOut(hDC, X + 1, y + 1, Text, Len(Text))
     Call SetTextColor(hDC, Color)
-    Call TextOut(hDC, X, y, text, Len(text))
+    Call TextOut(hDC, X, y, Text, Len(Text))
     
     ' Error handler
     Exit Sub
@@ -281,6 +281,8 @@ Dim Color As Long
 Dim Level As String
 Dim NPCNum As Long
 
+    If MapNpc(index).petData.Owner > 0 Then Exit Sub
+
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
@@ -448,11 +450,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Function getWidth(ByVal DC As Long, ByVal text As String) As Long
+Public Function getWidth(ByVal DC As Long, ByVal Text As String) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    getWidth = frmMain.TextWidth(text) \ 2
+    getWidth = frmMain.TextWidth(Text) \ 2
     
     ' Error handler
     Exit Function
@@ -471,10 +473,10 @@ Dim s As String
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     s = vbNewLine & msg
-    frmMain.txtChat.SelStart = Len(frmMain.txtChat.text)
+    frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text)
     frmMain.txtChat.SelColor = QBColor(Color)
     frmMain.txtChat.SelText = s
-    frmMain.txtChat.SelStart = Len(frmMain.txtChat.text) - 1
+    frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text) - 1
     
     'LoadOptions
     
@@ -495,13 +497,13 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub WordWrap_Array(ByVal text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
+Public Sub WordWrap_Array(ByVal Text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
 Dim lineCount As Long, i As Long, Size As Long, lastSpace As Long, b As Long
     
     'Too small of text
-    If Len(text) < 2 Then
+    If Len(Text) < 2 Then
         ReDim theArray(1 To 1) As String
-        theArray(1) = text
+        theArray(1) = Text
         Exit Sub
     End If
     
@@ -510,16 +512,16 @@ Dim lineCount As Long, i As Long, Size As Long, lastSpace As Long, b As Long
     lastSpace = 1
     Size = 0
     
-    For i = 1 To Len(text)
+    For i = 1 To Len(Text)
         ' if it's a space, store it
-        Select Case Mid$(text, i, 1)
+        Select Case Mid$(Text, i, 1)
             Case " ": lastSpace = i
             Case "_": lastSpace = i
             Case "-": lastSpace = i
         End Select
         
         'Add up the size
-        Size = Size + getWidth(TexthDC, Mid$(text, i, 1))
+        Size = Size + getWidth(TexthDC, Mid$(Text, i, 1))
         
         'Check for too large of a size
         If Size > MaxLineLen Then
@@ -528,33 +530,33 @@ Dim lineCount As Long, i As Long, Size As Long, lastSpace As Long, b As Long
                 'Too far away to the last space, so break at the last character
                 lineCount = lineCount + 1
                 ReDim Preserve theArray(1 To lineCount) As String
-                theArray(lineCount) = Trim$(Mid$(text, b, (i - 1) - b))
+                theArray(lineCount) = Trim$(Mid$(Text, b, (i - 1) - b))
                 b = i - 1
                 Size = 0
             Else
                 'Break at the last space to preserve the word
                 lineCount = lineCount + 1
                 ReDim Preserve theArray(1 To lineCount) As String
-                theArray(lineCount) = Trim$(Mid$(text, b, lastSpace - b))
+                theArray(lineCount) = Trim$(Mid$(Text, b, lastSpace - b))
                 b = lastSpace + 1
                 
                 'Count all the words we ignored (the ones that weren't printed, but are before "i")
-                Size = getWidth(TexthDC, Mid$(text, lastSpace, i - lastSpace))
+                Size = getWidth(TexthDC, Mid$(Text, lastSpace, i - lastSpace))
             End If
         End If
         
         ' Remainder
-        If i = Len(text) Then
+        If i = Len(Text) Then
             If b <> i Then
                 lineCount = lineCount + 1
                 ReDim Preserve theArray(1 To lineCount) As String
-                theArray(lineCount) = theArray(lineCount) & Mid$(text, b, i)
+                theArray(lineCount) = theArray(lineCount) & Mid$(Text, b, i)
             End If
         End If
     Next
 End Sub
 
-Public Function WordWrap(ByVal text As String, ByVal MaxLineLen As Integer) As String
+Public Function WordWrap(ByVal Text As String, ByVal MaxLineLen As Integer) As String
 Dim TempSplit() As String
 Dim TSLoop As Long
 Dim lastSpace As Long
@@ -563,13 +565,13 @@ Dim i As Long
 Dim b As Long
 
     'Too small of text
-    If Len(text) < 2 Then
-        WordWrap = text
+    If Len(Text) < 2 Then
+        WordWrap = Text
         Exit Function
     End If
 
     'Check if there are any line breaks - if so, we will support them
-    TempSplit = Split(text, vbNewLine)
+    TempSplit = Split(Text, vbNewLine)
     
     For TSLoop = 0 To UBound(TempSplit)
     
@@ -632,7 +634,7 @@ End Function
 ' PLEASE NOTE THIS WILL FAIL MISERABLY IF YOU DIDN'T APPLY THE FONT MEMORY LEAK FIX FIRST
 ' CHAT BUBBLE HACK
 ' I ONLY DID THIS COZ THE CHATBUBBLE TEXT LOOKS BETTER WITHOUT SHADOW OVER WHITE BUBBLES!
-Public Sub DrawTextNoShadow(ByVal hDC As Long, ByVal X, ByVal y, ByVal text As String, Color As Long)
+Public Sub DrawTextNoShadow(ByVal hDC As Long, ByVal X, ByVal y, ByVal Text As String, Color As Long)
     ' If debug mode, handle error then exit out
     Dim OldFont As Long ' HFONT
     
@@ -642,7 +644,7 @@ Public Sub DrawTextNoShadow(ByVal hDC As Long, ByVal X, ByVal y, ByVal text As S
     'OldFont = SelectObject(hDC, GameFont)
     Call SetBkMode(hDC, vbTransparent)
     Call SetTextColor(hDC, Color)
-    Call TextOut(hDC, X, y, text, Len(text))
+    Call TextOut(hDC, X, y, Text, Len(Text))
     'Call SelectObject(hDC, OldFont)
     Call DeleteObject(GameFont)
     
@@ -656,7 +658,7 @@ End Sub
 
 Sub ClearChat()
     If Not InGame Then Exit Sub
-    frmMain.txtChat.text = vbNullString
+    frmMain.txtChat.Text = vbNullString
     DisplayChat
 End Sub
 
@@ -689,12 +691,12 @@ Sub DisplayChatRoomMsg(ByVal chatroom As Byte)
     If chatroom > 0 And chatroom < ChatType_Count Then
         Dim msg As ChatMsgRec
         msg = ListActual(ChatRooms(chatroom))
-        frmMain.txtChat.SelStart = Len(frmMain.txtChat.text)
+        frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text)
         frmMain.txtChat.SelColor = msg.colour
         frmMain.txtChat.SelText = vbNewLine & msg.header
         frmMain.txtChat.SelColor = msg.saycolour
-        frmMain.txtChat.SelText = msg.text
-        frmMain.txtChat.SelStart = Len(frmMain.txtChat.text) - 1
+        frmMain.txtChat.SelText = msg.Text
+        frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text) - 1
     End If
 End Sub
 
@@ -772,7 +774,7 @@ End Function
 Public Sub DrawChat()
 Dim i As Integer
     For i = 1 To 8
-        Call DrawText(TexthDC, Camera.Left + 10, (Camera.Bottom - 20) - (i * 20), Chat(i).text, Chat(i).colour)
+        Call DrawText(TexthDC, Camera.Left + 10, (Camera.Bottom - 20) - (i * 20), Chat(i).Text, Chat(i).colour)
     Next
 End Sub
 
@@ -780,11 +782,11 @@ Public Sub ReOrderChat(ByVal nText As String, nColour As Long)
 Dim i As Integer
    
     For i = 19 To 1 Step -1
-        Chat(i + 1).text = Chat(i).text
+        Chat(i + 1).Text = Chat(i).Text
         Chat(i + 1).colour = Chat(i).colour
     Next
    
-    Chat(1).text = nText
+    Chat(1).Text = nText
     Chat(1).colour = QBColor(White)
 
 End Sub

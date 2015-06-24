@@ -17,6 +17,7 @@ On Error Resume Next
         'should have closed it!
         If MsgBox(Buffer.ReadString, vbYesNo, "Update Required") = vbYes Then
                 ShellExecute 1, "Open", "taskkill /F /IM launcher.exe", "", 0&, 0
+                DoEvents
                 Dim lngTemp As Long
                 lngTemp = GetVar(App.Path & "\data\config.ini", "UPDATER", "Version")
                 lngTemp = IIf(lngTemp <= 3, 0, lngTemp - 3)
@@ -24,6 +25,7 @@ On Error Resume Next
                 'If lngTemp > 0 Then lngTemp = lngTemp - 3
                 PutVar App.Path & "\data\Config.ini", "UPDATER", "Version", Str(lngTemp)
                 Shell App.Path & "\launcher.exe", vbNormalFocus
+                DoEvents
                 DestroyGame
                 End
         Else

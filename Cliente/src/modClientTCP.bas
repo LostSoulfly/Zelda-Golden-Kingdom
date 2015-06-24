@@ -2226,6 +2226,15 @@ Dim Buffer As clsBuffer
     Set Buffer = Nothing
 End Sub
 
+Sub SendPetState(ByVal index As Long, State As Byte)
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CPetData
+    Buffer.WriteByte State
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
+End Sub
+
 Sub SendRequestTame(ByVal index As Long)
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer

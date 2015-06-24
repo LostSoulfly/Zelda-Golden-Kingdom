@@ -273,6 +273,7 @@ Public Sub PlayerMsg(ByVal index As Long, ByVal msg As String, ByVal color As By
     Set Buffer = New clsBuffer
     
         Debug.Assert (index > 0)
+        If index = 0 Then Exit Sub
     
     If blForceTranslate = True Then msg = GetTranslation(msg)
     
@@ -2260,38 +2261,38 @@ Sub SendDoors(ByVal index As Long)
 
 End Sub
 
-Sub SendUpdateDoorToAll(ByVal doornum As Long)
+Sub SendUpdateDoorToAll(ByVal DoorNum As Long)
     Dim packet As String
     Dim Buffer As clsBuffer
     Dim DoorSize As Long
     Dim DoorData() As Byte
     Set Buffer = New clsBuffer
     
-    DoorSize = LenB(Doors(doornum))
+    DoorSize = LenB(Doors(DoorNum))
     ReDim DoorData(DoorSize - 1)
-    CopyMemory DoorData(0), ByVal VarPtr(Doors(doornum)), DoorSize
+    CopyMemory DoorData(0), ByVal VarPtr(Doors(DoorNum)), DoorSize
     
     Buffer.WriteLong SUpdateDoors
-    Buffer.WriteLong doornum
+    Buffer.WriteLong DoorNum
     Buffer.WriteBytes DoorData
 
     SendDataToAll Buffer.ToArray()
     Set Buffer = Nothing
 End Sub
 
-Sub SendUpdateDoorsTo(ByVal index As Long, ByVal doornum As Long)
+Sub SendUpdateDoorsTo(ByVal index As Long, ByVal DoorNum As Long)
     Dim packet As String
     Dim Buffer As clsBuffer
     Dim DoorSize As Long
     Dim DoorData() As Byte
     Set Buffer = New clsBuffer
     
-    DoorSize = LenB(Doors(doornum))
+    DoorSize = LenB(Doors(DoorNum))
     ReDim DoorData(DoorSize - 1)
-    CopyMemory DoorData(0), ByVal VarPtr(Doors(doornum)), DoorSize
+    CopyMemory DoorData(0), ByVal VarPtr(Doors(DoorNum)), DoorSize
     
     Buffer.WriteLong SUpdateDoors
-    Buffer.WriteLong doornum
+    Buffer.WriteLong DoorNum
     Buffer.WriteBytes DoorData
     
     SendDataTo index, Buffer.ToArray()

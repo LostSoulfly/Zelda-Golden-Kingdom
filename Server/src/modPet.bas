@@ -40,7 +40,14 @@ Public Type TempPlayerPetRec
     PetSpawnWait As Long
     PetHasOwnTarget As Byte
     PetExpPercent As Byte
+    PetState As PetStateEnum
 End Type
+
+Public Enum PetStateEnum
+    Passive = 0
+    Assist = 1
+    Defensive = 2
+End Enum
 
 
 'makes the pet follow its owner
@@ -49,6 +56,7 @@ Public Sub PetFollowOwner(ByVal index As Long)
     
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = 1
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = index
+    TempPlayer(index).TempPet.PetHasOwnTarget = 0
 End Sub
 
 'makes the pet wander around the map
@@ -57,6 +65,8 @@ Public Sub PetWander(ByVal index As Long)
 
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NONE
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = 0
+    TempPlayer(index).TempPet.PetHasOwnTarget = 0
+    
 End Sub
 
 'Clear the npc from the map
@@ -185,7 +195,12 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     Dim UntilTime As Long
     
     'Prevent multiple pets for the same owner
-    If TempPlayer(index).TempPet.TempPetSlot > 0 Then Exit Sub
+    If TempPlayer(index).TempPet.TempPetSlot > 0 Then
+        If player(index).Pet(TempPlayer(index).TempPet.ActualPet).CurVital(Vitals.HP) = 0 Then
+            Debug.Print
+        End If
+    Exit Sub
+    End If
     
     'slot, 1 to MAX_PLAYER_PETS
     PlayerPet = TempPlayer(index).TempPet.ActualPet
@@ -839,7 +854,8 @@ Public Sub SetPetTarget(ByVal index As Long, ByVal PetSlot As Byte)
     Dim mapnum As Long
     mapnum = GetPlayerMap(index)
     If TempPlayer(index).TempPet.PetHasOwnTarget > 0 Then
-    
+    'I'm not sure what they intended on putting here..
+    Debug.Print
     
     Else
         Dim i As Integer

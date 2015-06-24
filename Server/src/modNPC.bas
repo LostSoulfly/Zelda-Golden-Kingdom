@@ -16,16 +16,16 @@ End Function
 
 Sub RefreshMapNPCS(ByVal index As Long, Optional ByVal OmitNPCS As Boolean = False)
 
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
 If Not (OmitNPCS) Then
     Call SendMapNpcsTo(index, GetPlayerMap(index))
 End If
 
-Set buffer = New clsBuffer
-buffer.WriteLong SMapDone
-SendDataTo index, buffer.ToArray()
-Set buffer = Nothing
+Set Buffer = New clsBuffer
+Buffer.WriteLong SMapDone
+SendDataTo index, Buffer.ToArray()
+Set Buffer = Nothing
 
 End Sub
 
@@ -65,16 +65,15 @@ Next
 End Sub
 
 Sub SendNpcAttackAnimation(ByVal mapnum As Long, ByVal mapnpcnum As Long)
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
 ' Send this packet so they can see the npc attacking
-    Set buffer = New clsBuffer
-    buffer.WriteLong SNpcAttack
-    buffer.WriteLong mapnpcnum
-    SendDataToMap mapnum, buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SNpcAttack
+    Buffer.WriteLong mapnpcnum
+    SendDataToMap mapnum, Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
-
 
 Public Sub KillNpc(ByVal mapnum As Long, ByVal mapnpcnum As Long)
 Dim i As Long
@@ -90,6 +89,7 @@ Dim i As Long
             Call ClearSingleMapNpc(mapnpcnum, mapnum)
             'Call SendMapNpcToMap(mapnum, mapnpcnum)
         ElseIf IsMapNPCaPet(mapnum, mapnpcnum) Then
+            PlayerMsg GetMapPetOwner(mapnum, mapnpcnum), "Your pet has died!", White, , False
             Call PetDisband(GetMapPetOwner(mapnum, mapnpcnum), mapnum, True)
         Else
             Call SendClearMapNpcToMap(mapnum, mapnpcnum)
@@ -438,18 +438,36 @@ If TargetType = 1 Then ' player
             TargetX = GetPlayerX(Target)
             'Check if Player Pet has to defend his owner
             If TempPlayer(Target).TempPet.TempPetSlot > 0 And TempPlayer(Target).TempPet.TempPetSlot <> X Then
-                If TempPlayer(Target).TempPet.PetHasOwnTarget = NO Then
+                If TempPlayer(Target).TempPet.PetState = Passive Then
+                    ResetPetTarget (Target)
+                ElseIf TempPlayer(Target).TempPet.PetHasOwnTarget = NO Then
                     If IsinRange(5, TargetX, TargetY, MapNpc(mapnum).NPC(X).X, MapNpc(mapnum).NPC(X).Y) Then
                         'Pet has not a target, let's catch this npc
-                        TempPlayer(Target).TempPet.PetHasOwnTarget = X
-                        MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
-                        MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).Target = X
+                        If MapNpc(mapnum).NPC(X).PetData.Owner > 0 Then
+                        'NPC is a pet!
+                            If RAND(1, 2) <> 1 Then
+                                TempPlayer(Target).TempPet.PetHasOwnTarget = X
+                                MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
+                                MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).Target = X
+                            Else
+                                TempPlayer(Target).TempPet.PetHasOwnTarget = MapNpc(mapnum).NPC(X).PetData.Owner
+                                MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).TargetType = TARGET_TYPE_PLAYER
+                                MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).Target = MapNpc(mapnum).NPC(X).PetData.Owner
+                            End If
+                        Else
+                        'NPC is not a pet
+                            TempPlayer(Target).TempPet.PetHasOwnTarget = X
+                            MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
+                            MapNpc(mapnum).NPC(TempPlayer(Target).TempPet.TempPetSlot).Target = X
+                        End If
                     End If
                 End If
             End If
         Else
             MapNpc(mapnum).NPC(X).TargetType = 0 ' clear
             MapNpc(mapnum).NPC(X).Target = 0
+            'PetFollowOwner MapNpc(mapnum).NPC(X).PetData.Owner
+            'TempPlayer(Target).TempPet.PetHasOwnTarget = 0
         End If
     End If
 
@@ -465,6 +483,7 @@ ElseIf TargetType = 2 Then 'npc
         Else
             MapNpc(mapnum).NPC(X).TargetType = 0 ' clear
             MapNpc(mapnum).NPC(X).Target = 0
+            PetFollowOwner MapNpc(mapnum).NPC(X).PetData.Owner
         End If
     End If
 End If
@@ -667,7 +686,7 @@ Function CanSlideThroughTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As L
                 CanSlideThroughTile = True
             End If
             
-            If GetDoorType(TempTile(mapnum).Door(TempDoorNum).doornum) = DOOR_TYPE_WEIGHTSWITCH Then
+            If GetDoorType(TempTile(mapnum).Door(TempDoorNum).DoorNum) = DOOR_TYPE_WEIGHTSWITCH Then
                 Call CheckWeightSwitch(mapnum, TempDoorNum)
             End If
         End If
@@ -705,7 +724,7 @@ Function CanNpcMoveThroughTile(ByVal mapnum As Long, ByVal X As Long, ByVal Y As
                 CanNpcMoveThroughTile = True
             End If
             
-            If GetDoorType(TempTile(mapnum).Door(TempDoorNum).doornum) = DOOR_TYPE_WEIGHTSWITCH Then
+            If GetDoorType(TempTile(mapnum).Door(TempDoorNum).DoorNum) = DOOR_TYPE_WEIGHTSWITCH Then
                 Call CheckWeightSwitch(mapnum, TempDoorNum)
             End If
         End If
@@ -830,7 +849,7 @@ End Function
 
 Sub NpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long, ByVal Movement As Long)
     Dim packet As String
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
 
     ' Check for subscript out of range
     If mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Then
@@ -841,19 +860,19 @@ Sub NpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long, By
 
     If Not ComputeNPCSingleMovement(mapnum, mapnpcnum, dir) Then Exit Sub
     
-    Set buffer = New clsBuffer
-    buffer.WriteLong SNpcMove
-    buffer.WriteLong mapnpcnum
-    buffer.WriteByte dir
-    buffer.WriteLong Movement
-    SendDataToMap mapnum, buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SNpcMove
+    Buffer.WriteLong mapnpcnum
+    Buffer.WriteByte dir
+    Buffer.WriteLong Movement
+    SendDataToMap mapnum, Buffer.ToArray()
+    Set Buffer = Nothing
 
 End Sub
 
 Sub NpcDir(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long)
     Dim packet As String
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
 
     ' Check for subscript out of range
     If mapnum <= 0 Or mapnum > MAX_MAPS Or mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Or dir < DIR_UP Or dir > DIR_RIGHT Then
@@ -861,12 +880,12 @@ Sub NpcDir(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long)
     End If
 
     MapNpc(mapnum).NPC(mapnpcnum).dir = dir
-    Set buffer = New clsBuffer
-    buffer.WriteLong SNpcDir
-    buffer.WriteLong mapnpcnum
-    buffer.WriteLong dir
-    SendDataToMap mapnum, buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SNpcDir
+    Buffer.WriteLong mapnpcnum
+    Buffer.WriteLong dir
+    SendDataToMap mapnum, Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub SetAllWorldNpcs(ByVal npcnum As Long)

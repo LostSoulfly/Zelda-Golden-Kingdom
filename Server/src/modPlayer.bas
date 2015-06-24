@@ -152,7 +152,7 @@ Sub JoinGame(ByVal index As Long, ByVal NeedData As Boolean)
 End Sub
 
 Sub LeftGame(ByVal index As Long)
-    Dim n As Long, i As Long
+    Dim N As Long, i As Long
     Dim tradeTarget As Long
     
     If TempPlayer(index).InGame Then
@@ -240,16 +240,16 @@ End Function
 Function CanPlayerCriticalHit(ByVal index As Long) As Boolean
     On Error Resume Next
     Dim i As Long
-    Dim n As Long
+    Dim N As Long
 
     If GetPlayerEquipment(index, Weapon) > 0 Then
-        n = (Rnd) * 1.333
+        N = (Rnd) * 1.333
 
-        If n = 1 Then
+        If N = 1 Then
             i = (GetPlayerStat(index, Stats.Strength) \ 2) + (GetPlayerLevel(index) \ 2)
-            n = Int(Rnd * 100) + 1
+            N = Int(Rnd * 100) + 1
 
-            If n <= i Then
+            If N <= i Then
                 CanPlayerCriticalHit = True
             End If
         End If
@@ -259,18 +259,18 @@ End Function
 
 Function CanPlayerBlockHit(ByVal index As Long) As Boolean
     Dim i As Long
-    Dim n As Long
+    Dim N As Long
     Dim ShieldSlot As Long
     ShieldSlot = GetPlayerEquipment(index, Shield)
 
     If ShieldSlot > 0 Then
-        n = Int(Rnd * 2)
+        N = Int(Rnd * 2)
 
-        If n = 1 Then
+        If N = 1 Then
             i = (GetPlayerStat(index, Stats.Endurance) \ 2) + (GetPlayerLevel(index) \ 2)
-            n = Int(Rnd * 100) + 1
+            N = Int(Rnd * 100) + 1
 
-            If n <= i Then
+            If N <= i Then
                 CanPlayerBlockHit = True
             End If
         End If
@@ -471,7 +471,7 @@ End Function
 
 Function TakeInvItem(ByVal index As Long, ByVal ItemNum As Long, ByVal itemval As Long, Optional ByVal UpdateWeight As Boolean = True) As Boolean
     Dim i As Long
-    Dim n As Long
+    Dim N As Long
     Dim TakenValue As Long
     
     TakeInvItem = False
@@ -646,7 +646,7 @@ End Function
 
 Sub PlayerMapGetItem(ByVal index As Long)
     Dim i As Long
-    Dim n As Long
+    Dim N As Long
     Dim mapnum As Long
     Dim msg As String
 
@@ -1178,6 +1178,8 @@ Sub OnDeath(ByVal index As Long, Optional ByVal RespawnSite As Byte = 0)
     ' Set HP to nothing
     Call SetPlayerVital(index, Vitals.HP, 0)
     
+    PetDisband index, GetPlayerMap(index), True
+    
     ' Warp player away
     Call SetPlayerDir(index, DIR_DOWN)
     
@@ -1612,7 +1614,7 @@ Dim exp As Long
 End Sub
 
 Public Sub UseItem(ByVal index As Long, ByVal invNum As Long)
-Dim n As Long, i As Long, TempItem As Long, X As Long, Y As Long, ItemNum As Long, b As Long, j As Long
+Dim N As Long, i As Long, TempItem As Long, X As Long, Y As Long, ItemNum As Long, b As Long, j As Long
 Dim ContainerAmount, amount As Long
     
     ' Prevent hacking
@@ -1624,7 +1626,7 @@ Dim ContainerAmount, amount As Long
     If IsActionBlocked(index, aUseItem) Then Exit Sub
     
     If (GetPlayerInvItemNum(index, invNum) > 0) And (GetPlayerInvItemNum(index, invNum) <= MAX_ITEMS) Then
-        n = item(GetPlayerInvItemNum(index, invNum)).Data2
+        N = item(GetPlayerInvItemNum(index, invNum)).Data2
         ItemNum = GetPlayerInvItemNum(index, invNum)
         
         ' Find out what kind of item it is
@@ -1773,14 +1775,14 @@ Dim ContainerAmount, amount As Long
                 If CanPlayerEquipItem(index, ItemNum) = False Then Exit Sub
                 
                 ' Get the spell num
-                n = item(ItemNum).Data1
+                N = item(ItemNum).Data1
 
-                If n > 0 Then
+                If N > 0 Then
 
                     ' Make sure they are the right class
-                    If Spell(n).ClassReq = GetPlayerClass(index) Or Spell(n).ClassReq = 0 Then
+                    If Spell(N).ClassReq = GetPlayerClass(index) Or Spell(N).ClassReq = 0 Then
                         ' Make sure they are the right level
-                        i = Spell(n).LevelReq
+                        i = Spell(N).LevelReq
 
                         If i <= GetPlayerLevel(index) Then
                             i = FindOpenSpellSlot(index)
@@ -1789,11 +1791,11 @@ Dim ContainerAmount, amount As Long
                             If i > 0 Then
 
                                 ' Make sure they dont already have the spell
-                                If Not HasSpell(index, n) Then
-                                    Call SetPlayerSpell(index, i, n)
+                                If Not HasSpell(index, N) Then
+                                    Call SetPlayerSpell(index, i, N)
                                     Call SendAnimation(GetPlayerMap(index), item(ItemNum).Animation, 0, 0, TARGET_TYPE_PLAYER, index)
                                     Call TakeInvItem(index, ItemNum, 0)
-                                    Call PlayerMsg(index, GetTranslation("Has aprendido una nueva habilidad. Ahora puedes usar") & " " & Trim$(Spell(n).TranslatedName) & ".", BrightGreen, , False)
+                                    Call PlayerMsg(index, GetTranslation("Has aprendido una nueva habilidad. Ahora puedes usar") & " " & Trim$(Spell(N).TranslatedName) & ".", BrightGreen, , False)
                                     Call SendPlayerSpells(index)
                                 Else
                                     Call PlayerMsg(index, "Ya conoces ésta habilidad.", BrightRed)
@@ -1808,7 +1810,7 @@ Dim ContainerAmount, amount As Long
                         End If
 
                     Else
-                        Call PlayerMsg(index, GetTranslation("Solo puede ser aprendido por") & " " & CheckGrammar(GetClassName(Spell(n).ClassReq)) & ".", BrightRed, , False)
+                        Call PlayerMsg(index, GetTranslation("Solo puede ser aprendido por") & " " & CheckGrammar(GetClassName(Spell(N).ClassReq)) & ".", BrightRed, , False)
                     End If
                 End If
                 

@@ -503,7 +503,7 @@ Public Sub InitTempTile(ByVal mapnum As Long)
                 With TempTile(mapnum).Door(TempTile(mapnum).NumDoors)
                     .DoorNum = map(mapnum).Tile(X, Y).Data1
                     .DoorTimer = 0
-                    .state = GetInitialDoorState(.DoorNum)
+                    .State = GetInitialDoorState(.DoorNum)
                     .X = X
                     .Y = Y
                 End With
@@ -513,7 +513,7 @@ Public Sub InitTempTile(ByVal mapnum As Long)
                 With TempTile(mapnum).Door(TempTile(mapnum).NumDoors)
                     .DoorNum = -1 'use this encode
                     .DoorTimer = 0
-                    .state = False
+                    .State = False
                     .X = X
                     .Y = Y
                 End With
@@ -868,8 +868,8 @@ Dim partynum As Long, i As Long, X As Long
         SendPartyVitals partynum, targetPlayer
         ' let them know it's created
         PartyMsg partynum, GetTranslation("Equipo creado."), BrightGreen
-        PartyMsg partynum, GetPlayerName(index) & " " & GetTranslation("se ha unido al equipo."), Pink
-        PartyMsg partynum, GetPlayerName(targetPlayer) & " " & GetTranslation("se ha unido al equipo."), Pink
+        PartyMsg partynum, GetPlayerName(index) & " " & GetTranslation("se ha unido al equipo."), Pink, False
+        PartyMsg partynum, GetPlayerName(targetPlayer) & " " & GetTranslation("se ha unido al equipo."), Pink, False
         ' clear the invitation
         TempPlayer(targetPlayer).partyInvite = 0
         ' add them to the party

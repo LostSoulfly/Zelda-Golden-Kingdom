@@ -419,32 +419,32 @@ Select Case army
 Case HERO_PLAYER
     Select Case range
     Case Soldado
-        RangeToStr = "Soldado"
+        RangeToStr = GetTranslation("Soldado")
     Case Escolta
-        RangeToStr = "Escolta"
+        RangeToStr = GetTranslation("Escolta")
     Case Teniente
-        RangeToStr = "Teniente"
+        RangeToStr = GetTranslation("Teniente")
     Case Capitan
-        RangeToStr = "Capitan"
+        RangeToStr = GetTranslation("Capitan")
     Case Protector
-        RangeToStr = "Protector"
+        RangeToStr = GetTranslation("Protector")
     Case Caballero
-        RangeToStr = "Caballero"
+        RangeToStr = GetTranslation("Caballero")
     End Select
 Case PK_PLAYER
     Select Case range
     Case Mercenario
-        RangeToStr = "Mercenario"
+        RangeToStr = GetTranslation("Mercenario")
     Case Aniquilador
-        RangeToStr = "Aniquilador"
+        RangeToStr = GetTranslation("Aniquilador")
     Case Devastador
-        RangeToStr = "Devastador"
+        RangeToStr = GetTranslation("Devastador")
     Case Asolador
-        RangeToStr = "Asolador"
+        RangeToStr = GetTranslation("Asolador")
     Case Comandante
-        RangeToStr = "Comandante"
+        RangeToStr = GetTranslation("Comandante")
     Case Elite
-        RangeToStr = "Elite"
+        RangeToStr = GetTranslation("Elite")
     End Select
 Case NONE_PLAYER
     RangeToStr = "None"
@@ -454,18 +454,18 @@ End Function
 
 
 Sub SendKillPoints(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SKillPoints
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SKillPoints
     
-    buffer.WriteByte GetPlayerPK(index)
-    buffer.WriteLong CLng(Round((GetPlayerKillPoints(index, GetPlayerPK(index)))))
+    Buffer.WriteByte GetPlayerPK(index)
+    Buffer.WriteLong CLng(Round((GetPlayerKillPoints(index, GetPlayerPK(index)))))
     
-    SendDataTo index, buffer.ToArray()
-    Set buffer = Nothing
+    SendDataTo index, Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
-Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef MapNum As Long, ByRef X As Long, ByRef Y As Long) As Boolean
+Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef mapnum As Long, ByRef X As Long, ByRef Y As Long) As Boolean
     Dim header As String
     Select Case justice
     Case NONE_PLAYER
@@ -483,10 +483,10 @@ Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef MapNum As Long, ByRef 
     VY = GetVar(App.Path & "\data\army.ini", header, "SpawnY")
     
     If IsNumeric(vmap) And IsNumeric(VX) And IsNumeric(VY) Then
-        MapNum = vmap
+        mapnum = vmap
         X = VX
         Y = VY
-        If Not OutOfBoundries(X, Y, MapNum) Then
+        If Not OutOfBoundries(X, Y, mapnum) Then
             GetJusticeSpawnSite = True
         End If
     End If

@@ -121,13 +121,18 @@ Public Type PlayerPetRec
     points As Integer
     Experience As Long
     Level As Long
-    
     CurrentHP As Long
 End Type
 
+Public Enum PetState
+    Passive = 0
+    Assist = 1
+    Defensive = 2
+End Enum
+
 Public Type MapPetRec
     Owner As Long
-    Name As String * 50
+    Name As String * NAME_LENGTH
 End Type
 
 Private Type PlayerRec
@@ -175,6 +180,7 @@ Private Type PlayerRec
     'Pet system
     Pet(1 To MAX_PLAYER_PETS) As PlayerPetRec
     ActualPet As Byte
+    PetState As Byte
     'Triforce
     triforce(1 To TriforceType.TriforceType_Count - 1) As Boolean
     

@@ -23,26 +23,26 @@ End Function
 
 Function GetExtraHP(ByVal index As Long, ByVal BaseVital As Long) As Long
 
-    Dim n As Long
+    Dim N As Long
 
    If GetPlayerEquipment(index, Weapon) > 0 Then
-        n = GetPlayerEquipment(index, Weapon)
-        BaseVital = BaseVital + item(n).ExtraHP
+        N = GetPlayerEquipment(index, Weapon)
+        BaseVital = BaseVital + item(N).ExtraHP
     End If
     
     If GetPlayerEquipment(index, Armor) > 0 Then
-        n = GetPlayerEquipment(index, Armor)
-        BaseVital = BaseVital + item(n).ExtraHP
+        N = GetPlayerEquipment(index, Armor)
+        BaseVital = BaseVital + item(N).ExtraHP
     End If
     
     If GetPlayerEquipment(index, helmet) > 0 Then
-        n = GetPlayerEquipment(index, helmet)
-        BaseVital = BaseVital + item(n).ExtraHP
+        N = GetPlayerEquipment(index, helmet)
+        BaseVital = BaseVital + item(N).ExtraHP
     End If
     
     If GetPlayerEquipment(index, Shield) > 0 Then
-        n = GetPlayerEquipment(index, Shield)
-        BaseVital = BaseVital + item(n).ExtraHP
+        N = GetPlayerEquipment(index, Shield)
+        BaseVital = BaseVital + item(N).ExtraHP
     End If
     
     GetExtraHP = BaseVital
@@ -732,7 +732,7 @@ End Function
 Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVal Damage As Long, Optional ByVal spellnum As Long, Optional ByVal overTime As Boolean = False)
     'Dim Name As String
     Dim exp As Long
-    Dim n As Long
+    Dim N As Long
     Dim i As Long
     Dim DropNum As Integer
     Dim STR As Long
@@ -752,10 +752,10 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
     'Name = Trim$(NPC(npcnum).Name)
     
     ' Check for weapon
-    n = 0
+    N = 0
 
     If GetPlayerEquipment(attacker, Weapon) > 0 Then
-        n = GetPlayerEquipment(attacker, Weapon)
+        N = GetPlayerEquipment(attacker, Weapon)
     End If
     
     ' set the regen timer
@@ -773,7 +773,7 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
         If spellnum > 0 Then SendMapSound attacker, MapNpc(mapnum).NPC(mapnpcnum).X, MapNpc(mapnum).NPC(mapnpcnum).Y, SoundEntity.seSpell, spellnum
         
         ' send animation
-            If n > 0 Then
+            If N > 0 Then
                 If Not overTime Then
                     If spellnum = 0 Then
                         Call SendAnimation(mapnum, item(GetPlayerEquipment(attacker, Weapon)).Animation, MapNpc(mapnum).NPC(mapnpcnum).X, MapNpc(mapnum).NPC(mapnpcnum).Y)
@@ -790,6 +790,7 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
         If TempPlayer(attacker).TempPet.PetHasOwnTarget = mapnpcnum Then
             'Objective Finished
             TempPlayer(attacker).TempPet.PetHasOwnTarget = 0
+            PetFollowOwner attacker
         End If
         
         'begin of the new system
@@ -797,10 +798,10 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
         DropNum = CalculateDropChances(npcnum)
         'Drop the goods if they get it
         If DropNum > 0 Then
-            n = Int(Rnd * NPC(npcnum).Drops(DropNum).DropChance) + 1
+            N = Int(Rnd * NPC(npcnum).Drops(DropNum).DropChance) + 1
 
             'Drop the selected item
-            If n = 1 Then
+            If N = 1 Then
                 Call SpawnItem(NPC(npcnum).Drops(DropNum).DropItem, NPC(npcnum).Drops(DropNum).DropItemValue, mapnum, MapNpc(mapnum).NPC(mapnpcnum).X, MapNpc(mapnum).NPC(mapnpcnum).Y)
             End If
         End If
@@ -832,7 +833,7 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
         TempPlayer(attacker).TargetType = TARGET_TYPE_NPC
         TempPlayer(attacker).Target = mapnpcnum
         SendTarget attacker
-        
+
         ' Check for a weapon and say damage
         SendActionMsg mapnum, "-" & Damage, BrightRed, 1, (MapNpc(mapnum).NPC(mapnpcnum).X * 32), (MapNpc(mapnum).NPC(mapnpcnum).Y * 32)
         SendBlood GetPlayerMap(attacker), MapNpc(mapnum).NPC(mapnpcnum).X, MapNpc(mapnum).NPC(mapnpcnum).Y
@@ -841,22 +842,26 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
         If spellnum > 0 Then SendMapSound attacker, MapNpc(mapnum).NPC(mapnpcnum).X, MapNpc(mapnum).NPC(mapnpcnum).Y, SoundEntity.seSpell, spellnum
         
         ' send animation
-        If n > 0 Then
+        If N > 0 Then
             If Not overTime Then
                 If spellnum = 0 Then Call SendAnimation(mapnum, item(GetPlayerEquipment(attacker, Weapon)).Animation, 0, 0, TARGET_TYPE_NPC, mapnpcnum)
             End If
         End If
 
-        ' Set the NPC target to the player
-        MapNpc(mapnum).NPC(mapnpcnum).TargetType = 1 ' player
-        MapNpc(mapnum).NPC(mapnpcnum).Target = attacker
-        
         'Set the NPC target to player's pet target
         If TempPlayer(attacker).TempPet.TempPetSlot > 0 And TempPlayer(attacker).TempPet.TempPetSlot < MAX_MAP_NPCS And TempPlayer(attacker).TempPet.PetHasOwnTarget = 0 Then
-            MapNpc(mapnum).NPC(TempPlayer(attacker).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
-            MapNpc(mapnum).NPC(TempPlayer(attacker).TempPet.TempPetSlot).Target = mapnpcnum
-            'Auto Targetting
-            TempPlayer(attacker).TempPet.PetHasOwnTarget = mapnpcnum
+            If TempPlayer(attacker).TempPet.PetState = Assist Then
+                MapNpc(mapnum).NPC(TempPlayer(attacker).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
+                MapNpc(mapnum).NPC(TempPlayer(attacker).TempPet.TempPetSlot).Target = mapnpcnum
+                'Auto Targetting
+                TempPlayer(attacker).TempPet.PetHasOwnTarget = mapnpcnum
+            End If
+        Else
+        ' Set the NPC target to the player
+            If Not TempPlayer(MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner).TempPet.PetState = Passive Then
+                MapNpc(mapnum).NPC(mapnpcnum).TargetType = 1 ' player
+                MapNpc(mapnum).NPC(mapnpcnum).Target = attacker
+            End If
         End If
             
 
@@ -908,6 +913,10 @@ Dim Buffer As clsBuffer
         mapnum = GetPlayerMap(index)
         npcnum = MapNpc(mapnum).NPC(mapnpcnum).Num
         
+        'todo: Check for pet and if they're on assist or defensive,
+        'attack the NPC attacking the player
+        'TempPlayer(index).TempPet.PetState = assist or defensive
+        
         
         ' send the sound
         SendMapSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seNpc, MapNpc(mapnum).NPC(mapnpcnum).Num
@@ -920,6 +929,15 @@ Dim Buffer As clsBuffer
         Set Buffer = Nothing
         
         MapNpc(mapnum).NPC(mapnpcnum).AttackTimer = GetRealTickCount + GetNPCAttackTimer(mapnum, mapnpcnum)
+        
+        If TempPlayer(index).TempPet.TempPetSlot > 0 And TempPlayer(index).TempPet.TempPetSlot < MAX_MAP_NPCS And TempPlayer(index).TempPet.PetHasOwnTarget = 0 Then
+            If TempPlayer(index).TempPet.PetState <> Passive Then
+                MapNpc(mapnum).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
+                MapNpc(mapnum).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = mapnpcnum
+                'Auto Targetting
+                TempPlayer(index).TempPet.PetHasOwnTarget = mapnpcnum
+            End If
+        End If
         
         ' check if PLAYER can avoid the attack
         If CanPlayerDodge(index) Then
@@ -990,10 +1008,6 @@ Function CanNpcAttackPlayer(ByVal mapnpcnum As Long, ByVal index As Long, Option
         Exit Function
     End If
     
-    
-
-    
-
     ' Make sure we dont attack the player if they are switching maps
     If TempPlayer(index).GettingMap = YES Then
         Exit Function
@@ -1072,6 +1086,19 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
         Exit Sub
     End If
     
+    'attacker = GetMapPetOwner(mapnum, mapnpcnum)
+    If IsMapNPCaPet(mapnum, mapnpcnum) = True Then
+        If CheckSafeMode(GetMapPetOwner(mapnum, mapnpcnum), victim) = True Then
+        PetFollowOwner GetMapPetOwner(mapnum, mapnpcnum)
+        Exit Sub
+        End If
+    End If
+    
+    If TempPlayer(victim).TempPet.PetState <> Passive And TempPlayer(victim).TempPet.PetHasOwnTarget = NO Then
+        
+        PetAttack victim
+    End If
+    
     ' set the regen timer
     MapNpc(mapnum).NPC(mapnpcnum).stopRegen = True
     MapNpc(mapnum).NPC(mapnpcnum).stopRegenTimer = GetRealTickCount
@@ -1093,6 +1120,12 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
                 Call SetPlayerJustice(GetMapPetOwner(mapnum, mapnpcnum), victim)
                 Call ComputeArmyPvP(GetMapPetOwner(mapnum, mapnpcnum), victim)
             End If
+            PetFollowOwner GetMapPetOwner(mapnum, mapnpcnum)
+        Else
+        
+        ' Set NPC target to 0
+        MapNpc(mapnum).NPC(mapnpcnum).Target = 0
+        MapNpc(mapnum).NPC(mapnpcnum).TargetType = 0
         End If
         
         ' kill player
@@ -1104,9 +1137,6 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
         'Kill Counter
         player(victim).NpcDead = player(victim).NpcDead + 1
 
-        ' Set NPC target to 0
-        MapNpc(mapnum).NPC(mapnpcnum).Target = 0
-        MapNpc(mapnum).NPC(mapnpcnum).TargetType = 0
     Else
         ' Player not dead, just do the damage
         Call SetPlayerVital(victim, Vitals.HP, GetPlayerVital(victim, Vitals.HP) - Damage)
@@ -1274,7 +1304,7 @@ End Sub
 Sub NpcSpellPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, SpellSlotNum As Long)
         Dim mapnum As Long
         Dim i As Long
-        Dim n As Long
+        Dim N As Long
         Dim spellnum As Long
         Dim Buffer As clsBuffer
         Dim InitDamage As Long
@@ -1451,7 +1481,7 @@ End Sub
 
 Sub NpcSpellNpc(ByVal mapnum As Long, ByVal aMapNPCNum As Long, ByVal vMapNPCNum As Long, SpellSlotNum As Long)
         Dim i As Long
-        Dim n As Long
+        Dim N As Long
         Dim spellnum As Long
         Dim Buffer As clsBuffer
         Dim InitDamage As Long
@@ -1622,8 +1652,13 @@ Dim Damage As Long
     ' Can we attack the npc?
     If CanPlayerAttackPlayer(attacker, victim) Then
     
+        'check if players have pets
+        'check if the attacker's pet is assist? idk yet. will think.
+        'check if victims pet is defensive
+        'TempPlayer(index).TempPet.PetState
+        
         mapnum = GetPlayerMap(attacker)
-    
+     
         ' check if NPC can avoid the attack
         If CanPlayerDodge(victim, attacker) Then
             SendActionMsg mapnum, "¡Esquivado!", Pink, 1, (GetPlayerX(victim) * 32), (GetPlayerY(victim) * 32), , True
@@ -1826,7 +1861,7 @@ CheckLevels = True
 End Function
 Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damage As Long, Optional ByVal spellnum As Long = 0)
     Dim exp As Long
-    Dim n As Long
+    Dim N As Long
     Dim i As Long
     Dim Buffer As clsBuffer
     Dim mapnum As Long
@@ -1837,10 +1872,27 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
     End If
 
     ' Check for weapon
-    n = 0
+    N = 0
 
     If GetPlayerEquipment(attacker, Weapon) > 0 Then
-        n = GetPlayerEquipment(attacker, Weapon)
+        N = GetPlayerEquipment(attacker, Weapon)
+    End If
+    
+    If TempPlayer(attacker).TempPet.TempPetSlot > 0 And TempPlayer(attacker).TempPet.TempPetSlot < MAX_MAP_NPCS And TempPlayer(attacker).TempPet.PetHasOwnTarget = 0 Then
+        If TempPlayer(attacker).TempPet.PetState = Assist Then
+                'this uses the index of the player to start them attacking!
+            PetAttack attacker
+        End If
+    End If
+
+    If TempPlayer(victim).TempPet.TempPetSlot > 0 And TempPlayer(victim).TempPet.TempPetSlot < MAX_MAP_NPCS And TempPlayer(victim).TempPet.PetHasOwnTarget = 0 Then
+        If TempPlayer(victim).TempPet.PetState <> Passive Then
+            
+        MapNpc(GetPlayerMap(victim)).NPC(TempPlayer(victim).TempPet.TempPetSlot).TargetType = TARGET_TYPE_PLAYER
+        MapNpc(GetPlayerMap(victim)).NPC(TempPlayer(victim).TempPet.TempPetSlot).Target = attacker
+        TempPlayer(victim).TempPet.PetHasOwnTarget = attacker
+            
+        End If
     End If
     
     ' set the regen timer
@@ -1865,8 +1917,8 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
             Call CheckTasks(attacker, QUEST_TYPE_GOKILL, victim)
             '/ALATAR
             
-            'Only If victim level + 20 >= attacker level
-            If Not (GetLevelDifference(attacker, victim) > 20) Then
+            'Only If the level difference is less than 10
+            If Not (GetLevelDifference(attacker, victim) < 10) Then
                 Call PlayerPVPDrops(victim)
             End If
             
@@ -1891,6 +1943,9 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
             End If
         Next
         
+        TempPlayer(attacker).TempPet.PetHasOwnTarget = 0
+        TempPlayer(victim).TempPet.PetHasOwnTarget = 0
+        PetFollowOwner attacker
         
         'player death
         Call OnDeath(victim, 2)
@@ -2813,31 +2868,31 @@ End Sub
 Public Function CalculateDropChances(ByVal npcnum As Long) As Integer
 
 'equal probability distribution
-Dim i As Byte, n As Byte, j As Byte
+Dim i As Byte, N As Byte, j As Byte
 Dim BoolVect(1 To MAX_NPC_DROPS) As Boolean
 
 For i = 1 To CByte(MAX_NPC_DROPS)
     BoolVect(i) = False
 Next
 
-n = 0
+N = 0
 For i = 1 To CByte(MAX_NPC_DROPS)
     If NPC(npcnum).Drops(i).DropItem > 0 Then
-        n = n + 1
+        N = N + 1
         BoolVect(i) = True
     End If
 Next
-If n = 0 Then
+If N = 0 Then
     CalculateDropChances = 0
 Else
-    i = RAND(1, n)
+    i = RAND(1, N)
     j = 0
-    For n = 1 To CByte(MAX_NPC_DROPS)
-        If BoolVect(n) = True Then
+    For N = 1 To CByte(MAX_NPC_DROPS)
+        If BoolVect(N) = True Then
             j = j + 1
         End If
         If j = i Then
-            CalculateDropChances = n
+            CalculateDropChances = N
             Exit Function
         End If
     Next
@@ -2990,7 +3045,7 @@ Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As L
     Dim Buffer As clsBuffer
     Dim aNPCNum As Long
     Dim vNPCNum As Long
-    Dim n As Long
+    Dim N As Long
     Dim PetOwner As Long
     Dim DropNum As Integer
     
@@ -3006,8 +3061,34 @@ Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As L
     If vNPCNum <= 0 Then Exit Sub
     
     'set the victim's target to the pet attacking it
-    MapNpc(mapnum).NPC(victim).TargetType = 2 'Npc
-    MapNpc(mapnum).NPC(victim).Target = attacker
+    If MapNpc(mapnum).NPC(victim).PetData.Owner > 0 Then
+        'if the victim is a pet
+        If MapNpc(mapnum).NPC(attacker).PetData.Owner > 0 Then
+            If Not TempPlayer(MapNpc(mapnum).NPC(victim).PetData.Owner).TempPet.PetHasOwnTarget > 0 Then
+                If RAND(1, 2) <> 2 Then 'randomly choose to attack owner or pet.
+                'for 2, we'll attack the owner.
+                    MapNpc(mapnum).NPC(victim).TargetType = TARGET_TYPE_PLAYER
+                    MapNpc(mapnum).NPC(victim).Target = MapNpc(mapnum).NPC(attacker).PetData.Owner
+                    TempPlayer(MapNpc(mapnum).NPC(victim).PetData.Owner).TempPet.PetHasOwnTarget = MapNpc(mapnum).NPC(attacker).PetData.Owner
+                Else
+                    MapNpc(mapnum).NPC(victim).TargetType = 2 'Npc
+                    MapNpc(mapnum).NPC(victim).Target = attacker
+                    TempPlayer(MapNpc(mapnum).NPC(victim).PetData.Owner).TempPet.PetHasOwnTarget = attacker
+                End If
+            End If
+        Else
+        'attacker is not an pet, but the victim is.
+            If TempPlayer(MapNpc(mapnum).NPC(victim).PetData.Owner).TempPet.PetHasOwnTarget = 0 Then
+                MapNpc(mapnum).NPC(victim).TargetType = 2 'Npc
+                MapNpc(mapnum).NPC(victim).Target = attacker
+            End If
+        End If
+    Else
+        'victim is not a pet
+        MapNpc(mapnum).NPC(victim).TargetType = 2 'Npc
+        MapNpc(mapnum).NPC(victim).Target = attacker
+    End If
+
     
     ' set the regen timer
     MapNpc(mapnum).NPC(attacker).stopRegen = True
@@ -3034,10 +3115,10 @@ Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As L
         
         'Drop the goods if they get it
         If DropNum > 0 Then
-            n = Int(Rnd * NPC(vNPCNum).Drops(DropNum).DropChance) + 1
+            N = Int(Rnd * NPC(vNPCNum).Drops(DropNum).DropChance) + 1
 
             'Drop the selected item
-            If n = 1 Then
+            If N = 1 Then
                 Call SpawnItem(NPC(vNPCNum).Drops(DropNum).DropItem, NPC(vNPCNum).Drops(DropNum).DropItemValue, mapnum, MapNpc(mapnum).NPC(victim).X, MapNpc(mapnum).NPC(victim).Y)
             End If
         End If
@@ -3054,7 +3135,7 @@ Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As L
             Call ComputePlayerExp(PetOwner, TARGET_TYPE_PLAYER, victim, TARGET_TYPE_NPC)
             'objective finished
             TempPlayer(PetOwner).TempPet.PetHasOwnTarget = 0
-            
+            PetFollowOwner PetOwner
             Call CheckPlayerPartyTasks(PetOwner, QUEST_TYPE_GOSLAY, vNPCNum)
             
         End If
@@ -3069,8 +3150,8 @@ Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As L
             'objective finished
             TempPlayer(PetOwner).TempPet.PetHasOwnTarget = 0
             'Set Spawn time
-            TempPlayer(PetOwner).TempPet.PetSpawnWait = GetRealTickCount
-                   
+            'TempPlayer(PetOwner).TempPet.PetSpawnWait = GetRealTickCount
+            'PetDisband PetOwner, mapnum, True
         End If
         
         KillNpc mapnum, victim
@@ -3159,6 +3240,10 @@ Public Function CanPetAttackPlayer(ByVal mapnum As Long, ByVal mapnpcnum As Long
     Dim Owner As Long
     Owner = GetMapPetOwner(mapnum, mapnpcnum)
     ' Check if map is attackable
+    
+    'If MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner = Owner Then Exit Function
+    If TempPlayer(victim).TempPet.TempPetSlot = mapnpcnum Then Exit Function
+    
     If Not CheckMapMorals(mapnum, Owner, victim) Then
         Exit Function
     End If
@@ -3227,9 +3312,9 @@ Public Function CanPlayerAttackPet(ByVal mapnum As Long, ByVal mapnpcnum As Long
         Exit Function
     End If
     
-    If CanPlayerAttackByJustice(attacker, Owner, False) Then
-        Exit Function
-    End If
+    'If CanPlayerAttackByJustice(attacker, Owner, False) Then
+    '    Exit Function
+    'End If
     
     
     
@@ -3486,7 +3571,7 @@ End Function
 Public Sub Impactar(ByVal attacker As Long, ByVal victim As Long, ByVal Damage As Long, ByVal TargetType As Byte)
     Dim spellnum As Long
     
-    Dim n As Long
+    Dim N As Long
     Dim Auto As Long
     
   ' Check for subscript out of range
@@ -3495,12 +3580,12 @@ Public Sub Impactar(ByVal attacker As Long, ByVal victim As Long, ByVal Damage A
     End If
 
     ' Check for weapon
-    n = 0
+    N = 0
 
     If GetPlayerEquipment(attacker, Weapon) > 0 Then
-        n = GetPlayerEquipment(attacker, Weapon)
-        spellnum = item(n).Impactar.Spell
-        Auto = item(n).Impactar.Auto
+        N = GetPlayerEquipment(attacker, Weapon)
+        spellnum = item(N).Impactar.Spell
+        Auto = item(N).Impactar.Auto
     End If
     
    
