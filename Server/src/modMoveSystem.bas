@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMoveSystem"
+Option Explicit
 
 Private RunningSprites() As clsPair
 
@@ -54,39 +55,39 @@ Function ReadWalkSprite(ByVal header As Long) As Long
 End Function
 
 Sub SendRunningSprites(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong SRunningSprites
-    buffer.WriteLong UBound(RunningSprites)
+    Buffer.WriteLong SRunningSprites
+    Buffer.WriteLong UBound(RunningSprites)
     Dim i As Long
     For i = 1 To UBound(RunningSprites)
         With RunningSprites(i)
-        buffer.WriteLong .GetFirst
-        buffer.WriteLong .GetSecond
+        Buffer.WriteLong .GetFirst
+        Buffer.WriteLong .GetSecond
         End With
     Next
     
-    SendDataTo index, buffer.ToArray
-    Set buffer = Nothing
+    SendDataTo index, Buffer.ToArray
+    Set Buffer = Nothing
 End Sub
 
 
-Function GetTileType(ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long) As Byte
-    GetTileType = map(MapNum).Tile(X, Y).Type
+Function GetTileType(ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long) As Byte
+    GetTileType = map(mapnum).Tile(X, Y).Type
 End Function
 
-Sub WarpPlayerByTile(ByVal index As Long, ByVal MapNum As Long, ByVal X As Long, ByVal Y As Long)
-    With map(MapNum).Tile(X, Y)
+Sub WarpPlayerByTile(ByVal index As Long, ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long)
+    With map(mapnum).Tile(X, Y)
     PlayerWarpByEvent index, .Data1, .Data2, .Data3
     End With
 End Sub
 
 Sub CheckTilePlayerMove(ByVal index As Long, ByVal X As Integer, ByVal Y As Integer, ByRef Moved As Boolean, ByRef Teleported As Boolean)
 
-    Dim MapNum As Long
-    MapNum = GetPlayerMap(index)
-    If OutOfBoundries(X, Y, MapNum) Then
+    Dim mapnum As Long
+    mapnum = GetPlayerMap(index)
+    If OutOfBoundries(X, Y, mapnum) Then
         Exit Sub
     End If
      
@@ -95,43 +96,43 @@ Sub CheckTilePlayerMove(ByVal index As Long, ByVal X As Integer, ByVal Y As Inte
 
     Dim TileType As Long, VitalType As Long, colour As Long, amount As Long, scriptnum As Long
     
-    With map(MapNum).Tile(X, Y)
+    With map(mapnum).Tile(X, Y)
     
-    Select Case GetTileType(MapNum, X, Y)
+    Select Case GetTileType(mapnum, X, Y)
     
     Case TILE_TYPE_WALKABLE
     Case TILE_TYPE_BLOCKED
         Moved = False
     Case TILE_TYPE_RESOURCE
-        Moved = isWalkableResource(MapNum, X, Y)
+        Moved = isWalkableResource(mapnum, X, Y)
     Case TILE_TYPE_WARP
-        MapNum = .Data1
+        mapnum = .Data1
         X = .Data2
         Y = .Data3
-        Call PlayerWarpByEvent(index, MapNum, X, Y)
+        Call PlayerWarpByEvent(index, mapnum, X, Y)
         Teleported = True
     Case TILE_TYPE_DOOR
         Dim TempDoorNum As Long
         Dim DoorNum As Long
         DoorNum = .Data1
-        TempDoorNum = GetTempDoorNumberByDoorNum(MapNum, DoorNum)
+        TempDoorNum = GetTempDoorNumberByDoorNum(mapnum, DoorNum)
         If TempDoorNum > 0 Then
-            If Not IsTempDoorWalkable(MapNum, TempDoorNum) Then
+            If Not IsTempDoorWalkable(mapnum, TempDoorNum) Then
                 Moved = False
             End If
         End If
         
-        If IsDoorOpened(MapNum, TempDoorNum) Then
-            MapNum = Doors(DoorNum).WarpMap
-            If MapNum > 0 Then
+        If IsDoorOpened(mapnum, TempDoorNum) Then
+            mapnum = Doors(DoorNum).WarpMap
+            If mapnum > 0 Then
                 X = Doors(DoorNum).WarpX
                 Y = Doors(DoorNum).WarpY
-                Call PlayerWarpByEvent(index, MapNum, X, Y)
+                Call PlayerWarpByEvent(index, mapnum, X, Y)
                 Teleported = True
             End If
         Else
             If GetDoorType(DoorNum) = DOOR_TYPE_WEIGHTSWITCH Then
-                Call CheckWeightSwitch(MapNum, TempDoorNum)
+                Call CheckWeightSwitch(mapnum, TempDoorNum)
             Else
                 Moved = False
             End If
@@ -142,15 +143,15 @@ Sub CheckTilePlayerMove(ByVal index As Long, ByVal X As Integer, ByVal Y As Inte
             X = .Data1
             Y = .Data2
             Dim KeyToOpen As Long
-            KeyToOpen = GetTempDoorNumberByTile(MapNum, X, Y)
+            KeyToOpen = GetTempDoorNumberByTile(mapnum, X, Y)
             If KeyToOpen > 0 Then
-                If map(MapNum).Tile(X, Y).Type = TILE_TYPE_key And Not TempTile(GetPlayerMap(index)).Door(KeyToOpen).state Then
-                    TempTile(MapNum).Door(KeyToOpen).state = True
-                    TempTile(MapNum).Door(KeyToOpen).DoorTimer = GetRealTickCount + 60000
+                If map(mapnum).Tile(X, Y).Type = TILE_TYPE_KEY And Not TempTile(GetPlayerMap(index)).Door(KeyToOpen).state Then
+                    TempTile(mapnum).Door(KeyToOpen).state = True
+                    TempTile(mapnum).Door(KeyToOpen).DoorTimer = GetRealTickCount + 60000
                     'Send to all players on the map
-                    SendMapKeyToMap MapNum, X, Y, 1
+                    SendMapKeyToMap mapnum, X, Y, 1
                     'SendMapKey index, X, Y, 1
-                    Call MapMsg(MapNum, "La puerta se ha abierto.", White)
+                    Call MapMsg(mapnum, "La puerta se ha abierto.", White)
                     SendMapSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seSwitchFloor, 1
                 End If
             End If
@@ -174,7 +175,7 @@ Sub CheckTilePlayerMove(ByVal index As Long, ByVal X As Integer, ByVal Y As Inte
             Else
                 colour = Cyan
             End If
-            SendActionMsg MapNum, "+" & amount, colour, ACTIONMSG_SCROLL, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1
+            SendActionMsg mapnum, "+" & amount, colour, ACTIONMSG_SCROLL, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1
             SetPlayerVital index, VitalType, GetPlayerVital(index, VitalType) + amount
             'PlayerMsg index, "Sientes unas fuerzas que rejuvenecen tu cuerpo.", BrightGreen
             Call SendVital(index, VitalType)
@@ -260,8 +261,8 @@ Sub PlayerMove(ByVal index As Long, ByVal dir As Byte, ByVal Movement As Long, O
     
     
     Dim Moved As Boolean
-    Dim MapNum As Long
-    MapNum = GetPlayerMap(index)
+    Dim mapnum As Long
+    mapnum = GetPlayerMap(index)
     
     Dim CurX As Long, CurY As Long
     CurX = GetPlayerX(index)
@@ -269,8 +270,8 @@ Sub PlayerMove(ByVal index As Long, ByVal dir As Byte, ByVal Movement As Long, O
     
     
     
-    If (Not OutOfBoundries(CurX, CurY, MapNum)) Then
-        If isDirBlocked(map(MapNum).Tile(CurX, CurY).DirBlock, dir + 1) Then
+    If (Not OutOfBoundries(CurX, CurY, mapnum)) Then
+        If isDirBlocked(map(mapnum).Tile(CurX, CurY).DirBlock, dir + 1) Then
             SendPlayerXY (index)
             Exit Sub
         End If
@@ -282,7 +283,7 @@ Sub PlayerMove(ByVal index As Long, ByVal dir As Byte, ByVal Movement As Long, O
 
     GetNextPosition CurX, CurY, dir, X, Y
     
-    If (Not OutOfBoundries(X, Y, MapNum)) Then
+    If (Not OutOfBoundries(X, Y, mapnum)) Then
         Dim Teleported As Boolean
         Call CheckTilePlayerMove(index, X, Y, Moved, Teleported)
         If Not Teleported Then
@@ -292,12 +293,12 @@ Sub PlayerMove(ByVal index As Long, ByVal dir As Byte, ByVal Movement As Long, O
                 Call SetPlayerX(index, X)
                 Call SetPlayerY(index, Y)
                 Call SendPlayerMove(index, Movement, dir, sendToSelf)
-                Call CheckBladeNPCMatch(index, MapNum)
+                Call CheckBladeNPCMatch(index, mapnum)
                 Call CheckTileEventsAfterMoving(index, X, Y)
             End If
         End If
     Else
-        If HasMapWarpByDir(dir, MapNum) > 0 Then
+        If HasMapWarpByDir(dir, mapnum) > 0 Then
             PlayerWarpByMapLimits index, dir
             Call ClearPlayerTarget(index)
         Else

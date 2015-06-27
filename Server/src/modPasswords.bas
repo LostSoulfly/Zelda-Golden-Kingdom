@@ -1,4 +1,5 @@
 Attribute VB_Name = "modPasswords"
+Option Explicit
 
 
 Public Function EncriptatePassword(ByVal password As String) As String

@@ -1,8 +1,8 @@
 VERSION 5.00
 Object = "{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}#1.0#0"; "msscript.ocx"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "tabctl32.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
 Begin VB.Form frmMain 
    BorderStyle     =   1  'Fixed Single
    ClientHeight    =   10215
@@ -44,12 +44,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   8760
+      Left            =   11040
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
       TabIndex        =   203
-      Top             =   3960
+      Top             =   2640
       Visible         =   0   'False
       Width           =   2910
       Begin VB.HScrollBar scrlPet 
@@ -419,7 +419,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   4050
-      Left            =   8760
+      Left            =   8520
       ScaleHeight     =   270
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   194
@@ -5038,7 +5038,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   -2147483641
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
@@ -7992,8 +7991,8 @@ Call PetFollow(MyIndex)
 End Sub
 
 Private Sub lblPetForsake_Click()
-    If lblPetForsake.Caption = "Abandonar Mascota" Then
-        lblPetForsake.Caption = "Seguro?"
+    If lblPetForsake.Caption = GetTranslation("Abandonar Mascota") Then
+        lblPetForsake.Caption = "Sure?"
         lblPetForsakeYes.Visible = True
         lblPetForsakeNo.Visible = True
     Else
@@ -8003,7 +8002,7 @@ End Sub
 
 Private Sub lblPetForsakeNo_Click()
 
-    lblPetForsake.Caption = "Abandonar Mascota"
+    lblPetForsake.Caption = GetTranslation("Abandonar Mascota")
     lblPetForsakeYes.Visible = False
     lblPetForsakeNo.Visible = False
 
@@ -8015,7 +8014,7 @@ Private Sub lblPetForsakeYes_Click()
         Call SendPetForsake(MyIndex, Player(MyIndex).ActualPet)
     End If
     
-    lblPetForsake.Caption = "Abandonar Mascota"
+    lblPetForsake.Caption = GetTranslation("Abandonar Mascota")
     lblPetForsakeYes.Visible = False
     lblPetForsakeNo.Visible = False
     
@@ -8078,11 +8077,11 @@ Private Sub ResetTriforcePicInfo(ByVal Control As Boolean)
 If Control Then
     lblTriforceAccept.Visible = False
     lblTriforceDecline.Visible = False
-    lblTriforceInfo.Caption = "Selecciona una Trifuerza"
+    lblTriforceInfo.Caption = GetTranslation("Selecciona una Trifuerza")
 Else
     lblTriforceAccept.Visible = True
     lblTriforceDecline.Visible = True
-    lblTriforceInfo.Caption = "¿Estás seguro?"
+    lblTriforceInfo.Caption = GetTranslation("¿Estás seguro?")
 End If
 End Sub
 
@@ -9679,7 +9678,7 @@ Private Sub picInventory_DblClick()
         If InBank Then
             If isItemStackable(GetPlayerInvItemNum(MyIndex, InvNum)) Then
                 CurrencyMenu = 2 ' deposit
-                lblCurrency.Caption = "¿Cuánto quieres depositar?"
+                lblCurrency.Caption = GetTranslation("¿Cuánto quieres depositar?")
                 tmpCurrencyItem = InvNum
                 txtCurrency.Text = vbNullString
                 picCurrency.Visible = True
@@ -9711,7 +9710,7 @@ Private Sub picInventory_DblClick()
             
             If isItemStackable(GetPlayerInvItemNum(MyIndex, InvNum)) Then
                 CurrencyMenu = 4 ' offer in trade
-                lblCurrency.Caption = "¿Cuánto quieres comerciar?"
+                lblCurrency.Caption = GetTranslation("¿Cuánto quieres comerciar?")
                 tmpCurrencyItem = InvNum
                 txtCurrency.Text = vbNullString
                 picCurrency.Visible = True
@@ -9917,7 +9916,7 @@ Private Sub picInventory_MouseDown(Button As Integer, Shift As Integer, X As Sin
                 If isItemStackable(GetPlayerInvItemNum(MyIndex, InvNum)) Then
                     If GetPlayerInvItemValue(MyIndex, InvNum) > 0 Then
                         CurrencyMenu = 1 ' drop
-                        lblCurrency.Caption = "¿Cuánto quieres tirar?"
+                        lblCurrency.Caption = GetTranslation("¿Cuánto quieres tirar?")
                         tmpCurrencyItem = InvNum
                         txtCurrency.Text = vbNullString
                         picCurrency.Visible = True
@@ -10547,7 +10546,7 @@ Dim bankNum As Long
 
              If isItemStackable(GetBankItemNum(bankNum)) Then
                 CurrencyMenu = 3 ' withdraw
-                lblCurrency.Caption = "¿Cuánto quieres retirar?"
+                lblCurrency.Caption = GetTranslation("¿Cuánto quieres retirar?")
                 tmpCurrencyItem = bankNum
                 txtCurrency.Text = vbNullString
                 picCurrency.Visible = True
@@ -10817,10 +10816,10 @@ End If
 End Sub
 
 Private Sub lblGuildDisband_Click()
-lblGuildDisband.Caption = "¿Estás Seguro?"
+lblGuildDisband.Caption = GetTranslation("¿Estás Seguro?")
 lblGuildYes.Visible = True
 lblGuildNo.Visible = True
-lblGuildYes.Caption = "Sí"
+lblGuildYes.Caption = GetTranslation("Sí")
 lblGuildNo.Caption = "No"
 End Sub
 
@@ -10828,14 +10827,14 @@ Private Sub lblGuildYes_Click()
 lblGuildYes.Visible = False
 lblGuildNo.Visible = False
 picGuild.Visible = False
-lblGuildDisband.Caption = "Deshacer Clan"
+lblGuildDisband.Caption = GetTranslation("Deshacer Clan")
 Call GuildCommand(10, "")
 End Sub
 
 Private Sub lblGuildNo_Click()
 lblGuildYes.Visible = False
 lblGuildNo.Visible = False
-lblGuildDisband.Caption = "Deshacer Clan"
+lblGuildDisband.Caption = GetTranslation("Deshacer Clan")
 End Sub
 
 Private Sub lblGuildCAccept_Click()

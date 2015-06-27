@@ -1,4 +1,5 @@
 Attribute VB_Name = "modSail"
+Option Explicit
 
 Private Const SAILING_CUSTOM_SPRITE As Byte = 7
 

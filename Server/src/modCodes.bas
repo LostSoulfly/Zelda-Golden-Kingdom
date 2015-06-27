@@ -1,5 +1,5 @@
 Attribute VB_Name = "modCodes"
-
+Option Explicit
 Public IPTries As Collection
 
 
@@ -17,7 +17,7 @@ Private Const SECOND_PURSHASE As Long = 700
 Private Const THIRD_PURSHASE As Long = 3000
 Private Const MAX_PURSHASE_TYPES As Byte = 3
 
-Private Const KEY As String = "&H329BA92D"
+Private Const key As String = "&H329BA92D"
 
 Public Sub ClearIPTries()
     Set IPTries = New Collection
@@ -177,7 +177,7 @@ End Sub
 Private Function Encriptate(ByVal X As String, ByRef Out As String) As Boolean
     If Not IsNumeric("&H" & X) Then Exit Function
     If Len(X) > 8 Then Exit Function
-    Out = Hex(CLng("&H" & X) Xor CLng(KEY))
+    Out = Hex(CLng("&H" & X) Xor CLng(key))
     Encriptate = True
 End Function
 
@@ -191,12 +191,12 @@ Sub AddPlayerBonusPoints(ByVal index As Long, ByVal points As Long)
 End Sub
 
 Sub SendPlayerBonusPoints(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SBonusPoints
-    buffer.WriteLong GetPlayerBonusPoints(index)
-    SendDataTo index, buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SBonusPoints
+    Buffer.WriteLong GetPlayerBonusPoints(index)
+    SendDataTo index, Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 

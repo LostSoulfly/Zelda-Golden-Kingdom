@@ -1,4 +1,6 @@
 Attribute VB_Name = "modCompresor"
+Option Explicit
+
 Private Declare Function qlz_compress Lib "quick32.dll" (ByRef Source As Byte, ByRef Destination As Byte, ByVal length As Long) As Long
 Private Declare Function qlz_decompress Lib "quick32.dll" (ByRef Source As Byte, ByRef Destination As Byte) As Long
 Private Declare Function qlz_size_decompressed Lib "quick32.dll" (ByRef Source As Byte) As Long
@@ -25,11 +27,11 @@ End Function
 Public Function Decompress(Source() As Byte, Optional ByRef blFail As Boolean) As Byte()
     Dim dst() As Byte
     Dim r As Long
-    Dim Size As Long
-    Size = GetSize(Source)
-    If Size = 0 Then blFail = True: Exit Function
-    If Size < 20 * 1000000 Then ' Visual Basic can crash if you allocate too long strings
-        ReDim dst(0 To Size - 1)
+    Dim size As Long
+    size = GetSize(Source)
+    If size = 0 Then blFail = True: Exit Function
+    If size < 20 * 1000000 Then ' Visual Basic can crash if you allocate too long strings
+        ReDim dst(0 To size - 1)
         r = qlz_decompress(Source(0), dst(0))
         ReDim Preserve dst(0 To r - 1)
         Decompress = dst
@@ -125,7 +127,7 @@ Sub AnalizeByte2(ByRef Data() As Byte, ByRef length As Long, ByVal b As Byte, By
         first = False
         If b = 0 Then
             PrevB = True
-            prevlL = prevL + 1
+            prevL = prevL + 1
         Else
             AddByte Data, b, length, 1
             PrevB = False

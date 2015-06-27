@@ -1664,7 +1664,7 @@ Sub SendPlayerSpells(ByVal index As Long)
     Set Buffer = Nothing
 End Sub
 
-Sub SendResourceCacheTo(ByVal index As Long, ByVal Resource_Num As Long)
+Sub SendResourceCacheTo(ByVal index As Long)
     Dim Buffer As clsBuffer
     Dim i As Long
     Set Buffer = New clsBuffer
@@ -1685,9 +1685,10 @@ Sub SendResourceCacheTo(ByVal index As Long, ByVal Resource_Num As Long)
     Set Buffer = Nothing
 End Sub
 
-Sub SendResourceCacheToMap(ByVal mapnum As Long, ByVal Resource_Num As Long)
+Sub SendResourceCacheToMap(ByVal mapnum As Long)
     Dim Buffer As clsBuffer
     Dim i As Long
+    
     Set Buffer = New clsBuffer
     Buffer.WriteLong SResourceCache
     Buffer.WriteLong ResourceCache(mapnum).Resource_Count
@@ -1709,6 +1710,9 @@ End Sub
 Sub SendSingleResourceCacheToMap(ByVal mapnum As Long, ByVal Resource_Num As Long)
     Dim Buffer As clsBuffer
     Dim i As Long
+    
+    If Resource_Num <= 0 Then Exit Sub
+    
     Set Buffer = New clsBuffer
     Buffer.WriteLong SSingleResourceCache
     

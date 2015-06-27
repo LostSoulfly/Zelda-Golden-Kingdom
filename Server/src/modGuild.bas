@@ -1,4 +1,5 @@
 Attribute VB_Name = "modGuild"
+Option Explicit
 'For Clear functions
 Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 
@@ -147,6 +148,7 @@ Public Sub MakeGuild(Founder_Index As Long, Name As String)
     Dim i As Integer
     Dim b As Integer
     Dim ItemAmount As Long
+    Dim N As String * 1
 
     If player(Founder_Index).GuildFileId > 0 Then
         PlayerMsg Founder_Index, "Debes abandonar tu clan actual para poder crear otro!", BrightRed
@@ -935,7 +937,7 @@ Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     If Not player(index).GuildFileId > 0 Then
         PlayerMsg index, "¡Necesitas estar en un clan!", BrightRed
         ' send the sound
-        SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seError, ItemNum
+        SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seError, 1
         Exit Sub
     End If
     
@@ -1218,7 +1220,7 @@ Sub FillGuildNames()
     Dim FSO As FileSystemObject
     Set FSO = New FileSystemObject
     Set AccountsFolder = FSO.GetFolder(App.Path & DATA_PATH & GUILD_PATH)
-    
+    Dim F As Long
 
     Dim Archivo As File
 

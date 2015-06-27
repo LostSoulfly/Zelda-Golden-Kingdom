@@ -104,7 +104,11 @@ Dim SleepTime As Long
 Dim i As Long
 
 'init our translation/md5 dll
-If T Is Nothing Then Set T = New GTranslate.DLL
+If T Is Nothing Then
+AddLog "Init GTranslate.dll.. (If you get an activeX error at this point, it's probably not registered properly!)"
+Set T = New GTranslate.DLL
+AddLog "Init complete. Your GTranslate.dll is registered properly!"
+End If
 'init the collection for the lang if it doesn't exist (and load our current language)
 If langCol Is Nothing Then Set langCol = New Collection: loadLang strTransPath, langCol
 If origCol Is Nothing Then Set origCol = New Collection: loadLang strOrigPath, origCol
@@ -149,7 +153,7 @@ StartOver:
         Else
         
         'russian roulette! WHOEVER WINS, GETS TO TRANSLATE FOR US! (not truly random :o)
-        Select Case RAND(0, 2)
+        Select Case Rand(0, 2)
 
         Case Is = 0
             Translate = T.BingTranslate(LangTo, LangFrom, Text, "myBTranslate", "zgQQfksRpj8H60LVHq4afeHtmVTldKrE7PQxRnqxOy4=")
@@ -206,7 +210,7 @@ Dim Temp() As String
 
 If col.Count = 1 Then ReadFromCache = "": Exit Function
 
-If Exists(col, strHash) = True Then ReadFromCache = col.item(strHash)(1)
+If Exists(col, strHash) = True Then ReadFromCache = col.Item(strHash)(1)
 
 End Function
 
@@ -229,6 +233,8 @@ Dim NF As Integer
 Dim NotNull As Boolean
 Dim bfFail As Boolean
 NF = FreeFile
+
+AddLog "Loading Lang file: " & Path
 
 ' check exists
     Open Path For Binary As NF
@@ -272,9 +278,9 @@ Buffer.WriteLong col.Count
 
 For i = 1 To col.Count
 'write the key first
-    Buffer.WriteString (col.item(i)(0))
+    Buffer.WriteString (col.Item(i)(0))
 'write the actual translation
-    Buffer.WriteString (col.item(i)(1))
+    Buffer.WriteString (col.Item(i)(1))
 Next
 
 'write buffer to temp out
@@ -335,9 +341,9 @@ Dim i As Long
 
 For i = 1 To col.Count
 'write the key first
-    Buffer.WriteString (col.item(i)(0))
+    Buffer.WriteString (col.Item(i)(0))
 'write the actual translation
-    Buffer.WriteString (col.item(i)(1))
+    Buffer.WriteString (col.Item(i)(1))
 Next i
 
 'write buffer to temp out

@@ -1,4 +1,5 @@
 Attribute VB_Name = "modPositions"
+Option Explicit
 
 Private Visited() As Integer
 Public Function Calculate2PointsVector(ByVal x1 As Long, ByVal x2 As Long, ByVal y1 As Long, ByVal y2 As Long) As clsDirVector

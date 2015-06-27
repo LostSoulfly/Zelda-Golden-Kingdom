@@ -848,7 +848,7 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
             End If
         End If
 
-        'Set the NPC target to player's pet target
+        'If the attacker is a pet and does not have a target
         If TempPlayer(attacker).TempPet.TempPetSlot > 0 And TempPlayer(attacker).TempPet.TempPetSlot < MAX_MAP_NPCS And TempPlayer(attacker).TempPet.PetHasOwnTarget = 0 Then
             If TempPlayer(attacker).TempPet.PetState = Assist Then
                 MapNpc(mapnum).NPC(TempPlayer(attacker).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NPC
@@ -856,14 +856,25 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
                 'Auto Targetting
                 TempPlayer(attacker).TempPet.PetHasOwnTarget = mapnpcnum
             End If
-        Else
-        ' Set the NPC target to the player
+        End If
+
+        If MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner > 0 Then
             If Not TempPlayer(MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner).TempPet.PetState = Passive Then
-                MapNpc(mapnum).NPC(mapnpcnum).TargetType = 1 ' player
+                MapNpc(mapnum).NPC(mapnpcnum).TargetType = TARGET_TYPE_PLAYER ' player
                 MapNpc(mapnum).NPC(mapnpcnum).Target = attacker
             End If
+        Else
+            If MapNpc(mapnum).NPC(mapnpcnum).TargetType = TARGET_TYPE_PLAYER Then
+                If Not GetPlayerMap(attacker) = mapnum Then
+                    'try and prevent players from kiting?
+                    MapNpc(mapnum).NPC(mapnpcnum).TargetType = TARGET_TYPE_PLAYER ' player
+                    MapNpc(mapnum).NPC(mapnpcnum).Target = attacker
+                End If
+            Else
+                    MapNpc(mapnum).NPC(mapnpcnum).TargetType = TARGET_TYPE_PLAYER ' player
+                    MapNpc(mapnum).NPC(mapnpcnum).Target = attacker
+            End If
         End If
-            
 
         ' Now check for guard ai and if so have all onmap guards come after'm
         If NPC(MapNpc(mapnum).NPC(mapnpcnum).Num).Behaviour = NPC_BEHAVIOUR_GUARD Then
@@ -1113,7 +1124,7 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
         'Drop Items If npc was a  pet
         If GetMapPetOwner(mapnum, mapnpcnum) > 0 Then
             If map(mapnum).moral <> MAP_MORAL_ARENA Then
-                If Not (GetLevelDifference(GetMapPetOwner(mapnum, mapnpcnum), victim) > 20) Then
+                If (GetLevelDifference(GetMapPetOwner(mapnum, mapnpcnum), victim) <= 10) Then
                     Call PlayerPVPDrops(victim)
                 End If
                 
@@ -1918,7 +1929,7 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
             '/ALATAR
             
             'Only If the level difference is less than 10
-            If Not (GetLevelDifference(attacker, victim) < 10) Then
+            If (GetLevelDifference(attacker, victim) <= 10) Then
                 Call PlayerPVPDrops(victim)
             End If
             
@@ -2031,7 +2042,7 @@ Public Sub BufferSpell(ByVal index As Long, ByVal spellslot As Long)
     
     ' see if cooldown has finished
     If TempPlayer(index).SpellCD(spellslot) > GetRealTickCount Then
-        'PlayerMsg index, "Habilidad recargándose", BrightRed
+        PlayerMsg index, "Habilidad recargándose", BrightRed
         Exit Sub
     End If
     

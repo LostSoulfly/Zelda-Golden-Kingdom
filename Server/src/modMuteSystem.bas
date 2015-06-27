@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMuteSystem"
+Option Explicit
 
 Public Type MuteRec
     Name As String
@@ -203,9 +204,9 @@ Public Function BinarySearchMutedPlayers(ByVal left As Long, ByVal right As Long
         Dim Ordenation As Integer
         Ordenation = LongOrdenation(X, .Timer)
         If Ordenation = 1 Then
-            BinarySearchMutedPlayers = BinarySearchMutedPlayers(left, meddle - 1, Name)
+            BinarySearchMutedPlayers = BinarySearchMutedPlayers(left, meddle - 1, X)
         ElseIf Ordenation = -1 Then
-            BinarySearchMutedPlayers = BinarySearchMutedPlayers(meddle + 1, right, Name)
+            BinarySearchMutedPlayers = BinarySearchMutedPlayers(meddle + 1, right, X)
         Else
             BinarySearchMutedPlayers = meddle
         End If
@@ -227,9 +228,9 @@ Function StringOrdenation(ByRef s1 As String, ByRef s2 As String) As Integer
 End Function
 
 Function LongOrdenation(ByVal x1 As Long, ByVal x2 As Long) As Integer
-    If s1 < s2 Then
+    If x1 < x2 Then
         LongOrdenation = 1
-    ElseIf s2 < s1 Then
+    ElseIf x2 < x1 Then
         LongOrdenation = -1
     Else
         LongOrdenation = 0

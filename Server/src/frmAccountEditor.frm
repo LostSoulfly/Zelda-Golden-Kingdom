@@ -383,6 +383,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Option Explicit
 
 Private Sub cmdFindPlayer_Click()
 Dim Username As String
@@ -399,7 +400,7 @@ mnuLevel.Visible = True
 
 For i = 1 To Player_HighIndex
     If IsPlaying(i) = True Then
-        If LCase$(Trim$(player(i).name)) = LCase$(Username) Then
+        If LCase$(Trim$(player(i).Name)) = LCase$(Username) Then
             EditUserIndex = i
             Call AccountEditorInit(i)
         ElseIf AccountExist(Username) Then
@@ -414,6 +415,7 @@ Next
 End Sub
 
 Private Sub cmdLoad_Click()
+Dim Username As String
 Username = Trim$(txtUserNameLoad.Text)
 lstBank.Clear
 lstInventory.Clear
@@ -442,7 +444,7 @@ SavePlayer EditUserIndex
 Call SaveEditPlayer(EditUserIndex)
 
 With player(EditUserIndex)
-    .name = frmAccountEditor.txtUserName.Text
+    .Name = frmAccountEditor.txtUserName.Text
     .password = EncriptatePassword(frmAccountEditor.txtPassword.Text)
     .Access = frmAccountEditor.txtAccess.Text
     .Class = frmAccountEditor.cmbClass.ListIndex + 1
@@ -514,9 +516,9 @@ Dim i As Byte
 scrlBankItem.max = MAX_ITEMS
 scrlInvItem.max = MAX_ITEMS
 
-cmbClass.Text = Trim$(Class(1).name)
+cmbClass.Text = Trim$(Class(1).Name)
 For i = 1 To Max_Classes
-    cmbClass.AddItem Trim$(Class(i).name)
+    cmbClass.AddItem Trim$(Class(i).Name)
 Next
 
 End Sub
@@ -527,7 +529,7 @@ Dim ItemName As String
 If player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num = 0 Then
     ItemName = "None"
 Else
-    ItemName = Trim$(item(player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num).name)
+    ItemName = Trim$(item(player(EditUserIndex).Inv(lstInventory.ListIndex + 1).Num).Name)
 End If
 
 lblInvItem.Caption = "Inv item: " & ItemName
@@ -542,7 +544,7 @@ Dim ItemName As String
 If Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num = 0 Then
     ItemName = "None"
 Else
-    ItemName = Trim$(item(Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num).name)
+    ItemName = Trim$(item(Bank(EditUserIndex).item(lstBank.ListIndex + 1).Num).Name)
 End If
 
 lblBankItem.Caption = "Bank item: " & ItemName
@@ -554,15 +556,15 @@ Private Sub mnuLevel_Click()
 Dim level As Integer
 Dim Player_Level As Integer
 level = InputBox("Level 1-100:", "Level")
-Dim name As String
-name = frmServer.lvwInfo.SelectedItem.SubItems(3)
-If Not name = "Not Playing" Then
+Dim Name As String
+Name = frmServer.lvwInfo.SelectedItem.SubItems(3)
+If Not Name = "Not Playing" Then
 
-Player_Level = GetPlayerLevel(FindPlayer(name))
+Player_Level = GetPlayerLevel(FindPlayer(Name))
 ' If you want to change points please pm me <img src='http://www.touchofdeathforums.com/community/public/style_emoticons/<#EMO_DIR#>/wink.png' class='bbc_emoticon' alt=';)' />
-Call SetPlayerLevel(FindPlayer(name), level)
-Call SendPlayerData(FindPlayer(name))
-Call PlayerMsg(FindPlayer(name), GetTranslation("Te han cambiado tu nivel") & " " & Player_Level & " " & GetTranslation("al nivel") & " " & level, BrightCyan, , False)
+Call SetPlayerLevel(FindPlayer(Name), level)
+Call SendPlayerData(FindPlayer(Name))
+Call PlayerMsg(FindPlayer(Name), GetTranslation("Te han cambiado tu nivel") & " " & Player_Level & " " & GetTranslation("al nivel") & " " & level, BrightCyan, , False)
 End If
 End Sub
 
@@ -571,7 +573,7 @@ Private Sub scrlBankItem_Change()
 If scrlBankItem.Value = 0 Then
     lblBankItem.Caption = "Bank item: None"
 Else
-    lblBankItem.Caption = "Bank item: " & item(scrlBankItem.Value).name
+    lblBankItem.Caption = "Bank item: " & item(scrlBankItem.Value).Name
 End If
 
 End Sub
@@ -581,7 +583,7 @@ Private Sub scrlInvItem_Change()
 If scrlInvItem.Value = 0 Then
     lblInvItem.Caption = "Inv item: None"
 Else
-    lblInvItem.Caption = "Inv item: " & item(scrlInvItem.Value).name
+    lblInvItem.Caption = "Inv item: " & item(scrlInvItem.Value).Name
 End If
 
 End Sub
@@ -607,13 +609,13 @@ End Sub
 
 Private Sub txtSprite_Change()
 
-If IsNumeric(txtSprite.Text) = False Then txtSprite.Text = player(edituseindex).Sprite
+If IsNumeric(txtSprite.Text) = False Then txtSprite.Text = player(EditUserIndex).Sprite
 
 End Sub
 
 Private Sub txtUserName_Change()
 
-If txtUserName.Text = vbNullString Then txtUserName.Text = player(EditUserIndex).name
+If txtUserName.Text = vbNullString Then txtUserName.Text = player(EditUserIndex).Name
 
 End Sub
 

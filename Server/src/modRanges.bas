@@ -1,4 +1,5 @@
 Attribute VB_Name = "modRanges"
+Option Explicit
 Private Type TilePosRec
     X As Byte
     Y As Byte
@@ -420,6 +421,7 @@ Sub CheckNPCVision(ByVal mapnum As Long, ByVal mapnpcnum As Long)
 End Sub
 
 Sub IsPlayerOnNPCVision(ByVal index As Long)
+Dim ActionNum As Long
     Dim i As Long, mapnum As Long
     mapnum = GetPlayerMap(index)
     For i = 1 To GetMapNpcHighIndex(mapnum)

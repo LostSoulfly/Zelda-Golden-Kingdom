@@ -1,4 +1,5 @@
 Attribute VB_Name = "modSpell"
+Option Explicit
 Sub SpellStatBuffer(ByVal index As Long, ByVal spellnum As Long)
     If index < 1 Or spellnum < 1 Then Exit Sub
     If Spell(spellnum).Type <> SPELL_TYPE_BUFFER Then Exit Sub

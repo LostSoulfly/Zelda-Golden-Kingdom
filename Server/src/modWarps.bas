@@ -1,4 +1,5 @@
 Attribute VB_Name = "modWarps"
+Option Explicit
 Sub PlayerWarpBySpell(ByVal index As Long, ByVal spellnum As Long)
     CheckPlayerStateAtWarp index, Spell(spellnum).map
     PlayerWarp index, Spell(spellnum).map, Spell(spellnum).X, Spell(spellnum).Y, False

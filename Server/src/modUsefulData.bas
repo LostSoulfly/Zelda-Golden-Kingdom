@@ -1,4 +1,5 @@
 Attribute VB_Name = "modUsefulData"
+Option Explicit
 Function SendUsefulDataToPlayer(ByVal index As Long) As Boolean
     If GetPlayerAccess_Mode(index) = 0 Then
         SendUsefulDataToPlayer = True

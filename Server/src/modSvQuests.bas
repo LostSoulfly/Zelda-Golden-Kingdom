@@ -1,8 +1,8 @@
 Attribute VB_Name = "modSvQuests"
+Option Explicit
 '/////////////////////////////////////////////////////////////////////
 '///////////////// QUEST SYSTEM - Developed by Alatar ////////////////
 '/////////////////////////////////////////////////////////////////////
-Option Explicit
 Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 
 'Constants
@@ -173,7 +173,7 @@ End Sub
 Sub LoadQuests()
     Dim FileName As String
     Dim i As Integer
-    Dim F As Long, n As Long
+    Dim F As Long, N As Long
     Dim sLen As Long
     
     Call CheckQuests
@@ -198,29 +198,29 @@ Sub LoadQuests()
         Get #F, , Quest(i).Name
         Get #F, , Quest(i).Repeat
         Get #F, , Quest(i).QuestLog
-        For n = 1 To 3
-            Get #F, , Quest(i).Speech(n)
+        For N = 1 To 3
+            Get #F, , Quest(i).Speech(N)
         Next
-        For n = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).GiveItem(n)
+        For N = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).GiveItem(N)
         Next
-        For n = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).TakeItem(n)
+        For N = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).TakeItem(N)
         Next
         Get #F, , Quest(i).RequiredLevel
         Get #F, , Quest(i).RequiredQuest
-        For n = 1 To 5
-            Get #F, , Quest(i).RequiredClass(n)
+        For N = 1 To 5
+            Get #F, , Quest(i).RequiredClass(N)
         Next
-        For n = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).RequiredItem(n)
+        For N = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).RequiredItem(N)
         Next
         Get #F, , Quest(i).RewardExp
-        For n = 1 To MAX_QUESTS_ITEMS
-            Get #F, , Quest(i).RewardItem(n)
+        For N = 1 To MAX_QUESTS_ITEMS
+            Get #F, , Quest(i).RewardItem(N)
         Next
-        For n = 1 To MAX_TASKS
-            Get #F, , Quest(i).Task(n)
+        For N = 1 To MAX_TASKS
+            Get #F, , Quest(i).Task(N)
         'Next
         
         Get #F, , Quest(i).level
@@ -470,7 +470,7 @@ End Sub
 ' ///////////////
 
 Public Function CanStartQuest(ByVal index As Long, ByVal questnum As Long) As Boolean
-    Dim i As Long, n As Long
+    Dim i As Long, N As Long
     CanStartQuest = False
     If questnum < 1 Or questnum > MAX_QUESTS Then Exit Function
     If QuestInProgress(index, questnum) Then Exit Function
@@ -767,7 +767,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
 End Sub
 
 Public Sub EndQuest(ByVal index As Long, ByVal questnum As Long)
-    Dim i As Long, n As Long
+    Dim i As Long, N As Long
     
     'remove items on the end
     For i = 1 To MAX_QUESTS_ITEMS
@@ -778,7 +778,7 @@ Public Sub EndQuest(ByVal index As Long, ByVal questnum As Long)
                 If isItemStackable(Quest(questnum).TakeItem(i).item) Then
                     TakeInvItem index, Quest(questnum).TakeItem(i).item, Quest(questnum).TakeItem(i).Value
                 Else
-                    For n = 1 To Quest(questnum).TakeItem(i).Value
+                    For N = 1 To Quest(questnum).TakeItem(i).Value
                         TakeInvItem index, Quest(questnum).TakeItem(i).item, 1
                     Next
                 End If
@@ -808,7 +808,7 @@ Public Sub EndQuest(ByVal index As Long, ByVal questnum As Long)
                     GiveInvItem index, Quest(questnum).RewardItem(i).item, Quest(questnum).RewardItem(i).Value
                 Else
                 'if not, create a new loop and store the item in a new slot if is possible
-                    For n = 1 To Quest(questnum).RewardItem(i).Value
+                    For N = 1 To Quest(questnum).RewardItem(i).Value
                         If FindOpenInvSlot(index, Quest(questnum).RewardItem(i).item) = 0 Then
                             PlayerMsg index, "No tienes espacio en el inventario.", BrightRed
                             Exit For

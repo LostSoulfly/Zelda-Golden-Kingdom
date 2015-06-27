@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMovements"
+Option Explicit
 
 
 Public Function GetNextMovementDir(ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long) As Byte
@@ -8,9 +9,9 @@ Dim i As Byte
 Dim Absolute As Boolean
 Dim Inverse As Boolean
 
-MovementNum = npcs.movement
-ListActual = mapnpc(mapnum).NPC(mapnpcnum).Actual
-Inverse = mapnpc(mapnum).NPC(mapnpcnum).Inverse
+MovementNum = npcs.Movement
+ListActual = MapNpc(mapnum).NPC(mapnpcnum).Actual
+Inverse = MapNpc(mapnum).NPC(mapnpcnum).Inverse
 
 GetNextMovementDir = 4 'Null movement
 
@@ -70,9 +71,9 @@ Private Sub ProcessByDirectionMovement(ByRef npcs As MapNPCPropertiesRec, ByVal 
     Dim CanMove As Boolean
     CanMove = TestNPCMove(npcs, mapnum, mapnpcnum, dir)
     If Not CanMove Then
-        If EndOfMovement(npcs, mapnum, mapnpcnum, npcs.movement) Then
-            If GetMovementRepeat(npcs.movement) Then
-                Call NPCSfirst(Movements(npcs.movement).MovementsTable, npcs, mapnum, mapnpcnum)
+        If EndOfMovement(npcs, mapnum, mapnpcnum, npcs.Movement) Then
+            If GetMovementRepeat(npcs.Movement) Then
+                Call NPCSfirst(Movements(npcs.Movement).MovementsTable, npcs, mapnum, mapnpcnum)
             Else
                 Call InvertNpcList(npcs, mapnum, mapnpcnum)
             End If
@@ -96,8 +97,8 @@ Private Sub ProcessByTileMovement(ByRef npcs As MapNPCPropertiesRec, ByVal mapnu
     Else
         If EndOfMovement(npcs, mapnum, mapnpcnum, MovementNum) Then
             dir = 4
-            If GetMovementRepeat(npcs.movement) Then
-                Call NPCSfirst(Movements(npcs.movement).MovementsTable, npcs, mapnum, mapnpcnum)
+            If GetMovementRepeat(npcs.Movement) Then
+                Call NPCSfirst(Movements(npcs.Movement).MovementsTable, npcs, mapnum, mapnpcnum)
             Else
                 Call InvertNpcList(npcs, mapnum, mapnpcnum)
             End If
@@ -110,7 +111,7 @@ End Sub
 
 Private Function TestNPCMove(ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Byte)
 
-    If NPC(mapnpc(mapnum).NPC(mapnpcnum).Num).Behaviour = NPC_BEHAVIOUR_BLADE Then
+    If NPC(MapNpc(mapnum).NPC(mapnpcnum).Num).Behaviour = NPC_BEHAVIOUR_BLADE Then
         Dim CanBladeMove As Integer
         CanBladeMove = CanBladeNpcMove(mapnum, mapnpcnum, dir)
         If CanBladeMove = 0 Then
@@ -127,8 +128,8 @@ End Function
 
 Public Sub InvertNpcList(ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
 
-    mapnpc(mapnum).NPC(mapnpcnum).Inverse = Not (mapnpc(mapnum).NPC(mapnpcnum).Inverse)
-    mapnpc(mapnum).NPC(mapnpcnum).Count = GetRemainingTiles(Movements(npcs.movement).MovementsTable, npcs, mapnum, mapnpcnum)
+    MapNpc(mapnum).NPC(mapnpcnum).Inverse = Not (MapNpc(mapnum).NPC(mapnpcnum).Inverse)
+    MapNpc(mapnum).NPC(mapnpcnum).Count = GetRemainingTiles(Movements(npcs.Movement).MovementsTable, npcs, mapnum, mapnpcnum)
 
 End Sub
 
@@ -136,42 +137,42 @@ End Sub
 
 Public Sub NextMovement(ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
 
-Select Case mapnpc(mapnum).NPC(mapnpcnum).Inverse
+Select Case MapNpc(mapnum).NPC(mapnpcnum).Inverse
 
 Case False 'Normal Moviment, we have to stop when list end
-        Call NPCSnext(Movements(npcs.movement).MovementsTable, npcs, mapnum, mapnpcnum)
+        Call NPCSnext(Movements(npcs.Movement).MovementsTable, npcs, mapnum, mapnpcnum)
 Case True 'Inverted movement, stop when first
-        Call NPCSprevious(Movements(npcs.movement).MovementsTable, npcs, mapnum, mapnpcnum)
+        Call NPCSprevious(Movements(npcs.Movement).MovementsTable, npcs, mapnum, mapnpcnum)
 End Select
 
-If Movements(npcs.movement).Type = MovementType.ByTile Then
-    mapnpc(mapnum).NPC(mapnpcnum).Count = 0
+If Movements(npcs.Movement).Type = MovementType.ByTile Then
+    MapNpc(mapnum).NPC(mapnpcnum).Count = 0
 End If
 
     
 
 End Sub
 
-Public Sub NPCSnext(ByRef list As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
-If mapnpc(mapnum).NPC(mapnpcnum).Actual >= list.nelem Then Exit Sub
+Public Sub NPCSnext(ByRef List As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
+If MapNpc(mapnum).NPC(mapnpcnum).Actual >= List.nelem Then Exit Sub
 
-mapnpc(mapnum).NPC(mapnpcnum).Actual = mapnpc(mapnum).NPC(mapnpcnum).Actual + 1
-
-End Sub
-
-Public Sub NPCSprevious(ByRef list As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
-If mapnpc(mapnum).NPC(mapnpcnum).Actual <= 1 Then Exit Sub
-
-mapnpc(mapnum).NPC(mapnpcnum).Actual = mapnpc(mapnum).NPC(mapnpcnum).Actual - 1
+MapNpc(mapnum).NPC(mapnpcnum).Actual = MapNpc(mapnum).NPC(mapnpcnum).Actual + 1
 
 End Sub
 
-Public Sub NPCSfirst(ByRef list As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
+Public Sub NPCSprevious(ByRef List As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
+If MapNpc(mapnum).NPC(mapnpcnum).Actual <= 1 Then Exit Sub
+
+MapNpc(mapnum).NPC(mapnpcnum).Actual = MapNpc(mapnum).NPC(mapnpcnum).Actual - 1
+
+End Sub
+
+Public Sub NPCSfirst(ByRef List As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long)
 
 
-mapnpc(mapnum).NPC(mapnpcnum).Actual = 1
-mapnpc(mapnum).NPC(mapnpcnum).Count = 0
-mapnpc(mapnum).NPC(mapnpcnum).Inverse = False
+MapNpc(mapnum).NPC(mapnpcnum).Actual = 1
+MapNpc(mapnum).NPC(mapnpcnum).Count = 0
+MapNpc(mapnum).NPC(mapnpcnum).Inverse = False
 
 End Sub
 
@@ -196,18 +197,18 @@ End Select
 
 End Function
 
-Public Function NPCListEnd(ByRef list As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long) As Boolean
+Public Function NPCListEnd(ByRef List As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long) As Boolean
 
 NPCListEnd = False
 
-Select Case mapnpc(mapnum).NPC(mapnpcnum).Inverse
+Select Case MapNpc(mapnum).NPC(mapnpcnum).Inverse
 Case False
     'Normal Moviment return true when list ends
-    If list.nelem = mapnpc(mapnum).NPC(mapnpcnum).Actual Then
+    If List.nelem = MapNpc(mapnum).NPC(mapnpcnum).Actual Then
         NPCListEnd = True
     End If
 Case True
-    If mapnpc(mapnum).NPC(mapnpcnum).Actual = 1 Then
+    If MapNpc(mapnum).NPC(mapnpcnum).Actual = 1 Then
         NPCListEnd = True
     End If
 End Select
@@ -215,13 +216,13 @@ End Select
 
 End Function
 
-Public Function GetRemainingTiles(ByRef list As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long) As Byte
-GetRemainingTiles = list.vect(mapnpc(mapnum).NPC(mapnpcnum).Actual).Data.NumberOfTiles - mapnpc(mapnum).NPC(mapnpcnum).Count
+Public Function GetRemainingTiles(ByRef List As MovementsListRec, ByRef npcs As MapNPCPropertiesRec, ByVal mapnum As Long, ByVal mapnpcnum As Long) As Byte
+GetRemainingTiles = List.vect(MapNpc(mapnum).NPC(mapnpcnum).Actual).Data.NumberOfTiles - MapNpc(mapnum).NPC(mapnpcnum).Count
 End Function
 
 Public Sub MakeStep(ByVal MovementNum As Byte, ByVal mapnum As Long, ByVal mapnpcnum As Long)
 
-mapnpc(mapnum).NPC(mapnpcnum).Count = mapnpc(mapnum).NPC(mapnpcnum).Count + 1
+MapNpc(mapnum).NPC(mapnpcnum).Count = MapNpc(mapnum).NPC(mapnpcnum).Count + 1
 
 End Sub
 
@@ -232,7 +233,7 @@ Public Function GetMovementType(ByVal MovementNum As Long) As MovementType
 End Function
 
 Private Function GetMovementActualDir(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal MovementNum As Long)
-    GetMovementActualDir = Movements(MovementNum).MovementsTable.vect(mapnpc(mapnum).NPC(mapnpcnum).Actual).Data.Direction
+    GetMovementActualDir = Movements(MovementNum).MovementsTable.vect(MapNpc(mapnum).NPC(mapnpcnum).Actual).Data.Direction
 End Function
 
 Private Sub InvertDir(ByRef dir As Byte)
@@ -249,14 +250,14 @@ End Sub
 
 
 
-Sub ResetMapNPCSProperties(ByVal movement As Byte)
-Dim i, n As Long
+Sub ResetMapNPCSProperties(ByVal Movement As Byte)
+Dim i, N As Long
 For i = 1 To MAX_MAPS
-    For n = 1 To MAX_MAP_NPCS
-        If map(i).NPCSProperties(n).movement = movement Then
-            mapnpc(i).NPC(n).Actual = 1
-            mapnpc(i).NPC(n).Count = 0
-            mapnpc(i).NPC(n).Inverse = False
+    For N = 1 To MAX_MAP_NPCS
+        If map(i).NPCSProperties(N).Movement = Movement Then
+            MapNpc(i).NPC(N).Actual = 1
+            MapNpc(i).NPC(N).Count = 0
+            MapNpc(i).NPC(N).Inverse = False
         End If
     Next
 Next
@@ -264,9 +265,9 @@ End Sub
 
 Sub ResetMapNPCMovement(ByVal mapnum As Long, ByVal mapnpcnum As Long)
 If mapnum > 0 And mapnum <= MAX_MAPS And mapnpcnum > 0 And mapnpcnum <= MAX_MAP_NPCS Then
-    mapnpc(mapnum).NPC(mapnpcnum).Actual = 1
-    mapnpc(mapnum).NPC(mapnpcnum).Count = 0
-    mapnpc(mapnum).NPC(mapnpcnum).Inverse = False
+    MapNpc(mapnum).NPC(mapnpcnum).Actual = 1
+    MapNpc(mapnum).NPC(mapnpcnum).Count = 0
+    MapNpc(mapnum).NPC(mapnpcnum).Inverse = False
 End If
 
 End Sub

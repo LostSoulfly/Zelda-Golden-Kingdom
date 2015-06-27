@@ -1,4 +1,5 @@
 Attribute VB_Name = "modPet"
+Option Explicit
 
 
 Public Type PlayerPetRec
@@ -235,7 +236,7 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
         If player(index).X = 0 Then Exit Sub
     End Select
     
-        If map(PlayerMap).moral = MAP_MORAL_SAFE Or map(PlayerMap).moral = MAP_MORAL_PACIFIC Then PetDisband index, OldMap, True: PlayerMsg index, "Your pet is not allowed on this map.", White, , False: Exit Sub
+        If map(PlayerMap).moral = MAP_MORAL_SAFE Or map(PlayerMap).moral = MAP_MORAL_PACIFIC Then PetDisband index, PlayerMap, True: PlayerMsg index, "Your pet is not allowed on this map.", White, , False: Exit Sub
     
     For i = 1 To MAX_MAP_NPCS
         If map(PlayerMap).NPC(i) = 0 And MapNpc(PlayerMap).NPC(i).Num = 0 Then
@@ -364,7 +365,7 @@ If player(index).Pet(TempPlayer(index).TempPet.ActualPet).NumPet > 0 Then
         result = 255
     End If
     
-    GetPetTotalStat = CByte(result)
+    GetPlayerPetTotalStat = CByte(result)
 End If
 End Function
 
@@ -733,6 +734,7 @@ Dim RVital2 As Double
 Dim vital As Vitals
 Dim PlayerVital As Double
 Dim PetVital As Double
+Dim spellnum As Long
 
 ComparePetAndOwnerVital = 3
 

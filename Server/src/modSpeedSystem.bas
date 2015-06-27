@@ -1,4 +1,5 @@
 Attribute VB_Name = "modSpeedSystem"
+Option Explicit
 
 Public Const Walk_Speed As Byte = 6
 Public Const Run_Speed As Byte = 8
@@ -16,19 +17,19 @@ Sub CheckSpeedHack(ByVal index As Long)
 End Sub
 
 Sub SendSpeedReqTo(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SSpeedReq
-    buffer.WriteByte SPEEDHACK_LAPSE
-    SendDataTo index, buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SSpeedReq
+    Buffer.WriteByte SPEEDHACK_LAPSE
+    SendDataTo index, Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub HandleSpeedAck(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
+    Set Buffer = Nothing
     
     Call CheckPlayerSpeedHack(index, GetTickCount)
     
@@ -67,39 +68,39 @@ Function GetPlayerSpeedHackChecker(ByVal index As Long) As Long
 End Function
 
 Sub SendPlayerSpeedToMap(ByVal index As Long, ByVal Movement As Long, ByVal Speed As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SPlayerSpeed
-    buffer.WriteLong index
-    buffer.WriteLong Movement
-    buffer.WriteLong Speed
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SPlayerSpeed
+    Buffer.WriteLong index
+    Buffer.WriteLong Movement
+    Buffer.WriteLong Speed
     
-    SendDataToMap GetPlayerMap(index), buffer.ToArray()
-    Set buffer = Nothing
+    SendDataToMap GetPlayerMap(index), Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub SendPlayerSpeedTo(ByVal index As Long, ByVal SendIndex As Long, ByVal Movement As Long, ByVal Speed As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SPlayerSpeed
-    buffer.WriteLong SendIndex
-    buffer.WriteLong Movement
-    buffer.WriteLong Speed
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SPlayerSpeed
+    Buffer.WriteLong SendIndex
+    Buffer.WriteLong Movement
+    Buffer.WriteLong Speed
     
-    SendDataTo index, buffer.ToArray()
-    Set buffer = Nothing
+    SendDataTo index, Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub SendPlayerSpeedToAll(ByVal index As Long, ByVal Movement As Long, ByVal Speed As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SPlayerSpeed
-    buffer.WriteLong index
-    buffer.WriteLong Movement
-    buffer.WriteLong Speed
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SPlayerSpeed
+    Buffer.WriteLong index
+    Buffer.WriteLong Movement
+    Buffer.WriteLong Speed
     
-    SendDataToAll buffer.ToArray()
-    Set buffer = Nothing
+    SendDataToAll Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 
@@ -136,10 +137,10 @@ End Function
 
 
 Sub HandleFSpellActivacion(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
+    Set Buffer = Nothing
     
     Call Impactar(index, index, 1, 1)
     

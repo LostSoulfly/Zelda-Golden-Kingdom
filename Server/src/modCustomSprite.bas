@@ -1,4 +1,5 @@
 Attribute VB_Name = "modCustomSprite"
+Option Explicit
 Public Const MAX_DIRECTIONS As Byte = 4
 Public Const MAX_SPRITE_ANIMS As Byte = 4
 Public Const MAX_SPRITE_LAYERS As Byte = 5
@@ -32,65 +33,65 @@ End Type
 
 
 Public Function GetCustomSpriteData(ByVal CustomSprite As Byte) As Byte()
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     With CustomSprites(CustomSprite)
-        buffer.WriteString .Name
-        buffer.WriteByte .NLayers
+        Buffer.WriteString .Name
+        Buffer.WriteByte .NLayers
         Dim i As Byte
         For i = 1 To .NLayers
-            buffer.WriteLong .Layers(i).Sprite
-            buffer.WriteByte .Layers(i).UseCenterPosition
-            buffer.WriteByte .Layers(i).UsePlayerSprite
+            Buffer.WriteLong .Layers(i).Sprite
+            Buffer.WriteByte .Layers(i).UseCenterPosition
+            Buffer.WriteByte .Layers(i).UsePlayerSprite
             Dim j As Byte, k As Byte
             For j = 0 To MAX_DIRECTIONS - 1
                 For k = 0 To MAX_SPRITE_ANIMS - 1
-                    buffer.WriteByte .Layers(i).fixed.EnabledAnims(j, k)
+                    Buffer.WriteByte .Layers(i).fixed.EnabledAnims(j, k)
                 Next
             Next
             For j = 0 To MAX_DIRECTIONS - 1
-                 buffer.WriteInteger .Layers(i).CentersPositions(j).X
-                 buffer.WriteInteger .Layers(i).CentersPositions(j).Y
+                 Buffer.WriteInteger .Layers(i).CentersPositions(j).X
+                 Buffer.WriteInteger .Layers(i).CentersPositions(j).Y
             Next
         Next
                             
     End With
     
-    GetCustomSpriteData = buffer.ToArray
-    Set buffer = Nothing
+    GetCustomSpriteData = Buffer.ToArray
+    Set Buffer = Nothing
 End Function
 
 Public Sub SetCustomSpriteData(ByVal CustomSprite As Byte, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     With CustomSprites(CustomSprite)
-        .Name = buffer.ReadString
-        .NLayers = buffer.ReadByte
+        .Name = Buffer.ReadString
+        .NLayers = Buffer.ReadByte
         If .NLayers <> 0 Then
             ReDim .Layers(1 To .NLayers)
         End If
         Dim i As Byte
         For i = 1 To .NLayers
-            .Layers(i).Sprite = buffer.ReadLong
-            .Layers(i).UseCenterPosition = buffer.ReadByte
-            .Layers(i).UsePlayerSprite = buffer.ReadByte
+            .Layers(i).Sprite = Buffer.ReadLong
+            .Layers(i).UseCenterPosition = Buffer.ReadByte
+            .Layers(i).UsePlayerSprite = Buffer.ReadByte
             Dim j As Byte, k As Byte
             For j = 0 To MAX_DIRECTIONS - 1
                 For k = 0 To MAX_SPRITE_ANIMS - 1
-                    .Layers(i).fixed.EnabledAnims(j, k) = buffer.ReadByte
+                    .Layers(i).fixed.EnabledAnims(j, k) = Buffer.ReadByte
                 Next
             Next
             For j = 0 To MAX_DIRECTIONS - 1
-                .Layers(i).CentersPositions(j).X = buffer.ReadInteger
-                .Layers(i).CentersPositions(j).Y = buffer.ReadInteger
+                .Layers(i).CentersPositions(j).X = Buffer.ReadInteger
+                .Layers(i).CentersPositions(j).Y = Buffer.ReadInteger
             Next
         Next
                             
     End With
     
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 

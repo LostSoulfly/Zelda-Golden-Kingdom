@@ -1,4 +1,5 @@
 Attribute VB_Name = "modSwitches"
+Option Explicit
 Public Const ADMIN_DISABLED As Boolean = True
 Private AD As Boolean
 

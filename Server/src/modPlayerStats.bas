@@ -1,4 +1,5 @@
 Attribute VB_Name = "modPlayerState"
+Option Explicit
 
 
 
@@ -94,13 +95,13 @@ Function IsStateAllowedOnMap(ByVal mapnum As Long, ByVal state As PlayerStateTyp
 End Function
 
 Sub SendPlayerStateToMap(ByVal index As Long, ByVal state As PlayerStateType)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong SPlayerState
-    buffer.WriteLong index
-    buffer.WriteByte state
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SPlayerState
+    Buffer.WriteLong index
+    Buffer.WriteByte state
     
-    SendDataToMap GetPlayerMap(index), buffer.ToArray
+    SendDataToMap GetPlayerMap(index), Buffer.ToArray
 End Sub
 
 

@@ -1,4 +1,6 @@
 Attribute VB_Name = "modArmy"
+Option Explicit
+
 Public Enum HeroRangesType
     Soldado = 1
     Escolta
@@ -134,6 +136,7 @@ End Function
 
 Sub PartyShareKillPoints(ByVal index As Long, ByVal partynum As Byte, ByVal points As Single)
     If partynum < 1 Or partynum > MAX_PARTYS Then Exit Sub
+    Dim i As Long
     
     With Party(partynum)
     
@@ -199,7 +202,7 @@ End Sub
 Sub ComputeArmyPvP(ByVal attacker As Long, ByVal victim As Long)
     If attacker = 0 Or victim = 0 Then Exit Sub
     
-    Dim AStatus As Byte, BStatus As Byte
+    Dim AStatus As Byte, vStatus As Byte
     AStatus = GetPlayerPK(attacker)
     vStatus = GetPlayerPK(victim)
     

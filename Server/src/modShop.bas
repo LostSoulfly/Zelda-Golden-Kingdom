@@ -1,4 +1,5 @@
 Attribute VB_Name = "modShop"
+Option Explicit
 
 
 Public Enum ShopPricesType

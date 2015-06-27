@@ -1,4 +1,5 @@
 Attribute VB_Name = "modGames"
+Option Explicit
 'For Clear functions
 Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 
@@ -193,7 +194,7 @@ End Sub
 Sub ClearTeamPlayerByMemberIndex(ByVal TeamIndex As Byte, ByVal MemberIndex As Byte, Optional ByVal SetNewRepresentant As Boolean = False)
     With Teams(TeamIndex)
         TempPlayer(.Members(MemberIndex)).TeamIndex = 0
-        Call DisbandPlayerFromGame(index, TeamIndex)
+        Call DisbandPlayerFromGame(.Members(MemberIndex), TeamIndex)
         Teams(TeamIndex).Members(MemberIndex) = 0
         .NumMembers = .NumMembers - 1
         If SetNewRepresentant Then

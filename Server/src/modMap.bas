@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMap"
+Option Explicit
 Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 
 Public FixWarpMap As Long
@@ -411,6 +412,7 @@ End Function
 
 
 Function ComputeNPCSingleMovement(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Byte) As Boolean
+If mapnum = 0 Or mapnpcnum = 0 Then Exit Function
     Dim mapref As Long
     mapref = GetMapRef(mapnum)
     
@@ -488,7 +490,7 @@ Sub DeleteNPCFromMapRef(ByVal mapnum As Long, ByVal mapnpcnum As Long)
 End Sub
 
 Sub AddResourceIndexToMapRef(ByVal mapnum As Long, ByVal ResourceIndex As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+    If mapnum = 0 Or ResourceIndex = 0 Then Exit Sub
     Dim i As Long
     i = GetMapRef(mapnum)
     If i > 0 Then
@@ -508,7 +510,7 @@ Sub AddResourceIndexToMapRef(ByVal mapnum As Long, ByVal ResourceIndex As Long)
 End Sub
 
 Sub DeleteResourceIndexFromMapRef(ByVal mapnum As Long, ByVal ResourceIndex As Long)
-    If mapnum = 0 Or mapnpcnum = 0 Then Exit Sub
+    If mapnum = 0 Or ResourceIndex = 0 Then Exit Sub
     Dim i As Long
     i = GetMapRef(mapnum)
     If i > 0 Then
@@ -635,6 +637,7 @@ Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
     Dim newVer As Boolean
+    Dim X As Long, Y As Long
     Buffer.WriteBytes Data
     With map
         If Buffer.ReadConstString(3, False) = "v.2" Then newVer = True: Buffer.MoveReadHead 3
@@ -688,7 +691,7 @@ Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
 End Sub
 
 Public Function CheckMapsConnectedTo(mapnum As Long) As Boolean
-
+Dim i As Long, X As Long, Y As Long
 CheckMapsConnectedTo = False
 AddLog2 "CheckMapsConnectedTo: Checking map " & Trim$(map(mapnum).TranslatedName) & " (" & mapnum & ") for linkage from other maps.", "MAP_CHECK.log"
 
@@ -733,6 +736,7 @@ End Function
 
 Public Function CheckMapUnlinked(mapnum As Long) As Boolean
 Dim l As Long, r As Long, u As Long, d As Long
+Dim X As Long, Y As Long
 Dim unlinked As Boolean
 
 CheckMapUnlinked = True
@@ -767,6 +771,7 @@ Public Sub SetServerMapData(ByVal mapnum As Long, ByRef Data() As Byte)
     Set Buffer = New clsBuffer
     Buffer.WriteBytes Data
     Dim newVer As Boolean
+    Dim X As Long, Y As Long
 
     With map(mapnum)
         If Buffer.ReadConstString(3, False) = "v.2" Then newVer = True: Buffer.MoveReadHead 3
@@ -833,7 +838,7 @@ Function GetMapMoral(ByVal mapnum As Long) As Byte
     GetMapMoral = map(mapnum).moral
 End Function
 
-Sub GetOnDeathMap(ByVal index As Long, ByRef mapnum As Long, ByRef X As Long, ByRef Y As Long)
+Sub GetOnDeathMap(ByVal index As Long, ByRef mapnum As Long, ByRef X As Long, ByRef Y As Long, Optional ByVal RespawnSite As Byte = 0)
 
 If FixWarpMap_Enabled Then
     mapnum = FixWarpMap

@@ -1,4 +1,5 @@
 Attribute VB_Name = "modRides"
+Option Explicit
 
 Public Const RIDE_WALK_SPEED As Long = 14
 Public Const RIDE_RUN_SPEED As Long = 22
@@ -135,22 +136,22 @@ Function CanRide(ByVal index As Long) As Boolean
 End Function
 
 Sub SendStaminaInfo(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong SStaminaInfo
+    Buffer.WriteLong SStaminaInfo
     If CanClassRoll(GetPlayerClass(index)) Then
-        buffer.WriteLong MAX_ROLL_STAMINA
+        Buffer.WriteLong MAX_ROLL_STAMINA
     Else
-        buffer.WriteLong MAX_STAMINA
+        Buffer.WriteLong MAX_STAMINA
     End If
-    buffer.WriteLong MIN_BURN_BY_TIME
-    buffer.WriteLong MAX_BURN_BY_TIME
-    buffer.WriteLong MIN_GROWTH_BY_TIME
-    buffer.WriteLong MAX_GROWTH_BY_TIME
-    buffer.WriteLong SPECIAL_BONUS_MS
+    Buffer.WriteLong MIN_BURN_BY_TIME
+    Buffer.WriteLong MAX_BURN_BY_TIME
+    Buffer.WriteLong MIN_GROWTH_BY_TIME
+    Buffer.WriteLong MAX_GROWTH_BY_TIME
+    Buffer.WriteLong SPECIAL_BONUS_MS
     
-    SendDataTo index, buffer.ToArray
+    SendDataTo index, Buffer.ToArray
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub

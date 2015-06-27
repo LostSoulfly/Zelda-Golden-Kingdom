@@ -792,6 +792,16 @@ Sub HandlePlayerMove(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
         Exit Sub
     End If
     
+    If TempPlayer(index).spellBuffer.Spell > 0 Then
+        ' Clear spell casting
+        TempPlayer(index).spellBuffer.Spell = 0
+        TempPlayer(index).spellBuffer.Timer = 0
+        TempPlayer(index).spellBuffer.Target = 0
+        TempPlayer(index).spellBuffer.tType = 0
+        Call SendClearSpellBuffer(index)
+        'Call SendActionMsg(index, "Spell cancelled!", BrightRed, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
+        SendActionMsg GetPlayerMap(index), "Spell interrupted!", BrightRed, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+    End If
     
     dir = Buffer.ReadLong 'CLng(Parse(1))
     Movement = Buffer.ReadLong 'CLng(Parse(2))
@@ -1255,10 +1265,10 @@ Sub HandleNeedMap(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
     Call SendMapKeysTo(index, GetPlayerMap(index))
     Call SendJoinMap(index)
     Call SendDone(index)
-    
+    DoEvents
     'send Resource cache
     'For i = 0 To ResourceCache(GetPlayerMap(index)).Resource_Count
-    SendResourceCacheTo index, i
+    SendResourceCacheTo index
     'Next
     
     TempPlayer(index).IsLoading = False

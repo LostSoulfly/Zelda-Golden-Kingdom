@@ -1109,7 +1109,7 @@ FilePath = App.Path & "\data\maps\"
 FileName = FilePath & "map" & mapnum & ".dat"
 BackupPath = FilePath & "revisions\"
 MkDir BackupPath
-NewFileName = FilePath & "map" & mapnum & "-" & Revision & ".dat"
+NewFileName = BackupPath & "map" & mapnum & "-" & Revision & ".dat"
 FileCopy FileName, NewFileName
 End Sub
 

@@ -1,4 +1,5 @@
 Attribute VB_Name = "modDoor"
+Option Explicit
 
 Public Type DoorRec
     Name As String * NAME_LENGTH

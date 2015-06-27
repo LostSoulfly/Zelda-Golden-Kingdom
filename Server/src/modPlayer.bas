@@ -1187,7 +1187,7 @@ Sub OnDeath(ByVal index As Long, Optional ByVal RespawnSite As Byte = 0)
     
     
     Dim mapnum As Long, X As Long, Y As Long
-    GetOnDeathMap index, mapnum, X, Y
+    GetOnDeathMap index, mapnum, X, Y, RespawnSite
     PlayerWarpByEvent index, mapnum, X, Y
     
     

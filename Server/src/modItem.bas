@@ -1,4 +1,5 @@
 Attribute VB_Name = "modItem"
+Option Explicit
 
 Public Const INITIAL_MAX_WEIGHT As Long = 100000
 Public Const ONE_VITAL_WEIGHT As Byte = 1   'unity

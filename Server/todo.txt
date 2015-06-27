@@ -1,0 +1,9 @@
+increase max_pets on server
+add more NPCs into pets?
+more details on tame points?
+pets move faster
+if pet is x tiles away, warp pet to owner?
+if pet is x tiles away, warp to target? (cooldown? Skill/spell?)
+Check if spells allow target warping. That could be interesting to implement.
+improve pet changemap/spawnpet/spawnlocation.
+Pets can say things or make noises when given a target?

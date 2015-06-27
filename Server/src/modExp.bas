@@ -1,4 +1,5 @@
 Attribute VB_Name = "modExp"
+Option Explicit
 Public NeededNPCS(1 To MAX_LEVELS) As Long
 Public NeededExp(1 To MAX_LEVELS) As Long
 
@@ -136,7 +137,7 @@ Sub ComputePlayerExp(ByVal attacker As Long, ByVal attackertype As Byte, ByVal v
         End If
         If exp > 0 Then
             If TempPlayer(attacker).inParty > 0 Then
-                Set Share = GetPartyMembersToShareExp(TempPlayer(attacker).inParty, index)
+                Set Share = GetPartyMembersToShareExp(TempPlayer(attacker).inParty, attacker)
                 SharePartyMembersExp attacker, Share, exp, level
             Else
                 exp = GetExpReduction(Difference, exp)

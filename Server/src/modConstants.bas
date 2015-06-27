@@ -13,7 +13,7 @@ Public Const PLAYER_LOG As String = "player.log"
 ' Version constants
 Public Const CLIENT_MAJOR As Byte = 0
 Public Const CLIENT_MINOR As Byte = 5
-Public Const CLIENT_REVISION As Byte = 16
+Public Const CLIENT_REVISION As Byte = 17
 Public Const MAX_LINES As Long = 500 ' Used for frmServer.txtText
 
 ' ********************************************************
@@ -44,7 +44,7 @@ Public Const MAX_RESOURCE_REWARDS As Byte = 5
 Public Const MAX_MOVEMENTS As Byte = 100
 Public Const MAX_MOVEMENT_MOVEMENTS As Byte = 255
 Public Const MAX_ACTIONS As Byte = 100
-Public Const MAX_PETS As Byte = 50
+Public Const MAX_PETS As Byte = 100
 Public Const MAX_PLAYER_PETS As Byte = 6
 Public Const MAX_ITEM_CONTAINERS As Byte = 5
 Public Const MAX_SPELL_EFECTS As Byte = 3

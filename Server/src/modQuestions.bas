@@ -1,6 +1,7 @@
 Attribute VB_Name = "modQuestions"
+Option Explicit
 
-Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal Length As Long)
+Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 
 Public Const MAX_QUESTIONS As Byte = 15
 Public Const QUESTION_WAIT_TIME As Byte = 30
@@ -38,29 +39,29 @@ End Sub
 
 Public Sub SendQuestion(ByVal question As Byte)
     If Not QuestionInUse(question) Then Exit Sub
-    Dim n As Long, m As Long
+    Dim N As Long, m As Long
     
-    n = GetQuestionQuestioner(question)
+    N = GetQuestionQuestioner(question)
     m = GetQuestionRespondent(question)
     
     Select Case GetQuestionType(question)
     Case WarpMeTo
-        Call SendQuestionData(m, "teleport", GetPlayerName(n) & " se quiere teletransportar hacia ti, le dejas?")
+        Call SendQuestionData(m, "teleport", GetPlayerName(N) & " se quiere teletransportar hacia ti, le dejas?")
     Case WarpToMe
-        Call SendQuestionData(m, "teleport", GetPlayerName(n) & " quiere teletransportarte, le dejas?")
+        Call SendQuestionData(m, "teleport", GetPlayerName(N) & " quiere teletransportarte, le dejas?")
     End Select
 End Sub
 
 Sub SendQuestionData(ByVal index As Long, ByVal header As String, ByVal question As String)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong SQuestion
-    buffer.WriteString header
-    buffer.WriteString question
+    Buffer.WriteLong SQuestion
+    Buffer.WriteString header
+    Buffer.WriteString question
     
-    SendDataTo index, buffer.ToArray
-    Set buffer = Nothing
+    SendDataTo index, Buffer.ToArray
+    Set Buffer = Nothing
 End Sub
 
 Public Function FindOpenQuestionSlot() As Byte
@@ -99,15 +100,15 @@ Public Sub SolveQuestion(ByVal question As Byte, ByVal Response As Boolean)
     
     If Not QuestionInUse(question) Then Exit Sub
     
-    Dim n As Long, m As Long
+    Dim N As Long, m As Long
     
     m = GetQuestionQuestioner(question)
-    n = GetQuestionRespondent(question)
+    N = GetQuestionRespondent(question)
     Select Case GetQuestionType(question)
     Case WarpMeTo
-        Call WarpXtoY(m, n, False)
+        Call WarpXtoY(m, N, False)
     Case WarpToMe
-        Call WarpXtoY(n, m, True)
+        Call WarpXtoY(N, m, True)
     End Select
     
     ClearQuestion question
