@@ -1,4 +1,5 @@
 Attribute VB_Name = "modRides"
+Option Explicit
 
 
 
@@ -144,17 +145,17 @@ End Sub
 Sub CalculateStaminaBurn(ByVal index As Long)
     Dim X As Single
     X = GetRideLastStamina(index)
-    Dim y As Single
+    Dim Y As Single
     If X = 0 Then
-        y = MAX_BURN_BY_TIME
+        Y = MAX_BURN_BY_TIME
     Else
-        y = Line(MAX_STAMINA, 0, MIN_BURN_BY_TIME, MAX_BURN_BY_TIME, MAX_BURN_BY_TIME, X)
+        Y = Line(MAX_STAMINA, 0, MIN_BURN_BY_TIME, MAX_BURN_BY_TIME, MAX_BURN_BY_TIME, X)
     End If
     
-    Player(index).RideInfo.StaminaBurn = y
+    Player(index).RideInfo.StaminaBurn = Y
 End Sub
 
-Public Function Line(ByVal MaxX As Variant, ByVal MinX As Variant, ByVal MaxY As Variant, ByVal MinY As Variant, ByVal n As Variant, ByVal X As Variant, Optional ByVal AjustLimits As Boolean = True) As Variant
+Public Function Line(ByVal MaxX As Variant, ByVal MinX As Variant, ByVal MaxY As Variant, ByVal MinY As Variant, ByVal N As Variant, ByVal X As Variant, Optional ByVal AjustLimits As Boolean = True) As Variant
     Dim VX As Variant
     Dim VY As Variant
     VX = MaxX - MinX
@@ -164,7 +165,7 @@ Public Function Line(ByVal MaxX As Variant, ByVal MinX As Variant, ByVal MaxY As
     
     Dim m As Variant
     m = VY / VX
-    Line = m * X + n
+    Line = m * X + N
     
     If AjustLimits Then
         If m > 0 Then
@@ -178,24 +179,24 @@ Public Function Line(ByVal MaxX As Variant, ByVal MinX As Variant, ByVal MaxY As
 End Function
 
 Sub CalculateStaminaGrowth(ByVal index As Long)
-    Dim X As Single, y As Single
+    Dim X As Single, Y As Single
     X = CSng(GetRideStamina(index)) / MAX_STAMINA
-    y = X * MAX_GROWTH_BY_TIME
-    If y <= MIN_GROWTH_BY_TIME Then
-        y = MIN_GROWTH_BY_TIME
+    Y = X * MAX_GROWTH_BY_TIME
+    If Y <= MIN_GROWTH_BY_TIME Then
+        Y = MIN_GROWTH_BY_TIME
     End If
-    Call SetRideGrowth(index, y)
+    Call SetRideGrowth(index, Y)
     Player(index).RideInfo.Switch = True
 End Sub
 
 Function GetStaminaGrowth(ByVal Stamina As Single) As Single
-    Dim X As Single, y As Single
+    Dim X As Single, Y As Single
     X = Stamina / MAX_STAMINA
-    y = X * MAX_GROWTH_BY_TIME
-    If y <= MIN_GROWTH_BY_TIME Then
-        y = MIN_GROWTH_BY_TIME
+    Y = X * MAX_GROWTH_BY_TIME
+    If Y <= MIN_GROWTH_BY_TIME Then
+        Y = MIN_GROWTH_BY_TIME
     End If
-    GetStaminaGrowth = y
+    GetStaminaGrowth = Y
 End Function
 
 Sub CheckIncreaseRideStamina(ByVal index As Long)

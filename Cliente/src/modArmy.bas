@@ -1,4 +1,5 @@
 Attribute VB_Name = "modArmy"
+Option Explicit
 
 Public Enum HeroRangesType
     Soldado = 1
@@ -103,7 +104,7 @@ Sub ItemEditorInitRanges()
             .scrlArmyRangeReq.Max = 0
         End If
         
-        .scrlArmyRangeReq.Value = ItemArmyRangeReq
+        .scrlArmyRangeReq.value = ItemArmyRangeReq
     End If
     
     End With
@@ -115,7 +116,7 @@ Sub CheckItemEditorRangeScrolls()
     With frmEditor_Item
     .scrlArmyRangeReq.Min = 0
     Dim ItemArmyTypeReq As Byte
-    ItemArmyTypeReq = .scrlArmyTypeReq.Value
+    ItemArmyTypeReq = .scrlArmyTypeReq.value
     If ItemArmyTypeReq = PK_PLAYER Then
          .scrlArmyRangeReq.Max = PkRangesTypeCount - 1
     ElseIf ItemArmyTypeReq = HERO_PLAYER Then
@@ -124,7 +125,7 @@ Sub CheckItemEditorRangeScrolls()
         .scrlArmyRangeReq.Max = 0
     End If
     
-    .scrlArmyRangeReq.Value = .scrlArmyRangeReq.Value
+    .scrlArmyRangeReq.value = .scrlArmyRangeReq.value
     
     End With
     

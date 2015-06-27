@@ -1,4 +1,5 @@
 Attribute VB_Name = "modCustomSprite"
+Option Explicit
 Public Const MAX_DIRECTIONS As Byte = 4
 Public Const MAX_SPRITE_ANIMS As Byte = 4
 Public Const MAX_SPRITE_LAYERS As Byte = 5
@@ -12,8 +13,8 @@ Public Type FixedAnimRec
 End Type
 
 Public Type Point
-    x As Integer
-    y As Integer
+    X As Integer
+    Y As Integer
 End Type
 
 Public Type SpriteLayer
@@ -31,70 +32,69 @@ Public Type CustomSpriteRec
 End Type
 
 Public Function GetCustomSpriteData(ByVal CustomSprite As Byte) As Byte()
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     With CustomSprites(CustomSprite)
-        buffer.WriteString .Name
-        buffer.WriteByte .NLayers
+        Buffer.WriteString .Name
+        Buffer.WriteByte .NLayers
         Dim i As Byte
         For i = 1 To .NLayers
-            buffer.WriteLong .Layers(i).sprite
-            buffer.WriteByte .Layers(i).UseCenterPosition
-            buffer.WriteByte .Layers(i).UsePlayerSprite
+            Buffer.WriteLong .Layers(i).sprite
+            Buffer.WriteByte .Layers(i).UseCenterPosition
+            Buffer.WriteByte .Layers(i).UsePlayerSprite
             Dim j As Byte, k As Byte
             For j = 0 To MAX_DIRECTIONS - 1
                 For k = 0 To MAX_SPRITE_ANIMS - 1
-                    buffer.WriteByte .Layers(i).fixed.EnabledAnims(j, k)
+                    Buffer.WriteByte .Layers(i).fixed.EnabledAnims(j, k)
                 Next
             Next
             For j = 0 To MAX_DIRECTIONS - 1
-                 buffer.WriteInteger .Layers(i).CentersPositions(j).x
-                 buffer.WriteInteger .Layers(i).CentersPositions(j).y
+                 Buffer.WriteInteger .Layers(i).CentersPositions(j).X
+                 Buffer.WriteInteger .Layers(i).CentersPositions(j).Y
             Next
         Next
                             
     End With
     
-    GetCustomSpriteData = buffer.ToArray
-    Set buffer = Nothing
+    GetCustomSpriteData = Buffer.ToArray
+    Set Buffer = Nothing
 End Function
 
 Public Sub SetCustomSpriteData(ByVal CustomSprite As Byte, ByRef Data() As Byte)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data
     With CustomSprites(CustomSprite)
-        .Name = buffer.ReadString
-        .NLayers = buffer.ReadByte
+        .Name = Buffer.ReadString
+        .NLayers = Buffer.ReadByte
         If .NLayers <> 0 Then
             ReDim .Layers(1 To .NLayers)
         End If
         Dim i As Byte
         For i = 1 To .NLayers
-            .Layers(i).sprite = buffer.ReadLong
-            .Layers(i).UseCenterPosition = buffer.ReadByte
-            .Layers(i).UsePlayerSprite = buffer.ReadByte
+            .Layers(i).sprite = Buffer.ReadLong
+            .Layers(i).UseCenterPosition = Buffer.ReadByte
+            .Layers(i).UsePlayerSprite = Buffer.ReadByte
             Dim j As Byte, k As Byte
             For j = 0 To MAX_DIRECTIONS - 1
                 For k = 0 To MAX_SPRITE_ANIMS - 1
-                    .Layers(i).fixed.EnabledAnims(j, k) = buffer.ReadByte
+                    .Layers(i).fixed.EnabledAnims(j, k) = Buffer.ReadByte
                 Next
             Next
             For j = 0 To MAX_DIRECTIONS - 1
-                .Layers(i).CentersPositions(j).x = buffer.ReadInteger
-                .Layers(i).CentersPositions(j).y = buffer.ReadInteger
+                .Layers(i).CentersPositions(j).X = Buffer.ReadInteger
+                .Layers(i).CentersPositions(j).Y = Buffer.ReadInteger
             Next
         Next
-                            
     End With
     
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 
 Public Function GetCustomSpriteLayer(ByRef Csprite As CustomSpriteRec, ByVal layer As Byte) As SpriteLayer
-    If layer < NLayers - 1 Then Exit Function
+    If layer > Csprite.NLayers - 1 Then Exit Function
     
     GetCustomSpriteLayer = Csprite.Layers(layer)
 End Function
@@ -128,19 +128,19 @@ Public Function GetLayerSprite(ByRef layer As SpriteLayer) As Long
     GetLayerSprite = layer.sprite
 End Function
 
-Public Function GetLayerCenterX(ByRef layer As SpriteLayer, ByVal Dir As Byte) As Integer
-    If Dir >= MAX_DIRECTIONS Then Exit Function
-    GetLayerCenterX = layer.CentersPositions(Dir).x
+Public Function GetLayerCenterX(ByRef layer As SpriteLayer, ByVal dir As Byte) As Integer
+    If dir >= MAX_DIRECTIONS Then Exit Function
+    GetLayerCenterX = layer.CentersPositions(dir).X
 End Function
 
-Public Function GetLayerCenterY(ByRef layer As SpriteLayer, ByVal Dir As Byte) As Integer
-    If Dir >= MAX_DIRECTIONS Then Exit Function
-    GetLayerCenterY = layer.CentersPositions(Dir).y
+Public Function GetLayerCenterY(ByRef layer As SpriteLayer, ByVal dir As Byte) As Integer
+    If dir >= MAX_DIRECTIONS Then Exit Function
+    GetLayerCenterY = layer.CentersPositions(dir).Y
 End Function
 
-Public Function GetAnimFromCurrentAnim(ByRef fixed As FixedAnimRec, ByVal Dir As Byte, ByVal AnimNum As Byte) As Byte
+Public Function GetAnimFromCurrentAnim(ByRef fixed As FixedAnimRec, ByVal dir As Byte, ByVal AnimNum As Byte) As Byte
     If AnimNum >= MAX_SPRITE_ANIMS Then Exit Function
-    GetAnimFromCurrentAnim = fixed.EnabledAnims(Dir, AnimNum)
+    GetAnimFromCurrentAnim = fixed.EnabledAnims(dir, AnimNum)
 End Function
 
 Public Function GetClosestAnimFromOne(ByRef fixed As FixedAnimRec, ByVal AnimNum As Byte) As Byte
@@ -208,11 +208,11 @@ Public Sub SetLayerCenterPosition(ByRef layer As SpriteLayer, ByVal enabled As B
     layer.UseCenterPosition = enabled
 End Sub
 
-Public Sub SetLayerCenterPositions(ByRef layer As SpriteLayer, ByVal Dir As Byte, ByVal x As Integer, ByVal y As Integer)
-    If x < 0 Or y < 0 Or Dir >= MAX_DIRECTIONS Then Exit Sub
+Public Sub SetLayerCenterPositions(ByRef layer As SpriteLayer, ByVal dir As Byte, ByVal X As Integer, ByVal Y As Integer)
+    If X < 0 Or Y < 0 Or dir >= MAX_DIRECTIONS Then Exit Sub
     
-    layer.CentersPositions(Dir).x = x
-    layer.CentersPositions(Dir).y = y
+    layer.CentersPositions(dir).X = X
+    layer.CentersPositions(dir).Y = Y
 
 End Sub
 

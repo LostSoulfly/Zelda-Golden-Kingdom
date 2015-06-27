@@ -1,4 +1,5 @@
 Attribute VB_Name = "modPlayerSpeed"
+Option Explicit
 
 Public SpeedHack_Lapse As Long
 Public SpeedHack_Timer As Long
@@ -37,18 +38,18 @@ Public Sub HandlePlayerSpeed(ByVal index As Long, ByRef Data() As Byte, ByVal St
 End Sub
 
 
-Sub SetPlayerSpeed(ByVal index As Long, ByVal Movement As Long, ByVal Speed As Long)
-    If Movement = MOVING_WALKING Then
+Sub SetPlayerSpeed(ByVal index As Long, ByVal movement As Long, ByVal Speed As Long)
+    If movement = MOVING_WALKING Then
         Player(index).WalkSpeed = Speed
-    ElseIf Movement = MOVING_RUNNING Then
+    ElseIf movement = MOVING_RUNNING Then
         Player(index).RunSpeed = Speed
     End If
 End Sub
 
-Function GetPlayerSpeed(ByVal index As Long, ByVal Movement As Long) As Long
-    If Movement = MOVING_WALKING Then
+Function GetPlayerSpeed(ByVal index As Long, ByVal movement As Long) As Long
+    If movement = MOVING_WALKING Then
         GetPlayerSpeed = Player(index).WalkSpeed
-    ElseIf Movement = MOVING_RUNNING Then
+    ElseIf movement = MOVING_RUNNING Then
         GetPlayerSpeed = Player(index).RunSpeed
     End If
 End Function
@@ -56,29 +57,29 @@ End Function
 
 
 
-Sub GetPlayerRunSpeed(ByVal index As Long, ByRef Movement As Byte, ByRef Speed As Long)
+Sub GetPlayerRunSpeed(ByVal index As Long, ByRef movement As Byte, ByRef Speed As Long)
     If IsPlayerRiding(index) Then
         If GetRideStamina(index) > 0 And (CanRideRun(index)) Then
             DecreaseRideStamina index
             Speed = RUN_SPEED
-            Movement = MOVING_RUNNING
+            movement = MOVING_RUNNING
         Else
             Speed = WALK_SPEED
-            Movement = MOVING_WALKING
+            movement = MOVING_WALKING
         End If
     ElseIf IsPlayerRolling(index) Then
         If GetRideStamina(index) > 0 And (CanRideRun(index)) Then
             DecreaseRideStamina index
             Speed = RUN_SPEED
-            Movement = MOVING_RUNNING
+            movement = MOVING_RUNNING
         Else
             Speed = WALK_SPEED
-            Movement = MOVING_WALKING
+            movement = MOVING_WALKING
         End If
     
     Else
         Speed = RUN_SPEED
-        Movement = MOVING_RUNNING
+        movement = MOVING_RUNNING
     End If
 End Sub
 

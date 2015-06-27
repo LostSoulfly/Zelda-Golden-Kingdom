@@ -1,4 +1,5 @@
 Attribute VB_Name = "modGuild"
+Option Explicit
 Public Const MAX_GUILD_MEMBERS As Long = 50
 Public Const MAX_GUILD_RANKS As Long = 6
 Public Const MAX_GUILD_RANKS_PERMISSION As Long = 6
@@ -49,7 +50,7 @@ Public Type GuildRec
     Guild_Color As Integer
 
 End Type
-Public Sub HandleAdminGuild(ByVal Index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+Public Sub HandleAdminGuild(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
 Dim Buffer As clsBuffer
 Dim i As Integer
 Dim b As Integer
@@ -75,7 +76,7 @@ errorhandler:
     HandleError "HandleAdminGuild", "modGuild", Err.Number, Err.Description, Err.Source, Err.HelpContext
     Err.Clear
 End Sub
-Public Sub HandleSendGuild(ByVal Index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+Public Sub HandleSendGuild(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
 Dim Buffer As clsBuffer
 Dim i As Integer
 Dim b As Integer
@@ -161,7 +162,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub GuildSave(ByVal SaveType As Integer, ByVal Index As Integer)
+Public Sub GuildSave(ByVal SaveType As Integer, ByVal index As Integer)
 Dim Buffer As clsBuffer
 Dim i As Integer
 Dim b As Integer
@@ -169,7 +170,7 @@ Dim b As Integer
 '1=options
 '2=users
 '3=ranks
- If Index = 0 Then Exit Sub
+ If index = 0 Then Exit Sub
 
 
     ' If debug mode, handle error then exit out
@@ -179,7 +180,7 @@ Dim b As Integer
     Buffer.WriteLong CSaveGuild
     
     Buffer.WriteInteger SaveType
-    Buffer.WriteInteger Index
+    Buffer.WriteInteger index
     
     Select Case SaveType
     Case 1
@@ -189,13 +190,13 @@ Dim b As Integer
         Buffer.WriteString GuildData.Guild_MOTD
     Case 2
         'users
-        Buffer.WriteInteger GuildData.Guild_Members(Index).Rank
-        Buffer.WriteString GuildData.Guild_Members(Index).Comment
+        Buffer.WriteInteger GuildData.Guild_Members(index).Rank
+        Buffer.WriteString GuildData.Guild_Members(index).Comment
     Case 3
         'ranks
-        Buffer.WriteString GuildData.Guild_Ranks(Index).Name
+        Buffer.WriteString GuildData.Guild_Ranks(index).Name
         For i = 1 To MAX_GUILD_RANKS_PERMISSION
-            Buffer.WriteByte GuildData.Guild_Ranks(Index).RankPermission(i)
+            Buffer.WriteByte GuildData.Guild_Ranks(index).RankPermission(i)
         Next i
     End Select
 
@@ -210,7 +211,7 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub HandleGuildData(ByVal Index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+Public Sub HandleGuildData(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
 Dim Buffer As clsBuffer
 Set Buffer = New clsBuffer
 Buffer.WriteBytes Data()

@@ -979,7 +979,7 @@ Else
 .lblGuildCCancel.Caption = GetTranslation("Cancelar")
 .frmGuildC.Caption = GetTranslation("Creación del Clan")
 .txtGuildC.Text = ""
-.picGuildInvitation.Visible = True
+.picGuildInvitation.Visible = False
 .lblGuildInvitation.Caption = GetTranslation("Invitación al Clan")
 .lblGuildAcceptInvitation.Caption = GetTranslation("Aceptar")
 .lblGuildDeclineInvitation.Caption = GetTranslation("Rechazar")

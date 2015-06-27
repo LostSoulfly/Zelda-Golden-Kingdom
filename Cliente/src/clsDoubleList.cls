@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Private x As Integer
-Private y As Integer
+Option Explicit
+Private X As Integer
+Private Y As Integer
 Private Z As Integer
 
 Private ContainerFrame As Frame
@@ -52,38 +53,38 @@ End Sub
 Public Sub SetSize(ByVal Height As Long, ByVal Width As Long)
     FHeight = Height
     FWidth = Width
-    x = FWidth / 7
-    y = x
-    Z = 2 * x
+    X = FWidth / 7
+    Y = X
+    Z = 2 * X
 End Sub
 
 
 Public Sub Draw()
     Dim i As Long
     For i = 1 To 2
-        Lists(i).Width = FWidth - 2 * x
-        Lists(i).Height = (FHeight - 3 * y) / 2
+        Lists(i).Width = FWidth - 2 * X
+        Lists(i).Height = (FHeight - 3 * Y) / 2
     Next
     
     
-    Lists(1).Top = y
-    Lists(1).Left = x
+    Lists(1).Top = Y
+    Lists(1).Left = X
     
-    Lists(2).Top = Lists(1).Top + Lists(1).Height + y
+    Lists(2).Top = Lists(1).Top + Lists(1).Height + Y
     Lists(2).Left = Lists(1).Left
     
     AddButton.Width = (Lists(1).Width - Z) / 2
-    AddButton.Height = y
+    AddButton.Height = Y
     AddButton.Caption = "V"
     
     WithdrawButton.Width = (Lists(1).Width - Z) / 2
-    WithdrawButton.Height = y
+    WithdrawButton.Height = Y
     WithdrawButton.Caption = "^"
     
-    AddButton.Top = (Lists(2).Top - y)
+    AddButton.Top = (Lists(2).Top - Y)
     AddButton.Left = Lists(1).Left
     
-    WithdrawButton.Top = (Lists(2).Top - y)
+    WithdrawButton.Top = (Lists(2).Top - Y)
     WithdrawButton.Left = AddButton.Left + AddButton.Width + Z
       
 End Sub
@@ -92,21 +93,21 @@ Public Sub Add(ByRef elem As String, ByVal list As Byte)
     Lists(list).AddItem elem
 End Sub
 
-Public Sub Delete(ByVal Index As Long, ByVal list As Byte)
-    Lists(list).RemoveItem (Index)
+Public Sub Delete(ByVal index As Long, ByVal list As Byte)
+    Lists(list).RemoveItem (index)
 End Sub
 
-Public Sub Traspass(ByVal Index As Long)
+Public Sub Traspass(ByVal index As Long)
     Dim elem As String
-    elem = Lists(1).list(Index)
-    Delete Index, 1
+    elem = Lists(1).list(index)
+    Delete index, 1
     Add elem, 2
 End Sub
 
-Public Sub Withdraw(ByVal Index As Long)
+Public Sub Withdraw(ByVal index As Long)
     Dim elem As String
-    elem = Lists(2).list(Index)
-    Delete Index, 2
+    elem = Lists(2).list(index)
+    Delete index, 2
     Add elem, 1
 End Sub
 

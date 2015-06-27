@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Option Explicit
 
-Private A(1 To MAX_BYTE) As Variant
+Private a(1 To MAX_BYTE) As Variant
 Private first As Integer
 Private last As Integer
 Private N As Integer
@@ -26,7 +27,7 @@ End Sub
 Public Sub Push(ByRef s As Variant)
     If N <> MAX_BYTE Then
         last = (last Mod MAX_BYTE) + 1
-        A(last) = s
+        a(last) = s
         N = N + 1
     End If
 End Sub
@@ -40,7 +41,7 @@ End Sub
 
 Public Function Front() As Variant
     If N > 0 Then
-        Front = A(first)
+        Front = a(first)
     End If
 End Function
 

@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMsgList"
+Option Explicit
 Public Type ChatMsgRec
     header As String
     colour As Long
@@ -13,7 +14,7 @@ Private Type listpair
 End Type
 
 Public Type list
-    A(1 To MAX_CHAT_LINES + 1) As listpair
+    a(1 To MAX_CHAT_LINES + 1) As listpair
     prev As Integer
     free As Integer
 End Type
@@ -21,12 +22,12 @@ End Type
 
 Public Sub ListCreate(ByRef l As list)
     l.prev = 1
-    l.A(l.prev).next = -1
+    l.a(l.prev).next = -1
     Dim i As Integer
     For i = 2 To MAX_CHAT_LINES
-        l.A(i).next = i + 1
+        l.a(i).next = i + 1
     Next
-    l.A(MAX_CHAT_LINES + 1).next = -1
+    l.a(MAX_CHAT_LINES + 1).next = -1
     l.free = 2
 End Sub
 
@@ -34,20 +35,20 @@ Public Sub ListInsert(ByRef l As list, ByRef e As ChatMsgRec)
     Dim tmp As Integer
     If l.free <> -1 Then
         tmp = l.free
-        l.free = l.A(l.free).next
-        l.A(tmp).e = e
-        l.A(tmp).next = l.A(l.prev).next
-        l.A(l.prev).next = tmp
+        l.free = l.a(l.free).next
+        l.a(tmp).e = e
+        l.a(tmp).next = l.a(l.prev).next
+        l.a(l.prev).next = tmp
         l.prev = tmp
     End If
 End Sub
 
 Public Sub ListDelete(ByRef l As list)
     Dim tmp As Integer
-    If l.A(l.prev).next <> -1 Then
-        tmp = l.A(l.prev).next
-        l.A(l.prev).next = l.A(tmp).next
-        l.A(tmp).next = l.free
+    If l.a(l.prev).next <> -1 Then
+        tmp = l.a(l.prev).next
+        l.a(l.prev).next = l.a(tmp).next
+        l.a(tmp).next = l.free
         l.free = tmp
     End If
 End Sub
@@ -57,23 +58,23 @@ Public Sub ListBegin(ByRef l As list)
 End Sub
 
 Public Sub ListNext(ByRef l As list)
-    If l.A(l.prev).next <> -1 Then
-        l.prev = l.A(l.prev).next
+    If l.a(l.prev).next <> -1 Then
+        l.prev = l.a(l.prev).next
     End If
 End Sub
 
 Public Function ListActual(ByRef l As list) As ChatMsgRec
-    If l.A(l.prev).next <> -1 Then
-        ListActual = l.A(l.A(l.prev).next).e
+    If l.a(l.prev).next <> -1 Then
+        ListActual = l.a(l.a(l.prev).next).e
     End If
 End Function
 
 Public Function ListEnd(ByRef l As list) As Boolean
-    ListEnd = (l.A(l.prev).next = -1)
+    ListEnd = (l.a(l.prev).next = -1)
 End Function
 
 Public Function ListEmpty(ByRef l As list) As Boolean
-    ListEmpty = l.A(1).next = -1
+    ListEmpty = l.a(1).next = -1
 End Function
 
 Public Function ListFull(ByRef l As list) As Boolean

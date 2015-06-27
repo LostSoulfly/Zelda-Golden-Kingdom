@@ -1,34 +1,35 @@
 Attribute VB_Name = "modPlayerMove"
+Option Explicit
 
 Private RunningSprites() As clsPair
-Private n As Long
+Private N As Long
 
 Private RunSpritesPointer() As Long
 Private WalkSpritesPointer() As Long
 
-Sub PlayerMove(ByVal Index As Long, ByVal dir As Byte, ByVal movement As Byte)
+Sub PlayerMove(ByVal index As Long, ByVal dir As Byte, ByVal movement As Byte)
     Dim X As Long, Y As Long
-    X = Player(Index).X
-    Y = Player(Index).Y
+    X = Player(index).X
+    Y = Player(index).Y
     If GetNextPositionByRef(dir, X, Y) Then
         Exit Sub
     End If
-    SetPlayerX Index, X
-    SetPlayerY Index, Y
-    Call SetPlayerDir(Index, dir)
+    SetPlayerX index, X
+    SetPlayerY index, Y
+    Call SetPlayerDir(index, dir)
     
-    Select Case GetPlayerDir(Index)
+    Select Case GetPlayerDir(index)
         Case DIR_UP
-            Player(Index).YOffset = PIC_Y
+            Player(index).YOffset = PIC_Y
         Case DIR_DOWN
-            Player(Index).YOffset = PIC_Y * -1
+            Player(index).YOffset = PIC_Y * -1
         Case DIR_LEFT
-            Player(Index).XOffset = PIC_X
+            Player(index).XOffset = PIC_X
         Case DIR_RIGHT
-            Player(Index).XOffset = PIC_X * -1
+            Player(index).XOffset = PIC_X * -1
     End Select
     
-    Player(Index).Moving = movement
+    Player(index).Moving = movement
 End Sub
 
 Function GetRunningSprite(ByVal sprite As Long) As Long
@@ -37,24 +38,24 @@ Function GetRunningSprite(ByVal sprite As Long) As Long
     GetRunningSprite = RunningSprites(WalkSpritesPointer(sprite)).GetSecond
 End Function
 
-Function GetWalkingSprite(ByVal Index As Long) As Long
-    GetWalkingSprite = Player(Index).PreviousSprite
+Function GetWalkingSprite(ByVal index As Long) As Long
+    GetWalkingSprite = Player(index).PreviousSprite
     Exit Function
-    If sprite > UBound(RunSpritesPointer) Then Exit Function
-    If RunSpritesPointer(sprite) = 0 Then Exit Function
-    GetWalkingSprite = RunningSprites(RunSpritesPointer(sprite)).GetFirst
+    'If sprite > UBound(RunSpritesPointer) Then Exit Function
+    'If RunSpritesPointer(sprite) = 0 Then Exit Function
+    'GetWalkingSprite = RunningSprites(RunSpritesPointer(sprite)).GetFirst
 End Function
 
 
-Public Sub HandleRunningSprites(ByVal Index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+Public Sub HandleRunningSprites(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
     Buffer.WriteBytes Data()
     
     Dim i As Long
-    n = Buffer.ReadLong
-    ReDim RunningSprites(1 To n)
-    For i = 1 To n
+    N = Buffer.ReadLong
+    ReDim RunningSprites(1 To N)
+    For i = 1 To N
         Set RunningSprites(i) = New clsPair
         With RunningSprites(i)
         .SetFirst Buffer.ReadLong
@@ -76,7 +77,7 @@ Private Sub CreatePointers()
     ReDim RunSpritesPointer(1 To RunMax)
     
     Dim i As Long
-    For i = 1 To n
+    For i = 1 To N
         With RunningSprites(i)
         WalkSpritesPointer(.GetFirst) = i
         RunSpritesPointer(.GetSecond) = i
@@ -89,7 +90,7 @@ Private Sub FindMaxes(ByRef WalkMax As Long, ByRef RunMax As Long)
     WalkMax = 0
     RunMax = 0
     Dim WalkIndex As Long, RunIndex As Long
-    For i = 1 To n
+    For i = 1 To N
         With RunningSprites(i)
         If i = 1 Then
             WalkIndex = i

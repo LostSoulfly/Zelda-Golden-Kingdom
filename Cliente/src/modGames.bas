@@ -1,4 +1,5 @@
 Attribute VB_Name = "modGames"
+Option Explicit
 
 Public Enum GamesCommandType
     GInviteTeam = 1

@@ -1,4 +1,5 @@
 Attribute VB_Name = "modUseFulData"
+Option Explicit
 
 
 Sub SetSpellUsefulData(ByVal spellnum As Long, ByRef Data() As Byte)

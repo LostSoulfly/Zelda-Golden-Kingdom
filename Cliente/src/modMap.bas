@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMap"
+Option Explicit
 
 
 
@@ -26,20 +27,20 @@ Public Function GetMapData(ByRef MapT As MapRec) As Byte()
         
         Buffer.WriteByte .MaxX
         Buffer.WriteByte .MaxY
-        Dim X As Byte, y As Byte
+        Dim X As Byte, Y As Byte
         For X = 0 To .MaxX
-            For y = 0 To .MaxY
+            For Y = 0 To .MaxY
                 Dim j As Byte
                 For j = 1 To Layer_Count - 1
-                    Buffer.WriteLong .Tile(X, y).layer(j).X
-                    Buffer.WriteLong .Tile(X, y).layer(j).y
-                    Buffer.WriteLong .Tile(X, y).layer(j).Tileset
+                    Buffer.WriteLong .Tile(X, Y).layer(j).X
+                    Buffer.WriteLong .Tile(X, Y).layer(j).Y
+                    Buffer.WriteLong .Tile(X, Y).layer(j).Tileset
                 Next
-                Buffer.WriteByte .Tile(X, y).Type
-                Buffer.WriteLong .Tile(X, y).Data1
-                Buffer.WriteLong .Tile(X, y).Data2
-                Buffer.WriteLong .Tile(X, y).Data3
-                Buffer.WriteByte .Tile(X, y).DirBlock
+                Buffer.WriteByte .Tile(X, Y).Type
+                Buffer.WriteLong .Tile(X, Y).Data1
+                Buffer.WriteLong .Tile(X, Y).Data2
+                Buffer.WriteLong .Tile(X, Y).Data3
+                Buffer.WriteByte .Tile(X, Y).DirBlock
             Next
         Next
 
@@ -65,11 +66,11 @@ Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
     Dim newVer As Boolean
+    Dim X As Long, Y As Long
     Buffer.WriteBytes Data
     With map
         If Buffer.ReadConstString(3, False) = "v.2" Then newVer = True: Buffer.MoveReadHead 3
         .Name = Buffer.ReadConstString(NAME_LENGTH)
-        'small patch.. not a safe fix!
          If newVer = True Then .TranslatedName = Buffer.ReadConstString(NAME_LENGTH)
          If newVer = False Then .TranslatedName = GetTranslation(.Name)
         .Music = Buffer.ReadConstString(NAME_LENGTH)
@@ -87,18 +88,18 @@ Public Sub SetMapData(ByRef map As MapRec, ByRef Data() As Byte)
         ReDim .Tile(0 To .MaxX, 0 To .MaxY)
 
         For X = 0 To .MaxX
-            For y = 0 To .MaxY
+            For Y = 0 To .MaxY
                 Dim j As Byte
                 For j = 1 To Layer_Count - 1
-                    .Tile(X, y).layer(j).X = Buffer.ReadLong
-                    .Tile(X, y).layer(j).y = Buffer.ReadLong
-                    .Tile(X, y).layer(j).Tileset = Buffer.ReadLong
+                    .Tile(X, Y).layer(j).X = Buffer.ReadLong
+                    .Tile(X, Y).layer(j).Y = Buffer.ReadLong
+                    .Tile(X, Y).layer(j).Tileset = Buffer.ReadLong
                 Next
-                .Tile(X, y).Type = Buffer.ReadByte
-                .Tile(X, y).Data1 = Buffer.ReadLong
-                .Tile(X, y).Data2 = Buffer.ReadLong
-                .Tile(X, y).Data3 = Buffer.ReadLong
-                .Tile(X, y).DirBlock = Buffer.ReadByte
+                .Tile(X, Y).Type = Buffer.ReadByte
+                .Tile(X, Y).Data1 = Buffer.ReadLong
+                .Tile(X, Y).Data2 = Buffer.ReadLong
+                .Tile(X, Y).Data3 = Buffer.ReadLong
+                .Tile(X, Y).DirBlock = Buffer.ReadByte
             Next
         Next
 

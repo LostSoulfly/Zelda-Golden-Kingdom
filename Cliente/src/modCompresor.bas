@@ -1,4 +1,5 @@
 Attribute VB_Name = "modCompresor"
+Option Explicit
 Private Declare Function qlz_compress Lib "quick32.dll" (ByRef Source As Byte, ByRef Destination As Byte, ByVal length As Long) As Long
 Private Declare Function qlz_decompress Lib "quick32.dll" (ByRef Source As Byte, ByRef Destination As Byte) As Long
 Private Declare Function qlz_size_decompressed Lib "quick32.dll" (ByRef Source As Byte) As Long
@@ -129,7 +130,7 @@ Sub AnalizeByte2(ByRef Data() As Byte, ByRef length As Long, ByVal b As Byte, By
         first = False
         If b = 0 Then
             PrevB = True
-            prevlL = prevL + 1
+            prevL = prevL + 1
         Else
             AddByte Data, b, length, 1
             PrevB = False

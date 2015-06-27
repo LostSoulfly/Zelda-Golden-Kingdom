@@ -1,4 +1,5 @@
 Attribute VB_Name = "modItem"
+Option Explicit
 Public Enum ItemTypes
     ITEM_TYPE_NONE = 0
     ITEM_TYPE_WEAPON

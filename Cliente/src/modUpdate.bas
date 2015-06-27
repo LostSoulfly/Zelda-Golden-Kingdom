@@ -1,4 +1,5 @@
 Attribute VB_Name = "modUpdate"
+Option Explicit
 Public Declare Function ShellExecute Lib "shell32.dll" Alias _
 "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, _
 ByVal lpFile As String, ByVal lpParameters As String, ByVal _

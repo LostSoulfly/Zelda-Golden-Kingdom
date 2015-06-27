@@ -1,4 +1,5 @@
 Attribute VB_Name = "modMovementsList"
+Option Explicit
 Public Sub LMCreate(ByRef list As MovementsListRec)
 Call LMClear(list)
 'Create a list: erase previous vector (redimensionate to 1) and set 1 element to it (bad programming method but necessary with the choosen interface)
