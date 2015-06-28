@@ -53,8 +53,9 @@ End Enum
 
 'makes the pet follow its owner
 Public Sub PetFollowOwner(ByVal index As Long)
+If index <= 0 Then Exit Sub
     If TempPlayer(index).TempPet.TempPetSlot < 1 Then Exit Sub
-    
+
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = 1
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).Target = index
     TempPlayer(index).TempPet.PetHasOwnTarget = 0
@@ -62,6 +63,7 @@ End Sub
 
 'makes the pet wander around the map
 Public Sub PetWander(ByVal index As Long)
+If index <= 0 Then Exit Sub
     If TempPlayer(index).TempPet.TempPetSlot < 1 Then Exit Sub
 
     MapNpc(GetPlayerMap(index)).NPC(TempPlayer(index).TempPet.TempPetSlot).TargetType = TARGET_TYPE_NONE
@@ -76,7 +78,7 @@ Public Function PetDisband(ByVal index As Long, ByVal mapnum As Long, Optional B
     Dim j As Long
     Dim mapnpcnum As Long
     PetDisband = True
-
+    If index <= 0 Then Exit Function
     If TempPlayer(index).TempPet.TempPetSlot < 1 Then
         PetDisband = False
         Exit Function
@@ -112,7 +114,7 @@ Public Function PetDisband(ByVal index As Long, ByVal mapnum As Long, Optional B
 End Function
 
 Public Sub ChangePetMap(ByVal index As Long, ByVal OldMap As Long, ByVal mapnum As Long)
-
+If index <= 0 Then Exit Sub
 'remove pet from map oldmap
 PetDisband index, OldMap, False
 
@@ -194,7 +196,7 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     Dim PetSlot As Byte
     Dim PlayerPet As Byte
     Dim UntilTime As Long
-    
+    If index <= 0 Then Exit Sub
     'Prevent multiple pets for the same owner
     If TempPlayer(index).TempPet.TempPetSlot > 0 Then
         If player(index).Pet(TempPlayer(index).TempPet.ActualPet).CurVital(Vitals.HP) = 0 Then
@@ -298,7 +300,7 @@ Dim slot As Integer
 Dim PetIndex As Integer
 
 slot = CheckFreePetSlots(index)
-
+If index <= 0 Then Exit Sub
 If Not (slot > 0) Then
     Call PlayerMsg(index, "No tienes slots libres", BrightRed)
     Exit Sub

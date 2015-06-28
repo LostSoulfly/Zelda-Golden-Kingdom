@@ -605,7 +605,7 @@ Private Sub HandleShutdown()
 
     If Secs <= 0 Then Secs = 30
     If Secs Mod 5 = 0 Or Secs <= 10 Then
-        Call GlobalMsg("Apagado del Servidor en: " & Secs & " seconds.", Cyan)
+        Call GlobalMsg("Automated Server Shutdown in " & Secs & " seconds.", Cyan, False)
         Call TextAdd("Automated Server Shutdown in " & Secs & " seconds.")
     End If
 

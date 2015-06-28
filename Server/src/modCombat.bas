@@ -412,15 +412,15 @@ End Function
 ' ##      Luck-based rates     ##
 ' ###############################
 
-Public Function CanPlayerBlock(ByVal index As Long) As Boolean
-Dim rate As Long
-Dim rndNum As Long
+'Public Function CanPlayerBlock(ByVal index As Long) As Boolean
+'Dim rate As Long
+'Dim rndNum As Long
 
-    CanPlayerBlock = False
+'    CanPlayerBlock = False
 
-    rate = 0
+'    rate = 0
     ' TODO : make it based on shield lulz
-End Function
+'End Function
 
 Public Function CanPlayerCrit(ByVal index As Long) As Boolean
 Dim rate As Long
@@ -487,15 +487,15 @@ Dim rndNum As Long
     End If
 End Function
 
-Public Function CanNpcBlock(ByVal npcnum As Long) As Boolean
-Dim rate As Long
-Dim rndNum As Long
+'Public Function CanNpcBlock(ByVal npcnum As Long) As Boolean
+'Dim rate As Long
+'Dim rndNum As Long
 
-    CanNpcBlock = False
+'    CanNpcBlock = False
 
-    rate = 0
+'    rate = 0
     ' TODO : make it based on shield lol
-End Function
+'End Function
 
 Public Function CanNpcCrit(ByVal npcnum As Long) As Boolean
 Dim rate As Long

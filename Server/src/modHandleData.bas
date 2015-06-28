@@ -277,8 +277,8 @@ On Error Resume Next
             ' Check to see if account already exists
             If Not AccountExist(Name) Then
                 Call AddAccount(index, Name, password)
-                Call TextAdd("La cuenta " & Name & " ha sido creada.")
-                Call AddLog(0, "La cuenta " & Name & " ha sido creada.", PLAYER_LOG)
+                Call TextAdd(GetTranslation("La cuenta ") & " " & Name & " " & GetTranslation(" ha sido creada."))
+                Call AddLog(0, GetTranslation("La cuenta ") & Name & GetTranslation(" ha sido creada."), PLAYER_LOG)
                 
                 ' Load the player
                 Call LoadPlayer(index, Name)
@@ -296,7 +296,7 @@ On Error Resume Next
                         
                 ' Show the player up on the socket status
                 Call AddLog(index, GetPlayerLogin(index) & " se ha logeado con " & GetPlayerIP(index) & ".", PLAYER_LOG)
-                Call TextAdd(GetPlayerLogin(index) & " se ha logeado con " & GetPlayerIP(index) & ".")
+                Call TextAdd(GetPlayerLogin(index) & " " & GetTranslation(" se ha logeado con ") & " " & GetPlayerIP(index) & ".")
             Else
                 Call AlertMsg(index, "Lo sentimos, ésta cuenta está tomada")
             End If

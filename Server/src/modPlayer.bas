@@ -201,7 +201,7 @@ Sub LeftGame(ByVal index As Long)
             'Call GlobalMsg(GetPlayerName(index) & " se ha desconectado", BrightRed)
         End If
 
-        Call TextAdd(GetPlayerName(index) & " se ha desconectado " & Options.Game_Name & ".")
+        Call TextAdd(GetPlayerName(index) & " " & GetTranslation(" se ha desconectado ") & " " & Options.Game_Name & ".")
         Call SendLeftGame(index)
         TotalPlayersOnline = TotalPlayersOnline - 1
         CalculateSleepTime

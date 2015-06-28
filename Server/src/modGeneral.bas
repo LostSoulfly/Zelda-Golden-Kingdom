@@ -267,7 +267,7 @@ Public Sub TextAdd(msg As String)
         NumLines = 0
     End If
 
-    frmServer.txtText.Text = frmServer.txtText.Text & vbNewLine & msg
+    frmServer.txtText.Text = frmServer.txtText.Text & vbNewLine & Time & " " & msg
     frmServer.txtText.SelStart = Len(frmServer.txtText.Text)
 End Sub
 

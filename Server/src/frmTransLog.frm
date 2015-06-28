@@ -1,17 +1,17 @@
 VERSION 5.00
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
 Begin VB.Form frmTransLog 
    BorderStyle     =   5  'Sizable ToolWindow
    Caption         =   "Translation"
    ClientHeight    =   3015
    ClientLeft      =   60
    ClientTop       =   405
-   ClientWidth     =   7785
+   ClientWidth     =   8085
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3015
-   ScaleWidth      =   7785
+   ScaleWidth      =   8085
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Timer tmrLog 
@@ -24,11 +24,10 @@ Begin VB.Form frmTransLog
       Left            =   0
       TabIndex        =   0
       Top             =   0
-      Width           =   7815
-      _ExtentX        =   13785
+      Width           =   8055
+      _ExtentX        =   14208
       _ExtentY        =   5318
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
       TextRTF         =   $"frmTransLog.frx":0000
