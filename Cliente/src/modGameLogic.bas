@@ -349,29 +349,29 @@ Dim MovementSpeed As Long
     Select Case GetPlayerDir(index)
         Case DIR_UP
         If Player(index).YOffset <= 0 Then
-            AddText "DIRUP offset for " & index & " Moving = 0 now.", White
-            Player(index).Moving = False
+            'AddText "DIRUP offset for " & index & " Moving = 0 now.", White
+            'Player(index).Moving = False
         End If
             Player(index).YOffset = Player(index).YOffset - MovementSpeed
             If Player(index).YOffset < 0 Then Player(index).YOffset = 0
         Case DIR_DOWN
         If Player(index).YOffset = 0 Then
-            AddText "DIRDOWN offset for " & index & " Moving = 0 now.", White
-            Player(index).Moving = False
+           ' AddText "DIRDOWN offset for " & index & " Moving = 0 now.", White
+           ' Player(index).Moving = False
         End If
             Player(index).YOffset = Player(index).YOffset + MovementSpeed
             If Player(index).YOffset > 0 Then Player(index).YOffset = 0
         Case DIR_LEFT
         If Player(index).XOffset = 0 Then
-            AddText "DIRLEFT offset for " & index & " Moving = 0 now.", White
-            Player(index).Moving = False
+            'AddText "DIRLEFT offset for " & index & " Moving = 0 now.", White
+            'Player(index).Moving = False
         End If
             Player(index).XOffset = Player(index).XOffset - MovementSpeed
-			If Player(index).XOffset < 0 Then Player(index).XOffset = 0
+                        If Player(index).XOffset < 0 Then Player(index).XOffset = 0
         Case DIR_RIGHT
         If Player(index).XOffset = 0 Then
-            AddText "DIRRIGHT offset for " & index & " Moving = 0 now.", White
-            Player(index).Moving = False
+            'AddText "DIRRIGHT offset for " & index & " Moving = 0 now.", White
+            'Player(index).Moving = False
         End If
             Player(index).XOffset = Player(index).XOffset + MovementSpeed
             If Player(index).XOffset > 0 Then Player(index).XOffset = 0
