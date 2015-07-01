@@ -1,6 +1,6 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{7E3A9F64-5911-4C31-8604-F3BF78AC8A86}#1.0#0#..\Cliente\data\GTranslate.tlb#GTranslate
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\G{7E3A9F64-5911-4C31-8604-F3BF78AC8A86}#1.0#0#..\..\..\..\..\..\..\Windows\SysWow64\GTranslate.tlb#GTranslate
 Form=frmMain.frm
 Module=modTranslate; modTranslate.bas
 Class=clsBuffer; clsBuffer.cls
@@ -17,7 +17,7 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
 MinorVer=0
-RevisionVer=5
+RevisionVer=6
 AutoIncrementVer=1
 ServerSupportFiles=0
 CompilationType=0

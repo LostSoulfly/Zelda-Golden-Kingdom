@@ -9,6 +9,14 @@ Begin VB.Form frmMain
    ScaleHeight     =   5655
    ScaleWidth      =   6990
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton cmdClean 
+      Caption         =   "Clean Translation"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   12
+      Top             =   1800
+      Width           =   1695
+   End
    Begin VB.CommandButton cmdMassReplace 
       Caption         =   "Mass Replace"
       Enabled         =   0   'False
@@ -51,7 +59,7 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   120
       TabIndex        =   10
-      Top             =   2760
+      Top             =   3120
       Width           =   1695
    End
    Begin VB.CommandButton cmdModify 
@@ -60,7 +68,7 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   120
       TabIndex        =   8
-      Top             =   2520
+      Top             =   2880
       Width           =   1695
    End
    Begin VB.CommandButton cmdDelete 
@@ -69,7 +77,7 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   120
       TabIndex        =   7
-      Top             =   2280
+      Top             =   2640
       Width           =   1695
    End
    Begin VB.CommandButton cmdAdd 
@@ -78,7 +86,7 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   120
       TabIndex        =   6
-      Top             =   2040
+      Top             =   2400
       Width           =   1695
    End
    Begin VB.ListBox lstResults 
@@ -174,6 +182,56 @@ cmdReTranslate.Enabled = True
 End If
 End Sub
 
+Private Sub cmdClean_Click()
+Dim MD5 As String
+Dim removed As Long
+Dim removed2 As Long
+Dim removedTotal As Long
+Dim i As Long
+Dim ii As Long
+Dim count As Long
+If MsgBox("This will clean out the collection of unknown original translations and should bring the original and translated collections to the same number of records.", vbYesNo) = vbYes Then
+
+Me.Caption = "Cleaning collections.."
+DoEvents
+    For ii = 0 To 5
+        count = col.count
+        For i = 1 To count
+        If i < (count - removed) Then
+            MD5 = col.Item(i)(0)
+                If Exists(origCol, MD5) = False Then
+                    Debug.Print "Removing:" & col.Item(i)(1)
+                    'DeleteFromCollection MD5, origCol
+                    DeleteFromCollection MD5, col
+                    removed = removed + 1
+                End If
+        End If
+        Next i
+        
+        count = origCol.count
+        For i = 1 To count
+        If i < (count - removed2) Then
+            MD5 = origCol.Item(i)(0)
+                If Exists(col, MD5) = False Then
+                    Debug.Print "Removing:" & origCol.Item(i)(1)
+                    DeleteFromCollection MD5, origCol
+                    'DeleteFromCollection MD5, col
+                    removed2 = removed2 + 1
+                End If
+        End If
+        Next i
+        
+        removedTotal = removedTotal + removed + removed2
+        removed2 = 0
+        removed = 0
+    Next ii
+End If
+    
+    updateCaption
+    MsgBox "Removed items from the collections: " & removedTotal, vbOKOnly
+    
+End Sub
+
 Private Sub cmdDelete_Click()
 Dim MD5 As String
 If lstResults.List(lstResults.ListIndex) = "" Then Exit Sub
@@ -242,10 +300,10 @@ If lstResults.List(lstResults.ListIndex) = "" Then Exit Sub
 End Sub
 
 Private Sub updateCaption()
-If col.Count = origCol.Count Then
-Me.Caption = "TranslationEditor - Records: " & origCol.Count
+If col.count = origCol.count Then
+Me.Caption = "TranslationEditor - Records: " & origCol.count
 Else
-Me.Caption = "TranslationEditor - Trans:" & col.Count & " - Orig:" & origCol.Count
+Me.Caption = "TranslationEditor - Trans:" & col.count & " - Orig:" & origCol.count
 End If
 
 End Sub
@@ -254,9 +312,9 @@ Private Sub DeleteFromList(index As Long, lst As ListBox)
     lst.RemoveItem (index)
 End Sub
 
-Private Sub UpdateList(Text As String, index As Long, lst As ListBox)
+Private Sub UpdateList(text As String, index As Long, lst As ListBox)
 
-    lst.List(index) = Text
+    lst.List(index) = text
 
 End Sub
 
@@ -333,19 +391,19 @@ Kill App.Path & "\en.dat.bak"
     saveLang App.Path & "\es-en.dat", origCol
 End Sub
 
-Public Sub SearchCollection(Text As String, coll As Collection, Optional blMD5Search As Boolean)
+Public Sub SearchCollection(text As String, coll As Collection, Optional blMD5Search As Boolean)
 lstResults.Clear
 Dim i As Long
-For i = 1 To coll.Count
+For i = 1 To coll.count
     
     If blMD5Search = True Then
-        If InStr(1, LCase$(coll.Item(i)(0)), LCase$(Text)) <> 0 Then
+        If InStr(1, LCase$(coll.Item(i)(0)), LCase$(text)) <> 0 Then
             lstResults.AddItem coll.Item(i)(0)
             lstResults.ItemData(lstResults.NewIndex) = i
             Exit Sub
         End If
     Else
-        If InStr(1, LCase$(coll.Item(i)(1)), LCase$(Text)) <> 0 Then
+        If InStr(1, LCase$(coll.Item(i)(1)), LCase$(text)) <> 0 Then
             lstResults.AddItem coll.Item(i)(1)
             lstResults.ItemData(lstResults.NewIndex) = i
         End If
@@ -357,7 +415,7 @@ End Sub
 Public Sub EnumCollection(coll As Collection)
 lstResults.Clear
 Dim i As Long
-For i = 1 To coll.Count
+For i = 1 To coll.count
 
             lstResults.AddItem coll.Item(i)(1)
             lstResults.ItemData(lstResults.NewIndex) = i
