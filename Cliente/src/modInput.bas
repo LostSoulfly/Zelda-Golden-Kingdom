@@ -172,7 +172,7 @@ Dim Name As String
 Dim i As Long
 Dim N As Long
 Dim Command() As String
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 'Kill Counter
 Dim totalkills As Long
 Dim totaldeaths As Long
@@ -246,14 +246,16 @@ Dim alldeaths As Long
 
             Select Case Command(0)
                 Case "/wasd"
-                    Options.WASD = 1
-                    AddText "WASD controls enabled! Use E to attack, Spacebar to pickup items.", White
+                    Options.WASD = Not Options.WASD
+                    If Options.WASD = 1 Then AddText "WASD controls enabled! Use E to attack, Spacebar to pickup items.", White
+                    If Options.WASD = 0 Then AddText "WASD controls disabled.", White
                     
                 Case "/help"
                     Call AddText("Comandos Sociales:", HelpColor, True)
                     Call AddText("-msghere = mensaje a color", HelpColor, True)
                     Call AddText("!nickname mensaje = mensaje a Jugador", HelpColor, True)
-                    Call AddText("Comando Habilitados: /info, /online, /fps, /fpslock, /muertes, /contador", HelpColor, True)
+                    Call AddText("Comando Habilitados: /info, /online, /fps, /fpslock, /deaths, /counter", HelpColor)
+                    Call AddText("/wasd, /guild, /stats, /translation", HelpColor)
                 
                 Case "/guild"
                     If UBound(Command) < 1 Then
@@ -271,7 +273,7 @@ Dim alldeaths As Long
                     
                     Select Case Command(1)
                         Case "create"
-                        If (Len(ChatText) - Len("/guild create ")) < 30 Then
+                        If (Len(ChatText) - Len("/guild create ")) < 30 And (Len(ChatText) - Len("/guild create ")) > 3 Then
                             'If UBound(Command) = 2 Then
                                 Call GuildCommand(1, Right(ChatText, Len(ChatText) - Len("/guild create ")))
                             Else
@@ -328,6 +330,12 @@ Dim alldeaths As Long
                             End If
 
                         End Select
+                        
+                Case "/translation"
+                    frmTransLog.Visible = Not (frmTransLog.Visible)
+                        
+                Case "/translate"
+                    'possibly translate your message and send it? easy enough.
                 
                 Case "/info"
 
@@ -342,11 +350,11 @@ Dim alldeaths As Long
                         GoTo Continue
                     End If
 
-                    Set Buffer = New clsBuffer
-                    Buffer.WriteLong CPlayerInfoRequest
-                    Buffer.WriteString Trim$(StringIntersection(MyText, "/info"))
-                    SendData Buffer.ToArray()
-                    Set Buffer = Nothing
+                    Set buffer = New clsBuffer
+                    buffer.WriteLong CPlayerInfoRequest
+                    buffer.WriteString Trim$(StringIntersection(MyText, "/info"))
+                    SendData buffer.ToArray()
+                    Set buffer = Nothing
                     ' Whos Online
                 Case "/online"
                     SendWhosOnline
@@ -358,10 +366,10 @@ Dim alldeaths As Long
                     FPS_Lock = Not FPS_Lock
                     ' Request stats
                 Case "/stats"
-                    Set Buffer = New clsBuffer
-                    Buffer.WriteLong CGetStats
-                    SendData Buffer.ToArray()
-                    Set Buffer = Nothing
+                    Set buffer = New clsBuffer
+                    buffer.WriteLong CGetStats
+                    SendData buffer.ToArray()
+                    Set buffer = Nothing
                     'Kill Counter
                 Case "/deaths"
                     totalkills = Player(MyIndex).Kill + Player(MyIndex).NpcKill
@@ -399,8 +407,6 @@ Dim alldeaths As Long
                         GoTo Continue
                     End If
                     
-                    
-
                     SendKick Trim$(StringIntersection(MyText, "/kick"))
                     ' // Mapper Admin Commands //
                     ' Location

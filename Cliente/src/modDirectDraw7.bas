@@ -1603,7 +1603,7 @@ Dim attackspeed As Long
         ' Proceed as normal
         Y = GetPlayerY(index) * PIC_Y + Player(index).YOffset
     End If
-
+    'If index = 2 Then Debug.Print X & " - " & Y
     ' render the actual sprite
     Call BltSprite(sprite, X, Y, rec)
     

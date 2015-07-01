@@ -2,6 +2,7 @@ Attribute VB_Name = "modGlobals"
 Option Explicit
 
 Public ChatFocus As Boolean
+Public AutoLogin As Boolean
 
 ' Paperdoll rendering order
 Public PaperdollOrder() As Long

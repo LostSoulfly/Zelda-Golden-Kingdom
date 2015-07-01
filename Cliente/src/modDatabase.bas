@@ -175,12 +175,16 @@ Dim i As Byte
         Next
         SaveOptions
     Else
+
         Options.Game_Name = GetVar(Filename, "Options", "Game_Name")
-        Options.Username = GetVar(Filename, "Options", "Username")
-        Options.Password = GetVar(Filename, "Options", "Password")
+        If Len(Trim$(Replace(Options.Username, vbNullChar, ""))) = 0 Then Options.Username = GetVar(Filename, "Options", "Username")
+        If Len(Trim$(Replace(Options.Password, vbNullChar, ""))) = 0 Then Options.Password = GetVar(Filename, "Options", "Password")
         Options.SavePass = Val(GetVar(Filename, "Options", "SavePass"))
-        Options.ip = GetVar(Filename, "Options", "IP")
-        Options.port = Val(GetVar(Filename, "Options", "Port"))
+        
+
+        
+        If Len(Trim$(Replace(Options.ip, vbNullChar, ""))) = 0 Then Options.ip = GetVar(Filename, "Options", "IP")
+        If Len(Trim$(Replace(Options.port, vbNullChar, ""))) <= 1 Then Options.port = Val(GetVar(Filename, "Options", "Port"))
         Options.MenuMusic = GetVar(Filename, "Options", "MenuMusic")
         Options.Music = GetVar(Filename, "Options", "Music")
         Options.Sound = GetVar(Filename, "Options", "Sound")
@@ -272,7 +276,7 @@ Public Sub SaveMap(ByVal mapnum As Long)
 Dim Filename As String
 Dim f As Long
 Dim X As Long
-Dim y As Long
+Dim Y As Long
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -297,8 +301,8 @@ Dim y As Long
     Put #f, , map.Weather
 
     For X = 0 To map.MaxX
-        For y = 0 To map.MaxY
-            Put #f, , map.Tile(X, y)
+        For Y = 0 To map.MaxY
+            Put #f, , map.Tile(X, Y)
         Next
 
         DoEvents
@@ -330,7 +334,7 @@ Public Sub LoadMap(ByVal mapnum As Long)
 Dim Filename As String
 Dim f As Long
 Dim X As Long
-Dim y As Long
+Dim Y As Long
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -358,8 +362,8 @@ Dim y As Long
     ReDim map.Tile(0 To map.MaxX, 0 To map.MaxY)
 
     For X = 0 To map.MaxX
-        For y = 0 To map.MaxY
-            Get #f, , map.Tile(X, y)
+        For Y = 0 To map.MaxY
+            Get #f, , map.Tile(X, Y)
         Next
     Next
 
@@ -1317,7 +1321,7 @@ Function GetPlayerY(ByVal index As Long) As Long
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If index > MAX_PLAYERS Then Exit Function
-    GetPlayerY = Player(index).y
+    GetPlayerY = Player(index).Y
     
     ' Error handler
     Exit Function
@@ -1327,12 +1331,12 @@ errorhandler:
     Exit Function
 End Function
 
-Sub SetPlayerY(ByVal index As Long, ByVal y As Long)
+Sub SetPlayerY(ByVal index As Long, ByVal Y As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If index > MAX_PLAYERS Then Exit Sub
-    Player(index).y = y
+    Player(index).Y = Y
     
     ' Error handler
     Exit Sub
@@ -1500,7 +1504,7 @@ Sub ClearProjectile(ByVal index As Long, ByVal PlayerProjectile As Long)
         .Pic = 0
         .TravelTime = 0
         .X = 0
-        .y = 0
+        .Y = 0
         .range = 0
         .Damage = 0
         .Speed = 0

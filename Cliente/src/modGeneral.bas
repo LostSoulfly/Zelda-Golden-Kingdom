@@ -52,15 +52,44 @@ Public Sub Main()
             DoEvents
         End If
     
+End If
+
+Dim strsplit() As String, i As Integer
+    strsplit = Split(Command, " ")
+    If (UBound(strsplit)) Mod 2 > 0 Then
+        For i = 0 To UBound(strsplit) Step 2
+            Select Case LCase$(strsplit(i))
+            
+            Case Is = "-user"
+                Options.Username = Trim$(strsplit(i + 1))
+                
+            Case Is = "-pass"
+                Options.Password = Trim$(strsplit(i + 1))
+            
+            Case Is = "-server"
+                'anything above 0 will enable it.
+                Options.ip = Trim$(strsplit(i + 1))
+            
+            Case Is = "-port"
+                'anything above 0 will enable it.
+                Options.port = Val(Trim$(strsplit(i + 1)))
+            
+            Case Is = "-auto"
+                AutoLogin = Val(Trim$(strsplit(i + 1)))
+            
+            End Select
+        Next
     End If
+    
+    
     LangTo = "en"
     LangFrom = "es"
     strTransPath = App.Path & "\" & LangTo & ".dat"
     strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
 
-    frmTransLog.Show
+    'frmTransLog.Show
     frmTransLog.txtLog.Text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
-    DoEvents
+    'DoEvents
 
     ' set loading screen
     loadGUI True
@@ -183,6 +212,12 @@ Public Sub Main()
     frmLoad.Visible = False
     
     Call InitChatRooms
+    
+    If AutoLogin = True Then
+        If isLoginLegal(frmMenu.txtLUser.Text, frmMenu.txtLPass.Text) Then
+            Call MenuState(MENU_STATE_LOGIN)
+        End If
+    End If
     
     ' Error handler
     Exit Sub
@@ -344,14 +379,14 @@ errorhandler:
 End Sub
 
 Public Sub logoutGame()
-Dim Buffer As clsBuffer, i As Long
+Dim buffer As clsBuffer, i As Long
 
     isLogging = True
     InGame = False
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CQuit
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CQuit
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     Call DestroyTCP
     
     ' destroy the animations loaded
@@ -573,7 +608,7 @@ errorhandler:
     Exit Function
 End Function
 
-Public Sub MovePicture(PB As PictureBox, Button As Integer, Shift As Integer, X As Single, y As Single)
+Public Sub MovePicture(PB As PictureBox, Button As Integer, Shift As Integer, X As Single, Y As Single)
 Dim GlobalX As Long
 Dim GlobalY As Long
 
@@ -585,7 +620,7 @@ Dim GlobalY As Long
 
     If Button = 1 Then
         PB.Left = GlobalX + X - SOffsetX
-        PB.Top = GlobalY + y - SOffsetY
+        PB.Top = GlobalY + Y - SOffsetY
     End If
 
     ' Error handler

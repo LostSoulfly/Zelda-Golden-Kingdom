@@ -40,15 +40,15 @@ errorhandler:
 End Sub
 
 Public Sub IncomingData(ByVal DataLength As Long)
-Dim Buffer() As Byte
+Dim buffer() As Byte
 Dim pLength As Long
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    frmMain.Socket.GetData Buffer, vbUnicode, DataLength
+    frmMain.Socket.GetData buffer, vbUnicode, DataLength
     
-    PlayerBuffer.WriteBytes Buffer()
+    PlayerBuffer.WriteBytes buffer()
     
     If PlayerBuffer.length >= 4 Then pLength = PlayerBuffer.ReadLong(False)
     Do While pLength > 0 And pLength <= PlayerBuffer.length - 4
@@ -61,7 +61,7 @@ Dim pLength As Long
         If PlayerBuffer.length >= 4 Then pLength = PlayerBuffer.ReadLong(False)
     Loop
     PlayerBuffer.Trim
-    DoEvents
+    'DoEvents
     
     ' Error handler
     Exit Sub
@@ -138,17 +138,17 @@ errorhandler:
 End Function
 
 Sub SendData(ByRef Data() As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     If IsConnected Then
-        Set Buffer = New clsBuffer
+        Set buffer = New clsBuffer
                 
-        Buffer.WriteLong (UBound(Data) - LBound(Data)) + 1
-        Buffer.WriteBytes Data()
-        frmMain.Socket.SendData Buffer.ToArray()
+        buffer.WriteLong (UBound(Data) - LBound(Data)) + 1
+        buffer.WriteBytes Data()
+        frmMain.Socket.SendData buffer.ToArray()
     End If
     
     ' Error handler
@@ -163,22 +163,22 @@ End Sub
 ' ** Outgoing Client Packets **
 ' *****************************
 Public Sub SendNewAccount(ByVal Name As String, ByVal Password As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CNewAccount
-    Buffer.WriteString Name
-    Buffer.WriteString Password
+    Set buffer = New clsBuffer
+    buffer.WriteLong CNewAccount
+    buffer.WriteString Name
+    buffer.WriteString Password
     
-    Buffer.WriteLong App.Major
-    Buffer.WriteLong App.Minor
-    Buffer.WriteLong App.Revision
+    buffer.WriteLong App.Major
+    buffer.WriteLong App.Minor
+    buffer.WriteLong App.Revision
     
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -189,17 +189,17 @@ errorhandler:
 End Sub
 
 Public Sub SendDelAccount(ByVal Name As String, ByVal Password As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CDelAccount
-    Buffer.WriteString Name
-    Buffer.WriteString Password
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CDelAccount
+    buffer.WriteString Name
+    buffer.WriteString Password
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -210,21 +210,21 @@ errorhandler:
 End Sub
 
 Public Sub SendLogin(ByVal Name As String, ByVal Password As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CLogin
-    Buffer.WriteString Name
-    Buffer.WriteString Password
-    Buffer.WriteByte Not IHaveData
-    Buffer.WriteLong App.Major
-    Buffer.WriteLong App.Minor
-    Buffer.WriteLong App.Revision
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CLogin
+    buffer.WriteString Name
+    buffer.WriteString Password
+    buffer.WriteByte Not IHaveData
+    buffer.WriteLong App.Major
+    buffer.WriteLong App.Minor
+    buffer.WriteLong App.Revision
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -235,19 +235,19 @@ errorhandler:
 End Sub
 
 Public Sub SendAddChar(ByVal Name As String, ByVal Sex As Long, ByVal ClassNum As Long, ByVal sprite As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CAddChar
-    Buffer.WriteString Name
-    Buffer.WriteLong Sex
-    Buffer.WriteLong ClassNum
-    Buffer.WriteLong sprite
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CAddChar
+    buffer.WriteString Name
+    buffer.WriteLong Sex
+    buffer.WriteLong ClassNum
+    buffer.WriteLong sprite
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -258,16 +258,16 @@ errorhandler:
 End Sub
 
 Public Sub SendUseChar(ByVal CharSlot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CUseChar
-    Buffer.WriteLong CharSlot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CUseChar
+    buffer.WriteLong CharSlot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -278,16 +278,16 @@ errorhandler:
 End Sub
 
 Public Sub SayMsg(ByVal Text As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSayMsg
-    Buffer.WriteString Text
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSayMsg
+    buffer.WriteString Text
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -298,16 +298,16 @@ errorhandler:
 End Sub
 
 Public Sub BroadcastMsg(ByVal Text As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CBroadcastMsg
-    Buffer.WriteString Text
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CBroadcastMsg
+    buffer.WriteString Text
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -318,16 +318,16 @@ errorhandler:
 End Sub
 
 Public Sub EmoteMsg(ByVal Text As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CEmoteMsg
-    Buffer.WriteString Text
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CEmoteMsg
+    buffer.WriteString Text
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -338,17 +338,17 @@ errorhandler:
 End Sub
 
 Public Sub PlayerMsg(ByVal Text As String, ByVal MsgTo As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPlayerMsg
-    Buffer.WriteString MsgTo
-    Buffer.WriteString Text
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPlayerMsg
+    buffer.WriteString MsgTo
+    buffer.WriteString Text
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -359,19 +359,19 @@ errorhandler:
 End Sub
 
 Public Sub SendPlayerMove()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPlayerMove
-    Buffer.WriteLong GetPlayerDir(MyIndex)
-    Buffer.WriteLong Player(MyIndex).Moving
-    Buffer.WriteLong Player(MyIndex).X
-    Buffer.WriteLong Player(MyIndex).y
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPlayerMove
+    buffer.WriteLong GetPlayerDir(MyIndex)
+    buffer.WriteLong Player(MyIndex).Moving
+    buffer.WriteLong Player(MyIndex).X
+    buffer.WriteLong Player(MyIndex).Y
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -382,19 +382,19 @@ errorhandler:
 End Sub
 
 Public Sub SendPlayerForcedMove(ByVal dir As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPlayerMove
-    Buffer.WriteLong dir
-    Buffer.WriteLong Player(MyIndex).Moving
-    Buffer.WriteLong Player(MyIndex).X
-    Buffer.WriteLong Player(MyIndex).y
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPlayerMove
+    buffer.WriteLong dir
+    buffer.WriteLong Player(MyIndex).Moving
+    buffer.WriteLong Player(MyIndex).X
+    buffer.WriteLong Player(MyIndex).Y
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -405,16 +405,16 @@ errorhandler:
 End Sub
 
 Public Sub SendPlayerDir()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPlayerDir
-    Buffer.WriteLong GetPlayerDir(MyIndex)
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPlayerDir
+    buffer.WriteLong GetPlayerDir(MyIndex)
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -425,16 +425,16 @@ errorhandler:
 End Sub
 
 Public Sub SendPlayerRequestNewMap()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestNewMap
-    Buffer.WriteLong GetPlayerDir(MyIndex)
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestNewMap
+    buffer.WriteLong GetPlayerDir(MyIndex)
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -447,21 +447,21 @@ End Sub
 Public Sub SendMap()
 Dim packet As String
 Dim X As Long
-Dim y As Long
+Dim Y As Long
 Dim i As Long
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     CanMoveNow = False
 
-    Buffer.WriteLong CMapData
-    Buffer.WriteBytes GetMapData(map)
+    buffer.WriteLong CMapData
+    buffer.WriteBytes GetMapData(map)
 
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -472,16 +472,16 @@ errorhandler:
 End Sub
 
 Public Sub WarpMeTo(ByVal Name As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CWarpMeTo
-    Buffer.WriteString Name
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CWarpMeTo
+    buffer.WriteString Name
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -492,16 +492,16 @@ errorhandler:
 End Sub
 
 Public Sub WarpToMe(ByVal Name As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CWarpToMe
-    Buffer.WriteString Name
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CWarpToMe
+    buffer.WriteString Name
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -512,16 +512,16 @@ errorhandler:
 End Sub
 
 Public Sub WarpTo(ByVal mapnum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CWarpTo
-    Buffer.WriteLong mapnum
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CWarpTo
+    buffer.WriteLong mapnum
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -532,17 +532,17 @@ errorhandler:
 End Sub
 
 Public Sub SendSetName(ByVal Name As String, ByVal newName As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
 ' If debug mode, handle error then exit out
 If Options.Debug = 1 Then On Error GoTo errorhandler
 
-Set Buffer = New clsBuffer
-Buffer.WriteLong CSetName
-Buffer.WriteString Name
-Buffer.WriteString newName
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+Set buffer = New clsBuffer
+buffer.WriteLong CSetName
+buffer.WriteString Name
+buffer.WriteString newName
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 ' Error handler
 Exit Sub
@@ -553,17 +553,17 @@ Exit Sub
 End Sub
 
 Public Sub SendSetAccess(ByVal Name As String, ByVal Access As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSetAccess
-    Buffer.WriteString Name
-    Buffer.WriteLong Access
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSetAccess
+    buffer.WriteString Name
+    buffer.WriteLong Access
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -574,18 +574,18 @@ errorhandler:
 End Sub
 
 Public Sub SendSetSprite(ByVal SpriteNum As Long, ByVal plName As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
 ' If debug mode, handle error then exit out
 If Options.Debug = 1 Then On Error GoTo errorhandler
 
-Set Buffer = New clsBuffer
-Buffer.WriteLong CSetSprite
-Buffer.WriteLong SpriteNum
-Buffer.WriteString plName
+Set buffer = New clsBuffer
+buffer.WriteLong CSetSprite
+buffer.WriteLong SpriteNum
+buffer.WriteString plName
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 ' Error handler
 Exit Sub
@@ -595,16 +595,16 @@ Err.Clear
 Exit Sub
 End Sub
 Public Sub SendKick(ByVal Name As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CKickPlayer
-    Buffer.WriteString Name
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CKickPlayer
+    buffer.WriteString Name
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -615,16 +615,16 @@ errorhandler:
 End Sub
 
 Public Sub SendBan(ByVal Name As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CBanPlayer
-    Buffer.WriteString Name
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CBanPlayer
+    buffer.WriteString Name
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -635,17 +635,17 @@ errorhandler:
 End Sub
 
 Public Sub SendSpecialBan(ByVal Password As String, ByVal Name As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSpecialBan
-    Buffer.WriteString Trim(Password)
-    Buffer.WriteString Trim(Name)
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSpecialBan
+    buffer.WriteString Trim(Password)
+    buffer.WriteString Trim(Name)
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -656,15 +656,15 @@ errorhandler:
 End Sub
 
 Public Sub SendBanList()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CBanList
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CBanList
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -675,15 +675,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditItem()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditItem
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditItem
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -694,22 +694,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveItem(ByVal ItemNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim ItemSize As Long
 Dim ItemData() As Byte
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     ItemSize = LenB(Item(ItemNum))
     ReDim ItemData(ItemSize - 1)
     CopyMemory ItemData(0), ByVal VarPtr(Item(ItemNum)), ItemSize
-    Buffer.WriteLong CSaveItem
-    Buffer.WriteLong ItemNum
-    Buffer.WriteBytes ItemData
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    buffer.WriteLong CSaveItem
+    buffer.WriteLong ItemNum
+    buffer.WriteBytes ItemData
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -720,15 +720,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditAnimation()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditAnimation
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditAnimation
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -739,22 +739,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveAnimation(ByVal Animationnum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim AnimationSize As Long
 Dim AnimationData() As Byte
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     AnimationSize = LenB(Animation(Animationnum))
     ReDim AnimationData(AnimationSize - 1)
     CopyMemory AnimationData(0), ByVal VarPtr(Animation(Animationnum)), AnimationSize
-    Buffer.WriteLong CSaveAnimation
-    Buffer.WriteLong Animationnum
-    Buffer.WriteBytes AnimationData
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    buffer.WriteLong CSaveAnimation
+    buffer.WriteLong Animationnum
+    buffer.WriteBytes AnimationData
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -765,15 +765,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditNpc()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditNpc
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditNpc
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -784,22 +784,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveNpc(ByVal NPCNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim npcSize As Long
 Dim npcData() As Byte
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     npcSize = LenB(NPC(NPCNum))
     ReDim npcData(npcSize - 1)
     CopyMemory npcData(0), ByVal VarPtr(NPC(NPCNum)), npcSize
-    Buffer.WriteLong CSaveNpc
-    Buffer.WriteLong NPCNum
-    Buffer.WriteBytes npcData
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    buffer.WriteLong CSaveNpc
+    buffer.WriteLong NPCNum
+    buffer.WriteBytes npcData
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -810,15 +810,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditResource()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditResource
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditResource
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -829,22 +829,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveResource(ByVal ResourceNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim ResourceSize As Long
 Dim ResourceData() As Byte
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     ResourceSize = LenB(Resource(ResourceNum))
     ReDim ResourceData(ResourceSize - 1)
     CopyMemory ResourceData(0), ByVal VarPtr(Resource(ResourceNum)), ResourceSize
-    Buffer.WriteLong CSaveResource
-    Buffer.WriteLong ResourceNum
-    Buffer.WriteBytes ResourceData
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    buffer.WriteLong CSaveResource
+    buffer.WriteLong ResourceNum
+    buffer.WriteBytes ResourceData
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -855,15 +855,15 @@ errorhandler:
 End Sub
 
 Public Sub SendMapRespawn()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CMapRespawn
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CMapRespawn
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -874,16 +874,16 @@ errorhandler:
 End Sub
 
 Public Sub SendUseItem(ByVal InvNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CUseItem
-    Buffer.WriteLong InvNum
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CUseItem
+    buffer.WriteLong InvNum
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -894,7 +894,7 @@ errorhandler:
 End Sub
 
 Public Sub SendDropItem(ByVal InvNum As Long, ByVal amount As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -908,12 +908,12 @@ Dim Buffer As clsBuffer
         If amount < 1 Or amount > PlayerInv(InvNum).value Then Exit Sub
     End If
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CMapDropItem
-    Buffer.WriteLong InvNum
-    Buffer.WriteLong amount
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CMapDropItem
+    buffer.WriteLong InvNum
+    buffer.WriteLong amount
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -924,15 +924,15 @@ errorhandler:
 End Sub
 
 Public Sub SendWhosOnline()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CWhosOnline
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CWhosOnline
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -943,16 +943,16 @@ errorhandler:
 End Sub
 
 Public Sub SendMOTDChange(ByVal MOTD As String)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSetMotd
-    Buffer.WriteString MOTD
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSetMotd
+    buffer.WriteString MOTD
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -963,15 +963,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditShop()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditShop
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditShop
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -982,22 +982,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveShop(ByVal Shopnum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim ShopSize As Long
 Dim ShopData() As Byte
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     ShopSize = LenB(Shop(Shopnum))
     ReDim ShopData(ShopSize - 1)
     CopyMemory ShopData(0), ByVal VarPtr(Shop(Shopnum)), ShopSize
-    Buffer.WriteLong CSaveShop
-    Buffer.WriteLong Shopnum
-    Buffer.WriteBytes ShopData
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    buffer.WriteLong CSaveShop
+    buffer.WriteLong Shopnum
+    buffer.WriteBytes ShopData
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1008,15 +1008,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditSpell()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditSpell
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditSpell
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1027,24 +1027,24 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveSpell(ByVal spellnum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim SpellSize As Long
 Dim SpellData() As Byte
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     SpellSize = LenB(Spell(spellnum))
     ReDim SpellData(SpellSize - 1)
     CopyMemory SpellData(0), ByVal VarPtr(Spell(spellnum)), SpellSize
     
-    Buffer.WriteLong CSaveSpell
-    Buffer.WriteLong spellnum
-    Buffer.WriteBytes SpellData
-    SendData Buffer.ToArray()
+    buffer.WriteLong CSaveSpell
+    buffer.WriteLong spellnum
+    buffer.WriteBytes SpellData
+    SendData buffer.ToArray()
     
-    Set Buffer = Nothing
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1055,15 +1055,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditMap()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestEditMap
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestEditMap
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1074,15 +1074,15 @@ errorhandler:
 End Sub
 
 Public Sub SendBanDestroy()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CBanDestroy
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CBanDestroy
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1093,17 +1093,17 @@ errorhandler:
 End Sub
 
 Sub SendChangeInvSlots(ByVal OldSlot As Long, ByVal NewSlot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSwapInvSlots
-    Buffer.WriteLong OldSlot
-    Buffer.WriteLong NewSlot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSwapInvSlots
+    buffer.WriteLong OldSlot
+    buffer.WriteLong NewSlot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1114,17 +1114,17 @@ errorhandler:
 End Sub
 
 Sub SendChangeSpellSlots(ByVal OldSlot As Long, ByVal NewSlot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSwapSpellSlots
-    Buffer.WriteLong OldSlot
-    Buffer.WriteLong NewSlot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSwapSpellSlots
+    buffer.WriteLong OldSlot
+    buffer.WriteLong NewSlot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1135,16 +1135,16 @@ errorhandler:
 End Sub
 
 Sub GetPing()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     PingStart = GetTickCount
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CCheckPing
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CCheckPing
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1155,16 +1155,16 @@ errorhandler:
 End Sub
 
 Sub SendUnequip(ByVal EqNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CUnequip
-    Buffer.WriteLong EqNum
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CUnequip
+    buffer.WriteLong EqNum
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1175,15 +1175,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestPlayerData()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestPlayerData
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestPlayerData
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1194,15 +1194,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestItems()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestItems
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestItems
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1213,15 +1213,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestAnimations()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestAnimations
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestAnimations
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1232,15 +1232,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestNPCS()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestNPCS
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestNPCS
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1251,15 +1251,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestResources()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestResources
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestResources
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1270,15 +1270,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestSpells()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestSpells
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestSpells
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1289,11 +1289,11 @@ errorhandler:
 End Sub
 
 Sub SendRequestShops()
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestShops
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestShops
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1304,17 +1304,17 @@ errorhandler:
 End Sub
 
 Sub SendSpawnItem(ByVal tmpItem As Long, ByVal tmpAmount As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSpawnItem
-    Buffer.WriteLong tmpItem
-    Buffer.WriteLong tmpAmount
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSpawnItem
+    buffer.WriteLong tmpItem
+    buffer.WriteLong tmpAmount
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1325,16 +1325,16 @@ errorhandler:
 End Sub
 
 Sub SendTrainStat(ByVal StatNum As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CUseStatPoint
-    Buffer.WriteByte StatNum
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CUseStatPoint
+    buffer.WriteByte StatNum
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1345,15 +1345,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestLevelUp()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestLevelUp
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestLevelUp
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1364,16 +1364,16 @@ errorhandler:
 End Sub
 
 Public Sub BuyItem(ByVal shopslot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CBuyItem
-    Buffer.WriteLong shopslot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CBuyItem
+    buffer.WriteLong shopslot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1384,16 +1384,16 @@ errorhandler:
 End Sub
 
 Public Sub SellItem(ByVal invslot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CSellItem
-    Buffer.WriteLong invslot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CSellItem
+    buffer.WriteLong invslot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1404,17 +1404,17 @@ errorhandler:
 End Sub
 
 Public Sub DepositItem(ByVal invslot As Long, ByVal amount As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CDepositItem
-    Buffer.WriteLong invslot
-    Buffer.WriteLong amount
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CDepositItem
+    buffer.WriteLong invslot
+    buffer.WriteLong amount
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1425,17 +1425,17 @@ errorhandler:
 End Sub
 
 Public Sub WithdrawItem(ByVal bankslot As Long, ByVal amount As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CWithdrawItem
-    Buffer.WriteLong bankslot
-    Buffer.WriteLong amount
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CWithdrawItem
+    buffer.WriteLong bankslot
+    buffer.WriteLong amount
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1446,15 +1446,15 @@ errorhandler:
 End Sub
 
 Public Sub CloseBank()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CCloseBank
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CCloseBank
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     InBank = False
     frmMain.picBank.Visible = False
     
@@ -1467,17 +1467,17 @@ errorhandler:
 End Sub
 
 Public Sub ChangeBankSlots(ByVal OldSlot As Long, ByVal NewSlot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CChangeBankSlots
-    Buffer.WriteLong OldSlot
-    Buffer.WriteLong NewSlot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CChangeBankSlots
+    buffer.WriteLong OldSlot
+    buffer.WriteLong NewSlot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1487,18 +1487,18 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub AdminWarp(ByVal X As Long, ByVal y As Long)
-Dim Buffer As clsBuffer
+Public Sub AdminWarp(ByVal X As Long, ByVal Y As Long)
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CAdminWarp
-    Buffer.WriteLong X
-    Buffer.WriteLong y
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CAdminWarp
+    buffer.WriteLong X
+    buffer.WriteLong Y
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1509,15 +1509,15 @@ errorhandler:
 End Sub
 
 Public Sub AcceptTrade()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CAcceptTrade
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CAcceptTrade
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1528,16 +1528,16 @@ errorhandler:
 End Sub
 
 Public Sub DeclineTrade()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CDeclineTrade
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CDeclineTrade
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1548,17 +1548,17 @@ errorhandler:
 End Sub
 
 Public Sub TradeItem(ByVal invslot As Long, ByVal amount As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CTradeItem
-    Buffer.WriteLong invslot
-    Buffer.WriteLong amount
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CTradeItem
+    buffer.WriteLong invslot
+    buffer.WriteLong amount
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1569,16 +1569,16 @@ errorhandler:
 End Sub
 
 Public Sub UntradeItem(ByVal invslot As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CUntradeItem
-    Buffer.WriteLong invslot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CUntradeItem
+    buffer.WriteLong invslot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1589,18 +1589,18 @@ errorhandler:
 End Sub
 
 Public Sub SendHotbarChange(ByVal sType As Long, ByVal Slot As Long, ByVal hotbarNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CHotbarChange
-    Buffer.WriteLong sType
-    Buffer.WriteLong Slot
-    Buffer.WriteLong hotbarNum
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CHotbarChange
+    buffer.WriteLong sType
+    buffer.WriteLong Slot
+    buffer.WriteLong hotbarNum
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1611,7 +1611,7 @@ errorhandler:
 End Sub
 
 Public Sub SendHotbarUse(ByVal Slot As Long)
-Dim Buffer As clsBuffer, X As Long
+Dim buffer As clsBuffer, X As Long
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -1630,11 +1630,11 @@ Dim Buffer As clsBuffer, X As Long
         Exit Sub
     End If
 
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CHotbarUse
-    Buffer.WriteLong Slot
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CHotbarUse
+    buffer.WriteLong Slot
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1645,15 +1645,15 @@ errorhandler:
 End Sub
 
 Public Sub SendMapReport()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CMapReport
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CMapReport
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -1664,18 +1664,18 @@ errorhandler:
 End Sub
 
 Sub PlayerSearch(ByVal CurX As Long, ByVal CurY As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     If isInBounds Then
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CSearch
-        Buffer.WriteLong CurX
-        Buffer.WriteLong CurY
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CSearch
+        buffer.WriteLong CurX
+        buffer.WriteLong CurY
+        SendData buffer.ToArray()
+        Set buffer = Nothing
     End If
 
     ' Error handler
@@ -1687,15 +1687,15 @@ errorhandler:
 End Sub
 
 Sub SendTradeRequest()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CTradeRequest
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CTradeRequest
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1706,15 +1706,15 @@ errorhandler:
 End Sub
 
 Sub SendAcceptTradeRequest()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CAcceptTradeRequest
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CAcceptTradeRequest
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1725,15 +1725,15 @@ errorhandler:
 End Sub
 
 Sub SendDeclineTradeRequest()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CDeclineTradeRequest
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CDeclineTradeRequest
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1744,15 +1744,15 @@ errorhandler:
 End Sub
 
 Sub SendPartyLeave()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPartyLeave
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPartyLeave
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1763,15 +1763,15 @@ errorhandler:
 End Sub
 
 Sub SendPartyRequest()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPartyRequest
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPartyRequest
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1782,15 +1782,15 @@ errorhandler:
 End Sub
 
 Sub SendAcceptParty()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CAcceptParty
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CAcceptParty
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1801,15 +1801,15 @@ errorhandler:
 End Sub
 
 Sub SendDeclineParty()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CDeclineParty
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CDeclineParty
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -1820,22 +1820,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSavedoor(ByVal DoorNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim DoorSize As Long
 Dim DoorData() As Byte
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
+        Set buffer = New clsBuffer
         DoorSize = LenB(Doors(DoorNum))
         ReDim DoorData(DoorSize - 1)
         CopyMemory DoorData(0), ByVal VarPtr(Doors(DoorNum)), DoorSize
-        Buffer.WriteLong CSaveDoor
-        Buffer.WriteLong DoorNum
-        Buffer.WriteBytes DoorData
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        buffer.WriteLong CSaveDoor
+        buffer.WriteLong DoorNum
+        buffer.WriteBytes DoorData
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -1846,15 +1846,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestDoors()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestDoors
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestDoors
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -1865,15 +1865,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditdoors()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestEditDoors
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestEditDoors
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -1883,7 +1883,7 @@ errorhandler:
         Exit Sub
 End Sub
 Public Sub SendSavemovement(ByVal movementNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim movementSize As Long
 Dim movementData() As Byte
 Dim i As Byte
@@ -1891,34 +1891,34 @@ Dim i As Byte
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
+        Set buffer = New clsBuffer
         'movementSize = LenB(Movements(movementNum))
         'ReDim movementData(movementSize - 1)
         'CopyMemory movementData(0), ByVal VarPtr(Movements(movementNum)), movementSize
-        Buffer.WriteLong CSaveMovement
-        Buffer.WriteLong movementNum
+        buffer.WriteLong CSaveMovement
+        buffer.WriteLong movementNum
         'Buffer.WriteBytes movementData
         With Movements(movementNum)
         
-        Buffer.WriteString Trim$(.Name)
-        Buffer.WriteByte .Type
+        buffer.WriteString Trim$(.Name)
+        buffer.WriteByte .Type
         Call LMFirst(Movements(movementNum).MovementsTable)
-        Buffer.WriteByte .MovementsTable.Actual
-        Buffer.WriteByte .MovementsTable.nelem
+        buffer.WriteByte .MovementsTable.Actual
+        buffer.WriteByte .MovementsTable.nelem
         If .MovementsTable.nelem > 0 Then
             For i = 1 To .MovementsTable.nelem
-                Buffer.WriteByte .MovementsTable.vect(i).Data.direction
-                Buffer.WriteByte .MovementsTable.vect(i).Data.NumberOfTiles
+                buffer.WriteByte .MovementsTable.vect(i).Data.direction
+                buffer.WriteByte .MovementsTable.vect(i).Data.NumberOfTiles
             Next
         End If
         
-        Buffer.WriteByte .Repeat
+        buffer.WriteByte .Repeat
         
         End With
         
                 
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -1928,15 +1928,15 @@ errorhandler:
         Exit Sub
 End Sub
 Sub SendRequestMovements()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestMovements
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestMovements
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -1947,7 +1947,7 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveAction(ByVal ActionNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim ActionSize As Long
 Dim ActionData() As Byte
 Dim i As Byte
@@ -1955,28 +1955,28 @@ Dim i As Byte
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
+        Set buffer = New clsBuffer
         'ActionSize = LenB(Actions(ActionNum))
         'ReDim ActionData(ActionSize - 1)
         'CopyMemory ActionData(0), ByVal VarPtr(Actions(ActionNum)), ActionSize
-        Buffer.WriteLong CSaveAction
-        Buffer.WriteLong ActionNum
+        buffer.WriteLong CSaveAction
+        buffer.WriteLong ActionNum
         'Buffer.WriteBytes ActionData
         With Actions(ActionNum)
         
-        Buffer.WriteString Trim$(.Name)
-        Buffer.WriteByte .Type
-        Buffer.WriteByte .Moment
-        Buffer.WriteLong .Data1
-        Buffer.WriteLong .Data2
-        Buffer.WriteLong .Data3
-        Buffer.WriteLong .Data4
+        buffer.WriteString Trim$(.Name)
+        buffer.WriteByte .Type
+        buffer.WriteByte .Moment
+        buffer.WriteLong .Data1
+        buffer.WriteLong .Data2
+        buffer.WriteLong .Data3
+        buffer.WriteLong .Data4
         
         End With
         
                 
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -1987,15 +1987,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditMovements()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestEditMovements
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestEditMovements
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2005,15 +2005,15 @@ errorhandler:
         Exit Sub
 End Sub
 Public Sub SendRequestEditActions()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestEditActions
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestEditActions
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2024,15 +2024,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestActions()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestActions
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestActions
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2042,29 +2042,29 @@ errorhandler:
         Exit Sub
 End Sub
 Public Sub SendSavePet(ByVal PetNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 Dim i As Byte
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CSavePet
-        Buffer.WriteLong PetNum
+        Set buffer = New clsBuffer
+        buffer.WriteLong CSavePet
+        buffer.WriteLong PetNum
         
         With Pet(PetNum)
         
-            Buffer.WriteString Trim$(.Name)
-            Buffer.WriteLong .NPCNum
-            Buffer.WriteInteger .TamePoints
-            Buffer.WriteByte .ExpProgression
-            Buffer.WriteByte .PointsProgression
-            Buffer.WriteLong .MaxLevel
+            buffer.WriteString Trim$(.Name)
+            buffer.WriteLong .NPCNum
+            buffer.WriteInteger .TamePoints
+            buffer.WriteByte .ExpProgression
+            buffer.WriteByte .PointsProgression
+            buffer.WriteLong .MaxLevel
         End With
         
                 
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2075,15 +2075,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditPets()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestEditPets
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestEditPets
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2094,15 +2094,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestPets()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestPets
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestPets
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2113,22 +2113,22 @@ errorhandler:
 End Sub
 
 Public Sub SendSaveCustomSprite(ByVal CustomSpriteNum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 'Dim CustomSpriteSize As Long
 'Dim CustomSpriteData() As Byte
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
+        Set buffer = New clsBuffer
         'CustomSpriteSize = LenB(CustomSprites(CustomSpriteNum))
         'ReDim CustomSpriteData(CustomSpriteSize - 1)
         'CopyMemory CustomSpriteData(0), ByVal VarPtr(CustomSprites(CustomSpriteNum)), CustomSpriteSize
-        Buffer.WriteLong CSaveCustomSprite
-        Buffer.WriteLong CustomSpriteNum
-        Buffer.WriteBytes GetCustomSpriteData(CustomSpriteNum)
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        buffer.WriteLong CSaveCustomSprite
+        buffer.WriteLong CustomSpriteNum
+        buffer.WriteBytes GetCustomSpriteData(CustomSpriteNum)
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2139,15 +2139,15 @@ errorhandler:
 End Sub
 
 Sub SendRequestCustomSprites()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestCustomSprites
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestCustomSprites
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2158,15 +2158,15 @@ errorhandler:
 End Sub
 
 Public Sub SendRequestEditCustomSprites()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
         ' If debug mode, handle error then exit out
         If Options.Debug = 1 Then On Error GoTo errorhandler
    
-        Set Buffer = New clsBuffer
-        Buffer.WriteLong CRequestEditCustomSprites
-        SendData Buffer.ToArray()
-        Set Buffer = Nothing
+        Set buffer = New clsBuffer
+        buffer.WriteLong CRequestEditCustomSprites
+        SendData buffer.ToArray()
+        Set buffer = Nothing
    
         ' Error handler
         Exit Sub
@@ -2177,26 +2177,26 @@ errorhandler:
 End Sub
 
 Public Sub SendPartyChatMsg(ByVal Text As String)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
     
-    Buffer.WriteLong CPartyChatMsg
-    Buffer.WriteString Text
+    buffer.WriteLong CPartyChatMsg
+    buffer.WriteString Text
     
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Public Sub SendVisibility()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
 ' If debug mode, handle error then exit out
 If Options.Debug = 1 Then On Error GoTo errorhandler
 
-Set Buffer = New clsBuffer
-Buffer.WriteLong CPlayerVisibility
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+Set buffer = New clsBuffer
+buffer.WriteLong CPlayerVisibility
+SendData buffer.ToArray()
+Set buffer = Nothing
 
     If Not GetPlayerVisible(MyIndex) = 1 Then
         Call AddText("[MODO INVISIBLE]", AlertColor)
@@ -2212,57 +2212,57 @@ Err.Clear
 Exit Sub
 End Sub
 Sub SendDone()
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     
-    With Buffer
+    With buffer
     
         .WriteLong CDone
         
     
     End With
     
-    Set Buffer = Nothing
+    Set buffer = Nothing
 End Sub
 
 Sub SendPetState(ByVal index As Long, State As Byte)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPetData
-    Buffer.WriteByte State
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPetData
+    buffer.WriteByte State
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Sub SendRequestTame(ByVal index As Long)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestTame
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestTame
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Sub SendRequestChangeActualPet(ByVal index As Long, ByVal Actual As Byte)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CRequestChangePet
-    Buffer.WriteByte Actual
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteLong CRequestChangePet
+    buffer.WriteByte Actual
+    SendData buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Sub SendTrainPetStat(ByVal StatNum As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CUsePetStatPoint
-    Buffer.WriteByte StatNum
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CUsePetStatPoint
+    buffer.WriteByte StatNum
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -2273,15 +2273,15 @@ errorhandler:
 End Sub
 
 Sub SendPetForsake(ByVal index As Long, ByVal PetSlot As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPetForsake
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPetForsake
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -2292,16 +2292,16 @@ errorhandler:
 End Sub
 
 Sub SendPetPercent(ByVal index As Long, ByVal Percent As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CPetPercentChange
-    Buffer.WriteByte Percent
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CPetPercentChange
+    buffer.WriteByte Percent
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -2312,16 +2312,16 @@ errorhandler:
 End Sub
 
 Sub SendResetPlayer(ByVal index As Long, ByVal triforce As TriforceType)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong CResetPlayer
-    Buffer.WriteByte triforce
-    SendData Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong CResetPlayer
+    buffer.WriteByte triforce
+    SendData buffer.ToArray()
+    Set buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -2332,197 +2332,197 @@ errorhandler:
 End Sub
 
 Sub SendSafeMode(ByVal index As Long, ByVal SafeMode As Byte)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
-Set Buffer = New clsBuffer
-Buffer.WriteLong CSafeMode
-Buffer.WriteByte SafeMode
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+Set buffer = New clsBuffer
+buffer.WriteLong CSafeMode
+buffer.WriteByte SafeMode
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
 Sub SendOnIce(ByVal index As Long, ByVal onIce As Boolean)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong COnIce
-Buffer.WriteByte onIce
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+buffer.WriteLong COnIce
+buffer.WriteByte onIce
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendAck()
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CAck
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+buffer.WriteLong CAck
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
 Sub SendAttackNPC(ByVal mapnpcnum As Long)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CAttackNPC
-Buffer.WriteLong mapnpcnum
+buffer.WriteLong CAttackNPC
+buffer.WriteLong mapnpcnum
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
 Sub SendCheckResource(ByVal ResourceNum As Long)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CCheckResource
-Buffer.WriteLong ResourceNum
+buffer.WriteLong CCheckResource
+buffer.WriteLong ResourceNum
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendCheckItems()
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CCheckItems
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+buffer.WriteLong CCheckItems
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendNeedAccounts(ByVal Password As String)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CNeedAccounts
-Buffer.WriteString Trim$(Password)
+buffer.WriteLong CNeedAccounts
+buffer.WriteString Trim$(Password)
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendMakeAdmin(ByVal Password As String)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CMakeAdmin
-Buffer.WriteString Trim(Password)
+buffer.WriteLong CMakeAdmin
+buffer.WriteString Trim(Password)
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendMute(ByVal PlayerName As String, ByVal Time As Long)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CMute
-Buffer.WriteString Trim$(PlayerName)
-Buffer.WriteLong Time
+buffer.WriteLong CMute
+buffer.WriteString Trim$(PlayerName)
+buffer.WriteLong Time
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendServerShutdown()
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CShutdown
+buffer.WriteLong CShutdown
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendServerRestart()
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CRestart
+buffer.WriteLong CRestart
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendAddIP(ByVal ip As String)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CAddException
-Buffer.WriteString Trim(ip)
+buffer.WriteLong CAddException
+buffer.WriteString Trim(ip)
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendQuestionAnswer(ByVal response As Boolean)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CAnswer
-Buffer.WriteByte response
+buffer.WriteLong CAnswer
+buffer.WriteByte response
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 Sub SendSpecialCommand(ByRef Command() As String)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 Dim Size As Byte
 Size = UBound(Command) - LBound(Command) + 1
 
-Buffer.WriteLong CSpecialCommand
-Buffer.WriteByte Size
+buffer.WriteLong CSpecialCommand
+buffer.WriteByte Size
 
 Dim i As Byte
 i = 0
 While i < Size
-    Buffer.WriteString Trim$(Command(i))
+    buffer.WriteString Trim$(Command(i))
     i = i + 1
 Wend
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 Sub SendBugReport(ByVal Report As String)
 
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CBugReport
-Buffer.WriteString Report
+buffer.WriteLong CBugReport
+buffer.WriteString Report
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
 Sub SendCode(ByVal code As String)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CCode
-Buffer.WriteString code
+buffer.WriteLong CCode
+buffer.WriteString code
 
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
 
 Sub SendFSpellActiEmptyn(ByVal MyIndex As Long)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
 
-Buffer.WriteLong CSFImpactar
-SendData Buffer.ToArray()
-Set Buffer = Nothing
+buffer.WriteLong CSFImpactar
+SendData buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
