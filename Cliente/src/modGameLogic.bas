@@ -367,7 +367,7 @@ Dim MovementSpeed As Long
             Player(index).Moving = False
         End If
             Player(index).XOffset = Player(index).XOffset - MovementSpeed
-            If Player(index).YOffset < 0 Then Player(index).YOffset = 0
+			If Player(index).XOffset < 0 Then Player(index).XOffset = 0
         Case DIR_RIGHT
         If Player(index).XOffset = 0 Then
             AddText "DIRRIGHT offset for " & index & " Moving = 0 now.", White
