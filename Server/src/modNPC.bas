@@ -16,16 +16,16 @@ End Function
 
 Sub RefreshMapNPCS(ByVal index As Long, Optional ByVal OmitNPCS As Boolean = False)
 
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
 If Not (OmitNPCS) Then
     Call SendMapNpcsTo(index, GetPlayerMap(index))
 End If
 
-Set Buffer = New clsBuffer
-Buffer.WriteLong SMapDone
-SendDataTo index, Buffer.ToArray()
-Set Buffer = Nothing
+Set buffer = New clsBuffer
+buffer.WriteLong SMapDone
+SendDataTo index, buffer.ToArray()
+Set buffer = Nothing
 
 End Sub
 
@@ -65,14 +65,14 @@ Next
 End Sub
 
 Sub SendNpcAttackAnimation(ByVal mapnum As Long, ByVal mapnpcnum As Long)
-Dim Buffer As clsBuffer
+Dim buffer As clsBuffer
 
 ' Send this packet so they can see the npc attacking
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SNpcAttack
-    Buffer.WriteLong mapnpcnum
-    SendDataToMap mapnum, Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong SNpcAttack
+    buffer.WriteLong mapnpcnum
+    SendDataToMap mapnum, buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Public Sub KillNpc(ByVal mapnum As Long, ByVal mapnpcnum As Long)
@@ -377,10 +377,10 @@ Public Function GetNPCMoveTimer(ByVal mapnum As Long, ByVal mapnpcnum As Long) A
     If i > 0 And GetNPCTarget(mapnum, mapnpcnum) <> 0 Then
         Dim MinFactor As Single
         Dim MaxFactor As Single
-        MinFactor = 3 / 5
-        MaxFactor = 2 / 10
+        MinFactor = 2 / 5
+        MaxFactor = 2 / 20
         Dim factor As Double
-        factor = (MaxFactor - MinFactor) / MAX_PET_STAT * GetNpcStat(mapnum, mapnpcnum, Agility) + MinFactor
+        factor = (MaxFactor - MinFactor) / MAX_PET_STAT * (GetNpcStat(mapnum, mapnpcnum, Agility) * 1.3) + MinFactor
         If factor < MaxFactor Then
             factor = MaxFactor
         End If
@@ -849,7 +849,7 @@ End Function
 
 Sub NpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long, ByVal Movement As Long)
     Dim packet As String
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
 
     ' Check for subscript out of range
     If mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Then
@@ -860,19 +860,19 @@ Sub NpcMove(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long, By
 
     If Not ComputeNPCSingleMovement(mapnum, mapnpcnum, dir) Then Exit Sub
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SNpcMove
-    Buffer.WriteLong mapnpcnum
-    Buffer.WriteByte dir
-    Buffer.WriteLong Movement
-    SendDataToMap mapnum, Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong SNpcMove
+    buffer.WriteLong mapnpcnum
+    buffer.WriteByte dir
+    buffer.WriteLong Movement
+    SendDataToMap mapnum, buffer.ToArray()
+    Set buffer = Nothing
 
 End Sub
 
 Sub NpcDir(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long)
     Dim packet As String
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
 
     ' Check for subscript out of range
     If mapnum <= 0 Or mapnum > MAX_MAPS Or mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Or dir < DIR_UP Or dir > DIR_RIGHT Then
@@ -880,12 +880,12 @@ Sub NpcDir(ByVal mapnum As Long, ByVal mapnpcnum As Long, ByVal dir As Long)
     End If
 
     MapNpc(mapnum).NPC(mapnpcnum).dir = dir
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SNpcDir
-    Buffer.WriteLong mapnpcnum
-    Buffer.WriteLong dir
-    SendDataToMap mapnum, Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong SNpcDir
+    buffer.WriteLong mapnpcnum
+    buffer.WriteLong dir
+    SendDataToMap mapnum, buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Sub SetAllWorldNpcs(ByVal npcnum As Long)

@@ -7,8 +7,10 @@ Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 Sub ServerLoop()
     Dim i As Long, X As Long
     Dim Tick As Long, TickCPS As Long, CPS As Long, FrameTime As Long
-    Dim tmr25 As Long, tmr500 As Long, tmr1000 As Long, tmr100 As Long
+    Dim tmr25 As Long, tmr500 As Long, tmr1000 As Long, tmr100 As Long, tmrAccLock As Long
     Dim LastUpdateSavePlayers, LastUpdateMapSpawnItems As Long, LastUpdatePlayerVitals As Long
+
+    tmrAccLock = GetRealTickCount + 300000
 
     ServerOnline = True
 
@@ -128,8 +130,10 @@ Sub ServerLoop()
             
             CheckWaitingNPCS Tick
             
+            If useHubServer Then CheckHubConnection
             
-            tmr1000 = GetRealTickCount + 500
+            'todo: test this. IT WAS 500!
+            tmr1000 = GetRealTickCount + 1000
         End If
         
         For i = 1 To Player_HighIndex
@@ -212,6 +216,12 @@ Sub ServerLoop()
 
         If Not CPSUnlock Then Sleep SleepTime
                 DoEvents
+
+        If Tick > tmrAccLock Then
+            'refresh the account locks.
+            RefreshAccLocks
+            tmrAccLock = GetRealTickCount + 300000
+        End If
                 
         ' Calculate CPS
         If TickCPS < Tick Then
@@ -262,7 +272,7 @@ End Sub
 Private Sub UpdateMapLogic()
     Dim i As Long, X As Long, mapnum As Long, N As Long, x1 As Long, y1 As Long
     Dim TickCount As Long, Damage As Long, DistanceX As Long, DistanceY As Long, npcnum As Long
-    Dim Target As Long, TargetType As Byte, DidWalk As Boolean, Buffer As clsBuffer, Resource_index As Long
+    Dim Target As Long, TargetType As Byte, DidWalk As Boolean, buffer As clsBuffer, Resource_index As Long
     Dim TargetX As Long, TargetY As Long, target_verify As Boolean
     Dim MAP_HIGH_NPC As Long, MAP_HIGH_ITEM As Long
     
@@ -462,12 +472,14 @@ Private Sub UpdateMapLogic()
                                 
                                 If Not ChoosePetSpellingMethod(GetMapPetOwner(mapnum, X), X, i, NPC(npcnum).Spell(i)) Then
                                     'NPC can not autoheal, so find out what kind of magic should it invoque
-                                    Select Case TargetType
-                                    Case 1 'Player
-                                        NpcSpellPlayer X, Target, i
-                                    Case 2 'Npc
-                                        NpcSpellNpc mapnum, X, Target, i
-                                    End Select
+                                    If RAND(0, 5) = 2 Then
+                                        Select Case TargetType
+                                        Case 1 'Player
+                                            NpcSpellPlayer X, Target, i
+                                        Case 2 'Npc
+                                            NpcSpellNpc mapnum, X, Target, i
+                                        End Select
+                                    End If
                                 End If
                             End If
                         End If
@@ -603,7 +615,7 @@ End Sub
 
 Private Sub HandleShutdown()
 
-    If Secs <= 0 Then Secs = 30
+    If Secs <= 0 Then Secs = 15
     If Secs Mod 5 = 0 Or Secs <= 10 Then
         Call GlobalMsg("Automated Server Shutdown in " & Secs & " seconds.", Cyan, False)
         Call TextAdd("Automated Server Shutdown in " & Secs & " seconds.")

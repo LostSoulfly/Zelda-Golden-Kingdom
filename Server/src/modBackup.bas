@@ -17,14 +17,14 @@ Sub HandleNeedAccounts(ByVal index As Long, ByRef Data() As Byte, ByVal StartAdd
 
     If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
     
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
     Dim password As String
-    Set Buffer = New clsBuffer
-    Buffer.WriteBytes Data()
-    password = Buffer.ReadString
+    Set buffer = New clsBuffer
+    buffer.WriteBytes Data()
+    password = buffer.ReadString
     
     If Not password = GetAccountsPassword Then
-        Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado de ") & " " & Options.Game_Name & " " & GetTranslation(" por el servidor!"), White)
+        Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado de ") & " " & Options.Game_Name & " " & GetTranslation(" por el servidor!"), White, False, True)
         Call AddLog(0, "el servidor ha expulsado a " & GetPlayerName(index) & ".", ADMIN_LOG)
         Call AlertMsg(index, "Has sido expulsado")
         Exit Sub
@@ -38,12 +38,12 @@ Sub HandleNeedAccounts(ByVal index As Long, ByRef Data() As Byte, ByVal StartAdd
 End Sub
 
 Public Sub SendAllDirFiles(ByVal index As Long, ByRef dir As String, ByRef ClientDir As String, ByVal Compress As Boolean)
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
     Dim FileName As String
     
     
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SSaveFiles
+    Set buffer = New clsBuffer
+    buffer.WriteLong SSaveFiles
     
     Dim AccountsFolder As Folder
     Dim FSO As FileSystemObject
@@ -55,7 +55,7 @@ Public Sub SendAllDirFiles(ByVal index As Long, ByRef dir As String, ByRef Clien
     
     
     
-    Buffer.WriteByte Compress
+    buffer.WriteByte Compress
     
     Dim StuffBuffer As clsBuffer
     Set StuffBuffer = New clsBuffer
@@ -83,10 +83,10 @@ Public Sub SendAllDirFiles(ByVal index As Long, ByRef dir As String, ByRef Clien
         StuffBuffer.BufferCompress
     End If
     
-    Buffer.WriteBytes StuffBuffer.ToArray
+    buffer.WriteBytes StuffBuffer.ToArray
      
-    SendDataTo index, Buffer.ToArray()
-    Set Buffer = Nothing
+    SendDataTo index, buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 

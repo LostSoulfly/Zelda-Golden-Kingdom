@@ -6,13 +6,45 @@ Public Declare Function GetQueueStatus Lib "user32" (ByVal fuFlags As Long) As L
 
 Public Sub Main()
 
+Dim strSplit() As String
+Dim i As Integer
+
+usePlayerLock = False
+useHubServer = False
+
+strSplit = Split(Command, " ")
+If (UBound(strSplit)) Mod 2 > 0 Then
+    For i = 0 To UBound(strSplit) Step 2
+        Select Case LCase$(strSplit(i))
+        
+        Case Is = "-port"
+            Options.OverridePort = CLng(strSplit(i + 1))
+            TextAdd "Server OverridePort: " & Options.OverridePort
+            
+        Case Is = "-troll"
+            frmServer.chkTroll.Value = val(strSplit(i + 1))
+        
+        Case Is = "-hub"
+            'anything above 0 will enable it.
+            useHubServer = IIf(val(strSplit(i + 1)), True, False)
+        
+        Case Is = "-lock"
+            'anything above 0 will enable it.
+            usePlayerLock = IIf(val(strSplit(i + 1)), True, False)
+        
+        End Select
+    Next
+End If
+
+StartTick = GetRealTickCount
+
 'setup the translation stuff
 LangTo = "en"
 LangFrom = "es"
 strTransPath = App.Path & "\" & LangTo & ".dat"
 strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
 
-frmTransLog.Show
+'frmTransLog.Show
 frmTransLog.txtLog.Text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
 
     Call InitServer
@@ -29,7 +61,7 @@ Public Sub InitServer()
     ' Initialize the random-number generator
     Randomize ', seed
     
-    Rainon = True
+    RainOn = True
     
     ' Check if the directory is there, if its not make it
     ChkDir App.Path & "\Data\", "accounts"
@@ -47,6 +79,8 @@ Public Sub InitServer()
     ChkDir App.Path & "\Data\", "quests"
     ChkDir App.Path & "\Data\", "doors"
     ChkDir App.Path & "\Data\", "movements"
+    ChkDir App.Path & "\Data\", "AccLock"
+    ChkDir App.Path & "\Data\", "Servers"
 
     ' set quote character
     vbQuote = ChrW$(34) ' "
@@ -69,7 +103,7 @@ Public Sub InitServer()
     
     ' Get the listening socket ready to go
     frmServer.Socket(0).RemoteHost = frmServer.Socket(0).LocalIP
-    frmServer.Socket(0).LocalPort = Options.Port
+    frmServer.Socket(0).LocalPort = IIf(Options.OverridePort, Options.OverridePort, Options.Port)
     frmServer.spExp.Value = Options.ExpMultiplier
     
     ' Init all the player sockets
@@ -154,6 +188,8 @@ Public Sub DestroyServer()
     For i = 1 To MAX_PLAYERS
         Unload frmServer.Socket(i)
     Next
+
+    UpdateStatFile True
 
     End
     

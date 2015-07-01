@@ -4,6 +4,8 @@ Option Explicit
 ' Used for closing key doors again
 Public KeyTimer As Long
 
+Public StartTick As Long
+
 ' Used for gradually giving back npcs hp
 Public GiveNPCHPTimer As Long
 
@@ -38,7 +40,7 @@ Public Player_HighIndex As Long
 Public CPSUnlock As Boolean
 
 ' Active weathers
-Public Rainon As Boolean
+Public RainOn As Boolean
 
 ' Time set for weather going (mili seconds)
 Public WeatherTime As Long
@@ -78,3 +80,5 @@ Public BytesReceived As Long
 
 
 Public ByteCounter As Long
+
+Public usePlayerLock As Boolean

@@ -703,21 +703,29 @@ If GetMapPetOwner(mapnum, mapnpcnum) <> index Then Exit Function
 Select Case ComparePetAndOwnerVital(index, mapnpcnum, SpellSlotNum)
     Case 1
         'Player has better vital
-        Call PetSpellItself(mapnum, mapnpcnum, SpellSlotNum)
-        ChoosePetSpellingMethod = True
+        If RAND(0, 4) = 2 Then
+            Call PetSpellItself(mapnum, mapnpcnum, SpellSlotNum)
+            ChoosePetSpellingMethod = True
+            Exit Function
+        End If
+        
     Case -1
         'Pet has better vital
+        If RAND(0, 4) = 3 Then
         Call PetSpellOwner(mapnpcnum, index, SpellSlotNum)
         ChoosePetSpellingMethod = True
+        End If
     Case 0
         'Choose Randomly
-        Select Case RAND(1, 2)
-        Case 1
-            Call PetSpellItself(mapnum, mapnpcnum, SpellSlotNum)
-        Case 2
-            Call PetSpellOwner(mapnpcnum, index, SpellSlotNum)
-        End Select
-        ChoosePetSpellingMethod = True
+        If RAND(0, 4) = 0 Then
+            Select Case RAND(1, 2)
+            Case 1
+                Call PetSpellItself(mapnum, mapnpcnum, SpellSlotNum)
+            Case 2
+                Call PetSpellOwner(mapnpcnum, index, SpellSlotNum)
+            End Select
+            ChoosePetSpellingMethod = True
+        End If
     Case 2
         'max vital, do not heal
         ChoosePetSpellingMethod = True

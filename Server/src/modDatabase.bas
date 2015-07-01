@@ -20,6 +20,7 @@ End Sub
 
 
 Public Sub ChkDir(ByVal tDir As String, ByVal tName As String)
+On Error Resume Next
     If LCase$(dir(tDir & tName, vbDirectory)) <> tName Then Call MkDir(tDir & tName)
 End Sub
 
@@ -154,7 +155,7 @@ Sub BanIndex(ByVal BanPlayerIndex As Long, ByVal BannedByIndex As Long)
     Open FileName For Append As #F
     Print #F, IP & "," & GetPlayerName(BannedByIndex)
     Close #F
-    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " " & GetTranslation(" ha sido baneado de ") & Options.Game_Name & " by " & GetPlayerName(BannedByIndex) & "!", White, False)
+    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " has been banned by " & GetPlayerName(BannedByIndex) & "!", White, False, True)
     Call AddLog(BannedByIndex, GetPlayerName(BannedByIndex) & " ha baneado a " & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & GetPlayerName(BannedByIndex) & "!")
 End Sub
@@ -190,7 +191,7 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Open FileName For Append As #F
     Print #F, IP & "," & "Server"
     Close #F
-    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " " & GetTranslation(" ha sido baneado de ") & " " & Options.Game_Name & " by " & "the Server" & "!", White, False)
+    Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " has been banned by the Server" & "!", White, False, True)
     Call AddLog(0, "The Server" & " ha baneado a " & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & "The Server" & "!")
 End Sub
@@ -424,7 +425,7 @@ Sub ClearPlayer(ByVal index As Long)
     Dim i As Long
     
     Call ZeroMemory(ByVal VarPtr(TempPlayer(index)), LenB(TempPlayer(index)))
-    Set TempPlayer(index).Buffer = New clsBuffer
+    Set TempPlayer(index).buffer = New clsBuffer
     
     Call ZeroMemory(ByVal VarPtr(player(index)), LenB(player(index)))
     player(index).login = vbNullString
@@ -477,7 +478,7 @@ Sub LoadClasses()
 
     For i = 1 To Max_Classes
         Class(i).Name = GetVar(FileName, "CLASS" & i, "Name")
-        Class(i).TranslatedName = GetVar(FileName, "CLASS" & i, "Name")
+        Class(i).TranslatedName = GetVar(FileName, "CLASS" & i, "TranslatedName")
         ' read string of sprites
         tmpSprite = GetVar(FileName, "CLASS" & i, "MaleSprite")
         ' split into an array of strings

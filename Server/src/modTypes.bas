@@ -37,6 +37,7 @@ Private Type OptionsRec
     Game_Name As String
     MOTD As String
     Port As Long
+    OverridePort As Long
     Website As String
     DisableAdmins As String
     Update As String
@@ -611,7 +612,7 @@ Private Type SpellRec
 End Type
 
 Private Type TileDoorRec
-    doornum As Long
+    DoorNum As Long
     DoorTimer As Long
     X As Long
     Y As Long

@@ -13,7 +13,7 @@ Public Const PLAYER_LOG As String = "player.log"
 ' Version constants
 Public Const CLIENT_MAJOR As Byte = 0
 Public Const CLIENT_MINOR As Byte = 5
-Public Const CLIENT_REVISION As Byte = 17
+Public Const CLIENT_REVISION As Byte = 18
 Public Const MAX_LINES As Long = 500 ' Used for frmServer.txtText
 
 ' ********************************************************
@@ -239,8 +239,8 @@ Public Const ACTIONMSG_SCROLL As Long = 1
 Public Const ACTIONMSG_SCREEN As Long = 2
 
 'Sleep time constants
-Public Const ONE_PLAYER_WAIT_TIME As Long = 50
-Public Const NO_PLAYERS_WAIT_TIME As Long = 250
+Public Const ONE_PLAYER_WAIT_TIME As Long = 10
+Public Const NO_PLAYERS_WAIT_TIME As Long = 25
 
 ' values
 Public Const MAX_BYTE As Byte = 255

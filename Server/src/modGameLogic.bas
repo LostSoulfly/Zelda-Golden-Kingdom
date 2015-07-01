@@ -503,7 +503,7 @@ Public Sub InitTempTile(ByVal mapnum As Long)
                 With TempTile(mapnum).Door(TempTile(mapnum).NumDoors)
                     .DoorNum = map(mapnum).Tile(X, Y).Data1
                     .DoorTimer = 0
-                    .State = GetInitialDoorState(.DoorNum)
+                    .state = GetInitialDoorState(.DoorNum)
                     .X = X
                     .Y = Y
                 End With
@@ -513,7 +513,7 @@ Public Sub InitTempTile(ByVal mapnum As Long)
                 With TempTile(mapnum).Door(TempTile(mapnum).NumDoors)
                     .DoorNum = -1 'use this encode
                     .DoorTimer = 0
-                    .State = False
+                    .state = False
                     .X = X
                     .Y = Y
                 End With
@@ -1848,7 +1848,7 @@ Do While i <= Map_highindex And number > 0
                 'tries = 0
                 number = number - 1
                 spawned = True
-                Call SetStatus("Spawned NPC number: " & npcnum & " at map: " & Chosen & ", remaining spawns: " & number)
+                Call SetStatus("Spawned NPC: " & npcnum & " at map: " & Chosen & ", remaining: " & number)
             End If
         End If
     End If
@@ -1864,7 +1864,7 @@ Do While number > 0
     spawnmap = RAND(1, Map_highindex)
     number = number - 1
     If SpawnTempNPC(npcnum, spawnmap) > 0 Then
-        Call SetStatus("Spawned NPC number: " & npcnum & " at map: " & spawnmap & ", remaining spawns: " & number)
+        Call SetStatus("Spawned NPC: " & npcnum & " at map: " & spawnmap & ", remaining: " & number)
     Else
         Call SetStatus("Spawning failed at map: " & spawnmap & ", remaining spawns: " & number)
     End If
@@ -2047,7 +2047,7 @@ Public Sub AddException(ByVal IP As String)
 If frmServer.chkTroll.Value = vbChecked Then Exit Sub
 Dim NIPS As Long
 Dim FileName As String
-FileName = App.Path & "\data\RangeBan.ini"
+FileName = App.path & "\data\RangeBan.ini"
 
     ' Check if file exists
     If Not FileExist("data\RangeBan.ini") Then

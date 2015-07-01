@@ -4,3 +4,4 @@ Cliente/data/graphics/Thumbs.db
 *.bak
 .gitattributes.bak
 *.log
+*.tmp

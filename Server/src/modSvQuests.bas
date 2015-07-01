@@ -130,7 +130,7 @@ End Sub
 Sub SaveQuest(ByVal questnum As Long)
     Dim FileName As String
     Dim F As Long, i As Long
-    FileName = App.Path & "\data\quests\quest" & questnum & ".dat"
+    FileName = App.path & "\data\quests\quest" & questnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
     
@@ -179,12 +179,9 @@ Sub LoadQuests()
     Call CheckQuests
 
     For i = 1 To MAX_QUESTS
-        FileName = App.Path & "\data\quests\quest2.0-" & i & ".dat"
+        FileName = App.path & "\data\quests\quest2.0-" & i & ".dat"
         F = FreeFile
         Open FileName For Binary As #F
-        If i = 26 Then
-        Debug.Print
-        End If
         Get #F, , Quest(i)
         Close #F
         'Quest(i).Name = GetTranslation(Quest(i).Name)

@@ -91,7 +91,8 @@ End Function
 Private Sub AddLog(Text As String)
 With frmTransLog.txtLog
 
-If .Visible = False Then Exit Sub
+If frmTransLog.txtLog.Visible = False Then Exit Sub
+
     .SelText = vbCrLf & Time & ": " & Text
     '.Text = .Text & vbCrLf & Time & ": " & Text
 End With
@@ -227,7 +228,7 @@ Public Sub loadLang(Path As String, ByRef col As Collection)
 'Dim strTemp As String
 Dim Temp() As Byte
 Dim tempArray(1) As String
-Dim Buffer As New clsBuffer
+Dim buffer As New clsBuffer
 Dim lngBufferCount As Long
 Dim NF As Integer
 Dim NotNull As Boolean
@@ -246,13 +247,13 @@ If NotNull = False Then Exit Sub
 
     Temp = Decompress(Temp, bfFail)
     If bfFail = True Then GoTo skip
-    Buffer.WriteBytes Temp
+    buffer.WriteBytes Temp
     
-lngBufferCount = Buffer.ReadLong
+lngBufferCount = buffer.ReadLong
 lastSave = lngBufferCount
 Dim i As Long
 For i = 1 To lngBufferCount
-    buildArray Buffer.ReadString, Buffer.ReadString, tempArray
+    buildArray buffer.ReadString, buffer.ReadString, tempArray
     col.Add tempArray, tempArray(0)
 Next
 
@@ -260,13 +261,13 @@ Next
 lastSave = col.Count
 
 skip:
-Set Buffer = Nothing
+Set buffer = Nothing
 End Sub
 
 Public Sub saveLang(Path As String, ByRef col As Collection, Optional blForceSave As Boolean = False)
 Dim NF As Integer
 Dim tempOut() As Byte
-Dim Buffer As New clsBuffer
+Dim buffer As New clsBuffer
 Dim i As Long
 NF = FreeFile
 
@@ -274,17 +275,17 @@ If col Is Nothing Then Exit Sub
 
 If blForceSave = False Then If (lastSave) = (langCol.Count) Then Exit Sub
 AddLog "Saving lang to: " & Path
-Buffer.WriteLong col.Count
+buffer.WriteLong col.Count
 
 For i = 1 To col.Count
 'write the key first
-    Buffer.WriteString (col.Item(i)(0))
+    buffer.WriteString (col.Item(i)(0))
 'write the actual translation
-    Buffer.WriteString (col.Item(i)(1))
+    buffer.WriteString (col.Item(i)(1))
 Next
 
 'write buffer to temp out
-tempOut = Compress(Buffer.ReadBytes(Buffer.length))
+tempOut = Compress(buffer.ReadBytes(buffer.length))
 
     Open Path For Binary As #NF
     Put #NF, , tempOut
@@ -324,7 +325,7 @@ Public Sub debugLangFile(Path As String)
 
 Dim NF As Integer
 Dim tempOut() As Byte
-Dim Buffer As New clsBuffer
+Dim buffer As New clsBuffer
 NF = FreeFile
 
 Dim col As Collection
@@ -334,20 +335,20 @@ Dim myArr(1) As String
 col.Add Array("0a-6d-d0-dd-a2-ee-52-6b-57-55-6b-68-97-33-4a-b1", "Level 40-50"), "0a-6d-d0-dd-a2-ee-52-6b-57-55-6b-68-97-33-4a-b1"
 col.Add Array("da-f8-9b-9c-2d-b8-51-d6-91-84-f0-95-6a-44-a0-d3", "Level 5-10"), "da-f8-9b-9c-2d-b8-51-d6-91-84-f0-95-6a-44-a0-d3"
 col.Add Array("7e-54-5b-21-c5-a5-49-23-4b-ca-43-23-32-cf-54-82", "Level 10-20"), "7e-54-5b-21-c5-a5-49-23-4b-ca-43-23-32-cf-54-82"
-Buffer.WriteLong col.Count
+buffer.WriteLong col.Count
 
 Dim i As Long
 
 
 For i = 1 To col.Count
 'write the key first
-    Buffer.WriteString (col.Item(i)(0))
+    buffer.WriteString (col.Item(i)(0))
 'write the actual translation
-    Buffer.WriteString (col.Item(i)(1))
+    buffer.WriteString (col.Item(i)(1))
 Next i
 
 'write buffer to temp out
-tempOut = Compress(Buffer.ReadBytes(Buffer.length))
+tempOut = Compress(buffer.ReadBytes(buffer.length))
 
     Open Path For Binary As #NF
     Put #NF, , tempOut

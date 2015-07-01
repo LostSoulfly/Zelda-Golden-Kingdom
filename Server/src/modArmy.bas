@@ -333,23 +333,23 @@ Select Case IsPlayerNeutral(Killer)
     Case True
         If IsPlayerNeutral(Killed) Then 'Player Killed Hero or Normal
             player(Killer).PK = PK_PLAYER
-            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un asesino!"), BrightRed)
+            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un asesino!"), BrightRed, False, True)
             SendJust = True
             
             ResetPlayerArmy Killer, HERO_PLAYER
             SendKillPoints Killer
         Else 'Player Killed PK
             If GetPlayerPK(Killer) = HERO_PLAYER Then
-                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha hecho justicia!"), Yellow, False)
+                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha hecho justicia!"), Yellow, False, True)
             Else
                 player(Killer).PK = HERO_PLAYER
-                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un héroe!"), Yellow, False)
+                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un héroe!"), Yellow, False, True)
                 SendJust = True
             End If
         End If
     Case False 'Killer Player is PK
         If IsPlayerNeutral(Killed) Then 'Add points in case of killed is neutral
-            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha cometido un crimen!"), BrightRed, False)
+            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha cometido un crimen!"), BrightRed, False, True)
         End If
 End Select
 
@@ -457,15 +457,15 @@ End Function
 
 
 Sub SendKillPoints(ByVal index As Long)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SKillPoints
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteLong SKillPoints
     
-    Buffer.WriteByte GetPlayerPK(index)
-    Buffer.WriteLong CLng(Round((GetPlayerKillPoints(index, GetPlayerPK(index)))))
+    buffer.WriteByte GetPlayerPK(index)
+    buffer.WriteLong CLng(Round((GetPlayerKillPoints(index, GetPlayerPK(index)))))
     
-    SendDataTo index, Buffer.ToArray()
-    Set Buffer = Nothing
+    SendDataTo index, buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 Function GetJusticeSpawnSite(ByVal justice As Byte, ByRef mapnum As Long, ByRef X As Long, ByRef Y As Long) As Boolean

@@ -5,8 +5,8 @@ Sub HandleUseChar(ByVal index As Long, ByVal NeedData As Boolean)
     If Not IsPlaying(index) Then
 
         Call JoinGame(index, NeedData)
-        Call AddLog(index, GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has began playing " & Options.Game_Name & ".", PLAYER_LOG)
-        Call TextAdd(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has began playing " & Options.Game_Name & ".")
+        Call AddLog(index, GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has logged in.", PLAYER_LOG)
+        Call TextAdd(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has logged in.")
         Call UpdateCaption
     End If
 End Sub
@@ -201,7 +201,7 @@ Sub LeftGame(ByVal index As Long)
             'Call GlobalMsg(GetPlayerName(index) & " se ha desconectado", BrightRed)
         End If
 
-        Call TextAdd(GetPlayerName(index) & " " & GetTranslation(" se ha desconectado ") & " " & Options.Game_Name & ".")
+        Call TextAdd(GetPlayerName(index) & " " & GetTranslation(" se ha desconectado ") & ".")
         Call SendLeftGame(index)
         TotalPlayersOnline = TotalPlayersOnline - 1
         CalculateSleepTime
@@ -209,8 +209,10 @@ Sub LeftGame(ByVal index As Long)
 
         
     End If
-
+    
+    UnLockPlayerLogin player(index).login
     Call ClearPlayer(index)
+    
 End Sub
 
 Function GetPlayerProtection(ByVal index As Long) As Long
@@ -807,10 +809,10 @@ Sub CheckPlayerLevelUp(ByVal index As Long)
     If level_count > 0 And Not LPE(index) Then
         If level_count = 1 Then
             'singular
-            GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha subido ") & " " & level_count & " " & GetTranslation(" nivel!"), Brown, False
+            GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha subido ") & " " & level_count & " " & GetTranslation(" nivel!"), Brown, False, True
         Else
             'plural
-            GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha subido ") & " " & level_count & GetTranslation(" niveles!"), Brown, False
+            GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha subido ") & " " & level_count & GetTranslation(" niveles!"), Brown, False, True
         End If
         SendEXP index
         SendPoints index
@@ -2077,7 +2079,7 @@ End Sub
 
 Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceType)
     Dim colour As Byte
-    Dim message As String
+    Dim Message As String
     Dim i As Byte
     Dim found As Boolean
     
@@ -2119,13 +2121,13 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     Select Case triforce
     Case TRIFORCE_COURAGE
-        message = "del Valor"
+        Message = "del Valor"
         colour = BrightGreen
     Case TRIFORCE_WISDOM
-        message = "de la Sabiduría"
+        Message = "de la Sabiduría"
         colour = Cyan
     Case TRIFORCE_POWER
-        message = "del Poder"
+        Message = "del Poder"
         colour = BrightRed
     End Select
     
@@ -2148,7 +2150,7 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     Call SendPlayerData(index)
     
-    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & GetTranslation(message), colour, False
+    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & GetTranslation(Message), colour, False, True
     
 End Sub
 Public Function GetPlayerTriforcesNum(ByVal index As Long) As Byte
@@ -2533,7 +2535,7 @@ End Sub
 Sub KickPlayer(ByVal index As Long, Optional ByRef Reason As String = "")
     If index = 0 Or Not IsPlaying(index) Then Exit Sub
     
-    Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado por: ") & " " & Reason, White, False)
+    Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado por: ") & " " & Reason, White, False, True)
     Call AddLog(0, GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado por: ") & " " & Reason, ADMIN_LOG)
     Call AlertMsg(index, "Has sido expulsado por: " & Reason)
 End Sub

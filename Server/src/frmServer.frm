@@ -25,6 +25,15 @@ Begin VB.Form frmServer
    ScaleWidth      =   6720
    StartUpPosition =   2  'CenterScreen
    WhatsThisHelp   =   -1  'True
+   Begin MSWinsockLib.Winsock hubSocket 
+      Left            =   0
+      Top             =   480
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "127.0.0.1"
+      RemotePort      =   5000
+   End
    Begin MSWinsockLib.Winsock Socket 
       Index           =   0
       Left            =   0
@@ -59,19 +68,19 @@ Begin VB.Form frmServer
       TabCaption(0)   =   "Console"
       TabPicture(0)   =   "frmServer.frx":1708A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "tmrIsServerBug"
-      Tab(0).Control(1)=   "txtChat"
+      Tab(0).Control(0)=   "lblCPS"
+      Tab(0).Control(1)=   "lblCpsLock"
       Tab(0).Control(2)=   "txtText"
-      Tab(0).Control(3)=   "lblCpsLock"
-      Tab(0).Control(4)=   "lblCPS"
+      Tab(0).Control(3)=   "txtChat"
+      Tab(0).Control(4)=   "tmrIsServerBug"
       Tab(0).ControlCount=   5
       TabCaption(1)   =   "Players"
       TabPicture(1)   =   "frmServer.frx":170A6
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "cmdDisableAdmins"
-      Tab(1).Control(1)=   "texto"
-      Tab(1).Control(2)=   "cmdCopy"
-      Tab(1).Control(3)=   "lvwInfo"
+      Tab(1).Control(0)=   "lvwInfo"
+      Tab(1).Control(1)=   "cmdCopy"
+      Tab(1).Control(2)=   "texto"
+      Tab(1).Control(3)=   "cmdDisableAdmins"
       Tab(1).ControlCount=   4
       TabCaption(2)   =   "Control "
       TabPicture(2)   =   "frmServer.frx":170C2
@@ -92,12 +101,12 @@ Begin VB.Form frmServer
       TabCaption(3)   =   "Info"
       TabPicture(3)   =   "frmServer.frx":170DE
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "lblMapTime"
-      Tab(3).Control(1)=   "lblLoopTime"
-      Tab(3).Control(2)=   "lblPacketsSent"
-      Tab(3).Control(3)=   "lblPacketsReceived"
-      Tab(3).Control(4)=   "lblBytesSent"
-      Tab(3).Control(5)=   "lblBytesReceived"
+      Tab(3).Control(0)=   "lblBytesReceived"
+      Tab(3).Control(1)=   "lblBytesSent"
+      Tab(3).Control(2)=   "lblPacketsReceived"
+      Tab(3).Control(3)=   "lblPacketsSent"
+      Tab(3).Control(4)=   "lblLoopTime"
+      Tab(3).Control(5)=   "lblMapTime"
       Tab(3).ControlCount=   6
       Begin VB.CommandButton cmdSave 
          Caption         =   "Save."
@@ -579,7 +588,26 @@ Savemovements
 SavePets
 SaveCustomSprites
 
-MsgBox "Done.."
+MsgBox "Done."
+
+End Sub
+
+Private Sub hubSocket_DataArrival(ByVal bytesTotal As Long)
+    Call HubIncomingData(bytesTotal)
+End Sub
+
+Private Sub hubSocket_Error(ByVal number As Integer, Description As String, ByVal sCode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+
+    If number <> 0 And number <> 10061 Then
+        TextAdd "Hub Server disconnected: " & number & ": " & Description
+    Else
+        If isHubConnected = True Then
+            TextAdd "Hub Server disconnected normally."
+            'todo global message about disconnect.
+            hubSocket.Close
+            isHubConnected = False
+        End If
+    End If
 
 End Sub
 
@@ -843,7 +871,7 @@ Private Sub txtChat_KeyPress(KeyAscii As Integer)
 
     If KeyAscii = vbKeyReturn Then
         If LenB(Trim$(txtChat.Text)) > 0 Then
-            Call GlobalMsg(txtChat.Text, White, False)
+            Call GlobalMsg("Server: " & txtChat.Text, White, False, True)
             Call TextAdd("Server: " & txtChat.Text)
             txtChat.Text = vbNullString
         End If
