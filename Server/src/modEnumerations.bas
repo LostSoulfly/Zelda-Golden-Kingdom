@@ -6,6 +6,7 @@ Option Explicit
 ' Packets sent by server to client
 Public Enum ServerPackets
     SAlertMsg = 1
+    SFullMsg
     SSpeechWindow
     SLoginOk
     SNewCharClasses

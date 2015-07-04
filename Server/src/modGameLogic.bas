@@ -105,7 +105,7 @@ End Sub
 Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal itemval As Long, ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long, Optional ByVal playerName As String = vbNullString, Optional ByVal isDrop As Boolean = True)
     Dim packet As String
     Dim i As Long
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
 
     ' Check for subscript out of range
     If MapItemSlot <= 0 Or MapItemSlot > MAX_MAP_ITEMS Or ItemNum < 0 Or ItemNum > MAX_ITEMS Or mapnum <= 0 Or mapnum > MAX_MAPS Then
@@ -135,7 +135,7 @@ Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal itemva
         End If
     End If
 
-    Set Buffer = Nothing
+    Set buffer = Nothing
 End Sub
 
 Sub SpawnAllMapsItems()
@@ -182,7 +182,7 @@ End Function
 
 'here
 Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVal SetX As Long, Optional ByVal SetY As Long, Optional ByVal npcnum As Long = 0, Optional nearOwner As Boolean = False)
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
     Dim i As Long
     Dim X As Long
     Dim Y As Long
@@ -348,15 +348,15 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
 
         ' If we suceeded in spawning then send it to everyone
         If spawned Then
-            Set Buffer = New clsBuffer
-            Buffer.WriteLong SSpawnNpc
-            Buffer.WriteLong mapnpcnum
-            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Num
-            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).X
-            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Y
-            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).dir
-            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner
-            SendDataToMap mapnum, Buffer.ToArray()
+            Set buffer = New clsBuffer
+            buffer.WriteLong SSpawnNpc
+            buffer.WriteLong mapnpcnum
+            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Num
+            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).X
+            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Y
+            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).dir
+            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner
+            SendDataToMap mapnum, buffer.ToArray()
             
             
             Call ResetMapNPCMovement(mapnum, mapnpcnum)
@@ -371,7 +371,7 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
         SendMapNpcVitals mapnum, mapnpcnum
     End If
     
-    Set Buffer = Nothing
+    Set buffer = Nothing
 
 End Sub
 
@@ -1162,13 +1162,13 @@ Sub CheckClearProjectile(ByVal index As Long, ByVal PlayerProjectile As Long)
     End If
 End Sub
 Sub SpeechWindow(ByVal index As Long, ByVal msg As String, ByVal npcnum As Long)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
-Buffer.WriteLong SSpeechWindow
-Buffer.WriteString msg
-Buffer.WriteLong npcnum
-SendDataTo index, Buffer.ToArray()
-Set Buffer = Nothing
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
+buffer.WriteLong SSpeechWindow
+buffer.WriteString msg
+buffer.WriteLong npcnum
+SendDataTo index, buffer.ToArray()
+Set buffer = Nothing
 End Sub
 
 
@@ -1224,22 +1224,22 @@ Sub SpecialLevelup(ByVal index As Long)
 End Sub
 
 Public Sub UpdateWeather()
-If Rainon = True Then
-     Rainon = False
+If RainOn = True Then
+     RainOn = False
          Call SendWeathertoAll
 Else
-     Rainon = True
+     RainOn = True
          Call SendWeathertoAll
 End If
 End Sub
 
 Public Sub ActivateWeather()
-    Rainon = True
+    RainOn = True
     Call SendWeathertoAll
 End Sub
 
 Public Sub DisableWeather()
-    Rainon = False
+    RainOn = False
     Call SendWeathertoAll
 End Sub
 
@@ -1468,6 +1468,8 @@ Case 0 'sub-vital
     SpellPlayer_Effect vitalnum, False, index, vital, 0 'Must Define Spell
     If .Data1 = Vitals.HP Then
         If vital >= GetPlayerVital(index, Vitals.HP) Then
+            Call MapMsg(GetPlayerMap(index), GetPlayerName(index) & " has died to an obstacle!", BrightRed, False)
+            Call AddLog(index, GetPlayerName(index) & " has died to an obstacle! Map #" & GetPlayerMap(index) & " X/Y: " & GetPlayerX(index) & "/" & GetPlayerY(index), PLAYER_LOG)
             KillPlayer index, CByte(.Data4)
             Call PlayerMsg(index, "Has Muerto.", BrightRed)
         End If
@@ -1832,6 +1834,8 @@ Dim tries As Long
 Dim spawnmap As Long
 tries = 0
 
+Call SetStatus("Spawning " & number & " of NPC: " & npcnum)
+
 Do While i <= Map_highindex And number > 0
 
     Dim Chosen As Long
@@ -1848,7 +1852,7 @@ Do While i <= Map_highindex And number > 0
                 'tries = 0
                 number = number - 1
                 spawned = True
-                Call SetStatus("Spawned NPC: " & npcnum & " at map: " & Chosen & ", remaining: " & number)
+                'Call SetStatus("Spawned NPC: " & npcnum & " at map: " & Chosen & ", remaining: " & number)
             End If
         End If
     End If
@@ -1864,13 +1868,13 @@ Do While number > 0
     spawnmap = RAND(1, Map_highindex)
     number = number - 1
     If SpawnTempNPC(npcnum, spawnmap) > 0 Then
-        Call SetStatus("Spawned NPC: " & npcnum & " at map: " & spawnmap & ", remaining: " & number)
+        'Call SetStatus("Spawned NPC: " & npcnum & " at map: " & spawnmap & ", remaining: " & number)
     Else
         Call SetStatus("Spawning failed at map: " & spawnmap & ", remaining spawns: " & number)
     End If
     
 Loop
-
+Call SetStatus("Spawning complete.")
 End Sub
 
 Public Sub RespawnRandomNPC(ByVal npcnum As Long, Optional ByVal ForbiddenMap As Long)
@@ -2047,7 +2051,7 @@ Public Sub AddException(ByVal IP As String)
 If frmServer.chkTroll.Value = vbChecked Then Exit Sub
 Dim NIPS As Long
 Dim FileName As String
-FileName = App.path & "\data\RangeBan.ini"
+FileName = App.Path & "\data\RangeBan.ini"
 
     ' Check if file exists
     If Not FileExist("data\RangeBan.ini") Then

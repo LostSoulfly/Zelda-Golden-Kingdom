@@ -11,6 +11,7 @@ Public Enum HubPackets
     HShutdown
     HLog
     HGlobalMsg
+    HCommand
     HMSG_COUNT
 End Enum
 
@@ -40,6 +41,8 @@ Public Sub InitMessages()
     HandleDataSub(HServerInfo) = GetAddress(AddressOf HandleServerInfo)
     HandleDataSub(HLog) = GetAddress(AddressOf HandleLog)
     HandleDataSub(HGlobalMsg) = GetAddress(AddressOf HandleGlobalMsg)
+    HandleDataSub(HCommand) = GetAddress(AddressOf HandleServerCommand)
+    
     
 End Sub
 
@@ -140,6 +143,7 @@ Private Sub HandleServerInfo(ByVal Index As Long, ByRef Data() As Byte, ByVal St
 
     AddLog "ServerInfo from: " & .Name & " Players: " & .CurrentPlayers & "/" & .MaxPlayers & " uptime: " & ConvertTime(GetRealTickCount - .Uptime)
     UpdateCaption
+    UpdateComboList
     End With
     Set Buffer = Nothing
 End Sub
@@ -179,3 +183,64 @@ If frmServer.chkChat.Value = vbUnchecked Then Exit Sub
 
 End Sub
 
+Private Sub HandleServerCommand(ByVal Index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+
+    Dim Buffer As New clsBuffer
+    Set Buffer = New clsBuffer
+    Dim Command As Long
+    Dim strData As String
+    Dim msg As String
+    Buffer.WriteBytes Data()
+    Command = Buffer.ReadLong
+    strData = Buffer.ReadString
+    
+    Buffer.Flush
+    
+    Select Case Command
+        Case Is = CommandsType.Classes
+            msg = "Classes"
+        Case Is = CommandsType.Maps
+            msg = "Map #" & strData
+        Case Is = CommandsType.Spells
+            msg = "Spell #" & strData
+        Case Is = CommandsType.Shops
+            msg = "Shop #" & strData
+        Case Is = CommandsType.npcs
+            msg = "Npc #" & strData
+        Case Is = CommandsType.Items
+            msg = "Item #" & strData
+        Case Is = CommandsType.Resources
+            msg = "Resource #" & strData
+        Case Is = CommandsType.Animations
+            msg = "Animations"
+        Case Is = CommandsType.Language
+            msg = "Language"
+        Case Is = CommandsType.SOptions
+            msg = "Options"
+        Case Is = CommandsType.SPets
+            msg = "pet #" & strData
+        Case Is = CommandsType.Weather
+            msg = "Weather"
+            If strData = "True" Then strData = 1 Else strData = 0
+            If frmServer.cmbWeather.text = "NONE" Then Exit Sub
+            If frmServer.cmbWeather.text <> "ALL" Then
+                If frmServer.cmbWeather.text <> Server(Index).Name Then
+                    AddLog "Ignoring weather update from: " & Server(Index).Name
+                    Exit Sub
+                End If
+            End If
+            
+    End Select
+    
+    AddLog "Broadcasting " & msg & " update to all servers."
+    
+    
+    Buffer.WriteLong HCommand
+    Buffer.WriteLong Command
+    Buffer.WriteString strData
+
+    SendDataToAllHub Buffer.ToArray, Index
+
+    Set Buffer = Nothing
+
+End Sub

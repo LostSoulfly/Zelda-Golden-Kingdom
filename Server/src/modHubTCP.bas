@@ -11,7 +11,23 @@ Public Enum HubPackets
     HShutdown
     HLog
     HGlobalMsg
+    HCommand
     HMSG_COUNT
+End Enum
+
+Public Enum CommandsType
+    Classes = 1
+    Maps
+    spells
+    Shops
+    npcs
+    Items
+    Resources
+    Animations
+    Language
+    SOptions
+    SPets
+    Weather
 End Enum
 
 Public Const MAX_SERVERS As Long = 10
@@ -26,6 +42,7 @@ Sub InitHubMessages()
 HandleDataHub(HHello) = GetAddress(AddressOf Hello)
 HandleDataHub(HShutdown) = GetAddress(AddressOf HandleShutdownFromHub)
 HandleDataHub(HGlobalMsg) = GetAddress(AddressOf HandleForwardGlobalMsg)
+HandleDataHub(HCommand) = GetAddress(AddressOf HandleServerCommand)
 
 End Sub
 
@@ -179,6 +196,141 @@ On Error Resume Next
     TextAdd "Received HELLO from Hub."
     SendServerInfo
     
+End Sub
+
+Public Sub SendHubCommand(CommandNum As Long, Data As String)
+If Not useHubServer Then Exit Sub
+Dim buffer As New clsBuffer
+Set buffer = New clsBuffer
+
+buffer.WriteLong HCommand
+buffer.WriteLong CommandNum
+buffer.WriteString Data
+
+SendDataHub buffer.ToArray
+
+Set buffer = Nothing
+
+End Sub
+
+Private Sub HandleServerCommand(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
+
+    Dim buffer As New clsBuffer
+    Set buffer = New clsBuffer
+    Dim Command As Long
+    Dim sData As String
+    buffer.WriteBytes Data()
+    Command = buffer.ReadLong
+    sData = buffer.ReadString
+    
+        'GlobalMsg "There may be a brief moment of lag while the servers are synced..", Green, False, False
+        'DoEvents
+        
+    Select Case Command
+        Case Is = CommandsType.Classes
+            frmServer.cmdReloadClasses.Value = True
+        Case Is = CommandsType.Maps
+            Dim mapnum As Long
+            If IsNumeric(sData) Then mapnum = val(sData)
+            'frmServer.cmdReloadMaps.Value = True
+
+            Call ClearMap(mapnum)
+            Call LoadMap(mapnum)
+            
+            Call ClearMapWaitingNPCS(mapnum)
+            Call SendMapNpcsToMap(mapnum)
+            Call SpawnMapNpcs(mapnum)
+        
+            ' Clear out it all
+            For i = 1 To MAX_MAP_ITEMS
+                Call SpawnItemSlot(i, 0, 0, mapnum, MapItem(mapnum, i).X, MapItem(mapnum, i).Y)
+                Call ClearMapItem(i, mapnum)
+            Next
+        
+            ' Respawn
+            Call SpawnMapItems(mapnum)
+
+            Call ClearTempTile(mapnum)
+            Call InitTempTile(mapnum)
+            Call CacheResources(mapnum)
+            Call InitTempMap(mapnum)
+        
+            ' Refresh map for everyone online
+            For i = 1 To Player_HighIndex
+                If IsPlaying(i) And GetPlayerMap(i) = mapnum Then
+                    AddMapPlayer i, mapnum
+                    Call PlayerSpawn(i, mapnum, GetPlayerX(i), GetPlayerY(i))
+                End If
+            Next i
+
+        Case Is = CommandsType.spells
+            'frmServer.CmdReloadSpells.Value = True
+            Dim spellNum As Long
+            If IsNumeric(sData) Then
+                spellNum = val(sData)
+                Call LoadSpell(spellNum)
+            End If
+            
+        Case Is = CommandsType.Shops
+            'frmServer.cmdReloadShops.Value = True
+            Dim shopNum As Long
+            If IsNumeric(sData) Then
+                shopNum = val(sData)
+                Call LoadShop(shopNum)
+            End If
+            
+        Case Is = CommandsType.npcs
+            'frmServer.cmdReloadNPCs.Value = True
+            Dim NPCNum As Long
+            If IsNumeric(sData) Then
+                NPCNum = val(sData)
+                Call LoadNpc(NPCNum)
+            End If
+            
+        Case Is = CommandsType.Items
+            'frmServer.cmdReloadItems.Value = True
+            
+            Dim ItemNum As Long
+            If IsNumeric(sData) Then
+                ItemNum = val(sData)
+                Call LoadItem(ItemNum)
+            End If
+        Case Is = CommandsType.Resources
+            'frmServer.cmdReloadResources.Value = True
+            
+            Dim ResourceNum As Long
+            If IsNumeric(sData) Then
+                ResourceNum = val(sData)
+                Call LoadResource(ResourceNum)
+            End If
+            
+        Case Is = CommandsType.Animations
+            frmServer.cmdReloadAnimations.Value = True
+        Case Is = CommandsType.Language
+            frmServer.cmdReloadLang.Value = True
+        Case Is = CommandsType.SOptions
+            Call TextAdd("Options reloaded.")
+            LoadOptions
+        Case Is = CommandsType.Weather
+            RainOn = val(sData)
+            SendWeathertoAll False
+            LastWeatherUpdate = GetRealTickCount + WeatherTime
+            
+        Case Is = CommandsType.SPets
+            Dim petnum As Long
+                If IsNumeric(sData) Then
+                petnum = val(sData)
+                Call LoadPet(petnum)
+            End If
+        
+    Case Else
+        TextAdd "Unknown command received!"
+    
+    End Select
+
+
+    Set buffer = Nothing
+
 End Sub
 
 Private Sub HandleShutdownFromHub(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)

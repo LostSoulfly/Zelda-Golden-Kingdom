@@ -8,12 +8,12 @@ Public Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByV
 ' path constants
 Public Const ADMIN_LOG As String = "admin.log"
 Public Const PLAYER_LOG As String = "player.log"
-
+Public Const GUILD_LOG As String = "guild.log"
 
 ' Version constants
 Public Const CLIENT_MAJOR As Byte = 0
 Public Const CLIENT_MINOR As Byte = 5
-Public Const CLIENT_REVISION As Byte = 18
+Public Const CLIENT_REVISION As Byte = 19
 Public Const MAX_LINES As Long = 500 ' Used for frmServer.txtText
 
 ' ********************************************************

@@ -55,21 +55,21 @@ Function ReadWalkSprite(ByVal header As Long) As Long
 End Function
 
 Sub SendRunningSprites(ByVal index As Long)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
     
-    Buffer.WriteLong SRunningSprites
-    Buffer.WriteLong UBound(RunningSprites)
+    buffer.WriteLong SRunningSprites
+    buffer.WriteLong UBound(RunningSprites)
     Dim i As Long
     For i = 1 To UBound(RunningSprites)
         With RunningSprites(i)
-        Buffer.WriteLong .GetFirst
-        Buffer.WriteLong .GetSecond
+        buffer.WriteLong .GetFirst
+        buffer.WriteLong .GetSecond
         End With
     Next
     
-    SendDataTo index, Buffer.ToArray
-    Set Buffer = Nothing
+    SendDataTo index, buffer.ToArray
+    Set buffer = Nothing
 End Sub
 
 
@@ -187,8 +187,12 @@ Sub CheckTilePlayerMove(ByVal index As Long, ByVal X As Integer, ByVal Y As Inte
         amount = .Data1
         SendActionMsg GetPlayerMap(index), "-" & amount, BrightRed, ACTIONMSG_SCROLL, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1
         If GetPlayerVital(index, HP) - amount <= 0 Then
+            MapMsg GetPlayerMap(index), GetPlayerName(index) & " has died to a trap!", BrightRed, False
+            Call AddLog(index, GetPlayerName(index) & " has died to an trap! Map #" & GetPlayerMap(index) & " X/Y: " & GetPlayerX(index) & "/" & GetPlayerY(index), PLAYER_LOG)
+
             KillPlayer index
             PlayerMsg index, "Has Muerto.", BrightRed
+            
             Teleported = True
             'Kill Counter
             player(index).EnviroDead = player(index).EnviroDead + 1

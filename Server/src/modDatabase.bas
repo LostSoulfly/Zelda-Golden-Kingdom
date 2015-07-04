@@ -637,6 +637,20 @@ Sub LoadItems()
 
 End Sub
 
+Sub LoadItem(i As Long)
+    Dim FileName As String
+    Dim F As Long
+
+        FileName = App.Path & "\data\Items\Item" & i & ".dat"
+        F = FreeFile
+        Open FileName For Binary As #F
+        Get #F, , item(i)
+        Close #F
+        If Trim$(Replace(item(i).TranslatedName, vbNullChar, "")) = "" Then item(i).TranslatedName = GetTranslation(item(i).Name)
+
+Call SendUpdateItemToAll(i)
+End Sub
+
 Sub CheckItems()
     Dim i As Long
 
@@ -678,13 +692,13 @@ Sub SaveShops()
 
 End Sub
 
-Sub SaveShop(ByVal shopnum As Long)
+Sub SaveShop(ByVal shopNum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\shops\shop" & shopnum & ".dat"
+    FileName = App.Path & "\data\shops\shop" & shopNum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-    Put #F, , Shop(shopnum)
+    Put #F, , Shop(shopNum)
     Close #F
 End Sub
 
@@ -703,6 +717,22 @@ Sub LoadShops()
         If Trim$(Replace(Shop(i).TranslatedName, vbNullChar, "")) = "" Then Shop(i).TranslatedName = GetTranslation(Shop(i).Name)
     Next
 
+End Sub
+
+
+Sub LoadShop(i As Long)
+    Dim FileName As String
+    Dim F As Long
+
+    FileName = App.Path & "\data\shops\shop" & i & ".dat"
+    F = FreeFile
+    Open FileName For Binary As #F
+    Get #F, , Shop(i)
+    Close #F
+    If Trim$(Replace(Shop(i).TranslatedName, vbNullChar, "")) = "" Then Shop(i).TranslatedName = GetTranslation(Shop(i).Name)
+
+    Call SendUpdateShopToAll(i)
+    
 End Sub
 
 Sub CheckShops()
@@ -735,13 +765,13 @@ End Sub
 ' ************
 ' ** Spells **
 ' ************
-Sub SaveSpell(ByVal spellnum As Long)
+Sub SaveSpell(ByVal spellNum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\spells\spells" & spellnum & ".dat"
+    FileName = App.Path & "\data\spells\spells" & spellNum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-    Put #F, , Spell(spellnum)
+    Put #F, , Spell(spellNum)
     Close #F
 End Sub
 
@@ -770,6 +800,20 @@ Sub LoadSpells()
         If Trim$(Replace(Spell(i).TranslatedName, vbNullChar, "")) = "" Then Spell(i).TranslatedName = GetTranslation(Spell(i).Name)
     Next
 
+End Sub
+
+Sub LoadSpell(i As Long)
+    Dim FileName As String
+    Dim F As Long
+    
+    FileName = App.Path & "\data\spells\spells" & i & ".dat"
+    F = FreeFile
+    Open FileName For Binary As #F
+    Get #F, , Spell(i)
+    Close #F
+    If Trim$(Replace(Spell(i).TranslatedName, vbNullChar, "")) = "" Then Spell(i).TranslatedName = GetTranslation(Spell(i).Name)
+    
+    Call SendUpdateSpellToAll(i)
 End Sub
 
 Sub CheckSpells()
@@ -814,13 +858,13 @@ Sub SaveNpcs()
 
 End Sub
 
-Sub SaveNpc(ByVal npcnum As Long)
+Sub SaveNpc(ByVal NPCNum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\npcs\npc" & npcnum & ".dat"
+    FileName = App.Path & "\data\npcs\npc" & NPCNum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-    Put #F, , NPC(npcnum)
+    Put #F, , NPC(NPCNum)
     Close #F
 End Sub
 
@@ -839,6 +883,20 @@ Sub LoadNpcs()
         If Trim$(Replace(NPC(i).TranslatedName, vbNullChar, "")) = "" Then NPC(i).TranslatedName = GetTranslation(NPC(i).Name)
     Next
 
+End Sub
+
+Sub LoadNpc(i As Long)
+    Dim FileName As String
+    Dim F As Long
+
+        FileName = App.Path & "\data\npcs\npc" & i & ".dat"
+        F = FreeFile
+        Open FileName For Binary As #F
+        Get #F, , NPC(i)
+        Close #F
+        If Trim$(Replace(NPC(i).TranslatedName, vbNullChar, "")) = "" Then NPC(i).TranslatedName = GetTranslation(NPC(i).Name)
+
+Call SendUpdateNpcToAll(i)
 End Sub
 
 Sub CheckNpcs()
@@ -897,7 +955,6 @@ Sub LoadResources()
     Dim FileName As String
     Dim i As Long
     Dim F As Long
-    Dim sLen As Long
     
     Call CheckResources
 
@@ -912,6 +969,21 @@ Sub LoadResources()
     Next
 
 End Sub
+
+Sub LoadResource(i As Long)
+    Dim FileName As String
+    Dim F As Long
+
+        FileName = App.Path & "\data\resources\resource" & i & ".dat"
+        F = FreeFile
+        Open FileName For Binary As #F
+            Get #F, , Resource(i)
+        Close #F
+        If Trim$(Replace(Resource(i).TranslatedName, vbNullChar, "")) = "" Then Resource(i).TranslatedName = GetTranslation(Resource(i).Name)
+
+Call SendUpdateResourceToAll(i)
+End Sub
+
 
 Sub CheckResources()
     Dim i As Long
@@ -966,7 +1038,6 @@ Sub LoadAnimations()
     Dim FileName As String
     Dim i As Long
     Dim F As Long
-    Dim sLen As Long
     
     Call CheckAnimations
 
@@ -1045,6 +1116,25 @@ Sub LoadMaps()
         CacheResources i
         DoEvents
     Next
+
+End Sub
+
+Sub LoadMap(i As Long)
+    Dim FileName As String
+    Dim F As Long
+    Dim X As Long
+    Dim Y As Long
+    Call CheckMaps
+
+        FileName = App.Path & "\data\maps\map" & i & ".dat"
+    
+        Dim CompressedData() As Byte
+        CompressedData = ReadFile(FileName)
+        MapCache(i).Data = CompressedData
+
+        Call SetServerMapData(i, Decompress(CompressedData))
+        ClearTempTile i
+        CacheResources i
 
 End Sub
 
@@ -1243,7 +1333,6 @@ Sub LoadDoors()
     Dim FileName As String
     Dim i As Long
     Dim F As Long
-    Dim sLen As Long
     
     Call CheckDoors
 
@@ -1599,18 +1688,18 @@ Sub SavePets()
 
 End Sub
 
-Sub SavePet(ByVal PetNum As Long)
+Sub SavePet(ByVal petnum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\Pets\Pet" & PetNum & ".dat"
+    FileName = App.Path & "\data\Pets\Pet" & petnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-        Put #F, , Pet(PetNum).Name
-        Put #F, , Pet(PetNum).npcnum
-        Put #F, , Pet(PetNum).TamePoints
-        Put #F, , Pet(PetNum).ExpProgression
-        Put #F, , Pet(PetNum).pointsprogression
-        Put #F, , Pet(PetNum).MaxLevel
+        Put #F, , Pet(petnum).Name
+        Put #F, , Pet(petnum).NPCNum
+        Put #F, , Pet(petnum).TamePoints
+        Put #F, , Pet(petnum).ExpProgression
+        Put #F, , Pet(petnum).pointsprogression
+        Put #F, , Pet(petnum).MaxLevel
     Close #F
 End Sub
 
@@ -1626,7 +1715,7 @@ Sub LoadPets()
         F = FreeFile
         Open FileName For Binary As #F
             Get #F, , Pet(i).Name
-            Get #F, , Pet(i).npcnum
+            Get #F, , Pet(i).NPCNum
             Get #F, , Pet(i).TamePoints
             Get #F, , Pet(i).ExpProgression
             Get #F, , Pet(i).pointsprogression
@@ -1634,6 +1723,25 @@ Sub LoadPets()
 
         Close #F
     Next
+
+End Sub
+
+Sub LoadPet(i As Long)
+    Dim FileName As String
+    Dim F As Long
+
+        FileName = App.Path & "\data\Pets\Pet" & i & ".dat"
+        F = FreeFile
+        Open FileName For Binary As #F
+            Get #F, , Pet(i).Name
+            Get #F, , Pet(i).NPCNum
+            Get #F, , Pet(i).TamePoints
+            Get #F, , Pet(i).ExpProgression
+            Get #F, , Pet(i).pointsprogression
+            Get #F, , Pet(i).MaxLevel
+        Close #F
+
+Call SendUpdatePetToAll(i)
 
 End Sub
 

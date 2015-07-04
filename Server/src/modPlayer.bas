@@ -1349,7 +1349,7 @@ Function CheckResource(ByVal index As Long, ByVal X As Long, ByVal Y As Long) As
                                 If Damage > 0 Then
                                         ' cut it down!
                                         If ResourceCache(GetPlayerMap(index)).ResourceData(Resource_Num).cur_health - Damage <= 0 Then
-                                                SendActionMsg GetPlayerMap(index), "-" & ResourceCache(GetPlayerMap(index)).ResourceData(Resource_Num).cur_health, BrightRed, 1, (Rx * 32), (Ry * 32)
+                                                'SendActionMsg GetPlayerMap(Index), "-" & ResourceCache(GetPlayerMap(Index)).ResourceData(Resource_Num).cur_health, BrightRed, 1, (Rx * 32), (Ry * 32)
                                                 ResourceCache(GetPlayerMap(index)).ResourceData(Resource_Num).ResourceState = 1 ' Cut
                                                 ResourceCache(GetPlayerMap(index)).ResourceData(Resource_Num).ResourceTimer = GetRealTickCount
                                                 SendSingleResourceCacheToMap GetPlayerMap(index), Resource_Num
@@ -1447,7 +1447,7 @@ Sub CheckSingleResource(ByVal index As Long, ByVal Resource_Num As Long)
         If Damage > 0 Then
             ' cut it down!
             If ResourceCache(mapnum).ResourceData(Resource_Num).cur_health - Damage <= 0 Then
-                SendActionMsg mapnum, "-" & ResourceCache(mapnum).ResourceData(Resource_Num).cur_health, BrightRed, 1, (Rx * 32), (Ry * 32)
+                'SendActionMsg mapnum, "-" & ResourceCache(mapnum).ResourceData(Resource_Num).cur_health, BrightRed, 1, (Rx * 32), (Ry * 32)
                 ResourceCache(mapnum).ResourceData(Resource_Num).ResourceState = 1 ' Cut
                 ResourceCache(mapnum).ResourceData(Resource_Num).ResourceTimer = GetRealTickCount
                 SendSingleResourceCacheToMap mapnum, Resource_Num
@@ -2079,7 +2079,7 @@ End Sub
 
 Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceType)
     Dim colour As Byte
-    Dim Message As String
+    Dim message As String
     Dim i As Byte
     Dim found As Boolean
     
@@ -2121,13 +2121,13 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     Select Case triforce
     Case TRIFORCE_COURAGE
-        Message = "del Valor"
+        message = "del Valor"
         colour = BrightGreen
     Case TRIFORCE_WISDOM
-        Message = "de la Sabiduría"
+        message = "de la Sabiduría"
         colour = Cyan
     Case TRIFORCE_POWER
-        Message = "del Poder"
+        message = "del Poder"
         colour = BrightRed
     End Select
     
@@ -2150,7 +2150,7 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     Call SendPlayerData(index)
     
-    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & GetTranslation(Message), colour, False, True
+    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & GetTranslation(message), colour, False, True
     
 End Sub
 Public Function GetPlayerTriforcesNum(ByVal index As Long) As Byte

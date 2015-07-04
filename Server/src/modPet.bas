@@ -867,7 +867,6 @@ Public Sub SetPetTarget(ByVal index As Long, ByVal PetSlot As Byte)
     mapnum = GetPlayerMap(index)
     If TempPlayer(index).TempPet.PetHasOwnTarget > 0 Then
     'I'm not sure what they intended on putting here..
-    Debug.Print
     
     Else
         Dim i As Integer

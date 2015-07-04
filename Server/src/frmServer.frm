@@ -543,6 +543,7 @@ End Sub
 Private Sub cmdLoadOptions_Click()
 Call TextAdd("Options reloaded.")
 LoadOptions
+SendHubCommand CommandsType.SOptions, ""
 End Sub
 
 Private Sub cmdMapLinkReport_Click()
@@ -590,6 +591,10 @@ SaveCustomSprites
 
 MsgBox "Done."
 
+End Sub
+
+Private Sub Command1_Click()
+SendHubCommand CommandsType.SOptions, ""
 End Sub
 
 Private Sub hubSocket_DataArrival(ByVal bytesTotal As Long)
@@ -728,6 +733,7 @@ Dim i As Long
             SendClasses i
         End If
     Next
+    
 End Sub
 
 Private Sub cmdReloadItems_Click()
@@ -739,10 +745,12 @@ Dim i As Long
             SendItems i
         End If
     Next
+
 End Sub
 
 Private Sub cmdReloadMaps_Click()
 Dim i As Long
+
     Call LoadMaps
     Call TextAdd("All maps reloaded.")
     For i = 1 To Player_HighIndex
@@ -750,6 +758,7 @@ Dim i As Long
             PlayerSpawn i, GetPlayerMap(i), GetPlayerX(i), GetPlayerY(i)
         End If
     Next
+
 End Sub
 
 Private Sub cmdReloadNPCs_Click()
@@ -761,6 +770,7 @@ Dim i As Long
             SendNpcs i
         End If
     Next
+
 End Sub
 
 Private Sub cmdReloadShops_Click()
@@ -772,6 +782,7 @@ Dim i As Long
             SendShops i
         End If
     Next
+
 End Sub
 
 Private Sub cmdReloadSpells_Click()
@@ -783,6 +794,7 @@ Dim i As Long
             SendSpells i
         End If
     Next
+
 End Sub
 
 Private Sub cmdReloadResources_Click()
@@ -794,6 +806,7 @@ Dim i As Long
             SendResources i
         End If
     Next
+
 End Sub
 
 Private Sub cmdReloadAnimations_Click()
@@ -805,6 +818,7 @@ Dim i As Long
             SendAnimations i
         End If
     Next
+
 End Sub
 
 Private Sub cmdShutDown_Click()
@@ -856,7 +870,7 @@ Private Sub spExp_Change()
     FraExp.Caption = "Exp: " & Options.ExpMultiplier
     
     Call SaveOptions
-    
+    SendHubCommand CommandsType.SOptions, ""
 End Sub
 
 Private Sub tmrIsServerBug_Timer()

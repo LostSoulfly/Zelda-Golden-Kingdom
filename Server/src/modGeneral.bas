@@ -62,7 +62,7 @@ Public Sub InitServer()
     Randomize ', seed
     
     RainOn = True
-    
+
     ' Check if the directory is there, if its not make it
     ChkDir App.Path & "\Data\", "accounts"
     ChkDir App.Path & "\Data\", "animations"
@@ -81,6 +81,8 @@ Public Sub InitServer()
     ChkDir App.Path & "\Data\", "movements"
     ChkDir App.Path & "\Data\", "AccLock"
     ChkDir App.Path & "\Data\", "Servers"
+
+    If Len(App.Path & "\data\customsprites\CustomSprite15.dat") >= 240 Then TextAdd "The length of your folder path is dangerously long!"
 
     ' set quote character
     vbQuote = ChrW$(34) ' "
@@ -182,6 +184,11 @@ Public Sub DestroyServer()
     Call DestroySystemTray
     Call SetStatus("Saving players online...")
     Call SaveAllPlayersOnline
+    
+    For i = 1 To Player_HighIndex
+        UnLockPlayerLogin (player(i).login)
+    Next i
+    
     Call ClearGameData
     Call SetStatus("Unloading sockets...")
 

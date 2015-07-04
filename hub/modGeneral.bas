@@ -7,6 +7,28 @@ Public PacketsReceived As Long
 Public BytesSent As Long
 Public BytesReceived As Long
 
+Public Enum CommandsType
+    Classes = 1
+    Maps
+    Spells
+    Shops
+    npcs
+    Items
+    Resources
+    Animations
+    Language
+    SOptions
+    SPets
+    Weather
+End Enum
+
+Public Enum PlayerCommands
+    PlayerCount
+    PlayerLogin
+    PlayerLogoff
+    ChangeServer
+End Enum
+
 Public Const MAX_LONG As Long = 2147483647
 
 Sub Main()
@@ -74,6 +96,28 @@ Sub UpdateCaption()
     frmServer.Caption = "Hub Server - Servers: " & TotalServers & " Players: " & TotalPlayers
 End Sub
 
+Sub UpdateComboList()
+Dim lastSelected As String
+lastSelected = frmServer.cmbWeather.text
+    frmServer.cmbWeather.Clear
+    frmServer.cmbWeather.AddItem "ALL"
+    frmServer.cmbWeather.AddItem "NONE"
+    Dim i As Long
+    For i = 1 To MAX_SERVERS
+        If Server(i).Name <> "" Then frmServer.cmbWeather.AddItem Server(i).Name
+    Next i
+    
+    If lastSelected = "" Then frmServer.cmbWeather.ListIndex = 0: Exit Sub
+
+    For i = 0 To frmServer.cmbWeather.ListCount - 1
+        If frmServer.cmbWeather.List(i) = lastSelected Then
+            frmServer.cmbWeather.ListIndex = i
+            Exit For
+        End If
+    Next i
+
+End Sub
+
 Public Function TotalServers() As Integer
     Dim total As Integer
     Dim i As Integer
@@ -101,4 +145,3 @@ Public Function ConvertTime(msec As Long) As String
                  & Format$((msec Mod 3600) \ 60, "00m ") _
                  & Format$((msec Mod 60), "00s ")
 End Function
-

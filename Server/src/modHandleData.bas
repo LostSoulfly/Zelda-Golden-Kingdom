@@ -355,7 +355,7 @@ If frmServer.chkTroll.Value = vbChecked Then AlertMsg index, "TrollMode is enabl
             Call ClearPlayer(index)
             ' Everything went ok
             Call Kill(App.Path & "\data\Accounts\" & Trim$(Name) & ".bin")
-            Call AddLog(index, "Account " & Trim$(Name) & " ha sido eliminada.", PLAYER_LOG)
+            Call AddLog(index, "Account " & Trim$(Name) & GetTranslation(" ha sido eliminada."), PLAYER_LOG)
             Call AlertMsg(index, "Tu cuenta ha sido eliminada.")
             
             UnLockPlayerLogin player(index).login
@@ -1228,14 +1228,14 @@ Sub HandleMapData(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
 
     ' Clear out it all
     For i = 1 To MAX_MAP_ITEMS
-        Call SpawnItemSlot(i, 0, 0, GetPlayerMap(index), MapItem(GetPlayerMap(index), i).X, MapItem(GetPlayerMap(index), i).Y)
-        Call ClearMapItem(i, GetPlayerMap(index))
+        Call SpawnItemSlot(i, 0, 0, mapnum, MapItem(mapnum, i).X, MapItem(mapnum, i).Y)
+        Call ClearMapItem(i, mapnum)
     Next
 
     ' Respawn
-    Call SpawnMapItems(GetPlayerMap(index))
+    Call SpawnMapItems(mapnum)
     ' Save the map
-    AddLog index, "Map #" & mapnum & " has been modified by " & player(index).Name & " from IP " & GetPlayerIP(index, True) & ". Revision " & i, ADMIN_LOG
+    AddLog index, "Map #" & mapnum & " has been modified by " & Trim$(player(index).Name) & " from IP " & GetPlayerIP(index, True) & ". Revision " & i, ADMIN_LOG
     Call SaveMap(mapnum, newMap)
     Call MapCache_Create(mapnum, newMap)
     Call ClearTempTile(mapnum)
@@ -1250,6 +1250,8 @@ Sub HandleMapData(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
             Call PlayerSpawn(i, mapnum, GetPlayerX(i), GetPlayerY(i))
         End If
     Next i
+
+    If useHubServer = True Then SendHubCommand CommandsType.Maps, CStr(mapnum)
 
     Set buffer = Nothing
 End Sub
@@ -1658,6 +1660,7 @@ Sub HandleSaveItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     Call SendUpdateItemToAll(N)
     Call SaveItem(N)
     Call AddLog(index, GetPlayerName(index) & " saved item #" & N & ".", ADMIN_LOG)
+    If useHubServer = True Then SendHubCommand CommandsType.Items, ""
 End Sub
 
 ' ::::::::::::::::::::::::::::::
@@ -1710,6 +1713,7 @@ Sub HandleSaveAnimation(ByVal index As Long, ByRef Data() As Byte, ByVal StartAd
     Call SendUpdateAnimationToAll(N)
     Call SaveAnimation(N)
     Call AddLog(index, GetPlayerName(index) & " saved Animation #" & N & ".", ADMIN_LOG)
+    If useHubServer = True Then SendHubCommand CommandsType.Animations, ""
 End Sub
 
 ' :::::::::::::::::::::::::::::
@@ -1760,6 +1764,7 @@ Private Sub HandleSaveNpc(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     Call SendUpdateNpcToAll(npcnum)
     Call SaveNpc(npcnum)
     Call AddLog(index, GetPlayerName(index) & " saved Npc #" & npcnum & ".", ADMIN_LOG)
+    If useHubServer = True Then SendHubCommand CommandsType.npcs, ""
 End Sub
 
 ' :::::::::::::::::::::::::::::
@@ -1810,6 +1815,7 @@ Private Sub HandleSaveResource(ByVal index As Long, ByRef Data() As Byte, ByVal 
     Call SendUpdateResourceToAll(ResourceNum)
     Call SaveResource(ResourceNum)
     Call AddLog(index, GetPlayerName(index) & " saved Resource #" & ResourceNum & ".", ADMIN_LOG)
+    If useHubServer = True Then SendHubCommand CommandsType.Resources, ""
 End Sub
 
 ' ::::::::::::::::::::::::::::::
@@ -1863,6 +1869,7 @@ Sub HandleSaveShop(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     Call SendUpdateShopToAll(shopnum)
     Call SaveShop(shopnum)
     Call AddLog(index, GetPlayerName(index) & " saving shop #" & shopnum & ".", ADMIN_LOG)
+    If useHubServer = True Then SendHubCommand CommandsType.Shops, ""
 End Sub
 
 ' :::::::::::::::::::::::::::::
@@ -1913,6 +1920,7 @@ Sub HandleSaveSpell(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     Call SendUpdateSpellToAll(spellnum)
     Call SaveSpell(spellnum)
     Call AddLog(index, GetPlayerName(index) & " saved Spell #" & spellnum & ".", ADMIN_LOG)
+    If useHubServer = True Then SendHubCommand CommandsType.spells, ""
 End Sub
 
 ' :::::::::::::::::::::::
@@ -2001,6 +2009,8 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     
     'Call GlobalMsg("MOTD cambia a: " & Options.MOTD, BrightCyan, False)
     Call AddLog(index, GetPlayerName(index) & " changed MOTD to: " & Options.MOTD, ADMIN_LOG)
+    SendHubCommand CommandsType.SOptions, ""
+
 End Sub
 
 ' :::::::::::::::::::
@@ -3340,7 +3350,7 @@ Sub HandleRequestPets(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr
 End Sub
 
 Private Sub HandleSavePet(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim PetNum As Long
+    Dim petnum As Long
     Dim buffer As clsBuffer
 
     ' Prevent hacking
@@ -3350,23 +3360,25 @@ Private Sub HandleSavePet(ByVal index As Long, ByRef Data() As Byte, ByVal Start
 
     Set buffer = New clsBuffer
     buffer.WriteBytes Data()
-    PetNum = buffer.ReadLong
+    petnum = buffer.ReadLong
 
     ' Prevent hacking
-    If PetNum < 0 Or PetNum > MAX_PETS Then
+    If petnum < 0 Or petnum > MAX_PETS Then
         Exit Sub
     End If
     
-    Pet(PetNum).Name = buffer.ReadString
-    Pet(PetNum).npcnum = buffer.ReadLong
-    Pet(PetNum).TamePoints = buffer.ReadInteger
-    Pet(PetNum).ExpProgression = buffer.ReadByte
-    Pet(PetNum).pointsprogression = buffer.ReadByte
-    Pet(PetNum).MaxLevel = buffer.ReadLong
+    Pet(petnum).Name = buffer.ReadString
+    Pet(petnum).npcnum = buffer.ReadLong
+    Pet(petnum).TamePoints = buffer.ReadInteger
+    Pet(petnum).ExpProgression = buffer.ReadByte
+    Pet(petnum).pointsprogression = buffer.ReadByte
+    Pet(petnum).MaxLevel = buffer.ReadLong
 
-    Call SendUpdatePetToAll(PetNum)
-    Call SavePet(PetNum)
-    Call AddLog(index, GetPlayerName(index) & " saved Pet #" & PetNum & ".", ADMIN_LOG)
+    Call SendUpdatePetToAll(petnum)
+    Call SavePet(petnum)
+    Call AddLog(index, GetPlayerName(index) & " saved Pet #" & petnum & ".", ADMIN_LOG)
+    
+    SendHubCommand CommandsType.SPets, CStr(petnum)
 End Sub
 
 Sub HandleEditPets(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)

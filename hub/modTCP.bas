@@ -62,11 +62,26 @@ Set Buffer = Nothing
 
 End Function
 
+Public Function SendCommand(CommandNum As Long, Data As String) As Byte()
+Dim Buffer As New clsBuffer
+Set Buffer = New clsBuffer
+
+Buffer.WriteLong HCommand
+Buffer.WriteLong CommandNum
+Buffer.WriteString Data
+
+SendCommand = Buffer.ToArray
+
+Set Buffer = Nothing
+
+End Function
+
 Sub CloseSocket(ByVal Index As Long)
 Dim i As Integer
 
     Call AddLog("Connection from " & frmServer.Socket(Index).RemoteHostIP & " has been terminated.")
     frmServer.Socket(Index).Close
+    ClearServer Index
     UpdateCaption
     
 End Sub

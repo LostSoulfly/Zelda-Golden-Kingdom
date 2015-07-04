@@ -1143,7 +1143,8 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
         KillPlayer victim
         
         ' Player is dead
-        'Call GlobalMsg(GetPlayerName(victim) & " ha sido asesinado por " & Name, BrightRed)
+        Call GlobalMsg(GetPlayerName(victim) & " has been killed by a " & Trim$(NPC(GetNPCNum(mapnum, mapnpcnum)).TranslatedName) & "!", BrightRed, False, False)
+        Call AddLog(victim, GetPlayerName(victim) & " has been killed by a " & Trim$(NPC(GetNPCNum(mapnum, mapnpcnum)).TranslatedName) & "!", PLAYER_LOG)
         
         'Kill Counter
         player(victim).NpcDead = player(victim).NpcDead + 1
