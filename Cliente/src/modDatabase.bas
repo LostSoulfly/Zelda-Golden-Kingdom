@@ -188,7 +188,8 @@ Dim i As Byte
         Options.MenuMusic = GetVar(Filename, "Options", "MenuMusic")
         Options.Music = GetVar(Filename, "Options", "Music")
         Options.Sound = GetVar(Filename, "Options", "Sound")
-        Options.Debug = 0 'GetVar(Filename, "Options", "Debug")
+        Options.Debug = 1 'GetVar(Filename, "Options", "Debug")
+        'todo FIX ME BEFORE RELEASING
         Options.Names = GetVar(Filename, "Options", "Names")
         Options.Level = GetVar(Filename, "Options", "Level")
         Options.WASD = GetVar(Filename, "Options", "WASD")

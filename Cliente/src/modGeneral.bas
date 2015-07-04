@@ -1,6 +1,8 @@
 Attribute VB_Name = "modGeneral"
 Option Explicit
 
+Global wtf As Boolean
+
 ' halts thread of execution
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
@@ -13,9 +15,12 @@ Public DX7 As New DirectX7  ' Master Object, early binding
 
 Public Sub Main()
     ' If debug mode, handle error then exit out
-    'If Options.Debug = 1 Then On Error GoTo errorhandler
+    If Options.Debug = 1 Then On Error GoTo errorhandler
     On Error Resume Next
     
+    If Len(App.Path & "\data\graphics\GUI\main\buttons\skills_click.jpg") >= 230 Then MsgBox "The folder that this game is in could cause issues due to length of its path." & vbNewLine & _
+    "Please place the game in a location with a shorter path!", vbCritical, "Oh no!": End
+
     If FileExist("launcher.update.exe") = True Then
         'msgbox "launcher update found."
     'replace old launcher with the new one and then run it!
@@ -76,6 +81,9 @@ Dim strsplit() As String, i As Integer
             
             Case Is = "-auto"
                 AutoLogin = Val(Trim$(strsplit(i + 1)))
+                
+            Case Is = "-wtf"
+                wtf = True
             
             End Select
         Next
@@ -88,7 +96,7 @@ Dim strsplit() As String, i As Integer
     strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
 
     'frmTransLog.Show
-    frmTransLog.txtLog.Text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
+    frmTransLog.txtLog.text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
     'DoEvents
 
     ' set loading screen
@@ -127,7 +135,7 @@ Dim strsplit() As String, i As Integer
     ChkDir App.Path & "\data\", "maps"
     ChkDir App.Path & "\data\", "music"
     ChkDir App.Path & "\data\", "sound"
-    
+        
     ' load the main game (and by extension, pre-load DD7)
     GettingMap = True
     vbQuote = ChrW$(34) ' "
@@ -214,7 +222,7 @@ Dim strsplit() As String, i As Integer
     Call InitChatRooms
     
     If AutoLogin = True Then
-        If isLoginLegal(frmMenu.txtLUser.Text, frmMenu.txtLPass.Text) Then
+        If isLoginLegal(frmMenu.txtLUser.text, frmMenu.txtLPass.text) Then
             Call MenuState(MENU_STATE_LOGIN)
         End If
     End If
@@ -341,7 +349,7 @@ Public Sub MenuState(ByVal State As Long)
 
             If ConnectToServer(1) Then
                 Call SetStatus("Conectado, enviando información de la nueva cuenta...")
-                Call SendNewAccount(frmMenu.txtRUser.Text, frmMenu.txtRPass.Text)
+                Call SendNewAccount(frmMenu.txtRUser.text, frmMenu.txtRPass.text)
             End If
 
         Case MENU_STATE_LOGIN
@@ -353,7 +361,7 @@ Public Sub MenuState(ByVal State As Long)
 
             If ConnectToServer(1) Then
                 Call SetStatus("Conectado, recibiendo datos...")
-                Call SendLogin(frmMenu.txtLUser.Text, frmMenu.txtLPass.Text)
+                Call SendLogin(frmMenu.txtLUser.text, frmMenu.txtLPass.text)
                 Exit Sub
             End If
     End Select
@@ -379,14 +387,14 @@ errorhandler:
 End Sub
 
 Public Sub logoutGame()
-Dim buffer As clsBuffer, i As Long
+Dim Buffer As clsBuffer, i As Long
 
     isLogging = True
     InGame = False
-    Set buffer = New clsBuffer
-    buffer.WriteLong CQuit
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CQuit
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
     Call DestroyTCP
     
     ' destroy the animations loaded
@@ -421,8 +429,8 @@ Dim buffer As clsBuffer, i As Long
     
     ' hide main form stuffs
     frmMenu.picMain.Visible = True
-    frmMain.txtChat.Text = vbNullString
-    frmMain.txtMyChat.Text = vbNullString
+    frmMain.txtChat.text = vbNullString
+    frmMain.txtMyChat.text = vbNullString
     frmMain.picCurrency.Visible = False
     frmMain.picDialogue.Visible = False
     frmMain.picInventory.Visible = False
@@ -572,12 +580,12 @@ Public Sub TextAdd(ByVal Txt As TextBox, msg As String, NewLine As Boolean)
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     If NewLine Then
-        Txt.Text = Txt.Text + msg + vbCrLf
+        Txt.text = Txt.text + msg + vbCrLf
     Else
-        Txt.Text = Txt.Text + msg
+        Txt.text = Txt.text + msg
     End If
 
-    Txt.SelStart = Len(Txt.Text) - 1
+    Txt.SelStart = Len(Txt.text) - 1
     
     ' Error handler
     Exit Sub
@@ -1013,7 +1021,7 @@ Else
 .lblGuildCAccept.Caption = GetTranslation("Crear")
 .lblGuildCCancel.Caption = GetTranslation("Cancelar")
 .frmGuildC.Caption = GetTranslation("Creación del Clan")
-.txtGuildC.Text = ""
+.txtGuildC.text = ""
 .picGuildInvitation.Visible = False
 .lblGuildInvitation.Caption = GetTranslation("Invitación al Clan")
 .lblGuildAcceptInvitation.Caption = GetTranslation("Aceptar")

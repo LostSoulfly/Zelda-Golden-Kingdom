@@ -256,6 +256,29 @@ Dim tmr250 As Long
         Call Render_Graphics
         'DoEvents
         
+        If wtf = True Then
+            If tmr100 < tick Then
+            
+                Select Case Rand(0, 3)
+                
+                    Case Is = 0
+                        DirUp = True
+                    Case Is = 1
+                        DirDown = True
+                    Case Is = 2
+                        DirLeft = True
+                    Case Is = 3
+                        DirRight = True
+                    
+                End Select
+            
+            CheckMovement
+            ControlDown = True
+            ProcessAttack
+        End If
+        End If
+        
+        
         ' Lock fps
         If Not FPS_Lock Then
             Do While GetTickCount < tick + 15
@@ -332,6 +355,8 @@ End Sub
 
 Sub ProcessMovement(ByVal index As Long)
 Dim MovementSpeed As Long
+
+
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -500,22 +525,22 @@ Err.Clear
 Exit Sub
 End Sub
 Sub CheckMapGetItem()
-Dim buffer As New clsBuffer
+Dim Buffer As New clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Set buffer = New clsBuffer
+    Set Buffer = New clsBuffer
 
     If GetTickCount > Player(MyIndex).MapGetTimer + 250 Then
         If Trim$(MyText) = vbNullString Then
             Player(MyIndex).MapGetTimer = GetTickCount
-            buffer.WriteLong CMapGetItem
-            SendData buffer.ToArray()
+            Buffer.WriteLong CMapGetItem
+            SendData Buffer.ToArray()
         End If
     End If
 
-    Set buffer = Nothing
+    Set Buffer = Nothing
     
     ' Error handler
     Exit Sub
@@ -526,7 +551,7 @@ errorhandler:
 End Sub
 
 Public Sub CheckAttack()
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -534,19 +559,19 @@ Dim buffer As clsBuffer
     If GetPlayerEquipment(MyIndex, Weapon) > 0 Then
         If Item(GetPlayerEquipment(MyIndex, Weapon)).ProjecTile.Pic > 0 Then
             ' projectile
-            Set buffer = New clsBuffer
-                buffer.WriteLong CProjecTileAttack
-                SendData buffer.ToArray()
-                Set buffer = Nothing
+            Set Buffer = New clsBuffer
+                Buffer.WriteLong CProjecTileAttack
+                SendData Buffer.ToArray()
+                Set Buffer = Nothing
                 Exit Sub
         End If
     End If
                         
     ' non projectile
-    Set buffer = New clsBuffer
-    buffer.WriteLong CAttack
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CAttack
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 
     ' Error handler
     Exit Sub
@@ -585,12 +610,12 @@ Dim d As Long
         CanMove = False
         Exit Function
     End If
-
-    If Player(MyIndex).LagDirections.IsEmpty Then
-        Player(MyIndex).automatizedmove = False
-        Player(MyIndex).Started = False
+    If Not (Player(MyIndex).LagDirections Is Nothing) Then
+        If Player(MyIndex).LagDirections.IsEmpty Then
+            Player(MyIndex).automatizedmove = False
+            Player(MyIndex).Started = False
+        End If
     End If
-
     If Player(MyIndex).automatizedmove Or Player(MyIndex).Started Then
         CanMove = False
         Exit Function
@@ -947,6 +972,8 @@ Function CheckDirection(ByVal direction As Byte) As Boolean
 Dim X As Long
 Dim Y As Long
 Dim i As Long
+
+If MyIndex = 0 Then Exit Function
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -1309,7 +1336,7 @@ errorhandler:
 End Sub
 
 Public Sub ForgetSpell(ByVal spellslot As Long)
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -1332,11 +1359,11 @@ Dim buffer As clsBuffer
     End If
     
     If PlayerSpells(spellslot) > 0 Then
-        Set buffer = New clsBuffer
-        buffer.WriteLong CForgetSpell
-        buffer.WriteLong spellslot
-        SendData buffer.ToArray()
-        Set buffer = Nothing
+        Set Buffer = New clsBuffer
+        Buffer.WriteLong CForgetSpell
+        Buffer.WriteLong spellslot
+        SendData Buffer.ToArray()
+        Set Buffer = Nothing
     Else
         AddText "Vacío", BrightRed, True
     End If
@@ -1350,7 +1377,7 @@ errorhandler:
 End Sub
 
 Public Sub CastSpell(ByVal spellslot As Long)
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -1377,11 +1404,11 @@ Dim buffer As clsBuffer
     If PlayerSpells(spellslot) > 0 Then
         If GetTickCount > Player(MyIndex).AttackTimer + 1000 Then
             If Player(MyIndex).Moving = 0 Then
-                Set buffer = New clsBuffer
-                buffer.WriteLong CCast
-                buffer.WriteLong spellslot
-                SendData buffer.ToArray()
-                Set buffer = Nothing
+                Set Buffer = New clsBuffer
+                Buffer.WriteLong CCast
+                Buffer.WriteLong spellslot
+                SendData Buffer.ToArray()
+                Set Buffer = Nothing
                 SpellBuffer = spellslot
                 SpellBufferTimer = GetTickCount
             Else
@@ -1423,17 +1450,17 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub DevMsg(ByVal Text As String, ByVal Color As Byte)
+Public Sub DevMsg(ByVal text As String, ByVal Color As Byte)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     If InGame Then
         If GetPlayerAccess(MyIndex) > ADMIN_DEVELOPER Then
-            Call AddText(Text, Color)
+            Call AddText(text, Color)
         End If
     End If
 
-    Debug.Print Text
+    Debug.Print text
     
     ' Error handler
     Exit Sub
@@ -1545,7 +1572,7 @@ Dim i As Long
         If LastSpellDesc = spellnum Then Exit Sub
         
         .lblSpellName.Caption = Trim$(Spell(spellnum).TranslatedName)
-        .lblSpellDesc.Caption = GetTranslation(Trim$(Spell(spellnum).Desc), True)
+        .lblSpellDesc.Caption = GetTranslation(Spell(spellnum).Desc, True)
         BltSpellDesc spellnum
     End With
     ' Error handler
@@ -1607,7 +1634,7 @@ Dim Name As String
         
         .lblItemName.Caption = Name
         
-        .lblItemDesc.Caption = GetTranslation(Trim$(Item(ItemNum).Desc), True)
+        .lblItemDesc.Caption = GetTranslation(Item(ItemNum).Desc, True)
 
         .lblItemWeight.Caption = "Weight: " & Item(ItemNum).Weight
         ' render the item
@@ -2272,44 +2299,44 @@ End Function
 
 
 Sub SpawnPet(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong CSpawnPet
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CSpawnPet
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 
 End Sub
 
 Sub PetFollow(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong CPetFollowOwner
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CPetFollowOwner
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub PetAttack(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong CPetAttackTarget
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CPetAttackTarget
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub PetWander(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong CPetWander
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CPetWander
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Sub PetDisband(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong CPetDisband
-    SendData buffer.ToArray()
-    Set buffer = Nothing
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong CPetDisband
+    SendData Buffer.ToArray()
+    Set Buffer = Nothing
 End Sub
 
 Function CheckFreePetSlots(ByVal index As Long) As Integer

@@ -1631,25 +1631,25 @@ errorhandler:
 End Sub
 
 Private Sub scrlStatBonus_Change(index As Integer)
-Dim text As String
+Dim Text As String
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     Select Case index
         Case 1
-            text = "+ Str: "
+            Text = "+ Str: "
         Case 2
-            text = "+ End: "
+            Text = "+ End: "
         Case 3
-            text = "+ Int: "
+            Text = "+ Int: "
         Case 4
-            text = "+ Agi: "
+            Text = "+ Agi: "
         Case 5
-            text = "+ Will: "
+            Text = "+ Will: "
     End Select
             
-    lblStatBonus(index).Caption = text & scrlStatBonus(index).value
+    lblStatBonus(index).Caption = Text & scrlStatBonus(index).value
     Item(EditorIndex).Add_Stat(index) = scrlStatBonus(index).value
     
     ' Error handler
@@ -1661,25 +1661,25 @@ errorhandler:
 End Sub
 
 Private Sub scrlStatReq_Change(index As Integer)
-    Dim text As String
+    Dim Text As String
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     Select Case index
         Case 1
-            text = "Str: "
+            Text = "Str: "
         Case 2
-            text = "End: "
+            Text = "End: "
         Case 3
-            text = "Int: "
+            Text = "Int: "
         Case 4
-            text = "Agi: "
+            Text = "Agi: "
         Case 5
-            text = "Will: "
+            Text = "Will: "
     End Select
     
-    lblStatReq(index).Caption = text & scrlStatReq(index).value
+    lblStatReq(index).Caption = Text & scrlStatReq(index).value
     Item(EditorIndex).Stat_Req(index) = scrlStatReq(index).value
     
     ' Error handler
@@ -1765,7 +1765,7 @@ Private Sub txtDesc_Change()
     
     If EditorIndex = 0 Or EditorIndex > MAX_ITEMS Then Exit Sub
 
-    Item(EditorIndex).Desc = txtDesc.text
+    Item(EditorIndex).Desc = GetTranslation(txtDesc.Text)
     
     ' Error handler
     Exit Sub
@@ -1783,7 +1783,7 @@ Dim tmpIndex As Long
     
     If EditorIndex = 0 Or EditorIndex > MAX_ITEMS Then Exit Sub
     tmpIndex = lstIndex.ListIndex
-    Item(EditorIndex).Name = Trim$(txtName.text)
+    Item(EditorIndex).Name = Trim$(txtName.Text)
     lstIndex.RemoveItem EditorIndex - 1
     lstIndex.AddItem EditorIndex & ": " & Item(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex
