@@ -76,3 +76,4 @@ modBackup = 0, 0, 0, 0, C
 modSail = 0, 0, 0, 0, C
 modTranslate = 0, 0, 0, 0, C
 frmTransLog = 0, 0, 0, 0, C, 0, 0, 0, 0, C
+modHubTCP = 0, 0, 0, 0, C

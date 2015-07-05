@@ -27,10 +27,14 @@ If (UBound(strSplit)) Mod 2 > 0 Then
         Case Is = "-hub"
             'anything above 0 will enable it.
             useHubServer = IIf(val(strSplit(i + 1)), True, False)
+            frmServer.chkHub.Value = IIf(val(strSplit(i + 1)), vbChecked, vbUnchecked)
         
         Case Is = "-lock"
             'anything above 0 will enable it.
             usePlayerLock = IIf(val(strSplit(i + 1)), True, False)
+        
+        Case Is = "-name"
+            SERVER_NAME = strSplit(i + 1)
         
         End Select
     Next

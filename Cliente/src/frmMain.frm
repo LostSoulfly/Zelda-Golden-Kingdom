@@ -27,6 +27,171 @@ Begin VB.Form frmMain
    ScaleWidth      =   800
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
+   Begin VB.PictureBox picTriforce 
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000005&
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   15.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   4500
+      Left            =   3120
+      Picture         =   "frmMain.frx":0A4E
+      ScaleHeight     =   4470
+      ScaleWidth      =   5970
+      TabIndex        =   241
+      Top             =   1200
+      Visible         =   0   'False
+      Width           =   6000
+      Begin VB.Label lblTriforceClose 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cerrar"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   255
+         Left            =   4800
+         TabIndex        =   248
+         Top             =   240
+         Width           =   975
+      End
+      Begin VB.Label lblTriforceDecline 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "No"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   255
+         Left            =   5040
+         TabIndex        =   247
+         Top             =   4080
+         Visible         =   0   'False
+         Width           =   495
+      End
+      Begin VB.Label lblTriforceAccept 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Yes"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   255
+         Left            =   360
+         TabIndex        =   246
+         Top             =   4080
+         Visible         =   0   'False
+         Width           =   495
+      End
+      Begin VB.Label lblTriforceInfo 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Selecciona una Trifuerza"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   255
+         Left            =   1560
+         TabIndex        =   245
+         Top             =   4080
+         Width           =   3015
+      End
+      Begin VB.Label lblTriforcePower 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Poder"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   375
+         Left            =   2160
+         TabIndex        =   244
+         Top             =   600
+         Width           =   1695
+      End
+      Begin VB.Label lblTriforceCourage 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Valor"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   375
+         Left            =   4200
+         TabIndex        =   243
+         Top             =   3240
+         Width           =   1335
+      End
+      Begin VB.Label lblTriforceWisdom 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Sabiduría"
+         BeginProperty Font 
+            Name            =   "Georgia"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   375
+         Left            =   0
+         TabIndex        =   242
+         Top             =   3240
+         Width           =   1935
+      End
+   End
    Begin VB.PictureBox picPets 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -1574,7 +1739,7 @@ Begin VB.Form frmMain
    End
    Begin TabDlg.SSTab WorldMap 
       Height          =   6255
-      Left            =   1560
+      Left            =   1320
       TabIndex        =   254
       Top             =   960
       Visible         =   0   'False
@@ -1583,7 +1748,6 @@ Begin VB.Form frmMain
       _ExtentY        =   11033
       _Version        =   393216
       Tabs            =   2
-      Tab             =   1
       TabsPerRow      =   2
       TabHeight       =   529
       BackColor       =   -2147483641
@@ -1597,15 +1761,15 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       TabCaption(0)   =   "Hyrule"
-      TabPicture(0)   =   "frmMain.frx":0A4E
-      Tab(0).ControlEnabled=   0   'False
+      TabPicture(0)   =   "frmMain.frx":9C46
+      Tab(0).ControlEnabled=   -1  'True
       Tab(0).Control(0)=   "MiniMapHyrule(0)"
+      Tab(0).Control(0).Enabled=   0   'False
       Tab(0).ControlCount=   1
       TabCaption(1)   =   "Términa"
-      TabPicture(1)   =   "frmMain.frx":0A6A
-      Tab(1).ControlEnabled=   -1  'True
+      TabPicture(1)   =   "frmMain.frx":9C62
+      Tab(1).ControlEnabled=   0   'False
       Tab(1).Control(0)=   "MiniMapTermina(1)"
-      Tab(1).Control(0).Enabled=   0   'False
       Tab(1).ControlCount=   1
       Begin VB.PictureBox MiniMapTermina 
          BackColor       =   &H00404000&
@@ -1621,8 +1785,8 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   5520
          Index           =   1
-         Left            =   240
-         Picture         =   "frmMain.frx":0A86
+         Left            =   -74760
+         Picture         =   "frmMain.frx":9C7E
          ScaleHeight     =   5520
          ScaleWidth      =   8580
          TabIndex        =   277
@@ -1996,8 +2160,8 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   5520
          Index           =   0
-         Left            =   -74760
-         Picture         =   "frmMain.frx":8E6CA
+         Left            =   240
+         Picture         =   "frmMain.frx":978C2
          ScaleHeight     =   5520
          ScaleWidth      =   8580
          TabIndex        =   255
@@ -2511,7 +2675,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   1995
-      Left            =   2640
+      Left            =   2400
       ScaleHeight     =   1995
       ScaleWidth      =   7140
       TabIndex        =   55
@@ -2612,11 +2776,11 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   5295
-      Left            =   2040
+      Left            =   2520
       ScaleHeight     =   5235
       ScaleWidth      =   6960
       TabIndex        =   122
-      Top             =   1440
+      Top             =   1320
       Visible         =   0   'False
       Width           =   7020
       Begin VB.Label lblTutorialExit 
@@ -2820,7 +2984,7 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblTutorialText 
          BackStyle       =   0  'Transparent
-         Caption         =   $"frmMain.frx":11C30E
+         Caption         =   $"frmMain.frx":125506
          BeginProperty Font 
             Name            =   "Georgia"
             Size            =   8.25
@@ -3656,171 +3820,6 @@ Begin VB.Form frmMain
          Width           =   2865
       End
    End
-   Begin VB.PictureBox picTriforce 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000005&
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   15.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   4500
-      Left            =   3120
-      Picture         =   "frmMain.frx":11C3B6
-      ScaleHeight     =   4470
-      ScaleWidth      =   5970
-      TabIndex        =   241
-      Top             =   1440
-      Visible         =   0   'False
-      Width           =   6000
-      Begin VB.Label lblTriforceClose 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cerrar"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   4800
-         TabIndex        =   248
-         Top             =   240
-         Width           =   975
-      End
-      Begin VB.Label lblTriforceDecline 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "No"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   5040
-         TabIndex        =   247
-         Top             =   4080
-         Visible         =   0   'False
-         Width           =   495
-      End
-      Begin VB.Label lblTriforceAccept 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Si"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   360
-         TabIndex        =   246
-         Top             =   4080
-         Visible         =   0   'False
-         Width           =   495
-      End
-      Begin VB.Label lblTriforceInfo 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Selecciona una Trifuerza"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   1560
-         TabIndex        =   245
-         Top             =   4080
-         Width           =   3015
-      End
-      Begin VB.Label lblTriforcePower 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Poder"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   375
-         Left            =   2160
-         TabIndex        =   244
-         Top             =   600
-         Width           =   1695
-      End
-      Begin VB.Label lblTriforceCourage 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Valor"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   375
-         Left            =   4200
-         TabIndex        =   243
-         Top             =   3240
-         Width           =   1335
-      End
-      Begin VB.Label lblTriforceWisdom 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Sabiduría"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   375
-         Left            =   0
-         TabIndex        =   242
-         Top             =   3240
-         Width           =   1935
-      End
-   End
    Begin VB.PictureBox picTrade 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -3837,12 +3836,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5760
-      Left            =   2280
+      Left            =   2400
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   480
       TabIndex        =   74
-      Top             =   960
+      Top             =   1080
       Visible         =   0   'False
       Width           =   7200
       Begin VB.PictureBox picYourTrade 
@@ -5151,14 +5150,14 @@ Begin VB.Form frmMain
       TabCaption(0)   =   "Teclas"
       TabPicture(0)   =   "frmMain.frx":12562A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "CloseHelpBoard(0)"
-      Tab(0).Control(1)=   "Picture2"
+      Tab(0).Control(0)=   "Picture2"
+      Tab(0).Control(1)=   "CloseHelpBoard(0)"
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Entrenar"
       TabPicture(1)   =   "frmMain.frx":125646
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Picture7"
-      Tab(1).Control(1)=   "CloseHelpBoard(1)"
+      Tab(1).Control(0)=   "CloseHelpBoard(1)"
+      Tab(1).Control(1)=   "Picture7"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Estadísticas"
       TabPicture(2)   =   "frmMain.frx":125662
@@ -5171,14 +5170,14 @@ Begin VB.Form frmMain
       TabCaption(3)   =   "Habilidades"
       TabPicture(3)   =   "frmMain.frx":12567E
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "CloseHelpBoard(3)"
-      Tab(3).Control(1)=   "Picture9(0)"
+      Tab(3).Control(0)=   "Picture9(0)"
+      Tab(3).Control(1)=   "CloseHelpBoard(3)"
       Tab(3).ControlCount=   2
       TabCaption(4)   =   "Mascotas"
       TabPicture(4)   =   "frmMain.frx":12569A
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "CloseHelpBoard(4)"
-      Tab(4).Control(1)=   "Picture9(1)"
+      Tab(4).Control(0)=   "Picture9(1)"
+      Tab(4).Control(1)=   "CloseHelpBoard(4)"
       Tab(4).ControlCount=   2
       Begin VB.PictureBox Picture9 
          BackColor       =   &H80000012&
@@ -7158,12 +7157,12 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5115
-      Left            =   480
+      Left            =   360
       ScaleHeight     =   341
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   275
       TabIndex        =   60
-      Top             =   1200
+      Top             =   1080
       Visible         =   0   'False
       Width           =   4125
       Begin VB.PictureBox picShopItems 
@@ -7258,7 +7257,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   5760
-      Left            =   2520
+      Left            =   -720
       ScaleHeight     =   384
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   480
@@ -7654,11 +7653,11 @@ Private Sub cmdAKick_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.Text)) < 1 Then
+    If Len(Trim$(txtAName.text)) < 1 Then
         Exit Sub
     End If
 
-    SendKick Trim$(txtAName.Text)
+    SendKick Trim$(txtAName.text)
     
     ' Error handler
     Exit Sub
@@ -7687,15 +7686,15 @@ If GetPlayerAccess(MyIndex) < ADMIN_CREATOR Then
 Exit Sub
 End If
 
-If Len(Trim$(txtAName.Text)) < 2 Then
+If Len(Trim$(txtAName.text)) < 2 Then
 Exit Sub
 End If
 
-If IsNumeric(Trim$(txtAName.Text)) Or IsNumeric(Trim$(txtAAccess.Text)) Then
+If IsNumeric(Trim$(txtAName.text)) Or IsNumeric(Trim$(txtAAccess.text)) Then
 Exit Sub
 End If
 
-SendSetName Trim$(txtAName.Text), (Trim$(txtAAccess.Text))
+SendSetName Trim$(txtAName.text), (Trim$(txtAAccess.text))
 
 ' Error handler
 Exit Sub
@@ -7854,7 +7853,7 @@ frmMain.HelpBoard.Visible = False
 End If
 End Sub
 
-Private Sub Form_Load()
+Private Sub form_load()
 Dim X As Long, Y As Long, xwidth As Long, yheight As Long
 Dim sRECT As DxVBLib.RECT
 
@@ -8058,7 +8057,21 @@ End Sub
 
 Private Sub lblTriforceAccept_Click()
     If SelectedTriforce > 0 And SelectedTriforce < TriforceType.TriforceType_Count Then
-        Call SendResetPlayer(MyIndex, SelectedTriforce)
+        Dim message As String
+        message = "Warning: This will reset the following: " & vbNewLine
+        message = message & "Level" & vbNewLine
+        message = message & "Stats Points" & vbNewLine
+        message = message & "Experience" & vbNewLine
+        message = message & "Inventory" & vbNewLine
+        message = message & "Equipment" & vbNewLine
+        message = message & "Quests" & vbNewLine
+        message = message & "Spells" & vbNewLine
+        message = message & "Rupee Bags" & vbNewLine
+        message = message & "PK status" & vbNewLine
+        
+        If MsgBox(message, vbYesNoCancel, "Triforce") = vbYes Then
+            Call SendResetPlayer(MyIndex, SelectedTriforce)
+        End If
     End If
     
     ResetTriforcePicInfo True
@@ -8277,7 +8290,7 @@ errorhandler:
 End Sub
 
 Private Sub imgButton_Click(index As Integer)
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 Dim i As Long
     
     ' If debug mode, handle error then exit out
@@ -8303,10 +8316,10 @@ Dim i As Long
         Case 2
             If Not picSpells.Visible Then
                 'send packet
-                Set buffer = New clsBuffer
-                buffer.WriteLong CSpells
-                SendData buffer.ToArray()
-                Set buffer = Nothing
+                Set Buffer = New clsBuffer
+                Buffer.WriteLong CSpells
+                SendData Buffer.ToArray()
+                Set Buffer = Nothing
                 'show the window
                 ClearPics
                 picSpells.Visible = True
@@ -8468,7 +8481,7 @@ Private Sub lblCurrencyCancel_Click()
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     picCurrency.Visible = False
-    txtCurrency.Text = vbNullString
+    txtCurrency.text = vbNullString
     tmpCurrencyItem = 0
     CurrencyMenu = 0 ' clear
     
@@ -8499,18 +8512,18 @@ errorhandler:
 End Sub
 
 Private Sub imgLeaveShop_Click()
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    Set buffer = New clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong CCloseShop
+    Buffer.WriteLong CCloseShop
     
-    SendData buffer.ToArray()
+    SendData Buffer.ToArray()
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
     
     picShop.Visible = False
     InShop = 0
@@ -8531,20 +8544,20 @@ Private Sub lblCurrencyOk_Click()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    If IsNumeric(txtCurrency.Text) Then
+    If IsNumeric(txtCurrency.text) Then
         If CurrencyMenu = 3 Then
-            If Val(txtCurrency.Text) > GetBankItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.Text = GetBankItemValue(MyIndex, tmpCurrencyItem)
-        ElseIf Val(txtCurrency.Text) > GetPlayerInvItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.Text = GetPlayerInvItemValue(MyIndex, tmpCurrencyItem)
+            If Val(txtCurrency.text) > GetBankItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.text = GetBankItemValue(MyIndex, tmpCurrencyItem)
+        ElseIf Val(txtCurrency.text) > GetPlayerInvItemValue(MyIndex, tmpCurrencyItem) Then txtCurrency.text = GetPlayerInvItemValue(MyIndex, tmpCurrencyItem)
         End If
         Select Case CurrencyMenu
             Case 1 ' drop item
-                SendDropItem tmpCurrencyItem, Val(txtCurrency.Text)
+                SendDropItem tmpCurrencyItem, Val(txtCurrency.text)
             Case 2 ' deposit item
-                DepositItem tmpCurrencyItem, Val(txtCurrency.Text)
+                DepositItem tmpCurrencyItem, Val(txtCurrency.text)
             Case 3 ' withdraw item
-                WithdrawItem tmpCurrencyItem, Val(txtCurrency.Text)
+                WithdrawItem tmpCurrencyItem, Val(txtCurrency.text)
             Case 4 ' offer trade item
-                TradeItem tmpCurrencyItem, Val(txtCurrency.Text)
+                TradeItem tmpCurrencyItem, Val(txtCurrency.text)
         End Select
     Else
         AddText "¡Escribe una cantidad válida!", BrightRed, True
@@ -8553,7 +8566,7 @@ Private Sub lblCurrencyOk_Click()
     
     picCurrency.Visible = False
     tmpCurrencyItem = 0
-    txtCurrency.Text = vbNullString
+    txtCurrency.text = vbNullString
     CurrencyMenu = 0 ' clear
     
     ' Error handler
@@ -9683,7 +9696,7 @@ Private Sub picInventory_DblClick()
                 CurrencyMenu = 2 ' deposit
                 lblCurrency.Caption = "¿Cuánto quieres depositar?"
                 tmpCurrencyItem = InvNum
-                txtCurrency.Text = vbNullString
+                txtCurrency.text = vbNullString
                 picCurrency.Visible = True
                 txtCurrency.SetFocus
                 Exit Sub
@@ -9715,7 +9728,7 @@ Private Sub picInventory_DblClick()
                 CurrencyMenu = 4 ' offer in trade
                 lblCurrency.Caption = "¿Cuánto quieres comerciar?"
                 tmpCurrencyItem = InvNum
-                txtCurrency.Text = vbNullString
+                txtCurrency.text = vbNullString
                 picCurrency.Visible = True
                 txtCurrency.SetFocus
                 Exit Sub
@@ -9921,7 +9934,7 @@ Private Sub picInventory_MouseDown(Button As Integer, Shift As Integer, X As Sin
                         CurrencyMenu = 1 ' drop
                         lblCurrency.Caption = "¿Cuánto quieres tirar?"
                         tmpCurrencyItem = InvNum
-                        txtCurrency.Text = vbNullString
+                        txtCurrency.text = vbNullString
                         picCurrency.Visible = True
                         txtCurrency.SetFocus
                     End If
@@ -10201,15 +10214,15 @@ Private Sub cmdAWarp2Me_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.Text)) < 1 Then
+    If Len(Trim$(txtAName.text)) < 1 Then
         Exit Sub
     End If
 
-    If IsNumeric(Trim$(txtAName.Text)) Then
+    If IsNumeric(Trim$(txtAName.text)) Then
         Exit Sub
     End If
 
-    WarpToMe Trim$(txtAName.Text)
+    WarpToMe Trim$(txtAName.text)
     
     ' Error handler
     Exit Sub
@@ -10228,15 +10241,15 @@ Private Sub cmdAWarpMe2_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.Text)) < 1 Then
+    If Len(Trim$(txtAName.text)) < 1 Then
         Exit Sub
     End If
 
-    If IsNumeric(Trim$(txtAName.Text)) Then
+    If IsNumeric(Trim$(txtAName.text)) Then
         Exit Sub
     End If
 
-    WarpMeTo Trim$(txtAName.Text)
+    WarpMeTo Trim$(txtAName.text)
     
     ' Error handler
     Exit Sub
@@ -10257,15 +10270,15 @@ Dim N As Long
         Exit Sub
     End If
 
-    If Len(Trim$(txtAMap.Text)) < 1 Then
+    If Len(Trim$(txtAMap.text)) < 1 Then
         Exit Sub
     End If
 
-    If Not IsNumeric(Trim$(txtAMap.Text)) Then
+    If Not IsNumeric(Trim$(txtAMap.text)) Then
         Exit Sub
     End If
 
-    N = CLng(Trim$(txtAMap.Text))
+    N = CLng(Trim$(txtAMap.text))
 
     ' Check to make sure its a valid map #
     If N > 0 And N <= MAX_MAPS Then
@@ -10291,18 +10304,18 @@ If GetPlayerAccess(MyIndex) < ADMIN_MAPPER Then
 Exit Sub
 End If
 
-If Len(Trim$(txtASprite.Text)) < 1 Then
+If Len(Trim$(txtASprite.text)) < 1 Then
 Exit Sub
 End If
 
-If Not IsNumeric(Trim$(txtASprite.Text)) Then
+If Not IsNumeric(Trim$(txtASprite.text)) Then
 Exit Sub
 End If
 
-If Len(Trim$(txtAName.Text)) > 1 Then
-SendSetSprite CLng(Trim$(txtASprite.Text)), txtAName.Text
+If Len(Trim$(txtAName.text)) > 1 Then
+SendSetSprite CLng(Trim$(txtASprite.text)), txtAName.text
 Else
-SendSetSprite CLng(Trim$(txtASprite.Text)), GetPlayerName(MyIndex)
+SendSetSprite CLng(Trim$(txtASprite.text)), GetPlayerName(MyIndex)
 End If
 
 ' Error handler
@@ -10359,11 +10372,11 @@ Private Sub cmdABan_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.Text)) < 1 Then
+    If Len(Trim$(txtAName.text)) < 1 Then
         Exit Sub
     End If
 
-    SendBan Trim$(txtAName.Text)
+    SendBan Trim$(txtAName.text)
     
     ' Error handler
     Exit Sub
@@ -10477,15 +10490,15 @@ Private Sub cmdAAccess_Click()
         Exit Sub
     End If
 
-    If Len(Trim$(txtAName.Text)) < 2 Then
+    If Len(Trim$(txtAName.text)) < 2 Then
         Exit Sub
     End If
 
-    If IsNumeric(Trim$(txtAName.Text)) Or Not IsNumeric(Trim$(txtAAccess.Text)) Then
+    If IsNumeric(Trim$(txtAName.text)) Or Not IsNumeric(Trim$(txtAAccess.text)) Then
         Exit Sub
     End If
 
-    SendSetAccess Trim$(txtAName.Text), CLng(Trim$(txtAAccess.Text))
+    SendSetAccess Trim$(txtAName.text), CLng(Trim$(txtAAccess.text))
     
     ' Error handler
     Exit Sub
@@ -10551,7 +10564,7 @@ Dim bankNum As Long
                 CurrencyMenu = 3 ' withdraw
                 lblCurrency.Caption = "¿Cuánto quieres retirar?"
                 tmpCurrencyItem = bankNum
-                txtCurrency.Text = vbNullString
+                txtCurrency.text = vbNullString
                 picCurrency.Visible = True
                 txtCurrency.SetFocus
                 Exit Sub
@@ -10756,7 +10769,7 @@ End Sub
 'End Sub
 
 Private Sub imgQuestButton_Click(index As Integer)
-    If Trim$(lstQuestLog.Text) = vbNullString Then Exit Sub
+    If Trim$(lstQuestLog.text) = vbNullString Then Exit Sub
     LoadQuestlogBox index
     
     'play sound
@@ -10841,7 +10854,7 @@ lblGuildDisband.Caption = GetTranslation("Deshacer Clan")
 End Sub
 
 Private Sub lblGuildCAccept_Click()
-Call GuildCommand(1, txtGuildC.Text)
+Call GuildCommand(1, txtGuildC.text)
 frmGuildC.Visible = False
 picGuild.Visible = False
 picGuildInvitation.Visible = False

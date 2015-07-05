@@ -704,6 +704,18 @@ errorhandler:
     Exit Sub
 End Sub
 
+Private Sub Form_KeyPress(KeyAscii As Integer)
+
+    If KeyAscii = vbKeyEscape Then
+        Call cmdCancel_Click
+    End If
+
+End Sub
+
+Private Sub Form_Load()
+
+End Sub
+
 Private Sub lstIndex_Click()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -1071,7 +1083,7 @@ Private Sub scrlY_Change()
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
     lblY.Caption = "Y: " & scrlY.value
-    Spell(EditorIndex).y = scrlY.value
+    Spell(EditorIndex).Y = scrlY.value
     
     ' Error handler
     Exit Sub

@@ -923,12 +923,7 @@ Dim buffer As clsBuffer
     If CanNpcAttackPlayer(mapnpcnum, index) Then
         mapnum = GetPlayerMap(index)
         npcnum = MapNpc(mapnum).NPC(mapnpcnum).Num
-        
-        'todo: Check for pet and if they're on assist or defensive,
-        'attack the NPC attacking the player
-        'TempPlayer(index).TempPet.PetState = assist or defensive
-        
-        
+                
         ' send the sound
         SendMapSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seNpc, MapNpc(mapnum).NPC(mapnpcnum).Num
         

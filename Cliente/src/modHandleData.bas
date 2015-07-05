@@ -696,7 +696,7 @@ Dim TNL As Long
     
     SetPlayerExp MyIndex, Buffer.ReadLong
     TNL = Buffer.ReadLong
-    frmMain.lblExp.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
+    frmMain.lblEXP.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
     ' mp bar
     frmMain.imgEXPBar.Width = ((GetPlayerExp(MyIndex) / EXPBar_Width) / (TNL / EXPBar_Width)) * EXPBar_Width
     
@@ -942,14 +942,14 @@ Dim Buffer As clsBuffer
     
     If index = 0 Then Exit Sub
     
-    If Player(i).Moving > 0 Then AddText "Moving but rec'd playerDir for " & i, White
+    'If Player(i).Moving > 0 Then AddText "Moving but rec'd playerDir for " & i, White
     'If Not (Player(index).LagDirections Is Nothing) Then AddText "hasLag but rec'd playerDir for " & index, White
     'If Not (Player(index).LagDirections Is Nothing) Then Call SetPlayerDir(i, dir)
     
     If Not (Player(i).LagDirections Is Nothing) Then
         If Player(i).Moving = 0 Then
             Call SetPlayerDir(i, dir)
-        Else
+        'Else
             'AddText "hasLag but rec'd playerDir for " & i, White
             'Player(i).LagDirections.Push dir
             'Player(i).LagMovements.Push 0

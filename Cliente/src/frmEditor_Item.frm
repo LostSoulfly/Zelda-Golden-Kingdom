@@ -1372,7 +1372,7 @@ Private Sub lstIndex_Click()
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     ItemEditorInit
-    
+    DoEvents
     ' Error handler
     Exit Sub
 errorhandler:
@@ -1631,25 +1631,25 @@ errorhandler:
 End Sub
 
 Private Sub scrlStatBonus_Change(index As Integer)
-Dim Text As String
+Dim text As String
 
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     Select Case index
         Case 1
-            Text = "+ Str: "
+            text = "+ Str: "
         Case 2
-            Text = "+ End: "
+            text = "+ End: "
         Case 3
-            Text = "+ Int: "
+            text = "+ Int: "
         Case 4
-            Text = "+ Agi: "
+            text = "+ Agi: "
         Case 5
-            Text = "+ Will: "
+            text = "+ Will: "
     End Select
             
-    lblStatBonus(index).Caption = Text & scrlStatBonus(index).value
+    lblStatBonus(index).Caption = text & scrlStatBonus(index).value
     Item(EditorIndex).Add_Stat(index) = scrlStatBonus(index).value
     
     ' Error handler
@@ -1661,25 +1661,25 @@ errorhandler:
 End Sub
 
 Private Sub scrlStatReq_Change(index As Integer)
-    Dim Text As String
+    Dim text As String
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     Select Case index
         Case 1
-            Text = "Str: "
+            text = "Str: "
         Case 2
-            Text = "End: "
+            text = "End: "
         Case 3
-            Text = "Int: "
+            text = "Int: "
         Case 4
-            Text = "Agi: "
+            text = "Agi: "
         Case 5
-            Text = "Will: "
+            text = "Will: "
     End Select
     
-    lblStatReq(index).Caption = Text & scrlStatReq(index).value
+    lblStatReq(index).Caption = text & scrlStatReq(index).value
     Item(EditorIndex).Stat_Req(index) = scrlStatReq(index).value
     
     ' Error handler
@@ -1765,7 +1765,7 @@ Private Sub txtDesc_Change()
     
     If EditorIndex = 0 Or EditorIndex > MAX_ITEMS Then Exit Sub
 
-    Item(EditorIndex).Desc = GetTranslation(txtDesc.Text)
+    Item(EditorIndex).Desc = txtDesc.text
     
     ' Error handler
     Exit Sub
@@ -1783,7 +1783,7 @@ Dim tmpIndex As Long
     
     If EditorIndex = 0 Or EditorIndex > MAX_ITEMS Then Exit Sub
     tmpIndex = lstIndex.ListIndex
-    Item(EditorIndex).Name = Trim$(txtName.Text)
+    Item(EditorIndex).Name = Trim$(txtName.text)
     lstIndex.RemoveItem EditorIndex - 1
     lstIndex.AddItem EditorIndex & ": " & Item(EditorIndex).TranslatedName, EditorIndex - 1
     lstIndex.ListIndex = tmpIndex

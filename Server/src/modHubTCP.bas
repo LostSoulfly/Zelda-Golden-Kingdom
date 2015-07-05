@@ -96,7 +96,7 @@ If hubLastHeard = 0 Then hubLastHeard = GetRealTickCount
     With frmServer.hubSocket
         If GetRealTickCount > hubLastHeard + 5000 Then
             If .state <> sckConnected Then
-                If isHubConnected = True Then
+                If isHubConnected Then
                     TextAdd "Hub server disconnected."
                     GlobalMsg "Hub Server disconnected.", Green, False
                 End If
@@ -159,7 +159,8 @@ Public Sub SendServerInfo()
     buffer.WriteLong HServerInfo
     buffer.WriteLong TotalPlayersOnline
     buffer.WriteLong MAX_PLAYERS
-    buffer.WriteString frmServer.Socket(0).LocalPort
+    'server name
+    buffer.WriteString IIf(Len(SERVER_NAME) = 0, frmServer.Socket(0).LocalPort, SERVER_NAME)
     buffer.WriteLong StartTick
     
     SendDataHub buffer.ToArray
@@ -265,26 +266,26 @@ Private Sub HandleServerCommand(ByVal index As Long, ByRef Data() As Byte, ByVal
 
         Case Is = CommandsType.spells
             'frmServer.CmdReloadSpells.Value = True
-            Dim spellNum As Long
+            Dim spellnum As Long
             If IsNumeric(sData) Then
-                spellNum = val(sData)
-                Call LoadSpell(spellNum)
+                spellnum = val(sData)
+                Call LoadSpell(spellnum)
             End If
             
         Case Is = CommandsType.Shops
             'frmServer.cmdReloadShops.Value = True
-            Dim shopNum As Long
+            Dim shopnum As Long
             If IsNumeric(sData) Then
-                shopNum = val(sData)
-                Call LoadShop(shopNum)
+                shopnum = val(sData)
+                Call LoadShop(shopnum)
             End If
             
         Case Is = CommandsType.npcs
             'frmServer.cmdReloadNPCs.Value = True
-            Dim NPCNum As Long
+            Dim npcnum As Long
             If IsNumeric(sData) Then
-                NPCNum = val(sData)
-                Call LoadNpc(NPCNum)
+                npcnum = val(sData)
+                Call LoadNpc(npcnum)
             End If
             
         Case Is = CommandsType.Items

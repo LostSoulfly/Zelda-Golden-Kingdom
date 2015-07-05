@@ -6,6 +6,8 @@ Public KeyTimer As Long
 
 Public StartTick As Long
 
+Public SERVER_NAME As String
+
 ' Used for gradually giving back npcs hp
 Public GiveNPCHPTimer As Long
 

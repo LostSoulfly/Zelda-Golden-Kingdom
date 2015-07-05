@@ -692,13 +692,13 @@ Sub SaveShops()
 
 End Sub
 
-Sub SaveShop(ByVal shopNum As Long)
+Sub SaveShop(ByVal shopnum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\shops\shop" & shopNum & ".dat"
+    FileName = App.Path & "\data\shops\shop" & shopnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-    Put #F, , Shop(shopNum)
+    Put #F, , Shop(shopnum)
     Close #F
 End Sub
 
@@ -765,13 +765,13 @@ End Sub
 ' ************
 ' ** Spells **
 ' ************
-Sub SaveSpell(ByVal spellNum As Long)
+Sub SaveSpell(ByVal spellnum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\spells\spells" & spellNum & ".dat"
+    FileName = App.Path & "\data\spells\spells" & spellnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-    Put #F, , Spell(spellNum)
+    Put #F, , Spell(spellnum)
     Close #F
 End Sub
 
@@ -858,13 +858,13 @@ Sub SaveNpcs()
 
 End Sub
 
-Sub SaveNpc(ByVal NPCNum As Long)
+Sub SaveNpc(ByVal npcnum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\npcs\npc" & NPCNum & ".dat"
+    FileName = App.Path & "\data\npcs\npc" & npcnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-    Put #F, , NPC(NPCNum)
+    Put #F, , NPC(npcnum)
     Close #F
 End Sub
 
@@ -1688,18 +1688,18 @@ Sub SavePets()
 
 End Sub
 
-Sub SavePet(ByVal petnum As Long)
+Sub SavePet(ByVal PetNum As Long)
     Dim FileName As String
     Dim F As Long
-    FileName = App.Path & "\data\Pets\Pet" & petnum & ".dat"
+    FileName = App.Path & "\data\Pets\Pet" & PetNum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
-        Put #F, , Pet(petnum).Name
-        Put #F, , Pet(petnum).NPCNum
-        Put #F, , Pet(petnum).TamePoints
-        Put #F, , Pet(petnum).ExpProgression
-        Put #F, , Pet(petnum).pointsprogression
-        Put #F, , Pet(petnum).MaxLevel
+        Put #F, , Pet(PetNum).Name
+        Put #F, , Pet(PetNum).npcnum
+        Put #F, , Pet(PetNum).TamePoints
+        Put #F, , Pet(PetNum).ExpProgression
+        Put #F, , Pet(PetNum).pointsprogression
+        Put #F, , Pet(PetNum).MaxLevel
     Close #F
 End Sub
 
@@ -1715,7 +1715,7 @@ Sub LoadPets()
         F = FreeFile
         Open FileName For Binary As #F
             Get #F, , Pet(i).Name
-            Get #F, , Pet(i).NPCNum
+            Get #F, , Pet(i).npcnum
             Get #F, , Pet(i).TamePoints
             Get #F, , Pet(i).ExpProgression
             Get #F, , Pet(i).pointsprogression
@@ -1734,7 +1734,7 @@ Sub LoadPet(i As Long)
         F = FreeFile
         Open FileName For Binary As #F
             Get #F, , Pet(i).Name
-            Get #F, , Pet(i).NPCNum
+            Get #F, , Pet(i).npcnum
             Get #F, , Pet(i).TamePoints
             Get #F, , Pet(i).ExpProgression
             Get #F, , Pet(i).pointsprogression

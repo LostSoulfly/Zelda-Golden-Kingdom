@@ -1848,6 +1848,22 @@ Dim ContainerAmount, amount As Long
             End If
             
             SendOpenTriforce index
+            
+            Dim hasNumTri As Integer
+            
+            For i = 1 To 3
+                If player(index).triforce(i) = True Then hasNumTri = hasNumTri + 1
+            Next i
+            
+            If hasNumTri = 0 Then
+                PlayerMsg index, "Be warned, " & GetPlayerName(index) & ".. you are not prepared for future..", White, , False
+                PlayerMsg index, "For the most powerful swords, much like Heros, must be reforged in fires of battle..", White, , False
+                PlayerMsg index, "Know that when you choose the Triforce, you will be reborn again..", White, , False
+            Else
+                PlayerMsg index, GetPlayerName(index) & " you have chosen this path of your own will.", White, , False
+                PlayerMsg index, "Strong as it may seem, do you have the resolve to continue the Hero's path?", White, , False
+            End If
+            
             ' send the sound
             SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seItem, ItemNum
 
@@ -2059,6 +2075,7 @@ Public Sub ResetPlayer(ByVal index As Long)
         player(index).Hotbar(i).sType = 0
     Next
     Call SendHotbar(index)
+    
     'stats
     For i = 1 To Stats.Stat_Count - 1
         player(index).stat(i) = Class(GetPlayerClass(index)).stat(i)
@@ -2067,6 +2084,9 @@ Public Sub ResetPlayer(ByVal index As Long)
     For i = 1 To Vitals.Vital_Count - 1
         Call SendVital(index, i)
     Next
+    
+    Call ClearBank(index)
+    Call SaveBank(index)
     
     Call SetPlayerBags(index, 1)
         
@@ -2150,7 +2170,9 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     Call SendPlayerData(index)
     
-    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & GetTranslation(message), colour, False, True
+    PlayerMsg index, "You feel a strange surge of power coursing through you.", BrightBlue, , False
+    
+    GlobalMsg GetPlayerName(index) & " " & GetTranslation(" ha adquirido la trifuerza ") & " " & GetTranslation(message), colour, False, True
     
 End Sub
 Public Function GetPlayerTriforcesNum(ByVal index As Long) As Byte

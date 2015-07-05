@@ -2938,6 +2938,20 @@ Dim curProjecTile As Long, i As Long, CurEquipment As Long
     ' trololol, they have no more projectile space left
     If curProjecTile < 1 Or curProjecTile > MAX_PLAYER_PROJECTILES Then Exit Sub
     
+    Dim dir As Byte
+    Dim X As Long, Y As Long
+    
+    dir = GetPlayerDir(index)
+    X = GetPlayerX(index)
+    Y = GetPlayerY(index)
+    ' Check tradeskills
+    
+    If GetNextPositionByRef(dir, GetPlayerMap(index), X, Y) Then Exit Sub
+
+    i = GetMapRefNPCNumByTile(GetMapRef(GetPlayerMap(index)), X, Y)
+    If i > 0 Then
+        CanPlayerAttackNpc index, i
+    End If
     
     ' update the projectile on the map
     SendProjectileToMap index, curProjecTile
