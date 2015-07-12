@@ -28,7 +28,7 @@ Begin VB.Form frmMenu
       Height          =   255
       Left            =   5880
       TabIndex        =   38
-      Top             =   840
+      Top             =   600
       Width           =   1575
    End
    Begin VB.CommandButton Command2 
@@ -937,9 +937,9 @@ Private Sub form_load()
     Next
 
     ' Load the username + pass
-    txtLUser.Text = Trim$(Options.Username)
+    txtLUser.text = Trim$(Options.Username)
     If Options.SavePass = 1 Then
-        txtLPass.Text = Trim$(Options.Password)
+        txtLPass.text = Trim$(Options.Password)
         chkPass.value = Options.SavePass
     End If
     
@@ -993,11 +993,11 @@ Private Sub imgButton_Click(index As Integer)
                 picRegister.Visible = False
                 picCharacter.Visible = False
                 picMain.Visible = False
-                If Len(txtLUser.Text) = 0 Then
+                If Len(txtLUser.text) = 0 Then
                     txtLUser.SetFocus
                 Else
                     txtLPass.SetFocus
-                    txtLPass.SelLength = Len(txtLPass.Text)
+                    txtLPass.SelLength = Len(txtLPass.text)
                 End If
 
                 ' play sound
@@ -1102,7 +1102,7 @@ Private Sub lblLAccept_Click()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    If isLoginLegal(txtLUser.Text, txtLPass.Text) Then
+    If isLoginLegal(txtLUser.text, txtLPass.text) Then
         Call MenuState(MENU_STATE_LOGIN)
     End If
 
@@ -1281,9 +1281,9 @@ Private Sub txtRAccept_Click()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    Name = Trim$(txtRUser.Text)
-    Password = Trim$(txtRPass.Text)
-    PasswordAgain = Trim$(txtRPass2.Text)
+    Name = Trim$(txtRUser.text)
+    Password = Trim$(txtRPass.text)
+    PasswordAgain = Trim$(txtRPass2.text)
 
     If isLoginLegal(Name, Password) Then
         If Password <> PasswordAgain Then

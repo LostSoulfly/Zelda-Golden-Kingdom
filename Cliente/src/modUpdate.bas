@@ -17,16 +17,20 @@ On Error Resume Next
         Url = Buffer.ReadString
         'should have closed it!
         If MsgBox(Buffer.ReadString, vbYesNo, "Update Required") = vbYes Then
-                ShellExecute 1, "Open", "taskkill /F /IM launcher.exe", "", 0&, 0
+                'ShellExecute 1, "Open", "taskkill /F /IM launcher.exe", "", 0&, 0
                 DoEvents
+                Sleep 100
                 Dim lngTemp As Long
                 lngTemp = GetVar(App.Path & "\data\config.ini", "UPDATER", "Version")
                 lngTemp = IIf(lngTemp <= 3, 0, lngTemp - 3)
                 'If lngTemp < 3 Then lngTemp = 0
                 'If lngTemp > 0 Then lngTemp = lngTemp - 3
                 PutVar App.Path & "\data\Config.ini", "UPDATER", "Version", Str(lngTemp)
-                Shell App.Path & "\launcher.exe", vbNormalFocus
                 DoEvents
+                Sleep 100
+                If FileExist(App.Path & "\launcher.exe", True) Then Shell App.Path & "\launcher.exe", vbNormalFocus
+                DoEvents
+                Sleep 100
                 DestroyGame
                 End
         Else

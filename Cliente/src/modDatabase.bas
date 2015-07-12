@@ -181,7 +181,16 @@ Dim i As Byte
         If Len(Trim$(Replace(Options.Password, vbNullChar, ""))) = 0 Then Options.Password = GetVar(Filename, "Options", "Password")
         Options.SavePass = Val(GetVar(Filename, "Options", "SavePass"))
         
-
+        'Call PutVar(Filename, "Options", "RequireLauncher", "1")
+        
+        If GetVar(Filename, "Options", "RequireLauncher") = 1 Then
+            If InStr(1, Command, "-launcher 1") <= 0 Then
+                MsgBox "Please launch the game with the Launcher." & vbNewLine & _
+                "This keeps your client on the latest version!", vbCritical, "Launcher Required"
+                DestroyGame
+                End
+            End If
+        End If
         
         If Len(Trim$(Replace(Options.ip, vbNullChar, ""))) = 0 Then Options.ip = GetVar(Filename, "Options", "IP")
         If Len(Trim$(Replace(Options.port, vbNullChar, ""))) <= 1 Then Options.port = Val(GetVar(Filename, "Options", "Port"))

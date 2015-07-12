@@ -15,7 +15,7 @@ Begin VB.Form frmLoad
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   280
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Visible         =   0   'False
    Begin VB.Label lblStatus 
       Alignment       =   2  'Center

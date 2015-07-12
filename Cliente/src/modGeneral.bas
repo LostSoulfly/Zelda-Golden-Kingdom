@@ -54,7 +54,6 @@ Public Sub Main()
                 Shell App.Path & "\launcher.exe", vbNormalFocus
                 End
             End If
-            DoEvents
         End If
     
 End If
@@ -78,7 +77,7 @@ Dim strsplit() As String, i As Integer
             Case Is = "-port"
                 'anything above 0 will enable it.
                 Options.port = Val(Trim$(strsplit(i + 1)))
-            
+                'MsgBox CStr(Options.port)
             Case Is = "-auto"
                 AutoLogin = Val(Trim$(strsplit(i + 1)))
                 
@@ -473,10 +472,13 @@ Sub GameInit()
     ' Set the focus
     frmMain.picScreen.Visible = True
     
-    Call SetFocusOnChat
+    'Call SetFocusOnChat
+
+    
     
     If Options.WASD = 1 Then
         ChatFocus = False
+        frmMain.picScreen.SetFocus
     Else
         ChatFocus = True
     End If

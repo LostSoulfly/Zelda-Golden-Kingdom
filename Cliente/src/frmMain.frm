@@ -1,8 +1,8 @@
 VERSION 5.00
 Object = "{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}#1.0#0"; "msscript.ocx"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "tabctl32.ocx"
 Begin VB.Form frmMain 
    BorderStyle     =   1  'Fixed Single
    ClientHeight    =   10215
@@ -5037,6 +5037,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   -2147483641
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
@@ -8999,7 +9000,7 @@ Dim sRECT As DxVBLib.RECT
         End If
     End If
 
-    Call SetFocusOnChat
+    'Call SetFocusOnChat
     
     If Options.WASD = 1 Then
         ChatFocus = False
@@ -9645,7 +9646,7 @@ Private Sub txtChat_GotFocus()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-    SetFocusOnChat
+    'SetFocusOnChat
     
     ' Error handler
     Exit Sub
@@ -9949,7 +9950,9 @@ Private Sub picInventory_MouseDown(Button As Integer, Shift As Integer, X As Sin
     prevX = X
     prevY = Y
     
-    SetFocusOnChat
+    'SetFocusOnChat
+    
+    
     
     ' Error handler
     Exit Sub

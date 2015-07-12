@@ -712,10 +712,6 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 
 End Sub
 
-Private Sub Form_Load()
-
-End Sub
-
 Private Sub lstIndex_Click()
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
