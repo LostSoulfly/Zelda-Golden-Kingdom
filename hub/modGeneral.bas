@@ -66,7 +66,7 @@ Public Sub AddLog(text As String)
     With frmServer.txtLog
     
     If .Visible = False Then Exit Sub
-        .SelText = Time & ": " & text & vbCrLf
+        .SelText = time & ": " & text & vbCrLf
         '.Text = .Text & vbCrLf & Time & ": " & Text
     End With
 End Sub
@@ -100,11 +100,13 @@ Sub UpdateComboList()
 Dim lastSelected As String
 lastSelected = frmServer.cmbWeather.text
     frmServer.cmbWeather.Clear
+    frmServer.lstServers.Clear
     frmServer.cmbWeather.AddItem "ALL"
     frmServer.cmbWeather.AddItem "NONE"
     Dim i As Long
     For i = 1 To MAX_SERVERS
         If Server(i).Name <> "" Then frmServer.cmbWeather.AddItem Server(i).Name
+        If Server(i).Name <> "" Then frmServer.lstServers.AddItem Server(i).Name
     Next i
     
     If lastSelected = "" Then frmServer.cmbWeather.ListIndex = 0: Exit Sub
@@ -138,7 +140,7 @@ Public Function TotalPlayers() As Long
     TotalPlayers = total
 End Function
 
-Public Function ConvertTime(msec As Long) As String
+Public Function ConvertTime(ByVal msec As Long) As String
     msec = msec \ 1000
     ConvertTime = Format$((msec \ 3600) \ 24, "00d ") _
                  & Format$((msec \ 3600) Mod 24, "00h ") _

@@ -12,6 +12,13 @@ AddLog "Received new connection.."
             frmServer.Socket(i).Close
             frmServer.Socket(i).Accept SocketId
             Call SocketConnected(i)
+            
+        Else
+            frmServer.Socket(i).Close
+            frmServer.Socket(i).Accept SocketId
+            DoEvents
+            frmServer.Socket(0).Close
+            frmServer.Socket(0).Listen
         End If
     End If
 

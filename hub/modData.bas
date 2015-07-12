@@ -26,9 +26,10 @@ Public Type ServerRec
     MaxPlayers As String
     Uptime As Long
     Online As Boolean
+    Port As Long
 End Type
 
-Public Const MAX_SERVERS As Long = 10
+Public Const MAX_SERVERS As Long = 50
 Public HandleDataSub(HMSG_COUNT) As Long
 Public Server(1 To MAX_SERVERS) As ServerRec
 
@@ -140,10 +141,12 @@ Private Sub HandleServerInfo(ByVal Index As Long, ByRef Data() As Byte, ByVal St
         .Name = Buffer.ReadString
         .Uptime = Buffer.ReadLong
         .Online = True
+        .Port = Buffer.ReadLong
 
     AddLog "ServerInfo from: " & .Name & " Players: " & .CurrentPlayers & "/" & .MaxPlayers & " uptime: " & ConvertTime(GetRealTickCount - .Uptime)
     UpdateCaption
     UpdateComboList
+    WriteServerFile
     End With
     Set Buffer = Nothing
 End Sub

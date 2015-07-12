@@ -18,7 +18,7 @@ Begin VB.Form frmServer
    Begin VB.Timer tmrStats 
       Interval        =   1000
       Left            =   5520
-      Top             =   4800
+      Top             =   4560
    End
    Begin MSWinsockLib.Winsock Socket 
       Index           =   0
@@ -44,7 +44,9 @@ Begin VB.Form frmServer
       TabPicture(0)   =   "Form1.frx":0000
       Tab(0).ControlEnabled=   0   'False
       Tab(0).Control(0)=   "tmrLog"
+      Tab(0).Control(0).Enabled=   0   'False
       Tab(0).Control(1)=   "txtLog"
+      Tab(0).Control(1).Enabled=   0   'False
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Config"
       TabPicture(1)   =   "Form1.frx":001C
@@ -53,15 +55,45 @@ Begin VB.Form frmServer
       Tab(1).Control(0).Enabled=   0   'False
       Tab(1).Control(1)=   "Frame2"
       Tab(1).Control(1).Enabled=   0   'False
-      Tab(1).ControlCount=   2
+      Tab(1).Control(2)=   "Frame3"
+      Tab(1).Control(2).Enabled=   0   'False
+      Tab(1).ControlCount=   3
       TabCaption(2)   =   "Stats"
       TabPicture(2)   =   "Form1.frx":0038
       Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "lblPacketsReceived"
-      Tab(2).Control(1)=   "lblPacketsSent"
-      Tab(2).Control(2)=   "lblBytesSent"
-      Tab(2).Control(3)=   "lblBytesReceived"
+      Tab(2).Control(0)=   "lblBytesReceived"
+      Tab(2).Control(0).Enabled=   0   'False
+      Tab(2).Control(1)=   "lblBytesSent"
+      Tab(2).Control(1).Enabled=   0   'False
+      Tab(2).Control(2)=   "lblPacketsSent"
+      Tab(2).Control(2).Enabled=   0   'False
+      Tab(2).Control(3)=   "lblPacketsReceived"
+      Tab(2).Control(3).Enabled=   0   'False
       Tab(2).ControlCount=   4
+      Begin VB.Frame Frame3 
+         Caption         =   "Server Info"
+         Height          =   4335
+         Left            =   4200
+         TabIndex        =   12
+         Top             =   480
+         Width           =   2055
+         Begin VB.ListBox lstServers 
+            Height          =   2205
+            Left            =   120
+            TabIndex        =   14
+            Top             =   240
+            Width           =   1815
+         End
+         Begin VB.TextBox txtInfo 
+            Enabled         =   0   'False
+            Height          =   1695
+            Left            =   120
+            MultiLine       =   -1  'True
+            TabIndex        =   13
+            Top             =   2520
+            Width           =   1815
+         End
+      End
       Begin VB.Frame Frame2 
          Caption         =   "Options"
          Height          =   2175
@@ -98,7 +130,7 @@ Begin VB.Form frmServer
       Begin VB.Frame Frame1 
          Caption         =   "Commands"
          Height          =   2175
-         Left            =   4320
+         Left            =   2160
          TabIndex        =   6
          Top             =   480
          Width           =   1935
@@ -113,8 +145,8 @@ Begin VB.Form frmServer
       End
       Begin VB.Timer tmrLog 
          Interval        =   60000
-         Left            =   -69960
-         Top             =   4680
+         Left            =   -70080
+         Top             =   4440
       End
       Begin RichTextLib.RichTextBox txtLog 
          Height          =   4455
@@ -126,7 +158,6 @@ Begin VB.Form frmServer
          _ExtentX        =   10821
          _ExtentY        =   7858
          _Version        =   393217
-         Enabled         =   -1  'True
          ScrollBars      =   2
          TextRTF         =   $"Form1.frx":0054
       End
@@ -216,6 +247,27 @@ cmbWeather.AddItem "ALL"
 cmbWeather.ListIndex = 0
 End Sub
 
+Private Sub lstServers_Click()
+'On Error Resume Next
+Dim data As String
+Dim time As Long
+
+With Server(lstServers.ListIndex + 1)
+
+time = .Uptime
+
+data = "[" & .Name & "]" & vbNewLine
+data = data & "Port: " & .Port & vbNewLine
+data = data & "Online: " & .Online & vbNewLine
+data = data & "Players: " & .CurrentPlayers & "/" & .MaxPlayers & vbNewLine
+data = data & "Up: " & ConvertTime(GetRealTickCount - time) & vbNewLine
+data = data & "Index: " & lstServers.ListIndex + 1
+End With
+
+txtInfo.text = data
+
+End Sub
+
 Private Sub Socket_Close(Index As Integer)
     Call CloseSocket(Index)
 End Sub
@@ -238,6 +290,7 @@ End Sub
 
 Private Sub tmrLog_Timer()
     If Len(txtLog.text) >= 600000 Then txtLog.text = vbNullString
+    
 End Sub
 
 Private Sub tmrStats_Timer()
