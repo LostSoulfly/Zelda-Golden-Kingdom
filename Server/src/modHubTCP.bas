@@ -162,6 +162,7 @@ Public Sub SendServerInfo()
     'server name
     buffer.WriteString IIf(Len(SERVER_NAME) = 0, frmServer.Socket(0).LocalPort, SERVER_NAME)
     buffer.WriteLong StartTick
+    buffer.WriteLong frmServer.Socket(0).LocalPort
     
     SendDataHub buffer.ToArray
 
@@ -318,10 +319,10 @@ Private Sub HandleServerCommand(ByVal index As Long, ByRef Data() As Byte, ByVal
             LastWeatherUpdate = GetRealTickCount + WeatherTime
             
         Case Is = CommandsType.SPets
-            Dim petnum As Long
+            Dim PetNum As Long
                 If IsNumeric(sData) Then
-                petnum = val(sData)
-                Call LoadPet(petnum)
+                PetNum = val(sData)
+                Call LoadPet(PetNum)
             End If
         
     Case Else

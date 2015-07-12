@@ -6,7 +6,7 @@ Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destina
 
 Sub UpdateCaption()
     frmServer.Caption = "World Server [Port: " & CStr(frmServer.Socket(0).LocalPort) & "] Players Online: " & TotalOnlinePlayers
-    UpdateStatFile
+    'UpdateStatFile
     SendServerInfo
     DoEvents
 End Sub
@@ -130,6 +130,8 @@ End Function
 
 Public Sub UpdateStatFile(Optional ShutDown As Boolean = False)
 On Error Resume Next
+'Disabled due to not using/not testing..
+Exit Sub
     Dim Path As String
     Dim F As Long
     Path = App.Path & "\Data\Servers\" & IIf(Options.OverridePort, Options.OverridePort, Options.Port) & ".dat"
@@ -156,7 +158,7 @@ On Error Resume Next
 End Sub
 
 Function UnLockPlayerLogin(login As String)
-'On Error Resume Next
+On Error Resume Next
 If Not usePlayerLock Then Exit Function
     Dim Path As String
     If LenB(Trim$(login)) = 0 Then Exit Function
@@ -2754,15 +2756,15 @@ Sub SendPets(ByVal index As Long)
 
 End Sub
 
-Sub SendUpdatePetToAll(ByVal petnum As Long)
+Sub SendUpdatePetToAll(ByVal PetNum As Long)
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
     Dim i As Byte
 
     
     buffer.WriteLong SUpdatePets
-    buffer.WriteLong petnum
-    With Pet(petnum)
+    buffer.WriteLong PetNum
+    With Pet(PetNum)
         
         buffer.WriteString Trim$(.Name)
         buffer.WriteLong .npcnum
@@ -2778,14 +2780,14 @@ Sub SendUpdatePetToAll(ByVal petnum As Long)
     Set buffer = Nothing
 End Sub
 
-Sub SendUpdatePetsTo(ByVal index As Long, ByVal petnum As Long)
+Sub SendUpdatePetsTo(ByVal index As Long, ByVal PetNum As Long)
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
     
     
     buffer.WriteLong SUpdatePets
-    buffer.WriteLong petnum
-    With Pet(petnum)
+    buffer.WriteLong PetNum
+    With Pet(PetNum)
         
         buffer.WriteString Trim$(.Name)
         buffer.WriteLong .npcnum

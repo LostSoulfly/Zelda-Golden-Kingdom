@@ -18,7 +18,6 @@ Dim FileName As String
     Close #1
 End Sub
 
-
 Public Sub ChkDir(ByVal tDir As String, ByVal tName As String)
 On Error Resume Next
     If LCase$(dir(tDir & tName, vbDirectory)) <> tName Then Call MkDir(tDir & tName)

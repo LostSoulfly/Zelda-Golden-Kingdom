@@ -1660,7 +1660,7 @@ Sub HandleSaveItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     Call SendUpdateItemToAll(N)
     Call SaveItem(N)
     Call AddLog(index, GetPlayerName(index) & " saved item #" & N & ".", ADMIN_LOG)
-    If useHubServer = True Then SendHubCommand CommandsType.Items, ""
+    If useHubServer = True Then SendHubCommand CommandsType.Items, CStr(N)
 End Sub
 
 ' ::::::::::::::::::::::::::::::
@@ -1713,7 +1713,7 @@ Sub HandleSaveAnimation(ByVal index As Long, ByRef Data() As Byte, ByVal StartAd
     Call SendUpdateAnimationToAll(N)
     Call SaveAnimation(N)
     Call AddLog(index, GetPlayerName(index) & " saved Animation #" & N & ".", ADMIN_LOG)
-    If useHubServer = True Then SendHubCommand CommandsType.Animations, ""
+    If useHubServer = True Then SendHubCommand CommandsType.Animations, CStr(N)
 End Sub
 
 ' :::::::::::::::::::::::::::::
@@ -1764,7 +1764,7 @@ Private Sub HandleSaveNpc(ByVal index As Long, ByRef Data() As Byte, ByVal Start
     Call SendUpdateNpcToAll(npcnum)
     Call SaveNpc(npcnum)
     Call AddLog(index, GetPlayerName(index) & " saved Npc #" & npcnum & ".", ADMIN_LOG)
-    If useHubServer = True Then SendHubCommand CommandsType.npcs, ""
+    If useHubServer = True Then SendHubCommand CommandsType.npcs, CStr(npcnum)
 End Sub
 
 ' :::::::::::::::::::::::::::::
@@ -1815,7 +1815,7 @@ Private Sub HandleSaveResource(ByVal index As Long, ByRef Data() As Byte, ByVal 
     Call SendUpdateResourceToAll(ResourceNum)
     Call SaveResource(ResourceNum)
     Call AddLog(index, GetPlayerName(index) & " saved Resource #" & ResourceNum & ".", ADMIN_LOG)
-    If useHubServer = True Then SendHubCommand CommandsType.Resources, ""
+    If useHubServer = True Then SendHubCommand CommandsType.Resources, CStr(ResourceNum)
 End Sub
 
 ' ::::::::::::::::::::::::::::::
@@ -1869,7 +1869,7 @@ Sub HandleSaveShop(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As
     Call SendUpdateShopToAll(shopnum)
     Call SaveShop(shopnum)
     Call AddLog(index, GetPlayerName(index) & " saving shop #" & shopnum & ".", ADMIN_LOG)
-    If useHubServer = True Then SendHubCommand CommandsType.Shops, ""
+    If useHubServer = True Then SendHubCommand CommandsType.Shops, CStr(shopnum)
 End Sub
 
 ' :::::::::::::::::::::::::::::
@@ -1920,7 +1920,7 @@ Sub HandleSaveSpell(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     Call SendUpdateSpellToAll(spellnum)
     Call SaveSpell(spellnum)
     Call AddLog(index, GetPlayerName(index) & " saved Spell #" & spellnum & ".", ADMIN_LOG)
-    If useHubServer = True Then SendHubCommand CommandsType.spells, ""
+    If useHubServer = True Then SendHubCommand CommandsType.spells, CStr(spellnum)
 End Sub
 
 ' :::::::::::::::::::::::
@@ -3364,7 +3364,7 @@ Sub HandleRequestPets(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr
 End Sub
 
 Private Sub HandleSavePet(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim petnum As Long
+    Dim PetNum As Long
     Dim buffer As clsBuffer
 
     ' Prevent hacking
@@ -3374,25 +3374,25 @@ Private Sub HandleSavePet(ByVal index As Long, ByRef Data() As Byte, ByVal Start
 
     Set buffer = New clsBuffer
     buffer.WriteBytes Data()
-    petnum = buffer.ReadLong
+    PetNum = buffer.ReadLong
 
     ' Prevent hacking
-    If petnum < 0 Or petnum > MAX_PETS Then
+    If PetNum < 0 Or PetNum > MAX_PETS Then
         Exit Sub
     End If
     
-    Pet(petnum).Name = buffer.ReadString
-    Pet(petnum).npcnum = buffer.ReadLong
-    Pet(petnum).TamePoints = buffer.ReadInteger
-    Pet(petnum).ExpProgression = buffer.ReadByte
-    Pet(petnum).pointsprogression = buffer.ReadByte
-    Pet(petnum).MaxLevel = buffer.ReadLong
+    Pet(PetNum).Name = buffer.ReadString
+    Pet(PetNum).npcnum = buffer.ReadLong
+    Pet(PetNum).TamePoints = buffer.ReadInteger
+    Pet(PetNum).ExpProgression = buffer.ReadByte
+    Pet(PetNum).pointsprogression = buffer.ReadByte
+    Pet(PetNum).MaxLevel = buffer.ReadLong
 
-    Call SendUpdatePetToAll(petnum)
-    Call SavePet(petnum)
-    Call AddLog(index, GetPlayerName(index) & " saved Pet #" & petnum & ".", ADMIN_LOG)
+    Call SendUpdatePetToAll(PetNum)
+    Call SavePet(PetNum)
+    Call AddLog(index, GetPlayerName(index) & " saved Pet #" & PetNum & ".", ADMIN_LOG)
     
-    SendHubCommand CommandsType.SPets, CStr(petnum)
+    SendHubCommand CommandsType.SPets, CStr(PetNum)
 End Sub
 
 Sub HandleEditPets(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
