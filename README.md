@@ -8,7 +8,7 @@ online game built using a modified version of the Eclipse game engine made in VB
 
 It was originally made in Spanish. I don't speak Spanish.
 
-I managed to create a C# DLL that utilizes Bing, Google, and Yandex's online translation API/seervices.
+I managed to create a C# DLL that utilizes Bing, Google, and Yandex's online translation API/services.
 
 This turned out to work great. It's a little more involved to setup and register the DLL, but nothing too rough.
 
@@ -21,6 +21,6 @@ It's not complete, but worked for my purposes.
 
 This also includes the updater that I got off of the Eclipse forums and modified, as it was quick and easy.
 
-I have a server running currently, you can use this source to connect to trollparty.org port 4000 for the normal server, or port 4001 for the 'Troll' server where everyone is an admin (Banning/kicking is disabled.)
+I have a server running currently, you can use this source to connect to trollparty.org port 4000 for the normal server.
 
 Or download the launcher here: http://trollparty.org/Zelda/Launcher.zip

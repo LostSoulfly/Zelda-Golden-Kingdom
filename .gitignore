@@ -1,11 +1,5 @@
 Cliente/data/logs/errors.txt
-Cliente/data/graphics/tilesets/Thumbs.db
-Cliente/data/graphics/Thumbs.db
 *.bak
-.gitattributes.bak
 *.log
 *.tmp
 *.db
-Cliente/data/config.ini
-*.db
-Cliente/data/config.ini
