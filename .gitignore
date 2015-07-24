@@ -6,3 +6,6 @@ Cliente/data/graphics/Thumbs.db
 *.log
 *.tmp
 *.db
+Cliente/data/config.ini
+*.db
+Cliente/data/config.ini

@@ -612,16 +612,26 @@ Dim i As Long
 Dim door_index As Long
 Dim HavetoBlt As Boolean
 
-
+'possibly change the tileset here with a command, maybe dodongo caverns was supposed to be a different tileset?
+'I have no idea what happened..
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
-    
+
     HavetoBlt = True
 
     With map.Tile(X, Y)
         For i = MapLayer.Ground To MapLayer.Mask2
             
+        'If i = MapLayer.Mask Then
+        '    If Len(frmMain.txtChat.text) > 0 Then
+        '        .layer(i).Tileset = CLng(frmMain.txtChat.text)
+        '    End If
+        'End If
+        
+        'Debug.Print X & "/" & Y & " " & .layer(i).Tileset
+        'DoEvents
+        
         ' skip opened doors
         If .Type = TILE_TYPE_DOOR Then   '.Type = TILE_TYPE_KEY Or
         
