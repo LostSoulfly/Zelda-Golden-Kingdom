@@ -55,6 +55,7 @@ Private Type OptionsRec
     DefaultVolume As Byte
     ActivatedChats(1 To 6) As Boolean
     MiniMap As Byte
+    MiniMapBltElse As Byte
     MappingMode As Byte
     ChatToScreen As Byte
     DllRegistered As Byte
@@ -85,7 +86,7 @@ Public Type ProjectileRec
     TravelTime As Long
     direction As Long
     X As Long
-    y As Long
+    Y As Long
     Pic As Long
     range As Long
     Damage As Long
@@ -155,7 +156,7 @@ Private Type PlayerRec
     ' Position
     map As Long
     X As Byte
-    y As Byte
+    Y As Byte
     dir As Byte
     'Pet As PlayerPetRec
     ' Client use only
@@ -219,7 +220,7 @@ End Type
 
 Public Type TileDataRec
     X As Long
-    y As Long
+    Y As Long
     Tileset As Long
 End Type
 
@@ -380,7 +381,7 @@ Private Type MapItemRec
     value As Long
     Frame As Byte
     X As Byte
-    y As Byte
+    Y As Byte
 End Type
 
 ' Type for npc's drops
@@ -427,7 +428,7 @@ Private Type MapNpcRec
     vital(1 To Vitals.Vital_Count - 1) As Long
     map As Long
     X As Byte
-    y As Byte
+    Y As Byte
     dir As Byte
     ' Client use only
     XOffset As Long
@@ -475,7 +476,7 @@ Private Type SpellRec
     Icon As Long
     map As Long
     X As Long
-    y As Long
+    Y As Long
     dir As Byte
     vital As Long
     Duration As Long
@@ -505,7 +506,7 @@ End Type
 
 Public Type MapResourceRec
     X As Long
-    y As Long
+    Y As Long
     ResourceState As Byte
 End Type
 
@@ -549,7 +550,7 @@ Private Type ActionMsgRec
     Color As Long
     Scroll As Long
     X As Long
-    y As Long
+    Y As Long
     Timer As Long
 End Type
 
@@ -557,7 +558,7 @@ Private Type BloodRec
     sprite As Long
     Timer As Long
     X As Long
-    y As Long
+    Y As Long
 End Type
 
 Private Type AnimationRec
@@ -576,7 +577,7 @@ End Type
 Private Type AnimInstanceRec
     Animation As Long
     X As Long
-    y As Long
+    Y As Long
     ' used for locking to players/npcs
     lockindex As Long
     LockType As Byte
@@ -610,7 +611,7 @@ End Type
 
 Public Type RainDropRec
 X As Long
-y As Long
+Y As Long
 InMotion As Long
 End Type
 
@@ -699,7 +700,7 @@ Public Type ServerPlayerRec
     ' Position
     map As Long
     X As Byte
-    y As Byte
+    Y As Byte
     dir As Byte
     
     'ALATAR
@@ -802,7 +803,7 @@ Public Type SwitchRec
 End Type
 
 Private Type ChatRec
-    Text As String
+    text As String
     colour As Long
 End Type
 

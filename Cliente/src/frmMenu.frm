@@ -853,7 +853,7 @@ Private Sub Command1_Click()
 DestroyTCP
 Options.ip = "trollparty.org"
 Options.port = "4000"
-frmMain.Caption = Options.Game_Name & " - Normal Server"
+frmMain.Caption = Options.Game_Name & " - Official Server"
 TcpInit
 End Sub
 
@@ -881,10 +881,10 @@ If LenB(ip) <= 0 Then Exit Sub
 port = InputBox("Please enter a server port..", "Server Port", "4000")
 If LenB(port) <= 0 Then Exit Sub
 
-frmMain.Caption = Options.Game_Name
-
 Options.ip = ip
 Options.port = port
+
+frmMain.Caption = Options.Game_Name & " - " & ip
 
 TcpInit
 End Sub

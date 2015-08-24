@@ -13,17 +13,21 @@ Public Sub InitializeMapResources()
     For i = 0 To Resource_Index
     If MapResource(i).X > map.MaxX Then
         Debug.Print "dangit"
+        AddText "There was an issue loading this map. Please leave this map and try again!", vbRed
         'ReDim Preserve MapResources(map.MaxX, map.MaxY)
         GoTo cont
     End If
     If MapResource(i).Y > map.MaxY Then
         Debug.Print "flux capacitor, man."
+        AddText "There was an issue loading this map. Please leave this map and try again!", vbRed
         'ReDim Preserve MapResources(map.MaxX, map.MaxY)
         GoTo cont
     End If
         MapResources(MapResource(i).X, MapResource(i).Y) = i
 cont:
     Next
+    
+    
 End Sub
 
 Public Function GetResourceIndex(ByVal X As Long, ByVal Y As Long) As Long

@@ -217,7 +217,7 @@ Dim tmr250 As Long
                 CheckAnimInstance i
             Next
             
-            tmr25 = tick + 25
+            tmr25 = tick + 50
         End If
         
 
@@ -3032,9 +3032,9 @@ Function ShopTypeToStr(ByVal ShopType As Byte) As String
     Case SHItem
         ShopTypeToStr = "Item"
     Case SHHeroKillPoints
-        ShopTypeToStr = "Puntos de Hèroe"
+        ShopTypeToStr = GetTranslation("Puntos de Hèroe", True)
     Case SHPKKillPoints
-        ShopTypeToStr = "Puntos de Asesino"
+        ShopTypeToStr = GetTranslation("Puntos de Asesino", True)
     Case SHQuestPoints
         ShopTypeToStr = "Quest Points"
     Case SHNPCPoints

@@ -9,6 +9,8 @@ Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 ' get system uptime in milliseconds
 Public Declare Function GetTickCount Lib "kernel32" () As Long
 
+Dim strMissing As String
+
 'For Clear functions
 Public Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 Public DX7 As New DirectX7  ' Master Object, early binding
@@ -58,37 +60,6 @@ Public Sub Main()
     
 End If
 
-Dim strsplit() As String, i As Integer
-    strsplit = Split(Command, " ")
-    If (UBound(strsplit)) Mod 2 > 0 Then
-        For i = 0 To UBound(strsplit) Step 2
-            Select Case LCase$(strsplit(i))
-            
-            Case Is = "-user"
-                Options.Username = Trim$(strsplit(i + 1))
-                
-            Case Is = "-pass"
-                Options.Password = Trim$(strsplit(i + 1))
-            
-            Case Is = "-server"
-                'anything above 0 will enable it.
-                Options.ip = Trim$(strsplit(i + 1))
-            
-            Case Is = "-port"
-                'anything above 0 will enable it.
-                Options.port = Val(Trim$(strsplit(i + 1)))
-                'MsgBox CStr(Options.port)
-            Case Is = "-auto"
-                AutoLogin = Val(Trim$(strsplit(i + 1)))
-                
-            Case Is = "-wtf"
-                wtf = True
-            
-            End Select
-        Next
-    End If
-    
-    
     LangTo = "en"
     LangFrom = "es"
     strTransPath = App.Path & "\" & LangTo & ".dat"
@@ -114,6 +85,39 @@ Dim strsplit() As String, i As Integer
     Call SetStatus("Cargando Interface...")
     loadGUI
     
+    Dim strsplit() As String, i As Integer
+    strsplit = Split(Command, " ")
+    If (UBound(strsplit)) Mod 2 > 0 Then
+        For i = 0 To UBound(strsplit) Step 2
+            Select Case LCase$(strsplit(i))
+            
+            Case Is = "-user"
+                Options.Username = Trim$(strsplit(i + 1))
+                
+            Case Is = "-pass"
+                Options.Password = Trim$(strsplit(i + 1))
+            
+            Case Is = "-server"
+                'anything above 0 will enable it.
+                Options.ip = Trim$(strsplit(i + 1))
+                frmMain.Caption = Options.Game_Name & " - " & Options.ip
+                
+            Case Is = "-port"
+                'anything above 0 will enable it.
+                Options.port = Val(Trim$(strsplit(i + 1)))
+                'MsgBox CStr(Options.port)
+            Case Is = "-auto"
+                AutoLogin = Val(Trim$(strsplit(i + 1)))
+                
+            Case Is = "-wtf"
+                wtf = True
+            
+            End Select
+        Next
+    End If
+    
+    If frmMain.Caption = "" Then frmMain.Caption = Options.Game_Name
+    
     ' Check if the directory is there, if its not make it
     ChkDir App.Path & "\data\", "graphics"
     ChkDir App.Path & "\data\graphics\", "animations"
@@ -138,9 +142,6 @@ Dim strsplit() As String, i As Integer
     ' load the main game (and by extension, pre-load DD7)
     GettingMap = True
     vbQuote = ChrW$(34) ' "
-    
-    ' Update the form with the game's name before it's loaded
-    frmMain.Caption = Options.Game_Name
     
     ' initialize DirectX
     If Not InitDirectDraw Then
@@ -308,7 +309,11 @@ Dim i As Long
     
 ' let them know we can't load the GUI
 errorhandler:
-    MsgBox "Cannot find one or more interface images." & vbNewLine & "If they exist then you have not extracted the project properly." & vbNewLine & "Please follow the installation instructions fully.", vbCritical
+    If Len(strMissing) = 0 Then
+        MsgBox "Cannot find one or more interface images." & vbNewLine & "If they exist then you have not extracted the project properly." & vbNewLine & "Please follow the installation instructions fully.", vbCritical
+    Else
+        MsgBox "Unable to locate files: " & strMissing & "", vbCritical, "Files missing!"
+    End If
     DestroyGame
     Exit Sub
 End Sub
@@ -373,7 +378,7 @@ Public Sub MenuState(ByVal State As Long)
             frmMenu.picCharacter.Visible = False
             frmMenu.picRegister.Visible = False
             frmLoad.Visible = False
-            Call MsgBox(GetTranslation("The server seems to be offline. Please try again later."), vbOKOnly, Options.Game_Name)
+            Call MsgBox("The server seems to be offline. Please try again later.", vbOKOnly, Options.Game_Name)
         End If
     End If
 
@@ -519,6 +524,8 @@ Public Sub DestroyGame()
     
     Call saveLang(strTransPath, langCol, True)
     Call saveLang(strOrigPath, origCol, True)
+    
+    SaveOptions
     
     ' break out of GameLoop
     InGame = False

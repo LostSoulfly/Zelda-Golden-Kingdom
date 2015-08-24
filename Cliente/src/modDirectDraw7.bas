@@ -100,6 +100,10 @@ Public NumProjectiles As Long
 Public DDS_ChatBubble As DirectDrawSurface7
 Public DDSD_ChatBubble As DDSURFACEDESC2
 
+Dim tmrWaitBlt As Long
+
+Dim BlockRect As RECT, WarpRect As RECT, ItemRect As RECT, ShopRect As RECT, NpcOtherRect As RECT, PlayerRect As RECT, PlayerPkRect As RECT, NpcAttackerRect As RECT, NpcShopRect As RECT, BlankRect As RECT
+
 ' ********************
 ' ** Initialization **
 ' ********************
@@ -135,6 +139,85 @@ Public Function InitDirectDraw() As Boolean
     
     ' Initialise the surfaces
     InitSurfaces
+    
+With BlankRect
+.Top = 4
+.Bottom = .Top + 4
+.Left = 0
+.Right = .Left + 4
+End With
+
+' Player - Norm
+With PlayerRect
+.Top = 0
+.Bottom = .Top + 4
+.Left = 4
+.Right = .Left + 4
+End With
+
+' Player - PK
+With PlayerPkRect
+.Top = 0
+.Bottom = .Top + 4
+.Left = 8
+.Right = .Left + 4
+End With
+
+' NPC - Others
+With NpcOtherRect
+.Top = 0
+.Bottom = .Top + 4
+.Left = 12
+.Right = .Left + 4
+End With
+
+' NPC - Shopkeeper
+With NpcShopRect
+.Top = 0
+.Bottom = .Top + 4
+.Left = 16
+.Right = .Left + 4
+End With
+
+' NPC - Attack when attacked
+With NpcAttackerRect
+.Top = 0
+.Bottom = .Top + 4
+.Left = 20
+.Right = .Left + 4
+End With
+
+' Attributes - Block
+With BlockRect
+.Top = 4
+.Bottom = .Top + 4
+.Left = 4
+.Right = .Left + 4
+End With
+
+' Attributes - Warp
+With WarpRect
+.Top = 4
+.Bottom = .Top + 4
+.Left = 8
+.Right = .Left + 4
+End With
+
+' Attributes - Item
+With ItemRect
+.Top = 4
+.Bottom = .Top + 4
+.Left = 12
+.Right = .Left + 4
+End With
+
+' Attributes - Shop
+With ShopRect
+.Top = 4
+.Bottom = .Top + 4
+.Left = 16
+.Right = .Left + 4
+End With
     
     ' We're done
     InitDirectDraw = True
@@ -418,7 +501,7 @@ Public Sub Engine_BltFast(ByVal dx As Long, ByVal dy As Long, ByRef ddS As Direc
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
-
+    
     If Not ddS Is Nothing Then
         Call DDS_BackBuffer.BltFast(dx, dy, ddS, srcRECT, trans)
     End If
@@ -595,6 +678,7 @@ Dim Width As Long, Height As Long
         sRECT.Right = sRECT.Right - (X + Width - DDSD_BackBuffer.lWidth)
     End If
     ' /clipping
+    
     
     Call Engine_BltFast(X, Y, DDS_Target, sRECT, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY)
     
@@ -3259,6 +3343,7 @@ Dim rec_pos As DxVBLib.RECT
     End If
     ' minimap
     If Options.MiniMap = 1 Then BltMiniMap
+    DoEvents
     
     ' Blt the target icon
     If myTarget > 0 Then
@@ -3274,6 +3359,7 @@ Dim rec_pos As DxVBLib.RECT
     ' blt the hover icon
 For i = 1 To Player_HighIndex
          If IsPlaying(i) And GetPlayerVisible(i) = False Then
+                 If InGame = False Then Exit Sub
                  If Player(i).map = Player(MyIndex).map Then
                     
                          If CurX = Player(i).X And CurY = Player(i).Y Then
@@ -4436,11 +4522,17 @@ Sub BltMiniMap()
 Dim i As Long
 Dim X As Integer, Y As Integer
 Dim CameraX As Long, CameraY As Long
-Dim BlockRect As RECT, WarpRect As RECT, ItemRect As RECT, ShopRect As RECT, NpcOtherRect As RECT, PlayerRect As RECT, PlayerPkRect As RECT, NpcAttackerRect As RECT, NpcShopRect As RECT, BlankRect As RECT
+
+'potentially re-write this to only use a certain area around the player, and not show the entire map.
+
 Dim MapX As Long, MapY As Long
+
+'If Not GetRealTickCount > tmrWaitBlt + 2 Then Exit Sub
+'tmrWaitBlt = GetRealTickCount
 
 ' If debug mode, handle error then exit out
 If Options.Debug = 1 Then On Error GoTo errorhandler
+
 
 ' Map size
 MapX = map.MaxX
@@ -4450,84 +4542,7 @@ MapY = map.MaxY
 ' ** Rectangles **
 ' ****************
 ' Blank
-With BlankRect
-.Top = 4
-.Bottom = .Top + 4
-.Left = 0
-.Right = .Left + 4
-End With
 
-' Player - Norm
-With PlayerRect
-.Top = 0
-.Bottom = .Top + 4
-.Left = 4
-.Right = .Left + 4
-End With
-
-' Player - PK
-With PlayerPkRect
-.Top = 0
-.Bottom = .Top + 4
-.Left = 8
-.Right = .Left + 4
-End With
-
-' NPC - Others
-With NpcOtherRect
-.Top = 0
-.Bottom = .Top + 4
-.Left = 12
-.Right = .Left + 4
-End With
-
-' NPC - Shopkeeper
-With NpcShopRect
-.Top = 0
-.Bottom = .Top + 4
-.Left = 16
-.Right = .Left + 4
-End With
-
-' NPC - Attack when attacked
-With NpcAttackerRect
-.Top = 0
-.Bottom = .Top + 4
-.Left = 20
-.Right = .Left + 4
-End With
-
-' Attributes - Block
-With BlockRect
-.Top = 4
-.Bottom = .Top + 4
-.Left = 4
-.Right = .Left + 4
-End With
-
-' Attributes - Warp
-With WarpRect
-.Top = 4
-.Bottom = .Top + 4
-.Left = 8
-.Right = .Left + 4
-End With
-
-' Attributes - Item
-With ItemRect
-.Top = 4
-.Bottom = .Top + 4
-.Left = 12
-.Right = .Left + 4
-End With
-
-' Attributes - Shop
-With ShopRect
-.Top = 4
-.Bottom = .Top + 4
-.Left = 16
-.Right = .Left + 4
-End With
 
 ' Set attributes in map
 For X = 0 To MapX
@@ -4539,7 +4554,7 @@ CameraY = Camera.Top + 65 + (Y * 4)
 
 
 ' Blank tile
-Engine_BltFast CameraX, CameraY, DDS_MiniMap, BlankRect, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY
+'Engine_BltFast CameraX, CameraY, DDS_MiniMap, BlankRect, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY
 
 Select Case map.Tile(X, Y).Type
 Case TILE_TYPE_BLOCKED
@@ -4550,6 +4565,8 @@ Case TILE_TYPE_ITEM
 Engine_BltFast CameraX, CameraY, DDS_MiniMap, ItemRect, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY
 Case TILE_TYPE_SHOP
 Engine_BltFast CameraX, CameraY, DDS_MiniMap, ShopRect, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY
+Case Else 'only need to draw blank when it's actually blank!
+If Options.MiniMapBltElse Then Engine_BltFast CameraX, CameraY, DDS_MiniMap, BlankRect, DDBLTFAST_WAIT Or DDBLTFAST_SRCCOLORKEY
 End Select
 Next Y
 Next X
@@ -4558,12 +4575,12 @@ Next X
 For i = 1 To Player_HighIndex
 If IsPlaying(i) Then
 ' Player loc
-X = Player(i).X
-Y = Player(i).Y
+'X = Player(i).X
+'Y = Player(i).Y
 
 ' Camera loc
-CameraX = Camera.Left + 25 + (X * 4)
-CameraY = Camera.Top + 65 + (Y * 4)
+CameraX = Camera.Left + 25 + (Player(i).X * 4)
+CameraY = Camera.Top + 65 + (Player(i).Y * 4)
 
 
 Select Case Player(i).PK
@@ -4574,17 +4591,16 @@ Call Engine_BltFast(CameraX, CameraY, DDS_MiniMap, PlayerPkRect, DDBLTFAST_WAIT 
 End Select
 End If
 Next i
-
 ' Set npcs in mini map
 For i = 1 To Npc_HighIndex
 If MapNpc(i).num > 0 Then
 ' Npc loc
-X = MapNpc(i).X
-Y = MapNpc(i).Y
+'X = MapNpc(i).X
+'Y = MapNpc(i).Y
 
 ' Camera loc
-CameraX = Camera.Left + 25 + (X * 4)
-CameraY = Camera.Top + 65 + (Y * 4)
+CameraX = Camera.Left + 25 + (MapNpc(i).X * 4)
+CameraY = Camera.Top + 65 + (MapNpc(i).Y * 4)
 
 Select Case NPC(MapNpc(i).num).Behaviour
     Case NPC_BEHAVIOUR_ATTACKONSIGHT
@@ -4600,7 +4616,8 @@ Select Case NPC(MapNpc(i).num).Behaviour
     End Select
 End If
 Next i
-
+'tmrWaitBlt = GetRealTickCount
+'DoEvents
 ' Error handler
 Exit Sub
 errorhandler:

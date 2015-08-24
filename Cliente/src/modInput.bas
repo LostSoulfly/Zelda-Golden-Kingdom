@@ -172,7 +172,7 @@ Dim Name As String
 Dim i As Long
 Dim N As Long
 Dim Command() As String
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 'Kill Counter
 Dim totalkills As Long
 Dim totaldeaths As Long
@@ -202,7 +202,7 @@ Dim alldeaths As Long
             End If
 
             MyText = vbNullString
-            frmMain.txtMyChat.Text = vbNullString
+            frmMain.txtMyChat.text = vbNullString
             Exit Sub
         End If
 
@@ -237,7 +237,7 @@ Dim alldeaths As Long
             End If
 
             MyText = vbNullString
-            frmMain.txtMyChat.Text = vbNullString
+            frmMain.txtMyChat.text = vbNullString
             Exit Sub
         End If
 
@@ -245,6 +245,10 @@ Dim alldeaths As Long
             Command = Split(MyText, Space(1))
 
             Select Case Command(0)
+            
+                Case "/ss"
+                    ScreenshotMap
+            
                 Case "/wasd"
                     Options.WASD = Not Options.WASD
                     If Options.WASD = 1 Then AddText "WASD controls enabled! Use E to attack, Spacebar to pickup items.", White
@@ -254,8 +258,10 @@ Dim alldeaths As Long
                     Call AddText("Comandos Sociales:", HelpColor, True)
                     Call AddText("-msghere = mensaje a color", HelpColor, True)
                     Call AddText("!nickname mensaje = mensaje a Jugador", HelpColor, True)
-                    Call AddText("Comando Habilitados: /info, /online, /fps, /fpslock, /deaths, /counter", HelpColor)
+                    Call AddText("Available Commands: /info, /online, /fps, /fpslock, /deaths, /counter", HelpColor)
                     Call AddText("/wasd, /guild, /stats, /translation", HelpColor)
+                    Call AddText("/minimap to toggle minimap mode.", HelpColor)
+                    Call AddText("/minimap on/off to enable/disable minimap", HelpColor)
                 
                 Case "/guild"
                     If UBound(Command) < 1 Then
@@ -336,7 +342,27 @@ Dim alldeaths As Long
                         
                 Case "/translate"
                     'possibly translate your message and send it? easy enough.
-                
+                    
+                Case "/minimap"
+                If UBound(Command) = 0 Then
+                    If Options.MiniMapBltElse = 0 Then Options.MiniMapBltElse = 1 Else Options.MiniMapBltElse = 0
+                    If Options.MiniMapBltElse = 0 Then AddText "Minimap performance mode enabled!", White
+                    If Options.MiniMapBltElse = 1 Then AddText "Minimap performance mode disabled!", White
+                    'GoTo Continue
+                Else
+                    Select Case Trim$(StringIntersection(MyText, "/minimap"))
+                    
+                    Case Is = "off"
+                    Options.MiniMap = 0
+                    Case Is = 0
+                    Options.MiniMap = 0
+                    Case Is = "on"
+                    Options.MiniMap = 1
+                    Case Is = 1
+                    Options.MiniMap = 1
+                    End Select
+                End If
+             
                 Case "/info"
 
                     ' Checks to make sure we have more than one string in the array
@@ -350,11 +376,11 @@ Dim alldeaths As Long
                         GoTo Continue
                     End If
 
-                    Set buffer = New clsBuffer
-                    buffer.WriteLong CPlayerInfoRequest
-                    buffer.WriteString Trim$(StringIntersection(MyText, "/info"))
-                    SendData buffer.ToArray()
-                    Set buffer = Nothing
+                    Set Buffer = New clsBuffer
+                    Buffer.WriteLong CPlayerInfoRequest
+                    Buffer.WriteString Trim$(StringIntersection(MyText, "/info"))
+                    SendData Buffer.ToArray()
+                    Set Buffer = Nothing
                     ' Whos Online
                 Case "/online"
                     SendWhosOnline
@@ -366,10 +392,10 @@ Dim alldeaths As Long
                     FPS_Lock = Not FPS_Lock
                     ' Request stats
                 Case "/stats"
-                    Set buffer = New clsBuffer
-                    buffer.WriteLong CGetStats
-                    SendData buffer.ToArray()
-                    Set buffer = Nothing
+                    Set Buffer = New clsBuffer
+                    Buffer.WriteLong CGetStats
+                    SendData Buffer.ToArray()
+                    Set Buffer = Nothing
                     'Kill Counter
                 Case "/deaths"
                     totalkills = Player(MyIndex).Kill + Player(MyIndex).NpcKill
@@ -495,6 +521,7 @@ Dim alldeaths As Long
                     If GetPlayerAccess(MyIndex) < ADMIN_MAPPER Then GoTo Continue
 
                     SendMapReport
+                    GoTo Continue
                     ' Respawn request
                 Case "/respawn"
                     If GetPlayerAccess(MyIndex) < ADMIN_MAPPER Then GoTo Continue
@@ -679,7 +706,7 @@ Dim alldeaths As Long
             'continue label where we go instead of exiting the sub
 Continue:
             MyText = vbNullString
-            frmMain.txtMyChat.Text = vbNullString
+            frmMain.txtMyChat.text = vbNullString
             Exit Sub
         End If
         
@@ -692,7 +719,7 @@ Continue:
             End If
     
             MyText = vbNullString
-            frmMain.txtMyChat.Text = vbNullString
+            frmMain.txtMyChat.text = vbNullString
             Exit Sub
     End If
     
@@ -705,7 +732,7 @@ Continue:
             End If
 
             MyText = vbNullString
-            frmMain.txtMyChat.Text = vbNullString
+            frmMain.txtMyChat.text = vbNullString
             Exit Sub
         End If
 
@@ -718,7 +745,7 @@ Continue:
             End If
 
             MyText = vbNullString
-            frmMain.txtMyChat.Text = vbNullString
+            frmMain.txtMyChat.text = vbNullString
             Exit Sub
         End If
 
@@ -728,7 +755,7 @@ Continue:
         End If
 
         MyText = vbNullString
-        frmMain.txtMyChat.Text = vbNullString
+        frmMain.txtMyChat.text = vbNullString
         Exit Sub
     End If
 

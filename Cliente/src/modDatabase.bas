@@ -121,6 +121,7 @@ Dim Filename As String
     Call PutVar(Filename, "Options", "Names", Str(Options.Names))
     Call PutVar(Filename, "Options", "Level", Str(Options.Level))
     Call PutVar(Filename, "Options", "WASD", Str(Options.WASD))
+    Call PutVar(Filename, "Options", "MiniMapBltElse", Str(Options.MiniMapBltElse))
     Call PutVar(Filename, "Options", "Chat", Str(Options.Chat))
     Call PutVar(Filename, "Options", "SafeMode", Str(Options.SafeMode))
     Call PutVar(Filename, "Options", "DefaultVolume", Str(Options.DefaultVolume))
@@ -150,7 +151,7 @@ Dim i As Byte
     Filename = App.Path & "\data\config.ini"
     
     If Not FileExist(Filename, True) Then
-        Options.Game_Name = "Legend of Zelda: The United Dorado"
+        Options.Game_Name = "Legend of Zelda: The Golden Kingdom"
         Options.Password = vbNullString
         Options.SavePass = 0
         Options.Username = vbNullString
@@ -159,7 +160,7 @@ Dim i As Byte
         Options.MenuMusic = vbNullString
         Options.Music = 1
         Options.Sound = 1
-        Options.Debug = 0
+        Options.Debug = 1
         Options.Names = 1
         Options.Level = 0
         Options.WASD = 1
@@ -167,7 +168,7 @@ Dim i As Byte
         Options.SafeMode = NO
         Options.DefaultVolume = 50
         Options.MiniMap = 1
-
+        Options.MiniMapBltElse = 0
         Options.MappingMode = 0
         Options.ChatToScreen = 1
         For i = 1 To ChatType.ChatType_Count - 1
@@ -189,6 +190,8 @@ Dim i As Byte
                 "This keeps your client on the latest version!", vbCritical, "Launcher Required"
                 DestroyGame
                 End
+            Else
+                frmMain.Caption = Options.Game_Name & " - Official Server"
             End If
         End If
         
@@ -197,8 +200,7 @@ Dim i As Byte
         Options.MenuMusic = GetVar(Filename, "Options", "MenuMusic")
         Options.Music = GetVar(Filename, "Options", "Music")
         Options.Sound = GetVar(Filename, "Options", "Sound")
-        Options.Debug = 1 'GetVar(Filename, "Options", "Debug")
-        'todo FIX ME BEFORE RELEASING
+        Options.Debug = GetVar(Filename, "Options", "Debug")
         Options.Names = GetVar(Filename, "Options", "Names")
         Options.Level = GetVar(Filename, "Options", "Level")
         Options.WASD = GetVar(Filename, "Options", "WASD")
@@ -206,6 +208,7 @@ Dim i As Byte
         Options.SafeMode = GetVar(Filename, "Options", "SafeMode")
         Options.DefaultVolume = GetVar(Filename, "Options", "DefaultVolume")
         Options.MiniMap = GetVar(Filename, "Options", "MiniMap")
+        Options.MiniMapBltElse = GetVar(Filename, "Options", "MiniMapBltElse")
         Options.MappingMode = GetVar(Filename, "Options", "MappingMode")
         Options.ChatToScreen = GetVar(Filename, "Options", "ChatToScreen")
         For i = 1 To ChatType.ChatType_Count - 1

@@ -1,8 +1,8 @@
 VERSION 5.00
 Object = "{0E59F1D2-1FBE-11D0-8FF2-00A0D10038BC}#1.0#0"; "msscript.ocx"
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "mswinsck.ocx"
-Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
-Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "tabctl32.ocx"
+Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
+Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "Richtx32.ocx"
+Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "Tabctl32.ocx"
 Begin VB.Form frmMain 
    BorderStyle     =   1  'Fixed Single
    ClientHeight    =   10215
@@ -5037,7 +5037,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   -2147483641
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
@@ -5151,14 +5150,14 @@ Begin VB.Form frmMain
       TabCaption(0)   =   "Teclas"
       TabPicture(0)   =   "frmMain.frx":12562A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "Picture2"
-      Tab(0).Control(1)=   "CloseHelpBoard(0)"
+      Tab(0).Control(0)=   "CloseHelpBoard(0)"
+      Tab(0).Control(1)=   "Picture2"
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Entrenar"
       TabPicture(1)   =   "frmMain.frx":125646
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "CloseHelpBoard(1)"
-      Tab(1).Control(1)=   "Picture7"
+      Tab(1).Control(0)=   "Picture7"
+      Tab(1).Control(1)=   "CloseHelpBoard(1)"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Estadísticas"
       TabPicture(2)   =   "frmMain.frx":125662
@@ -5171,14 +5170,14 @@ Begin VB.Form frmMain
       TabCaption(3)   =   "Habilidades"
       TabPicture(3)   =   "frmMain.frx":12567E
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "Picture9(0)"
-      Tab(3).Control(1)=   "CloseHelpBoard(3)"
+      Tab(3).Control(0)=   "CloseHelpBoard(3)"
+      Tab(3).Control(1)=   "Picture9(0)"
       Tab(3).ControlCount=   2
       TabCaption(4)   =   "Mascotas"
       TabPicture(4)   =   "frmMain.frx":12569A
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "Picture9(1)"
-      Tab(4).Control(1)=   "CloseHelpBoard(4)"
+      Tab(4).Control(0)=   "CloseHelpBoard(4)"
+      Tab(4).Control(1)=   "Picture9(1)"
       Tab(4).ControlCount=   2
       Begin VB.PictureBox Picture9 
          BackColor       =   &H80000012&
@@ -9130,7 +9129,7 @@ Dim shopItem As Long
         Select Case ShopAction
             Case 0 ' no action, give cost
                 With Shop(InShop).TradeItem(shopItem)
-                    AddText GetTranslation("Puedes comprar éste objeto por ") & " " & .CostValue & " " & Trim$(GetShopPriceName(InShop, shopItem)) & ".", White
+                    AddText "This can be purchased with " & .CostValue & " " & Trim$(GetShopPriceName(InShop, shopItem)) & ".", White
                 End With
             Case 1 ' buy item
                 ' buy item code

@@ -5,7 +5,7 @@ Option Explicit
 Private Declare Function CreateFont Lib "GDI32" Alias "CreateFontA" (ByVal H As Long, ByVal W As Long, ByVal e As Long, ByVal O As Long, ByVal W As Long, ByVal i As Long, ByVal u As Long, ByVal s As Long, ByVal c As Long, ByVal OP As Long, ByVal CP As Long, ByVal q As Long, ByVal PAF As Long, ByVal f As String) As Long
 Private Declare Function SetBkMode Lib "GDI32" (ByVal hDC As Long, ByVal nBkMode As Long) As Long
 Private Declare Function SetTextColor Lib "GDI32" (ByVal hDC As Long, ByVal crColor As Long) As Long
-Private Declare Function TextOut Lib "GDI32" Alias "TextOutA" (ByVal hDC As Long, ByVal X As Long, ByVal y As Long, ByVal lpString As String, ByVal nCount As Long) As Long
+Private Declare Function TextOut Lib "GDI32" Alias "TextOutA" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, ByVal lpString As String, ByVal nCount As Long) As Long
 Private Declare Function SelectObject Lib "GDI32" (ByVal hDC As Long, ByVal hObject As Long) As Long
 Private Declare Function DeleteObject Lib "GDI32" (ByVal hObject As Long) As Long
 
@@ -29,16 +29,16 @@ errorhandler:
     Exit Sub
 End Sub
 ' GDI text drawing onto buffer
-Public Sub DrawText(ByVal hDC As Long, ByVal X, ByVal y, ByVal Text As String, Color As Long)
+Public Sub DrawText(ByVal hDC As Long, ByVal X, ByVal Y, ByVal text As String, Color As Long)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     Call SelectObject(hDC, GameFont)
     Call SetBkMode(hDC, vbTransparent)
     Call SetTextColor(hDC, 0)
-    Call TextOut(hDC, X + 1, y + 1, Text, Len(Text))
+    Call TextOut(hDC, X + 1, Y + 1, text, Len(text))
     Call SetTextColor(hDC, Color)
-    Call TextOut(hDC, X, y, Text, Len(Text))
+    Call TextOut(hDC, X, Y, text, Len(text))
     
     ' Error handler
     Exit Sub
@@ -91,23 +91,39 @@ Dim GuildString As String
     End If
 
     ' calc pos
-    TextX = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + Len(Name) ^ 1.2
+    
+    TextX = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - (getWidth(TexthDC, (Name)) / 2)
+    'Text3X = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - (getWidth(Font_Default, (Trim$(LevelText))) / 2)
     GuildString = Player(index).GuildName
-    Text2X = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((GuildString))) + Len(GuildString) ^ 1.2
-        
+    Text2X = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - (getWidth(TexthDC, (Trim$(GuildString))) / 2)
     If GetPlayerSprite(index) < 1 Or GetPlayerSprite(index) > NumCharacters Then
         TextY = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - 16
         Text2Y = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset
     Else
         ' Determine location for text
-        TextY = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - (DDSD_Character(GetPlayerCenterSprite(index)).lHeight / 4)
+        TextY = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - (DDSD_Character(GetPlayerCenterSprite(index)).lHeight / 4) '+ 16
         Text2Y = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - (DDSD_Character(GetPlayerCenterSprite(index)).lHeight / 4) + 16
     End If
+    
+    
+    
+'    TextX = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + Len(Name) ^ 1.2
+'    GuildString = Player(index).GuildName
+'    Text2X = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((GuildString))) + Len(GuildString) ^ 1.2
+'
+'    If GetPlayerSprite(index) < 1 Or GetPlayerSprite(index) > NumCharacters Then
+'        TextY = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - 16
+'        Text2Y = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset
+'    Else
+'        ' Determine location for text
+'        TextY = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - (DDSD_Character(GetPlayerCenterSprite(index)).lHeight / 4)
+'        Text2Y = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - (DDSD_Character(GetPlayerCenterSprite(index)).lHeight / 4) + 16
+'    End If
 
     ' Draw name
     If Not GuildString = vbNullString Then
         Call DrawText(TexthDC, Text2X, Text2Y, GuildString, Color)
-        Call DrawText(TexthDC, TextX, TextY + 1, Name, Color)
+        Call DrawText(TexthDC, TextX, TextY + 2, Name, Color)
     Else
         Call DrawText(TexthDC, TextX, TextY + 12, Name, Color)
     End If
@@ -158,7 +174,8 @@ Dim Level As String
     End If
 
     ' calc pos
-    TextX = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Level))) + Len(Level) ^ 1.2
+    TextX = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - (getWidth(TexthDC, (Level)) / 2)
+    'TextX = ConvertMapX(GetPlayerX(index) * PIC_X) + Player(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Level))) + Len(Level) ^ 1.2
     If GetPlayerSprite(index) < 1 Or GetPlayerSprite(index) > NumCharacters Then
         TextY = ConvertMapY(GetPlayerY(index) * PIC_Y) + Player(index).YOffset - 4
     Else
@@ -184,7 +201,8 @@ Public Sub DrawNpcName(ByVal index As Long)
 Dim TextX As Long
 Dim TextY As Long
 Dim Color As Long
-Dim Name As String
+Dim Name As String, NameSize As Long
+
 Dim NPCNum As Long
 
     ' If debug mode, handle error then exit out
@@ -215,15 +233,34 @@ Dim NPCNum As Long
             Color = QBColor(BrightGreen)
     End Select
 
+    Name = Trim$(NPC(NPCNum).Name)
+    NameSize = getWidth(TexthDC, Name)
+    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (NameSize / 2)
 
     
-    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + LenB(Name)
     If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
-        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - 16
+        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - 12
     Else
         ' Determine location for text
-        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 28
+        Select Case DDSD_Character(NPC(NPCNum).sprite).lHeight
+        
+        Case Is = 160
+            TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 16
+        Case Is = 400
+            TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 20
+        Case Else
+            TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 18
+        End Select
     End If
+    
+    
+    'TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + LenB(Name)
+    'If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
+    '    TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - 16
+    'Else
+        ' Determine location for text
+    '    TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 28
+    'End If
 
     ' Draw name
     Call DrawText(TexthDC, TextX, TextY, Name, Color)
@@ -236,11 +273,11 @@ Dim NPCNum As Long
             If Player(MyIndex).PlayerQuest(i).Status = QUEST_STARTED Then
                 If Quest(i).Task(Player(MyIndex).PlayerQuest(i).ActualTask).NPC = NPCNum Then
                     Name = "[?]"
-                    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + 6
+                    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (getWidth(TexthDC, Name) / 2)
                     If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
-                        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - 16
+                        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - 16
                     Else
-                        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4)
+                        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4)
                     End If
                     Call DrawText(TexthDC, TextX, TextY, Name, QBColor(Yellow))
                     Exit For
@@ -253,11 +290,12 @@ Dim NPCNum As Long
                 'the npc gives this quest?
                 If NPC(NPCNum).QuestNum = i Then
                     Name = "[!]"
-                    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + 6
+                    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (getWidth(TexthDC, Name) / 2)
+                    'TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Name))) + 6
                     If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
-                        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - 16
+                        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - 16
                     Else
-                        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 12
+                        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) ' + 12
                     End If
                     Call DrawText(TexthDC, TextX, TextY, Name, QBColor(Yellow))
                     Exit For
@@ -278,7 +316,7 @@ Public Sub DrawNpcLevel(ByVal index As Long)
 Dim TextX As Long
 Dim TextY As Long
 Dim Color As Long
-Dim Level As String
+Dim Level As String, levelSize As Long
 Dim NPCNum As Long
 
     If MapNpc(index).petData.Owner > 0 Then Exit Sub
@@ -298,13 +336,25 @@ Dim NPCNum As Long
             Exit Sub
     End Select
     
-    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Level)))
+    Level = "Level " & Trim$(NPC(NPCNum).Level)
+    levelSize = getWidth(TexthDC, Level)
+    TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (levelSize / 2)
+    
+    
     If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
-        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset
+        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - 16
     Else
         ' Determine location for text
-        TextY = ConvertMapY(MapNpc(index).y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 8
+        TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 4
     End If
+    
+    'TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - getWidth(TexthDC, ((Level)))
+    'If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
+    '    TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset
+    'Else
+        ' Determine location for text
+    '    TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - (DDSD_Character(NPC(NPCNum).sprite).lHeight / 4) + 8
+    'End If
 
     ' Draw Level
     Call DrawText(TexthDC, TextX, TextY, Level, Color)
@@ -319,7 +369,7 @@ End Sub
 
 Public Function BltMapAttributes()
     Dim X As Long
-    Dim y As Long
+    Dim Y As Long
     Dim tX As Long
     Dim tY As Long
     
@@ -328,11 +378,11 @@ Public Function BltMapAttributes()
 
     If frmEditor_Map.optAttribs.value Then
         For X = TileView.Left To TileView.Right
-            For y = TileView.Top To TileView.Bottom
-                If IsValidMapPoint(X, y) Then
-                    With map.Tile(X, y)
+            For Y = TileView.Top To TileView.Bottom
+                If IsValidMapPoint(X, Y) Then
+                    With map.Tile(X, Y)
                         tX = ((ConvertMapX(X * PIC_X)) - 4) + (PIC_X * 0.5)
-                        tY = ((ConvertMapY(y * PIC_Y)) - 7) + (PIC_Y * 0.5)
+                        tY = ((ConvertMapY(Y * PIC_Y)) - 7) + (PIC_Y * 0.5)
                         Select Case .Type
                             Case TILE_TYPE_BLOCKED
                                 DrawText TexthDC, tX, tY, "B", QBColor(BrightRed)
@@ -382,7 +432,7 @@ errorhandler:
 End Function
 
 Sub BltActionMsg(ByVal index As Long)
-    Dim X As Long, y As Long, i As Long, Time As Long
+    Dim X As Long, Y As Long, i As Long, Time As Long
     
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -395,24 +445,24 @@ Sub BltActionMsg(ByVal index As Long)
         Case ACTIONMSG_STATIC
             Time = 1500
 
-            If ActionMsg(index).y > 0 Then
+            If ActionMsg(index).Y > 0 Then
                 X = ActionMsg(index).X + Int(PIC_X \ 2) - ((Len((ActionMsg(index).message)) \ 2) * 8)
-                y = ActionMsg(index).y - Int(PIC_Y \ 2) - 2
+                Y = ActionMsg(index).Y - Int(PIC_Y \ 2) - 2
             Else
                 X = ActionMsg(index).X + Int(PIC_X \ 2) - ((Len((ActionMsg(index).message)) \ 2) * 8)
-                y = ActionMsg(index).y - Int(PIC_Y \ 2) + 8
+                Y = ActionMsg(index).Y - Int(PIC_Y \ 2) + 8
             End If
 
         Case ACTIONMSG_SCROLL
             Time = 1500
         
-            If ActionMsg(index).y > 0 Then
+            If ActionMsg(index).Y > 0 Then
                 X = ActionMsg(index).X + Int(PIC_X \ 2) - ((Len((ActionMsg(index).message)) \ 2) * 8)
-                y = ActionMsg(index).y - Int(PIC_Y \ 2) - 2 - (ActionMsg(index).Scroll * 0.6)
+                Y = ActionMsg(index).Y - Int(PIC_Y \ 2) - 2 - (ActionMsg(index).Scroll * 0.6)
                 ActionMsg(index).Scroll = ActionMsg(index).Scroll + 1
             Else
                 X = ActionMsg(index).X + Int(PIC_X \ 2) - ((Len((ActionMsg(index).message)) \ 2) * 8)
-                y = ActionMsg(index).y - Int(PIC_Y \ 2) + 18 + (ActionMsg(index).Scroll * 0.6)
+                Y = ActionMsg(index).Y - Int(PIC_Y \ 2) + 18 + (ActionMsg(index).Scroll * 0.6)
                 ActionMsg(index).Scroll = ActionMsg(index).Scroll + 1
             End If
 
@@ -429,15 +479,15 @@ Sub BltActionMsg(ByVal index As Long)
                 End If
             Next
             X = (frmMain.picScreen.Width \ 2) - ((Len((ActionMsg(index).message)) \ 2) * 8)
-            y = 425
+            Y = 425
 
     End Select
     
     X = ConvertMapX(X)
-    y = ConvertMapY(y)
+    Y = ConvertMapY(Y)
 
     If GetTickCount < ActionMsg(index).Created + Time Then
-        Call DrawText(TexthDC, X, y, ActionMsg(index).message, QBColor(ActionMsg(index).Color))
+        Call DrawText(TexthDC, X, Y, ActionMsg(index).message, QBColor(ActionMsg(index).Color))
     Else
         ClearActionMsg index
     End If
@@ -450,11 +500,11 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Function getWidth(ByVal DC As Long, ByVal Text As String) As Long
+Public Function getWidth(ByVal DC As Long, ByVal text As String) As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
-    getWidth = frmMain.TextWidth(Text) \ 2
+    getWidth = frmMain.TextWidth(text) / 1.5
     
     ' Error handler
     Exit Function
@@ -473,10 +523,10 @@ Dim s As String
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     s = vbNewLine & msg
-    frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text)
+    frmMain.txtChat.SelStart = Len(frmMain.txtChat.text)
     frmMain.txtChat.SelColor = QBColor(Color)
     frmMain.txtChat.SelText = s
-    frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text) - 1
+    frmMain.txtChat.SelStart = Len(frmMain.txtChat.text) - 1
     
     'LoadOptions
     
@@ -497,13 +547,13 @@ errorhandler:
     Exit Sub
 End Sub
 
-Public Sub WordWrap_Array(ByVal Text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
+Public Sub WordWrap_Array(ByVal text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
 Dim lineCount As Long, i As Long, Size As Long, lastSpace As Long, b As Long
     
     'Too small of text
-    If Len(Text) < 2 Then
+    If Len(text) < 2 Then
         ReDim theArray(1 To 1) As String
-        theArray(1) = Text
+        theArray(1) = text
         Exit Sub
     End If
     
@@ -512,16 +562,16 @@ Dim lineCount As Long, i As Long, Size As Long, lastSpace As Long, b As Long
     lastSpace = 1
     Size = 0
     
-    For i = 1 To Len(Text)
+    For i = 1 To Len(text)
         ' if it's a space, store it
-        Select Case Mid$(Text, i, 1)
+        Select Case Mid$(text, i, 1)
             Case " ": lastSpace = i
             Case "_": lastSpace = i
             Case "-": lastSpace = i
         End Select
         
         'Add up the size
-        Size = Size + getWidth(TexthDC, Mid$(Text, i, 1))
+        Size = Size + getWidth(TexthDC, Mid$(text, i, 1))
         
         'Check for too large of a size
         If Size > MaxLineLen Then
@@ -530,33 +580,33 @@ Dim lineCount As Long, i As Long, Size As Long, lastSpace As Long, b As Long
                 'Too far away to the last space, so break at the last character
                 lineCount = lineCount + 1
                 ReDim Preserve theArray(1 To lineCount) As String
-                theArray(lineCount) = Trim$(Mid$(Text, b, (i - 1) - b))
+                theArray(lineCount) = Trim$(Mid$(text, b, (i - 1) - b))
                 b = i - 1
                 Size = 0
             Else
                 'Break at the last space to preserve the word
                 lineCount = lineCount + 1
                 ReDim Preserve theArray(1 To lineCount) As String
-                theArray(lineCount) = Trim$(Mid$(Text, b, lastSpace - b))
+                theArray(lineCount) = Trim$(Mid$(text, b, lastSpace - b))
                 b = lastSpace + 1
                 
                 'Count all the words we ignored (the ones that weren't printed, but are before "i")
-                Size = getWidth(TexthDC, Mid$(Text, lastSpace, i - lastSpace))
+                Size = getWidth(TexthDC, Mid$(text, lastSpace, i - lastSpace))
             End If
         End If
         
         ' Remainder
-        If i = Len(Text) Then
+        If i = Len(text) Then
             If b <> i Then
                 lineCount = lineCount + 1
                 ReDim Preserve theArray(1 To lineCount) As String
-                theArray(lineCount) = theArray(lineCount) & Mid$(Text, b, i)
+                theArray(lineCount) = theArray(lineCount) & Mid$(text, b, i)
             End If
         End If
     Next
 End Sub
 
-Public Function WordWrap(ByVal Text As String, ByVal MaxLineLen As Integer) As String
+Public Function WordWrap(ByVal text As String, ByVal MaxLineLen As Integer) As String
 Dim TempSplit() As String
 Dim TSLoop As Long
 Dim lastSpace As Long
@@ -565,13 +615,13 @@ Dim i As Long
 Dim b As Long
 
     'Too small of text
-    If Len(Text) < 2 Then
-        WordWrap = Text
+    If Len(text) < 2 Then
+        WordWrap = text
         Exit Function
     End If
 
     'Check if there are any line breaks - if so, we will support them
-    TempSplit = Split(Text, vbNewLine)
+    TempSplit = Split(text, vbNewLine)
     
     For TSLoop = 0 To UBound(TempSplit)
     
@@ -634,7 +684,7 @@ End Function
 ' PLEASE NOTE THIS WILL FAIL MISERABLY IF YOU DIDN'T APPLY THE FONT MEMORY LEAK FIX FIRST
 ' CHAT BUBBLE HACK
 ' I ONLY DID THIS COZ THE CHATBUBBLE TEXT LOOKS BETTER WITHOUT SHADOW OVER WHITE BUBBLES!
-Public Sub DrawTextNoShadow(ByVal hDC As Long, ByVal X, ByVal y, ByVal Text As String, Color As Long)
+Public Sub DrawTextNoShadow(ByVal hDC As Long, ByVal X, ByVal Y, ByVal text As String, Color As Long)
     ' If debug mode, handle error then exit out
     Dim OldFont As Long ' HFONT
     
@@ -644,7 +694,7 @@ Public Sub DrawTextNoShadow(ByVal hDC As Long, ByVal X, ByVal y, ByVal Text As S
     'OldFont = SelectObject(hDC, GameFont)
     Call SetBkMode(hDC, vbTransparent)
     Call SetTextColor(hDC, Color)
-    Call TextOut(hDC, X, y, Text, Len(Text))
+    Call TextOut(hDC, X, Y, text, Len(text))
     'Call SelectObject(hDC, OldFont)
     Call DeleteObject(GameFont)
     
@@ -658,7 +708,7 @@ End Sub
 
 Sub ClearChat()
     If Not InGame Then Exit Sub
-    frmMain.txtChat.Text = vbNullString
+    frmMain.txtChat.text = vbNullString
     DisplayChat
 End Sub
 
@@ -691,12 +741,12 @@ Sub DisplayChatRoomMsg(ByVal chatroom As Byte)
     If chatroom > 0 And chatroom < ChatType_Count Then
         Dim msg As ChatMsgRec
         msg = ListActual(ChatRooms(chatroom))
-        frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text)
+        frmMain.txtChat.SelStart = Len(frmMain.txtChat.text)
         frmMain.txtChat.SelColor = msg.colour
         frmMain.txtChat.SelText = vbNewLine & msg.header
         frmMain.txtChat.SelColor = msg.saycolour
-        frmMain.txtChat.SelText = msg.Text
-        frmMain.txtChat.SelStart = Len(frmMain.txtChat.Text) - 1
+        frmMain.txtChat.SelText = msg.text
+        frmMain.txtChat.SelStart = Len(frmMain.txtChat.text) - 1
     End If
 End Sub
 
@@ -774,7 +824,7 @@ End Function
 Public Sub DrawChat()
 Dim i As Integer
     For i = 1 To 8
-        Call DrawText(TexthDC, Camera.Left + 10, (Camera.Bottom - 20) - (i * 20), Chat(i).Text, Chat(i).colour)
+        Call DrawText(TexthDC, Camera.Left + 10, (Camera.Bottom - 20) - (i * 20), Chat(i).text, Chat(i).colour)
     Next
 End Sub
 
@@ -782,11 +832,11 @@ Public Sub ReOrderChat(ByVal nText As String, nColour As Long)
 Dim i As Integer
    
     For i = 19 To 1 Step -1
-        Chat(i + 1).Text = Chat(i).Text
+        Chat(i + 1).text = Chat(i).text
         Chat(i + 1).colour = Chat(i).colour
     Next
    
-    Chat(1).Text = nText
+    Chat(1).text = nText
     Chat(1).colour = QBColor(White)
 
 End Sub
