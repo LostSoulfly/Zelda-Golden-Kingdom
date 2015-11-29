@@ -2127,6 +2127,8 @@ End Function
 
 Sub ParseCommand(ByVal index As Long, ByRef s() As String, ByVal size As Byte)
 If frmServer.chkTroll.Value = vbChecked Then Exit Sub
+On Error GoTo oops
+
     If index = 0 Or size < 1 Then Exit Sub
     Dim i As Long, j As Long, ItemNum As Long, spellnum As Long
     
@@ -2454,5 +2456,11 @@ howto:
         PlayerMsg index, "[/cmd giveitem Dragoon 123 5] will add 5 of item 123 to Dragoon's inventory.", White, True, False
         End Select
     End Select
+    
+Exit Sub
+
+oops:
+PlayerMsg index, "Error: " & Err.number & ": " & Err.Description, BrightGreen, True, False
+
 End Sub
 

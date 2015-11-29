@@ -1534,6 +1534,7 @@ Sub SetPlayerBankItemValue(ByVal index As Long, ByVal BankSlot As Long, ByVal It
 End Sub
 
 Sub GiveBankItem(ByVal index As Long, ByVal invSlot As Long, ByVal amount As Long)
+
 Dim BankSlot
 Dim Value
 
@@ -1541,7 +1542,7 @@ Dim Value
         Exit Sub
     End If
     
-    If amount < 0 Or amount > GetPlayerInvItemValue(index, invSlot) Then
+    If amount <= 0 Or amount > GetPlayerInvItemValue(index, invSlot) Then
         Exit Sub
     End If
     
@@ -1577,12 +1578,13 @@ Dim Value
 End Sub
 
 Sub TakeBankItem(ByVal index As Long, ByVal BankSlot As Long, ByVal amount As Long)
+
 Dim invSlot
 
     If BankSlot < 0 Or BankSlot > MAX_BANK Then
         Exit Sub
     End If
-    If amount < 0 Or amount > GetPlayerBankItemValue(index, BankSlot) Then
+    If amount <= 0 Or amount > GetPlayerBankItemValue(index, BankSlot) Then
         Exit Sub
     End If
     

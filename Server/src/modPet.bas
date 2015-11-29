@@ -373,7 +373,7 @@ End Function
 
 Public Sub SetPlayerPetStat(ByVal index As Long, ByVal stat As Byte, ByVal number As Byte)
 
-If number > MAX_STAT Or number < 0 Then Exit Sub
+If number > MAX_STAT Or number <= 0 Then Exit Sub
 
 player(index).Pet(TempPlayer(index).TempPet.ActualPet).StatsAdd(stat) = number
 

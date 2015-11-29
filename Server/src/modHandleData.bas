@@ -986,7 +986,7 @@ Dim sMes As String
     Set buffer = Nothing
 
     ' Prevent hacking
-    If (PointType < 0) Or (PointType > Stats.Stat_Count) Then
+    If (PointType <= 0) Or (PointType > Stats.Stat_Count) Then
         HackingAttempt index, "Stat Point exploit."
         Exit Sub
     End If
@@ -1320,11 +1320,11 @@ Sub HandleMapDropItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr
 
     ' Prevent hacking
     If invNum < 1 Or invNum > MAX_INV Then Exit Sub
-    
+        
     If GetPlayerInvItemNum(index, invNum) < 1 Or GetPlayerInvItemNum(index, invNum) > MAX_ITEMS Then Exit Sub
     
     If isItemStackable(GetPlayerInvItemNum(index, invNum)) Then
-        If amount < 1 Or amount > GetPlayerInvItemValue(index, invNum) Then Exit Sub
+        If amount <= 0 Or amount > GetPlayerInvItemValue(index, invNum) Then Exit Sub
     End If
     
     ' everything worked out fine
@@ -2398,6 +2398,8 @@ Sub HandleWithdrawItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAdd
     BankSlot = buffer.ReadLong
     amount = buffer.ReadLong
     
+    
+    
     TakeBankItem index, BankSlot, amount
     
     Set buffer = Nothing
@@ -2410,7 +2412,7 @@ Sub HandleDepositItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr
     
     Set buffer = New clsBuffer
     buffer.WriteBytes Data()
-    
+        
     invSlot = buffer.ReadLong
     amount = buffer.ReadLong
     
@@ -2677,7 +2679,7 @@ Sub HandleTradeItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
     If ItemNum <= 0 Or ItemNum > MAX_ITEMS Then Exit Sub
     
     ' make sure they have the amount they offer
-    If amount < 0 Or amount > GetPlayerInvItemValue(index, invSlot) Then
+    If amount <= 0 Or amount > GetPlayerInvItemValue(index, invSlot) Then
         Exit Sub
     End If
     
@@ -3447,7 +3449,7 @@ Dim sMes As String
     Set buffer = Nothing
 
     ' Prevent hacking
-    If (PointType < 0) Or (PointType > Stats.Stat_Count) Then
+    If (PointType <= 0) Or (PointType > Stats.Stat_Count) Then
         Exit Sub
     End If
 
