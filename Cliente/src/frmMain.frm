@@ -5037,6 +5037,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   -2147483641
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
@@ -5150,14 +5151,14 @@ Begin VB.Form frmMain
       TabCaption(0)   =   "Teclas"
       TabPicture(0)   =   "frmMain.frx":12562A
       Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "CloseHelpBoard(0)"
-      Tab(0).Control(1)=   "Picture2"
+      Tab(0).Control(0)=   "Picture2"
+      Tab(0).Control(1)=   "CloseHelpBoard(0)"
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Entrenar"
       TabPicture(1)   =   "frmMain.frx":125646
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Picture7"
-      Tab(1).Control(1)=   "CloseHelpBoard(1)"
+      Tab(1).Control(0)=   "CloseHelpBoard(1)"
+      Tab(1).Control(1)=   "Picture7"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Estadísticas"
       TabPicture(2)   =   "frmMain.frx":125662
@@ -5170,14 +5171,14 @@ Begin VB.Form frmMain
       TabCaption(3)   =   "Habilidades"
       TabPicture(3)   =   "frmMain.frx":12567E
       Tab(3).ControlEnabled=   0   'False
-      Tab(3).Control(0)=   "CloseHelpBoard(3)"
-      Tab(3).Control(1)=   "Picture9(0)"
+      Tab(3).Control(0)=   "Picture9(0)"
+      Tab(3).Control(1)=   "CloseHelpBoard(3)"
       Tab(3).ControlCount=   2
       TabCaption(4)   =   "Mascotas"
       TabPicture(4)   =   "frmMain.frx":12569A
       Tab(4).ControlEnabled=   0   'False
-      Tab(4).Control(0)=   "CloseHelpBoard(4)"
-      Tab(4).Control(1)=   "Picture9(1)"
+      Tab(4).Control(0)=   "Picture9(1)"
+      Tab(4).Control(1)=   "CloseHelpBoard(4)"
       Tab(4).ControlCount=   2
       Begin VB.PictureBox Picture9 
          BackColor       =   &H80000012&
@@ -9232,7 +9233,7 @@ Dim spellnum As Long
         End If
     ElseIf Button = 2 Then ' right click
         If spellnum <> 0 Then
-            Dialogue "Forget Spell", "¿Estás seguro de que deseas olvidar la habilidad " & Trim$(Spell(PlayerSpells(spellnum)).TranslatedName) & "?", DIALOGUE_TYPE_FORGET, True, spellnum
+            Dialogue "Forget Spell", GetTranslation("¿Estás seguro de que deseas olvidar la habilidad ") & " " & Trim$(Spell(PlayerSpells(spellnum)).TranslatedName) & "?", DIALOGUE_TYPE_FORGET, True, spellnum, False
             Exit Sub
         End If
     End If
@@ -9679,7 +9680,7 @@ Private Sub picInventory_DblClick()
                     multiplier = Shop(InShop).BuyRate / 100
                     value = Item(GetPlayerInvItemNum(MyIndex, InvNum)).Price * multiplier
                     If value > 0 Then
-                        AddText "Puedes vender éste objeto por " & value & " rupias.", White, True
+                        AddText GetTranslation("Puedes vender éste objeto por ") & " " & value & " " & GetTranslation(" rupias."), White
                     Else
                         AddText "La tienda no quiere éste objeto.", BrightRed, True
                     End If
@@ -9694,7 +9695,7 @@ Private Sub picInventory_DblClick()
         If InBank Then
             If isItemStackable(GetPlayerInvItemNum(MyIndex, InvNum)) Then
                 CurrencyMenu = 2 ' deposit
-                lblCurrency.Caption = "¿Cuánto quieres depositar?"
+                lblCurrency.Caption = GetTranslation("¿Cuánto quieres depositar?")
                 tmpCurrencyItem = InvNum
                 txtCurrency.text = vbNullString
                 picCurrency.Visible = True
@@ -9726,7 +9727,7 @@ Private Sub picInventory_DblClick()
             
             If isItemStackable(GetPlayerInvItemNum(MyIndex, InvNum)) Then
                 CurrencyMenu = 4 ' offer in trade
-                lblCurrency.Caption = "¿Cuánto quieres comerciar?"
+                lblCurrency.Caption = GetTranslation("¿Cuánto quieres comerciar?")
                 tmpCurrencyItem = InvNum
                 txtCurrency.text = vbNullString
                 picCurrency.Visible = True
@@ -9932,7 +9933,7 @@ Private Sub picInventory_MouseDown(Button As Integer, Shift As Integer, X As Sin
                 If isItemStackable(GetPlayerInvItemNum(MyIndex, InvNum)) Then
                     If GetPlayerInvItemValue(MyIndex, InvNum) > 0 Then
                         CurrencyMenu = 1 ' drop
-                        lblCurrency.Caption = "¿Cuánto quieres tirar?"
+                        lblCurrency.Caption = GetTranslation("¿Cuánto quieres tirar?")
                         tmpCurrencyItem = InvNum
                         txtCurrency.text = vbNullString
                         picCurrency.Visible = True
@@ -10564,7 +10565,7 @@ Dim bankNum As Long
 
              If isItemStackable(GetBankItemNum(bankNum)) Then
                 CurrencyMenu = 3 ' withdraw
-                lblCurrency.Caption = "¿Cuánto quieres retirar?"
+                lblCurrency.Caption = GetTranslation("¿Cuánto quieres retirar?")
                 tmpCurrencyItem = bankNum
                 txtCurrency.text = vbNullString
                 picCurrency.Visible = True

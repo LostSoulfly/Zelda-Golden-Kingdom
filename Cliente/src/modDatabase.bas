@@ -182,7 +182,7 @@ Dim i As Byte
         If Len(Trim$(Replace(Options.Password, vbNullChar, ""))) = 0 Then Options.Password = GetVar(Filename, "Options", "Password")
         Options.SavePass = Val(GetVar(Filename, "Options", "SavePass"))
         
-        'Call PutVar(Filename, "Options", "RequireLauncher", "1")
+        'Call PutVar(Filename, "Options", "RequireLauncher", "0")
         
         If GetVar(Filename, "Options", "RequireLauncher") = 1 Then
             If InStr(1, Command, "-launcher 1") <= 0 Then

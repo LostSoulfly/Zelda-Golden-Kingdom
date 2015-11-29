@@ -2060,16 +2060,17 @@ Case seDie
 End Select
 End Function
 
-Public Sub Dialogue(ByVal diTitle As String, ByVal diText As String, ByVal diIndex As Long, Optional ByVal isYesNo As Boolean = False, Optional ByVal Data1 As Long = 0)
+Public Sub Dialogue(ByVal diTitle As String, ByVal diText As String, ByVal diIndex As Long, Optional ByVal isYesNo As Boolean = False, Optional ByVal Data1 As Long = 0, Optional blTranslate As Boolean = True)
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     
     ' exit out if we've already got a dialogue open
     If dialogueIndex > 0 Then Exit Sub
     
-    diTitle = GetTranslation(diTitle)
-    diText = GetTranslation(diText)
-    
+    If blTranslate = True Then
+        diTitle = GetTranslation(diTitle)
+        diText = GetTranslation(diText)
+    End If
     ' set global dialogue index
     dialogueIndex = diIndex
     

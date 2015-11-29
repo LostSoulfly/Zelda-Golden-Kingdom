@@ -696,7 +696,7 @@ Dim TNL As Long
     
     SetPlayerExp MyIndex, Buffer.ReadLong
     TNL = Buffer.ReadLong
-    frmMain.lblEXP.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
+    frmMain.lblExp.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
     ' mp bar
     frmMain.imgEXPBar.Width = ((GetPlayerExp(MyIndex) / EXPBar_Width) / (TNL / EXPBar_Width)) * EXPBar_Width
     
@@ -2929,7 +2929,7 @@ Dim theName As String
     
     theName = Buffer.ReadString
     
-    Dialogue "Petición de comercio", theName & " te pide comerciar. ¿Quieres aceptar?", DIALOGUE_TYPE_TRADE, True
+    Dialogue GetTranslation("Petición de comercio"), theName & " " & GetTranslation(" te pide comerciar. ¿Quieres aceptar?"), DIALOGUE_TYPE_TRADE, True, , False
     
     ' Error handler
     Exit Sub
@@ -2951,7 +2951,7 @@ Dim theName As String
 
     theName = Buffer.ReadString
     
-    Dialogue "Invitación al equipo", theName & " te invita a un equipo. ¿Deseas unirte?", DIALOGUE_TYPE_PARTY, True
+    Dialogue GetTranslation("Invitación al equipo"), theName & " " & GetTranslation(" te invita a un equipo. ¿Deseas unirte?"), DIALOGUE_TYPE_PARTY, True, , False
     
     ' Error handler
     Exit Sub

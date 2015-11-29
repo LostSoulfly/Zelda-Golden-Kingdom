@@ -1158,7 +1158,7 @@ Dim X As Long, Y As Long, i As Long, rec As RECT
     
     
     ' let them know we did it
-    AddText "Foto del mapa #" & GetPlayerMap(MyIndex) & " guardada.", BrightGreen, True
+    AddText GetTranslation("Foto del mapa #") & GetPlayerMap(MyIndex) & " " & GetTranslation(" guardada."), BrightGreen, False
     
     ' Error handler
     Exit Sub

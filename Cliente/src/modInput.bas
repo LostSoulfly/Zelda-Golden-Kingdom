@@ -250,7 +250,7 @@ Dim alldeaths As Long
                     ScreenshotMap
             
                 Case "/wasd"
-                    Options.WASD = Not Options.WASD
+                    If Options.WASD = 0 Then Options.WASD = 1 Else Options.WASD = 0
                     If Options.WASD = 1 Then AddText "WASD controls enabled! Use E to attack, Spacebar to pickup items.", White
                     If Options.WASD = 0 Then AddText "WASD controls disabled.", White
                     
@@ -266,10 +266,10 @@ Dim alldeaths As Long
                 Case "/guild"
                     If UBound(Command) < 1 Then
                             Call AddText("Comandos de Guilds:", HelpColor, True)
-                            Call AddText("Crear Guild: /guild crear (GuildName)", HelpColor, True)
-                            Call AddText("Para transferir datos del fundador usa /guild fundador (Name)", HelpColor, True)
-                            Call AddText("Invitar al Guild: /guild invitar (name)", HelpColor, True)
-                            Call AddText("Abandonar Guild: /guild abandonar", HelpColor, True)
+                            Call AddText("Crear Guild: /guild create (GuildName)", HelpColor, True)
+                            Call AddText("Para transferir datos del fundador usa /guild founder (Name)", HelpColor, True)
+                            Call AddText("Invitar al Guild: /guild invite (name)", HelpColor, True)
+                            Call AddText("Abandonar Guild: /guild abandon", HelpColor, True)
                             Call AddText("Abrir Panel del Guild: /guild admin", HelpColor, True)
                             Call AddText("Expulsar del Guild: /guild expell (name)", HelpColor, True)
                             Call AddText("Disband Guild: /guild disband yes", HelpColor)
@@ -290,7 +290,7 @@ Dim alldeaths As Long
                             If UBound(Command) = 2 Then
                                 Call GuildCommand(2, Command(2))
                             Else
-                                Call AddText("Debes seleccionar un usuario, usa /guild invitar (Name)", BrightRed, True)
+                                Call AddText("Debes seleccionar un usuario, usa /guild invite (Name)", BrightRed, True)
                             End If
 
                         Case "abandon"
