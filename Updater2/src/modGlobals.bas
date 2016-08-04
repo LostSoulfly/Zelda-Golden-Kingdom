@@ -15,3 +15,14 @@ Public GameName As String
 Public GameWebsite As String
 Public UpdateURL As String
 Public ClientName As String
+
+Public Type ServerRec
+    Name As String
+    CurrentPlayers As String
+    MaxPlayers As String
+    Online As Boolean
+    Port As Long
+End Type
+
+Public Server(1 To 50) As ServerRec
+Public SelectedServer As Integer

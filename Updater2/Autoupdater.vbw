@@ -1,6 +1,7 @@
-frmMain = 276, 180, 1249, 802, , 75, 352, 609, 683, C
-modUnrar = 728, 80, 1516, 707, 
-modMain = 48, 110, 1239, 728, 
-modDatabase = 909, 2, 1579, 619, C
-modGlobals = 25, 25, 920, 486, C
-modRegister = 48, 89, 1243, 649, C
+frmMain = 94, 11, 1067, 513, , 754, 320, 1454, 740, C
+modUnrar = 94, 19, 882, 646, 
+modMain = 91, 8, 1244, 754, Z
+modDatabase = 77, 46, 1003, 639, 
+modGlobals = 25, 25, 920, 486, 
+modRegister = 121, 52, 990, 612, 
+frmSelect = 22, -1, 970, 505, , 142, 55, 628, 535, C

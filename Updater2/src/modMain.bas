@@ -11,6 +11,9 @@ Sub Main()
     
     If App.PrevInstance = True Then DestroyUpdater
     
+    ClearServers
+    
+    
     ' Set the base value for a single %.
     ProgressP = 63.75 ' frmMain.picprogress.Width / 100
     
@@ -28,11 +31,12 @@ Sub Main()
     ' Set the base value for a single %.
     ProgressP = 63.75 ' frmMain.picprogress.Width / 100
     
+    Call PathCheck
     ' Load the main form
     Load frmMain
     'CheckVersion
         
-        Else
+    Else
         
     ' Load the values we need into memory.
     UpdateURL = GetVar(App.Path & "\data\UpdateConfig.ini", "UPDATER", "UpdateURL")
@@ -45,20 +49,27 @@ Sub Main()
     ProgressP = 63.75 ' frmMain.picprogress.Width / 100
     
     ' Load the main form
-    Load frmMain
+    'Load frmMain
     'CheckVersion
         
     End If
     
+    Call PathCheck
     
     ' Load the main form
     Load frmMain
     
 End Sub
 
+Sub PathCheck()
+    On Error Resume Next
+    MkDir App.Path & "\data\"
+End Sub
+
 Public Sub DestroyUpdater()
     ' Delete all temporary doodles.
-    If FileExist(App.Path & "\tmpUpdate.ini") Then Kill App.Path & "\tmpUpdate.ini"
+    If FileExist(App.Path & "\data\tmpUpdate.ini") Then Kill App.Path & "\data\tmpUpdate.ini"
+    If FileExist(App.Path & "\data\status.ini") Then Kill App.Path & "\data\status.ini"
     
     ' End the program.
     frmMain.inetDownload.Cancel
@@ -73,7 +84,7 @@ End Sub
 Public Sub CheckVersion()
 Dim Filename As String
     
-    On Error GoTo ErrorHandle
+    'On Error GoTo ErrorHandle
     Sleep 100
     If FileExist("launcher.update.exe") Then
     ChangeStatus "Updating Launcher.."
@@ -103,6 +114,8 @@ Dim Filename As String
     'replace myself with the new version?
     End If
     
+    If App.PrevInstance = True Then End
+    
     ' Enable our timeout timer, so it doesn't endlessly keep
     ' trying to connect.
     frmMain.tmrTimeout.Enabled = True
@@ -113,7 +126,11 @@ Dim Filename As String
     DoEvents
     Sleep 100
     ' Get the file which contains the info of updated files
-    DownloadFile UpdateURL & "update.txt", App.Path & "\tmpUpdate.ini"
+    
+    DoEvents
+    Sleep 100
+    
+    DownloadFile UpdateURL & "update.txt", App.Path & "\data\tmpUpdate.ini"
     Sleep 100
     DoEvents
     ' Done with the download, update the progress and continue!
@@ -122,7 +139,7 @@ Dim Filename As String
     Sleep 100
     DoEvents
     ' read the version count
-    VersionCount = GetVar(App.Path & "\tmpUpdate.ini", "UPDATER", "Version")
+    VersionCount = GetVar(App.Path & "\data\tmpUpdate.ini", "UPDATER", "Version")
     
     ' check if we've got a current client version saved
     If FileExist(App.Path & "\data\Config.ini") Then
@@ -152,12 +169,26 @@ Dim Filename As String
         'End If
     Else
         UpToDate = 1
-        ChangeStatus "Your client is up to date!"
+        If SelectedServer > 0 Then
+            If Server(SelectedServer).CurrentPlayers > 0 Then
+                ChangeStatus "Your client is up to date! Server: " & Server(SelectedServer).Name & " - " & " Players Online: " & Server(SelectedServer).CurrentPlayers
+            Else
+                ChangeStatus "Your client is up to date! Server: " & Server(SelectedServer).Name
+            End If
+            frmMain.lblConnect.Visible = True
+        Else
+            ChangeStatus "Your client is up to date!"
+            frmMain.lblConnect.Visible = True
+        End If
         SetProgress 100
         ' Load a GUI image, if it does not exist.. Exit out of the program.
         'Form_LoadPicture (App.Path & "\data\graphics\gui\updater\launch.jpg")
-        
+        frmMain.lblConnect.Visible = True
     End If
+    
+    DoEvents
+    
+    DownloadFile UpdateURL & "news.txt", App.Path & "\data\news.txt"
     
     Exit Sub
 ErrorHandle:
@@ -215,10 +246,21 @@ Dim CurProgress As Long
         
         ' Delete the update file.
         Kill App.Path & "\" & Filename
+        
+        If FileExist(App.Path & "\launcher.update.exe") Then
+            PutVar App.Path & "\data\Config.ini", "UPDATER", "Version", Str(i)
+            DoEvents
+            Shell App.Path & "\launcher.update.exe"
+            DoEvents
+            DestroyUpdater
+    End If
+        
     Next
     
+    If FileExist(App.Path & "\temp.txt") Then Kill App.Path & "\temp.txt"
+    
     ' Update the version of the client.
-    PutVar App.Path & "\data\Config.ini", "UPDATER", "Version", Str(VersionCount)
+    PutVar App.Path & "\data\Config.ini", "UPDATER", "Version", Str(i)
     
      ' Load the Launch Backdrop.
     'Form_LoadPicture (App.Path & "\data\graphics\gui\updater\launch.jpg")
@@ -230,10 +272,36 @@ Dim CurProgress As Long
     ChangeStatus "Updating Launcher."
     DoEvents
     Sleep 100
-    If FileExist(App.Path & "\launcher.update.exe") Then
-        Shell App.Path & "\launcher.update.exe"
-        End
-    End If
+    'If FileExist(App.Path & "\launcher.update.exe") Then
+    '    Shell App.Path & "\launcher.update.exe"
+    '    End
+    'End If
+    SetProgress 95
+    ChangeStatus "Resetting Config Settings.."
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "SafeMode", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Game_Name", "The Legend Of Zelda: The Golden Kingdom"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "SavePass", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Port", "4000"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Music", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Sound", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Debug", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Names", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Level", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "WASD", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "MiniMapBltElse", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Chat", "0"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "DefaultVolume", "50"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "MiniMap", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "IP", "trollparty.org"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "ChatToScreen", "1"
+    PutVar App.Path & "\data\Config.ini", "OPTIONS", "MappingMode", "0"
+    
+    PutVar App.Path & "\data\Config.ini", "ChatOptions", "1", "1"
+    PutVar App.Path & "\data\Config.ini", "ChatOptions", "2", "1"
+    PutVar App.Path & "\data\Config.ini", "ChatOptions", "3", "1"
+    PutVar App.Path & "\data\Config.ini", "ChatOptions", "4", "1"
+    PutVar App.Path & "\data\Config.ini", "ChatOptions", "5", "1"
+    PutVar App.Path & "\data\Config.ini", "ChatOptions", "6", "1"
     
     ' Done? Niiiice..
     SetProgress 100 'Just to be sure, sometimes it misses ~1% due to the lack of decimals.
@@ -257,11 +325,20 @@ Public Sub SetProgress(ByVal Percent As Long)
     End If
 End Sub
 
-Private Sub DownloadFile(ByVal URL As String, ByVal Filename As String)
+Public Sub DownloadFile(ByVal URL As String, ByVal Filename As String)
     Dim fileBytes() As Byte
     Dim fileNum As Integer
     
     On Error GoTo DownloadError
+    
+    If frmMain.inetDownload.StillExecuting Then
+        Dim i As Integer
+        Do While True
+            Sleep 10
+            DoEvents
+            If frmMain.inetDownload.StillExecuting = False Then Exit Do
+        Loop
+    End If
     
     ' download data to byte array
     fileBytes() = frmMain.inetDownload.OpenURL(URL, icByteArray)
@@ -284,4 +361,129 @@ Public Sub Form_LoadPicture(ByVal Filename As String)
         Else
             DestroyUpdater
         End If
+End Sub
+
+Sub ReadServerFile()
+Dim File As String, Header As String
+Dim i As Integer
+Dim NumServers As Integer
+File = App.Path & "\data\status.ini"
+
+If Not FileExist(File) Then Exit Sub
+
+frmSelect.lstServers.Clear
+
+Header = "Servers"
+NumServers = Val(GetVar(File, Header, "NumServers"))
+
+If NumServers > UBound(Server) Then NumServers = UBound(Server)
+
+For i = 1 To NumServers
+
+Header = "Server" & i
+
+    Server(i).CurrentPlayers = Val(GetVar(File, Header, "Players"))
+    Server(i).MaxPlayers = Val(GetVar(File, Header, "MaxPlayers"))
+    'PutVar File, Header, "PvPOnly", "0"
+    Server(i).Name = GetVar(File, Header, "Name")
+    Server(i).Port = Val(GetVar(File, Header, "Port"))
+    Server(i).Online = Val(GetVar(File, Header, "Online"))
+
+If frmSelect Is Nothing Then Load frmSelect
+    With frmSelect.lstServers
+        If Server(i).Online = True Then
+            .AddItem Server(i).Name & " - Players: " & Server(i).CurrentPlayers & "/" & Server(i).MaxPlayers
+        End If
+    End With
+
+Next i
+
+'If CheckServerFull(SelectedServer) Then CheckServerFull
+
+
+End Sub
+
+Public Function CheckServerFull(Optional index As Integer = 0) As Boolean
+Dim i As Integer
+Dim anyOnline As Boolean
+
+    For i = 1 To UBound(Server)
+        If Server(i).CurrentPlayers > 0 Then frmMain.lblServer.Visible = True
+        If Server(i).Online = True Then anyOnline = True
+    Next i
+
+If index = 0 Then
+
+    For i = 1 To UBound(Server)
+        If (Server(i).CurrentPlayers > Server(SelectedServer).CurrentPlayers) And (Server(i).CurrentPlayers < Server(SelectedServer).MaxPlayers) Then SelectedServer = i
+    Next
+
+    For i = 1 To UBound(Server)
+        If SelectedServer = 0 Then SelectedServer = i
+        
+        If Server(SelectedServer).CurrentPlayers >= Server(SelectedServer).MaxPlayers Then
+            If Server(i + 1).CurrentPlayers < Server(i + 1).MaxPlayers Then
+                If Server(i + 1).Online = True Then SelectedServer = i + 1
+                frmMain.lblServer.Visible = True
+            End If
+        Else
+            CheckServerFull = False
+            Exit Function
+        End If
+    
+    Next
+    If anyOnline = False Then
+        MsgBox "I'm unable to retrieve server status information!" & vbNewLine & _
+        "So we'll just try the default port and hope for the best!", vbInformation, "Unable to Get Status"
+        SelectedServer = 1
+        Server(SelectedServer).Port = 4000
+        Server(SelectedServer).MaxPlayers = 40
+        Server(SelectedServer).Online = True
+        Server(SelectedServer).CurrentPlayers = 0
+    Else
+        MsgBox "It appears that all servers are full at the moment! :(", vbInformation, "Sorry! All Full?!"
+        CheckServerFull = True
+    End If
+    Exit Function
+Else
+
+    If Server(index).CurrentPlayers < Server(index).MaxPlayers Then CheckServerFull = False: Exit Function
+
+End If
+
+CheckServerFull = True
+
+End Function
+
+Sub WriteClientInfo()
+Dim File As String
+
+If SelectedServer = 0 Then SelectedServer = 1
+
+CheckServerFull (SelectedServer)
+
+If Server(SelectedServer).Port = 0 Then Exit Sub
+
+File = App.Path & "\Data\config.ini"
+
+'MsgBox "Server chosen: " & CStr(Server(SelectedServer).Name)
+
+PutVar File, "Options", "Port", CStr(Server(SelectedServer).Port)
+PutVar File, "Options", "RequireLauncher", " 1"
+
+DoEvents
+
+End Sub
+
+Sub ClearServers()
+
+    Dim i As Integer
+    For i = 1 To UBound(Server)
+        Server(i).CurrentPlayers = 0
+        Server(i).MaxPlayers = 0
+        Server(i).Name = ""
+        Server(i).Online = False
+        Server(i).Port = 0
+    Next i
+
 End Sub
