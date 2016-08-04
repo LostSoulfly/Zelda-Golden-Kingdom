@@ -1200,6 +1200,7 @@ FileName = FilePath & "map" & mapnum & ".dat"
 BackupPath = FilePath & "revisions\"
 MkDir BackupPath
 NewFileName = BackupPath & "map" & mapnum & "-" & Revision & ".dat"
+TextAdd "Map " & mapnum & " revision (" & Revision & ") " & FileName & " saved to " & NewFileName
 FileCopy FileName, NewFileName
 End Sub
 
