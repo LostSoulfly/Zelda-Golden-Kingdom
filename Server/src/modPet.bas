@@ -216,7 +216,7 @@ Public Sub SpawnPet(ByVal index As Long, ByVal mapnum As Long)
     
     'Check if SpawnWait Finished
     If UntilTime <= 0 Then
-        Call PlayerMsg(index, GetTranslation("Aún no puedes invocar a tu mascota!, faltan") & " " & Round(Abs(UntilTime) / 1000, 0) & " " & GetTranslation("segundos!"), BrightRed, , False)
+        Call PlayerMsg(index, GetTranslation("Aún no puedes invocar a tu mascota!, faltan", , UnTrimBack) & Round(Abs(UntilTime) / 1000, 0) & GetTranslation("segundos!", , UnTrimFront), BrightRed, , False)
         Exit Sub
     End If
     
@@ -332,7 +332,7 @@ End If
 
 'Agregar pet a slot libre
 Call AddPlayerPet(index, CByte(slot), CByte(PetIndex))
-Call PlayerMsg(index, Trim$(NPC(Pet(PetIndex).npcnum).TranslatedName) & " " & GetTranslation("se ha unido a tu equipo!"), BrightGreen, , False)
+Call PlayerMsg(index, Trim$(NPC(Pet(PetIndex).npcnum).TranslatedName) & GetTranslation("se ha unido a tu equipo!", , UnTrimFront), BrightGreen, , False)
 Call KillNpc(GetPlayerMap(index), TempPlayer(index).Target)
 Call SendPetData(index, TempPlayer(index).TempPet.ActualPet)
 
@@ -640,7 +640,7 @@ If TempPlayer(index).TempPet.TempPetSlot > 0 Then
     If PetDisband(index, GetPlayerMap(index), False) = False Then Exit Sub
 End If
 
-Call PlayerMsg(index, GetTranslation("Abandonas a tu") & " " & Trim$(NPC(Pet(player(index).Pet(PetSlot).NumPet).npcnum).TranslatedName), Yellow, , False)
+Call PlayerMsg(index, GetTranslation("Abandonas a tu", , UnTrimBack) & Trim$(NPC(Pet(player(index).Pet(PetSlot).NumPet).npcnum).TranslatedName), Yellow, , False)
 Call ResetPlayerPetSlot(index, PetSlot)
 'Call GivePlayerEXP(index, CumExp / 2)
 Call SendPetData(index, PetSlot)

@@ -155,7 +155,7 @@ Sub BanIndex(ByVal BanPlayerIndex As Long, ByVal BannedByIndex As Long)
     Print #F, IP & "," & GetPlayerName(BannedByIndex)
     Close #F
     Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " has been banned by " & GetPlayerName(BannedByIndex) & "!", White, False, True)
-    Call AddLog(BannedByIndex, GetPlayerName(BannedByIndex) & " ha baneado a " & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
+    Call AddLog(BannedByIndex, GetPlayerName(BannedByIndex) & GetTranslation(" ha baneado a ", , UnTrimBoth) & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & GetPlayerName(BannedByIndex) & "!")
 End Sub
 
@@ -191,8 +191,8 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Print #F, IP & "," & "Server"
     Close #F
     Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " has been banned by the Server" & "!", White, False, True)
-    Call AddLog(0, "The Server" & " ha baneado a " & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
-    Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & "The Server" & "!")
+    Call AddLog(0, "The Server" & GetTranslation(" ha baneado a ", , UnTrimBoth) & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
+    Call AlertMsg(BanPlayerIndex, GetTranslation("Has sido baneado por ", , UnTrimBack) & "the server" & "!", False)
 End Sub
 
 ' **************
@@ -243,7 +243,7 @@ End Sub
 Sub DeleteName(ByVal Name As String)
     Dim f1 As Long
     Dim f2 As Long
-    Dim s As String
+    Dim S As String
     Call FileCopy(App.Path & "\data\accounts\charlist.txt", App.Path & "\data\accounts\chartemp.txt")
     ' Destroy name from charlist
     f1 = FreeFile
@@ -252,10 +252,10 @@ Sub DeleteName(ByVal Name As String)
     Open App.Path & "\data\accounts\charlist.txt" For Output As #f2
 
     Do While Not EOF(f1)
-        Input #f1, s
+        Input #f1, S
 
-        If Trim$(LCase$(s)) <> Trim$(LCase$(Name)) Then
-            Print #f2, s
+        If Trim$(LCase$(S)) <> Trim$(LCase$(Name)) Then
+            Print #f2, S
         End If
 
     Loop
@@ -360,14 +360,14 @@ End Sub
 
 Function FindChar(ByVal Name As String) As Boolean
     Dim F As Long
-    Dim s As String
+    Dim S As String
     F = FreeFile
     Open App.Path & "\data\accounts\charlist.txt" For Input As #F
 
     Do While Not EOF(F)
-        Input #F, s
+        Input #F, S
 
-        If Trim$(LCase$(s)) = Trim$(LCase$(Name)) Then
+        If Trim$(LCase$(S)) = Trim$(LCase$(Name)) Then
             FindChar = True
             Close #F
             Exit Function
@@ -1200,7 +1200,6 @@ FileName = FilePath & "map" & mapnum & ".dat"
 BackupPath = FilePath & "revisions\"
 MkDir BackupPath
 NewFileName = BackupPath & "map" & mapnum & "-" & Revision & ".dat"
-TextAdd "Map " & mapnum & " revision (" & Revision & ") " & FileName & " saved to " & NewFileName
 FileCopy FileName, NewFileName
 End Sub
 
@@ -1773,7 +1772,7 @@ End Sub
 Function GetAccountsPassword() As String
     Dim FileName As String
     Dim F As Long
-    Dim s As String
+    Dim S As String
     
     FileName = App.Path & "\data\passwords\accounts.txt"
     GetAccountsPassword = vbNullString
@@ -1786,8 +1785,8 @@ Function GetAccountsPassword() As String
     F = FreeFile
     Open FileName For Input As #F
 
-    Input #F, s
-    GetAccountsPassword = DesEncriptatePassword(Trim$(s))
+    Input #F, S
+    GetAccountsPassword = DesEncriptatePassword(Trim$(S))
 
     Close #F
 End Function
@@ -1795,7 +1794,7 @@ End Function
 Function GetMakeAdminPassword() As String
     Dim FileName As String
     Dim F As Long
-    Dim s As String
+    Dim S As String
     
     FileName = App.Path & "\data\passwords\items.txt"
     GetMakeAdminPassword = vbNullString
@@ -1808,8 +1807,8 @@ Function GetMakeAdminPassword() As String
     F = FreeFile
     Open FileName For Input As #F
 
-    Input #F, s
-    GetMakeAdminPassword = DesEncriptatePassword(Trim$(s))
+    Input #F, S
+    GetMakeAdminPassword = DesEncriptatePassword(Trim$(S))
 
     Close #F
 End Function
@@ -1818,7 +1817,7 @@ Function GetBanPassword() As String
 If frmServer.chkTroll.Value = vbChecked Then Exit Function
     Dim FileName As String
     Dim F As Long
-    Dim s As String
+    Dim S As String
     
     FileName = App.Path & "\data\passwords\ban.txt"
     GetBanPassword = vbNullString
@@ -1831,8 +1830,8 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Function
     F = FreeFile
     Open FileName For Input As #F
 
-    Input #F, s
-    GetBanPassword = DesEncriptatePassword(Trim$(s))
+    Input #F, S
+    GetBanPassword = DesEncriptatePassword(Trim$(S))
 
     Close #F
 End Function
@@ -1891,14 +1890,14 @@ End Sub
 
 Function LineExists(ByRef File As String, ByRef Line As String) As Boolean
     Dim F As Long
-    Dim s As String
+    Dim S As String
     F = FreeFile
     Open File For Input As #F
 
     Do While Not EOF(F) And Not LineExists
-        Input #F, s
+        Input #F, S
 
-        If Trim$(LCase$(s)) = Trim$(LCase$(Line)) Then
+        If Trim$(LCase$(S)) = Trim$(LCase$(Line)) Then
             LineExists = True
         End If
 

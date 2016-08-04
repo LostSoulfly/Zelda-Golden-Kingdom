@@ -564,7 +564,7 @@ Player_Level = GetPlayerLevel(FindPlayer(Name))
 ' If you want to change points please pm me <img src='http://www.touchofdeathforums.com/community/public/style_emoticons/<#EMO_DIR#>/wink.png' class='bbc_emoticon' alt=';)' />
 Call SetPlayerLevel(FindPlayer(Name), level)
 Call SendPlayerData(FindPlayer(Name))
-Call PlayerMsg(FindPlayer(Name), GetTranslation("Te han cambiado tu nivel") & " " & Player_Level & " " & GetTranslation("al nivel") & " " & level, BrightCyan, , False)
+Call PlayerMsg(FindPlayer(Name), GetTranslation("Te han cambiado tu nivel", , UnTrimBack) & Player_Level & GetTranslation("al nivel", , UnTrimBoth) & level, BrightCyan, , False)
 End If
 End Sub
 

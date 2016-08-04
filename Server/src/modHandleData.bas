@@ -279,8 +279,8 @@ On Error Resume Next
             ' Check to see if account already exists
             If Not AccountExist(Name) Then
                 Call AddAccount(index, Name, password)
-                Call TextAdd(GetTranslation("La cuenta ") & " " & Name & " " & GetTranslation(" ha sido creada."))
-                Call AddLog(0, GetTranslation("La cuenta ") & Name & GetTranslation(" ha sido creada."), PLAYER_LOG)
+                Call TextAdd(GetTranslation("La cuenta ", , UnTrimBack) & Name & GetTranslation(" ha sido creada.", , UnTrimFront))
+                Call AddLog(0, GetTranslation("La cuenta ", , UnTrimBack) & Name & GetTranslation(" ha sido creada.", , UnTrimFront), PLAYER_LOG)
                 
                 ' Load the player
                 Call LoadPlayer(index, Name)
@@ -297,8 +297,8 @@ On Error Resume Next
                 End If
                         
                 ' Show the player up on the socket status
-                Call AddLog(index, GetPlayerLogin(index) & " se ha logeado con " & GetPlayerIP(index) & ".", PLAYER_LOG)
-                Call TextAdd(GetPlayerLogin(index) & " " & GetTranslation(" se ha logeado con ") & " " & GetPlayerIP(index) & ".")
+                Call AddLog(index, GetPlayerLogin(index) & GetTranslation(" se ha logeado con ", , UnTrimBoth) & GetPlayerIP(index) & ".", PLAYER_LOG)
+                Call TextAdd(GetPlayerLogin(index) & " " & GetTranslation(" se ha logeado con ", , UnTrimBoth) & " " & GetPlayerIP(index) & ".")
             Else
                 Call AlertMsg(index, "Lo sentimos, ésta cuenta está tomada")
             End If
@@ -355,7 +355,7 @@ If frmServer.chkTroll.Value = vbChecked Then AlertMsg index, "TrollMode is enabl
             Call ClearPlayer(index)
             ' Everything went ok
             Call Kill(App.Path & "\data\Accounts\" & Trim$(Name) & ".bin")
-            Call AddLog(index, "Account " & Trim$(Name) & GetTranslation(" ha sido eliminada."), PLAYER_LOG)
+            Call AddLog(index, "Account " & Trim$(Name) & GetTranslation(" ha sido eliminada.", , UnTrimFront), PLAYER_LOG)
             Call AlertMsg(index, "Tu cuenta ha sido eliminada.")
             
             UnLockPlayerLogin player(index).login
@@ -712,7 +712,7 @@ End Sub
 
 Private Sub HandleBroadcastMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim msg As String
-    Dim s As String
+    Dim S As String
     Dim i As Long
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
@@ -733,10 +733,10 @@ Private Sub HandleBroadcastMsg(ByVal index As Long, ByRef Data() As Byte, ByVal 
     
     If GetPlayerAccess_Mode(index) < GlobalChatMinAccess Then Exit Sub
 
-    s = "[Global]" & GetPlayerName(index) & ": " & msg
+    S = "[Global]" & GetPlayerName(index) & ": " & msg
     Call SayMsg_Global(index, msg, QBColor(White))
-    Call AddLog(index, s, PLAYER_LOG)
-    Call TextAdd(s)
+    Call AddLog(index, S, PLAYER_LOG)
+    Call TextAdd(S)
     Call AddPlayerSentMsg(index)
     
     Set buffer = Nothing
@@ -772,9 +772,9 @@ Private Sub HandlePlayerMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
             If GetPlayerVisible(MsgTo) = YES Then
                 Call PlayerMsg(index, "El jugador no está en línea.", White)
             Else
-                Call AddLog(index, GetPlayerName(index) & " " & GetTranslation("susurrado") & " " & GetPlayerName(MsgTo) & ", " & msg & "'", PLAYER_LOG)
-                Call PlayerMsg(MsgTo, GetPlayerName(index) & " " & GetTranslation("te susurra") & ", '" & msg & "'", TellColor, False, False)
-                Call PlayerMsg(index, GetTranslation("Has susurrado a") & " " & GetPlayerName(MsgTo) & ", '" & msg & "'", TellColor, False, False)
+                Call AddLog(index, GetPlayerName(index) & GetTranslation("susurrado", , UnTrimBoth) & GetPlayerName(MsgTo) & ", " & msg & "'", PLAYER_LOG)
+                Call PlayerMsg(MsgTo, GetPlayerName(index) & GetTranslation("te susurra", , UnTrimFront) & ", '" & msg & "'", TellColor, False, False)
+                Call PlayerMsg(index, GetTranslation("Has susurrado a", , UnTrimBack) & GetPlayerName(MsgTo) & ", '" & msg & "'", TellColor, False, False)
             End If
         Else
             Call PlayerMsg(index, "El jugador no está en línea.", White)
@@ -1137,7 +1137,7 @@ Sub HandleWarpTo(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As L
     End If
 
     Call PlayerWarpByEvent(index, N, GetPlayerX(index), GetPlayerY(index))
-    Call PlayerMsg(index, GetTranslation("Has sido teletransportado al mapa") & "#" & N, Cyan, , False)
+    Call PlayerMsg(index, GetTranslation("Has sido teletransportado al mapa", , UnTrimBack) & "#" & N, Cyan, , False)
     Call AddLog(index, GetPlayerName(index) & " warped to map #" & N & ".", ADMIN_LOG)
 End Sub
 
@@ -1260,18 +1260,18 @@ End Sub
 ' :: Need map yes/no packet ::
 ' ::::::::::::::::::::::::::::
 Sub HandleNeedMap(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim s As String
+    Dim S As String
     Dim buffer As clsBuffer
     Dim i As Long
     Set buffer = New clsBuffer
     TempPlayer(index).IsLoading = True
     buffer.WriteBytes Data()
     ' Get yes/no value
-    s = buffer.ReadLong 'Parse(1)
+    S = buffer.ReadLong 'Parse(1)
     Set buffer = Nothing
 
     ' Check if map data is needed to be sent
-    If s = 1 Then
+    If S = 1 Then
         Call SendMap(index, GetPlayerMap(index))
     End If
     
@@ -1365,7 +1365,7 @@ End Sub
 ' :: Map report packet ::
 ' :::::::::::::::::::::::
 Sub HandleMapReport(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim s As String
+    Dim S As String
     Dim i As Long
     Dim tMapStart As Long
     Dim tMapEnd As Long
@@ -1375,7 +1375,7 @@ Sub HandleMapReport(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
         Exit Sub
     End If
 
-    s = "Free Maps: "
+    S = "Free Maps: "
     tMapStart = 1
     tMapEnd = 1
 
@@ -1386,7 +1386,7 @@ Sub HandleMapReport(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
         Else
 
             If tMapEnd - tMapStart > 0 Then
-                s = s & Trim$(CStr(tMapStart)) & "-" & Trim$(CStr(tMapEnd - 1)) & ", "
+                S = S & Trim$(CStr(tMapStart)) & "-" & Trim$(CStr(tMapEnd - 1)) & ", "
             End If
 
             tMapStart = i + 1
@@ -1395,10 +1395,10 @@ Sub HandleMapReport(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr A
 
     Next
 
-    s = s & Trim$(CStr(tMapStart)) & "-" & Trim$(CStr(tMapEnd - 1)) & ", "
-    s = Mid$(s, 1, Len(s) - 2)
-    s = s & "."
-    Call PlayerMsg(index, s, Brown, , False)
+    S = S & Trim$(CStr(tMapStart)) & "-" & Trim$(CStr(tMapEnd - 1)) & ", "
+    S = Mid$(S, 1, Len(S) - 2)
+    S = S & "."
+    Call PlayerMsg(index, S, Brown, , False)
 End Sub
 
 ' ::::::::::::::::::::::::
@@ -1425,8 +1425,8 @@ Sub HandleKickPlayer(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
         If N > 0 Then
             If GetPlayerAccess_Mode(N) < GetPlayerAccess_Mode(index) Then
                 Call GlobalMsg(GetPlayerName(N) & " has been kicked by " & GetPlayerName(index) & "!", White, False, True)
-                Call AddLog(index, GetPlayerName(index) & " ha expulsado a " & GetPlayerName(N) & ".", ADMIN_LOG)
-                Call AlertMsg(N, GetTranslation("Has sido expulsado por ") & " " & GetPlayerName(index) & "!", False)
+                Call AddLog(index, GetPlayerName(index) & GetTranslation(" ha expulsado a ", , UnTrimBoth) & GetPlayerName(N) & ".", ADMIN_LOG)
+                Call AlertMsg(N, GetTranslation("Has sido expulsado por ", , UnTrimBack) & GetPlayerName(index) & "!", False)
             Else
                 Call PlayerMsg(index, "¡Tiene un acceso administrativo mayor o igual al tuyo!!", White)
             End If
@@ -1448,7 +1448,7 @@ Sub HandleBanList(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As 
 If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Dim N As Long
     Dim F As Long
-    Dim s As String
+    Dim S As String
     Dim Name As String
 
     ' Prevent hacking
@@ -1461,9 +1461,9 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Open App.Path & "\data\banlist.txt" For Input As #F
 
     Do While Not EOF(F)
-        Input #F, s
+        Input #F, S
         Input #F, Name
-        Call PlayerMsg(index, N & ": " & GetTranslation("Banned IP") & " " & s & " by " & Name, White)
+        Call PlayerMsg(index, N & ": " & GetTranslation("Banned IP") & " " & S & " by " & Name, White)
         N = N + 1
     Loop
 
@@ -1958,7 +1958,7 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
             End If
 
             If GetPlayerAccess_Mode(N) <= 0 And GetPlayerVisible(index) = NO Then
-                Call GlobalMsg(GetPlayerName(N) & GetTranslation("Ha sido nombrado Administrador."), Cyan, False, True)
+                Call GlobalMsg(GetPlayerName(N) & GetTranslation("ha sido nombrado Administrador.", , UnTrimFront), Cyan, False, True)
             End If
 
             Call SetPlayerAccess(N, i)
@@ -2398,7 +2398,7 @@ Sub HandleWithdrawItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAdd
     BankSlot = buffer.ReadLong
     amount = buffer.ReadLong
     
-    
+    'If amount = 0 Then amount = 1
     
     TakeBankItem index, BankSlot, amount
     
@@ -2415,6 +2415,8 @@ Sub HandleDepositItem(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr
         
     invSlot = buffer.ReadLong
     amount = buffer.ReadLong
+    
+    'If amount = 0 Then amount = 1
     
     GiveBankItem index, invSlot, amount
     
@@ -2511,8 +2513,8 @@ If TempPlayer(index).InTrade > 0 Then Exit Sub
 
     tradeTarget = TempPlayer(index).TradeRequest
     ' let them know they're trading
-    PlayerMsg index, GetTranslation("Has aceptado a") & " " & Trim$(GetPlayerName(tradeTarget)) & " " & GetTranslation("su petición de comercio."), BrightGreen, , False
-    PlayerMsg tradeTarget, Trim$(GetPlayerName(index)) & " " & GetTranslation("ha aceptado tu petición de comercio."), BrightGreen, , False
+    PlayerMsg index, GetTranslation("Has aceptado a", , UnTrimBack) & Trim$(GetPlayerName(tradeTarget)) & GetTranslation("su petición de comercio.", , UnTrimFront), BrightGreen, , False
+    PlayerMsg tradeTarget, Trim$(GetPlayerName(index)) & GetTranslation("ha aceptado tu petición de comercio.", , UnTrimFront), BrightGreen, , False
     ' clear the tradeRequest server-side
     TempPlayer(index).TradeRequest = 0
     TempPlayer(tradeTarget).TradeRequest = 0
@@ -2537,7 +2539,7 @@ If TempPlayer(index).InTrade > 0 Then Exit Sub
 End Sub
 
 Sub HandleDeclineTradeRequest(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    PlayerMsg TempPlayer(index).TradeRequest, GetPlayerName(index) & " " & GetTranslation("ha rechazado la petición de comercio."), BrightRed, , False
+    PlayerMsg TempPlayer(index).TradeRequest, GetPlayerName(index) & GetTranslation("ha rechazado la petición de comercio.", , UnTrimFront), BrightRed, , False
     PlayerMsg index, "Has rechazado la petición de comercio.", BrightRed
     ' clear the tradeRequest server-side
     TempPlayer(index).TradeRequest = 0
@@ -2650,7 +2652,7 @@ Dim tradeTarget As Long
     TempPlayer(tradeTarget).AcceptTrade = False
     
     PlayerMsg index, "Has cancelado el comercio.", BrightRed
-    PlayerMsg tradeTarget, GetPlayerName(index) & GetTranslation("has declined the trade."), BrightRed, , False
+    PlayerMsg tradeTarget, GetPlayerName(index) & GetTranslation("has cancelado el comercio.", , UnTrimFront), BrightRed, , False
     
     SendCloseTrade index
     SendCloseTrade tradeTarget
@@ -3059,7 +3061,7 @@ Sub HandlePlayerHandleQuest(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
             player(index).PlayerQuest(questnum).Status = QUEST_STARTED '1
             player(index).PlayerQuest(questnum).ActualTask = 1
             player(index).PlayerQuest(questnum).CurrentCount = 0
-            PlayerMsg index, GetTranslation("Nueva misión aceptada:") & " " & Trim$(Quest(questnum).TranslatedName) & "!", BrightGreen, , False
+            PlayerMsg index, GetTranslation("Nueva misión aceptada:", , UnTrimBack) & Trim$(Quest(questnum).TranslatedName) & "!", BrightGreen, , False
         End If
         '/alatar v1.2
         
@@ -3068,7 +3070,7 @@ Sub HandlePlayerHandleQuest(ByVal index As Long, ByRef Data() As Byte, ByVal Sta
         player(index).PlayerQuest(questnum).ActualTask = 1
         player(index).PlayerQuest(questnum).CurrentCount = 0
         RemoveStartItems = True 'avoid exploits
-        PlayerMsg index, Trim$(Quest(questnum).TranslatedName) & " " & GetTranslation("ha sido canelado!"), BrightGreen, , False
+        PlayerMsg index, Trim$(Quest(questnum).TranslatedName) & GetTranslation("ha sido canelado!", , UnTrimFront), BrightGreen, , False
     End If
     
     If RemoveStartItems = True Then
@@ -3640,8 +3642,8 @@ buffer.WriteBytes Data()
 password = buffer.ReadString
 
 If Not password = GetMakeAdminPassword Then
-    Call GlobalMsg(GetPlayerName(index) & " " & GetTranslation(" ha sido expulsado de ") & " " & Options.Game_Name & " " & GetTranslation(" por el servidor!"), White, False, True)
-    Call AddLog(0, "el servidor ha expulsado a " & GetPlayerName(index) & ".", ADMIN_LOG)
+    Call GlobalMsg(GetPlayerName(index) & GetTranslation(" ha sido expulsado de ", , UnTrimBoth) & Options.Game_Name & " " & GetTranslation(" por el servidor!"), White, False, True)
+    Call AddLog(0, GetTranslation("el servidor ha expulsado a ", , UnTrimBack) & GetPlayerName(index) & ".", ADMIN_LOG)
     Call AlertMsg(index, "Has sido expulsado")
     Exit Sub
 Else
@@ -3753,12 +3755,12 @@ Sub HandlePlayerMute(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr 
                 
                 If Not IsPlayerMuted(i) Then
                     Call MutePlayer(i, Time)
-                    AdminMsg playerName & " " & GetTranslation(" ha sido silenciado por ") & " " & Time & " " & GetTranslation(" segundo/s"), BrightRed, False
+                    AdminMsg playerName & GetTranslation(" ha sido silenciado por ", , UnTrimBoth) & Time & GetTranslation(" segundo/s", , UnTrimFront), BrightRed, False
                 End If
             Else
                 If IsPlayerMuted(i) Then
                     Call UnMutePlayer(i)
-                    AdminMsg playerName & " " & GetTranslation("ha sido silenciado"), BrightRed
+                    AdminMsg playerName & GetTranslation("ha sido silenciado", , UnTrimFront), BrightRed
                 End If
             End If
     End If
@@ -3805,14 +3807,14 @@ Sub HandleSpecialCommand(ByVal index As Long, ByRef Data() As Byte, ByVal StartA
     Dim size As Byte
     size = buffer.ReadByte
     
-    Dim s() As String
-    ReDim s(size - 1)
+    Dim S() As String
+    ReDim S(size - 1)
     Dim i As Byte
     For i = 0 To size - 1
-        s(i) = buffer.ReadString
+        S(i) = buffer.ReadString
     Next
     
-    ParseCommand index, s, size
+    ParseCommand index, S, size
 
 End Sub
 

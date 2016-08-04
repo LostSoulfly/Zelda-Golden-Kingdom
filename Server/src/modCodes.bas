@@ -65,13 +65,13 @@ End Sub
 
 Function FindInFile(ByVal Line As String, ByVal search_file As String)
     Dim F As Long
-    Dim s As String
+    Dim S As String
     F = FreeFile
     Open search_file For Input As #F
 
     Do While Not EOF(F)
-        Input #F, s
-        If s = Line Then
+        Input #F, S
+        If S = Line Then
             FindInFile = True
             Close #F
             Exit Function
@@ -101,11 +101,11 @@ Function PurshaseTypeToPoints(ByVal PurshaseType As Byte) As Long
     End Select
 End Function
 
-Function IsHexChar(ByVal c As String) As Long
-    If IsNumeric(c) Then
-        IsHexChar = CLng(c)
+Function IsHexChar(ByVal C As String) As Long
+    If IsNumeric(C) Then
+        IsHexChar = CLng(C)
     Else
-        Select Case c
+        Select Case C
         Case "a"
             IsHexChar = 10
         Case "b"
@@ -124,9 +124,9 @@ Function IsHexChar(ByVal c As String) As Long
     End If
 End Function
 
-Function HexStringToLong(ByVal s As String) As Long
-    If Not IsNumeric("&H" & s) Then Exit Function
-    HexStringToLong = CLng("&H" & s)
+Function HexStringToLong(ByVal S As String) As Long
+    If Not IsNumeric("&H" & S) Then Exit Function
+    HexStringToLong = CLng("&H" & S)
 End Function
 
 Function VerifyCode(ByVal parsedcode As String, ByRef points As Long) As Boolean
@@ -186,17 +186,17 @@ Sub AddPlayerBonusPoints(ByVal index As Long, ByVal points As Long)
     curpoints = GetPlayerBonusPoints(index)
     
     SetPlayerBonusPoints index, curpoints + points
-    PlayerMsg index, GetTranslation("Has ganado:") & " " & points & " " & CURRENCY_NAME & "!", BrightGreen, , False
+    PlayerMsg index, GetTranslation("Has ganado:", , UnTrimBack) & points & " " & CURRENCY_NAME & "!", BrightGreen, , False
     SendPlayerBonusPoints index
 End Sub
 
 Sub SendPlayerBonusPoints(ByVal index As Long)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SBonusPoints
-    Buffer.WriteLong GetPlayerBonusPoints(index)
-    SendDataTo index, Buffer.ToArray()
-    Set Buffer = Nothing
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
+    buffer.WriteLong SBonusPoints
+    buffer.WriteLong GetPlayerBonusPoints(index)
+    SendDataTo index, buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 

@@ -5,7 +5,11 @@ Option Explicit
 Private Declare Sub ZeroMemory Lib "Kernel32.dll" Alias "RtlZeroMemory" (Destination As Any, ByVal length As Long)
 
 Sub UpdateCaption()
-    frmServer.Caption = "World Server [Port: " & CStr(frmServer.Socket(0).LocalPort) & "] Players Online: " & TotalOnlinePlayers
+    If LenB(SERVER_NAME) <= 0 Then
+        frmServer.Caption = "World Server [Port: " & CStr(frmServer.Socket(0).LocalPort) & "] Players Online: " & TotalOnlinePlayers
+    Else
+        frmServer.Caption = SERVER_NAME & " [Port: " & CStr(frmServer.Socket(0).LocalPort) & "] Players Online: " & TotalOnlinePlayers
+    End If
     'UpdateStatFile
     SendServerInfo
     DoEvents
@@ -363,7 +367,7 @@ Public Sub GlobalMsg(ByVal msg As String, ByVal color As Byte, Optional blForceT
     buffer.WriteString msg
     buffer.WriteLong color
     SendDataToAll buffer.ToArray
-    If Forward Then ForwardGlobalMsg "[Hub] " & msg
+    If Forward Then ForwardGlobalMsg "[" & SERVER_NAME & "] " & msg
     
     Set buffer = Nothing
 End Sub
@@ -465,10 +469,10 @@ Sub HackingAttempt(ByVal index As Long, ByVal Reason As String)
 
     If index > 0 Then
         If IsPlaying(index) Then
-            Call GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " " & GetTranslation("ha sido expulsado por") & " (" & Reason & ")", White, False, True)
+            Call GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & GetTranslation("ha sido expulsado por", , UnTrimBoth) & "(" & Reason & ")", White, False, True)
         End If
 
-        Call AlertMsg(index, GetTranslation("Has perdido tu conexión con") & " " & Options.Game_Name & ".", False)
+        Call AlertMsg(index, GetTranslation("Has perdido tu conexión con", , UnTrimBack) & Options.Game_Name & ".", False)
     End If
 
 End Sub
@@ -625,25 +629,25 @@ End Sub
 ' ** Outgoing Server Packets **
 ' *****************************
 Sub SendWhosOnline(ByVal index As Long)
-    Dim s As String
+    Dim S As String
     Dim N As Long
     Dim i As Long
     For i = 1 To Player_HighIndex
 
         If IsPlaying(i) Then
-            If i <> index Then 'And (GetPlayerAccess_Mode(index) >= ADMIN_MAPPER Or GetPlayerAccess_Mode(i) = 0) Then
-                s = s & GetPlayerName(i) & ", "
+            'If i <> index Then 'And (GetPlayerAccess_Mode(index) >= ADMIN_MAPPER Or GetPlayerAccess_Mode(i) = 0) Then
+                S = S & GetPlayerName(i) & ", "
                 N = N + 1
-            End If
+            'End If
         End If
 
     Next
 
     If N = 0 Then
-        s = GetTranslation("No hay más jugadores en línea.")
+        S = GetTranslation("You are alone.")
     Else
-        s = Mid$(s, 1, Len(s) - 2)
-        s = GetTranslation("Hay") & " " & N & " " & GetTranslation("Jugadores online:") & " " & s & "."
+        S = Mid$(S, 1, Len(S) - 2)
+        S = "There are " & N & " adventurers online: " & S & "."
     End If
     
     Dim sSend As String
@@ -651,9 +655,9 @@ Sub SendWhosOnline(ByVal index As Long)
     Dim comma As Long
     Dim ii As Integer
     
-    sTemp = s
+    sTemp = S
     
-    ii = Len(s) / 60
+    ii = Len(S) / 60
     If ii > 1 Then
         Do While Len(sTemp) > 0
             comma = InStr(60, sTemp, ",")
@@ -664,7 +668,7 @@ Sub SendWhosOnline(ByVal index As Long)
             'DoEvents
         Loop
     Else
-        Call PlayerMsg(index, s, WhoColor, , False)
+        Call PlayerMsg(index, S, WhoColor, , False)
     End If
 End Sub
 

@@ -95,7 +95,7 @@ Sub ServerLoop()
                 If TempPlayer(i).tmpGuildInviteSlot > 0 Then
                     If Tick > TempPlayer(i).tmpGuildInviteTimer Then
                         If GuildData(TempPlayer(i).tmpGuildInviteSlot).In_Use = True Then
-                            PlayerMsg i, GetTranslation("El tiempo de aceptar invitación al clan se agotó") & " " & GuildData(TempPlayer(i).tmpGuildInviteSlot).Guild_Name & ".", BrightRed, , False
+                            PlayerMsg i, GetTranslation("El tiempo de aceptar invitación al clan se agotó", , UnTrimBack) & GuildData(TempPlayer(i).tmpGuildInviteSlot).Guild_Name & ".", BrightRed, , False
                             TempPlayer(i).tmpGuildInviteSlot = 0
                             TempPlayer(i).tmpGuildInviteTimer = 0
                         Else
@@ -597,7 +597,7 @@ Private Sub UpdateSavePlayers()
     Dim i As Long
 
     If TotalOnlinePlayers > 0 Then
-        Call TextAdd(GetTranslation("Guardando jugadores en línea..."))
+        Call TextAdd("Saving online players..")
 
         For i = 1 To Player_HighIndex
 

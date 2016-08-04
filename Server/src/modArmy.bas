@@ -178,7 +178,7 @@ Sub PartyShareKillPoints(ByVal index As Long, ByVal partynum As Byte, ByVal poin
         MemberIndex = Party(partynum).Member(i)
         If ShareVect(i) Then
             SetPlayerKillPoints MemberIndex, GetPlayerKillPoints(MemberIndex, PartyStatus) + points, PartyStatus
-            PlayerMsg MemberIndex, GetTranslation("Has ganado:") & " " & points & " " & GetTranslation("puntos de") & " " & JusticeToStr(PartyStatus) & " " & GetTranslation("ahora tienes:") & " " & GetPlayerKillPoints(MemberIndex, PartyStatus), GetColorByJustice(PartyStatus), , False
+            PlayerMsg MemberIndex, GetTranslation("Has ganado:", , UnTrimBack) & points & GetTranslation("puntos de", , UnTrimBoth) & JusticeToStr(PartyStatus) & GetTranslation("ahora tienes:", , UnTrimBoth) & GetPlayerKillPoints(MemberIndex, PartyStatus), GetColorByJustice(PartyStatus), , False
             SendKillPoints MemberIndex
         End If
     Next
@@ -195,7 +195,7 @@ Sub ComputeGivenKillPoints(ByVal index As Long, ByVal points As Single, ByVal St
     Else
         Call SetPlayerKillPoints(index, GetPlayerKillPoints(index, Status) + points, Status)
         SendKillPoints index
-        PlayerMsg index, GetTranslation("Has ganado:") & " " & points & " " & GetTranslation("puntos de") & " " & JusticeToStr(Status) & " " & GetTranslation("ahora tienes:") & " " & GetPlayerKillPoints(index, Status), GetColorByJustice(Status), , False
+        PlayerMsg index, GetTranslation("Has ganado:", , UnTrimBack) & points & GetTranslation("puntos de", , UnTrimBoth) & JusticeToStr(Status) & GetTranslation("ahora tienes:", , UnTrimBoth) & GetPlayerKillPoints(index, Status), GetColorByJustice(Status), , False
     End If
 End Sub
 
@@ -251,7 +251,7 @@ Sub ComputeArmyPvP(ByVal attacker As Long, ByVal victim As Long)
         
         Call SetPlayerKillPoints(victim, vpoints - points, vStatus)
         SendKillPoints victim
-        PlayerMsg victim, GetTranslation("Has perdido:") & " " & points & " " & GetTranslation("puntos de") & " " & JusticeToStr(vStatus) & " " & GetTranslation("ahora tienes:") & " " & GetPlayerKillPoints(victim, vStatus), GetColorByJustice(vStatus), , False
+        PlayerMsg victim, GetTranslation("Has perdido:", , UnTrimBack) & points & GetTranslation("puntos de", , UnTrimBoth) & JusticeToStr(vStatus) & GetTranslation("ahora tienes:", , UnTrimBoth) & GetPlayerKillPoints(victim, vStatus), GetColorByJustice(vStatus), , False
     'End If
 End Sub
 
@@ -333,23 +333,23 @@ Select Case IsPlayerNeutral(Killer)
     Case True
         If IsPlayerNeutral(Killed) Then 'Player Killed Hero or Normal
             player(Killer).PK = PK_PLAYER
-            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un asesino!"), BrightRed, False, True)
+            Call GlobalMsg(GetPlayerName(Killer) & GetTranslation(" se ha convertido en un asesino!", , UnTrimFront), BrightRed, False, True)
             SendJust = True
             
             ResetPlayerArmy Killer, HERO_PLAYER
             SendKillPoints Killer
         Else 'Player Killed PK
             If GetPlayerPK(Killer) = HERO_PLAYER Then
-                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha hecho justicia!"), Yellow, False, True)
+                Call GlobalMsg(GetPlayerName(Killer) & GetTranslation(" ha hecho justicia!", , UnTrimFront), Yellow, False, True)
             Else
                 player(Killer).PK = HERO_PLAYER
-                Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" se ha convertido en un héroe!"), Yellow, False, True)
+                Call GlobalMsg(GetPlayerName(Killer) & GetTranslation(" se ha convertido en un héroe!", , UnTrimFront), Yellow, False, True)
                 SendJust = True
             End If
         End If
     Case False 'Killer Player is PK
         If IsPlayerNeutral(Killed) Then 'Add points in case of killed is neutral
-            Call GlobalMsg(GetPlayerName(Killer) & " " & GetTranslation(" ha cometido un crimen!"), BrightRed, False, True)
+            Call GlobalMsg(GetPlayerName(Killer) & GetTranslation(" ha cometido un crimen!", , UnTrimFront), BrightRed, False, True)
         End If
 End Select
 

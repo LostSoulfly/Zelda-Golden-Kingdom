@@ -130,7 +130,7 @@ End Sub
 Sub SaveQuest(ByVal questnum As Long)
     Dim FileName As String
     Dim F As Long, i As Long
-    FileName = App.path & "\data\quests\quest" & questnum & ".dat"
+    FileName = App.Path & "\data\quests\quest" & questnum & ".dat"
     F = FreeFile
     Open FileName For Binary As #F
     
@@ -179,7 +179,7 @@ Sub LoadQuests()
     Call CheckQuests
 
     For i = 1 To MAX_QUESTS
-        FileName = App.path & "\data\quests\quest2.0-" & i & ".dat"
+        FileName = App.Path & "\data\quests\quest2.0-" & i & ".dat"
         F = FreeFile
         Open FileName For Binary As #F
         Get #F, , Quest(i)
@@ -324,141 +324,141 @@ Sub SendQuests(ByVal index As Long)
 End Sub
 
 Function QuestData(ByVal questnum As Long) As Byte()
-Dim Buffer As clsBuffer, i As Long
-Set Buffer = New clsBuffer
+Dim buffer As clsBuffer, i As Long
+Set buffer = New clsBuffer
 
 With Quest(questnum)
-     Buffer.WriteString .Name
-     Buffer.WriteString .TranslatedName
-     Buffer.WriteLong .Repeat
-     Buffer.WriteString GetTranslation(.QuestLog)
+     buffer.WriteString .Name
+     buffer.WriteString .TranslatedName
+     buffer.WriteLong .Repeat
+     buffer.WriteString GetTranslation(.QuestLog)
     
     For i = 1 To 3
-         Buffer.WriteString GetTranslation(.Speech(i))
+         buffer.WriteString GetTranslation(.Speech(i))
     Next
     
     For i = 1 To MAX_QUESTS_ITEMS
-         Buffer.WriteLong .GiveItem(i).item
-         Buffer.WriteLong .GiveItem(i).Value
+         buffer.WriteLong .GiveItem(i).item
+         buffer.WriteLong .GiveItem(i).Value
         
-         Buffer.WriteLong .TakeItem(i).item
-         Buffer.WriteLong .TakeItem(i).Value
+         buffer.WriteLong .TakeItem(i).item
+         buffer.WriteLong .TakeItem(i).Value
         
-         Buffer.WriteLong .RequiredItem(i).item
-         Buffer.WriteLong .RequiredItem(i).Value
+         buffer.WriteLong .RequiredItem(i).item
+         buffer.WriteLong .RequiredItem(i).Value
         
-         Buffer.WriteLong .RewardItem(i).item
-         Buffer.WriteLong .RewardItem(i).Value
+         buffer.WriteLong .RewardItem(i).item
+         buffer.WriteLong .RewardItem(i).Value
     Next
     
-     Buffer.WriteLong .RequiredLevel
-     Buffer.WriteLong .RequiredQuest
+     buffer.WriteLong .RequiredLevel
+     buffer.WriteLong .RequiredQuest
     For i = 1 To 5
-         Buffer.WriteLong .RequiredClass(i)
+         buffer.WriteLong .RequiredClass(i)
     Next
     
-     Buffer.WriteLong .RewardExp
+     buffer.WriteLong .RewardExp
     
     For i = 1 To MAX_TASKS
-         Buffer.WriteLong .Task(i).Order
-         Buffer.WriteLong .Task(i).NPC
-         Buffer.WriteLong .Task(i).item
-        Buffer.WriteLong .Task(i).map
-         Buffer.WriteLong .Task(i).Resource
-        Buffer.WriteLong .Task(i).amount
-         Buffer.WriteString GetTranslation(.Task(i).Speech)
-         Buffer.WriteString GetTranslation(.Task(i).TaskLog)
-         Buffer.WriteByte .Task(i).QuestEnd
+         buffer.WriteLong .Task(i).Order
+         buffer.WriteLong .Task(i).NPC
+         buffer.WriteLong .Task(i).item
+        buffer.WriteLong .Task(i).map
+         buffer.WriteLong .Task(i).Resource
+        buffer.WriteLong .Task(i).amount
+         buffer.WriteString GetTranslation(.Task(i).Speech)
+         buffer.WriteString GetTranslation(.Task(i).TaskLog)
+         buffer.WriteByte .Task(i).QuestEnd
     Next
     
-    Buffer.WriteLong .level
+    buffer.WriteLong .level
 End With
-QuestData = Buffer.ToArray()
-Set Buffer = Nothing
+QuestData = buffer.ToArray()
+Set buffer = Nothing
 End Function
 
 Sub SendUpdateQuestToAll(ByVal questnum As Long)
     Dim packet As String
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
     'Dim QuestSize As Long
    ' Dim QuestData() As Byte
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     'QuestSize = LenB(Quest(QuestNum))
     'ReDim QuestData(QuestSize - 1)
     'CopyMemory QuestData(0), ByVal VarPtr(Quest(QuestNum)), QuestSize
-    Buffer.WriteLong SUpdateQuest
-    Buffer.WriteLong questnum
-    Buffer.WriteBytes CompressData(QuestData(questnum), 2)
+    buffer.WriteLong SUpdateQuest
+    buffer.WriteLong questnum
+    buffer.WriteBytes CompressData(QuestData(questnum), 2)
     
     'buffer.WriteBytes QuestData(QuestNum)
-    SendDataToAll Buffer.ToArray()
+    SendDataToAll buffer.ToArray()
 
-    Set Buffer = Nothing
+    Set buffer = Nothing
 End Sub
 
 Sub SendUpdateQuestTo(ByVal index As Long, ByVal questnum As Long)
     Dim packet As String
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
     'Dim QuestSize As Long
     'Dim QuestData() As Byte
-    Set Buffer = New clsBuffer
+    Set buffer = New clsBuffer
     'QuestSize = LenB(Quest(QuestNum))
     'ReDim QuestData(QuestSize - 1)
     'CopyMemory QuestData(0), ByVal VarPtr(Quest(QuestNum)), QuestSize
-    Buffer.WriteLong SUpdateQuest
-    Buffer.WriteLong questnum
+    buffer.WriteLong SUpdateQuest
+    buffer.WriteLong questnum
     'buffer.WriteBytes QuestData
-    Buffer.WriteBytes CompressData(QuestData(questnum), 2)
+    buffer.WriteBytes CompressData(QuestData(questnum), 2)
     
     
     'buffer.WriteBytes QuestData(QuestNum)
-    SendDataTo index, Buffer.ToArray()
+    SendDataTo index, buffer.ToArray()
     
-    ByteCounter = ByteCounter + Buffer.length
-    Set Buffer = Nothing
+    ByteCounter = ByteCounter + buffer.length
+    Set buffer = Nothing
 End Sub
 
 Public Sub SendPlayerQuests(ByVal index As Long)
     Dim i As Long
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
 
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SPlayerQuest
+    Set buffer = New clsBuffer
+    buffer.WriteLong SPlayerQuest
         For i = 1 To MAX_QUESTS
-            Buffer.WriteLong player(index).PlayerQuest(i).Status
-            Buffer.WriteLong player(index).PlayerQuest(i).ActualTask
-            Buffer.WriteLong player(index).PlayerQuest(i).CurrentCount
+            buffer.WriteLong player(index).PlayerQuest(i).Status
+            buffer.WriteLong player(index).PlayerQuest(i).ActualTask
+            buffer.WriteLong player(index).PlayerQuest(i).CurrentCount
         Next
-    SendDataTo index, Buffer.ToArray()
-    Set Buffer = Nothing
+    SendDataTo index, buffer.ToArray()
+    Set buffer = Nothing
 
 End Sub
 
 Public Sub SendPlayerQuest(ByVal index As Long, ByVal questnum As Long)
-    Dim Buffer As clsBuffer
+    Dim buffer As clsBuffer
 
-    Set Buffer = New clsBuffer
-    Buffer.WriteLong SPlayerQuest
-    Buffer.WriteLong player(index).PlayerQuest(questnum).Status
-    Buffer.WriteLong player(index).PlayerQuest(questnum).ActualTask
-    Buffer.WriteLong player(index).PlayerQuest(questnum).CurrentCount
-    SendDataTo index, Buffer.ToArray()
-    Set Buffer = Nothing
+    Set buffer = New clsBuffer
+    buffer.WriteLong SPlayerQuest
+    buffer.WriteLong player(index).PlayerQuest(questnum).Status
+    buffer.WriteLong player(index).PlayerQuest(questnum).ActualTask
+    buffer.WriteLong player(index).PlayerQuest(questnum).CurrentCount
+    SendDataTo index, buffer.ToArray()
+    Set buffer = Nothing
 End Sub
 
 'sends a message to the client that is shown on the screen
 Public Sub QuestMessage(ByVal index As Long, ByVal questnum As Long, ByVal message As String, ByVal QuestNumForStart As Long, Optional blForceTranslate As Boolean = False)
-    Dim Buffer As clsBuffer
-    Set Buffer = New clsBuffer
+    Dim buffer As clsBuffer
+    Set buffer = New clsBuffer
     
     If blForceTranslate = True Then message = GetTranslation(message)
     
-    Buffer.WriteLong SQuestMessage
-    Buffer.WriteLong questnum
-    Buffer.WriteString Trim$(message)
-    Buffer.WriteLong QuestNumForStart
-    SendDataTo index, Buffer.ToArray()
-    Set Buffer = Nothing
+    buffer.WriteLong SQuestMessage
+    buffer.WriteLong questnum
+    buffer.WriteString Trim$(message)
+    buffer.WriteLong QuestNumForStart
+    SendDataTo index, buffer.ToArray()
+    Set buffer = Nothing
     
 End Sub
 
@@ -490,7 +490,7 @@ Public Function CanStartQuest(ByVal index As Long, ByVal questnum As Long) As Bo
                 If Quest(questnum).RequiredItem(i).item > 0 Then
                     'if we don't have it at all then
                     If HasItem(index, Quest(questnum).RequiredItem(i).item) = 0 Then
-                        PlayerMsg index, GetTranslation("¡Necesitas") & " " & Trim$(item(Quest(questnum).RequiredItem(i).item).TranslatedName) & " " & GetTranslation("para aceptar ésta quest!"), BrightRed, , False
+                        PlayerMsg index, GetTranslation("¡Necesitas", , UnTrimBack) & Trim$(item(Quest(questnum).RequiredItem(i).item).TranslatedName) & GetTranslation("para aceptar ésta quest!", , UnTrimFront), BrightRed, , False
                     ' send the sound
                     SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seError, 1
                         Exit Function
@@ -501,7 +501,7 @@ Public Function CanStartQuest(ByVal index As Long, ByVal questnum As Long) As Bo
             'Check if previous quest is needed
             If Quest(questnum).RequiredQuest > 0 And Quest(questnum).RequiredQuest <= MAX_QUESTS Then
                 If player(index).PlayerQuest(Quest(questnum).RequiredQuest).Status = QUEST_NOT_STARTED Or player(index).PlayerQuest(Quest(questnum).RequiredQuest).Status = QUEST_STARTED Then
-                    PlayerMsg index, GetTranslation("¡Necesitas completar la quest") & " " & Trim$(Quest(Quest(questnum).RequiredQuest).TranslatedName) & " " & GetTranslation("para aceptar ésta quest!"), BrightRed, , False
+                    PlayerMsg index, GetTranslation("¡Necesitas completar la quest", , UnTrimBack) & Trim$(Quest(Quest(questnum).RequiredQuest).TranslatedName) & GetTranslation("para aceptar ésta quest!", , UnTrimFront), BrightRed, , False
                     ' send the sound
                     SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seError, 1
                     Exit Function
@@ -610,7 +610,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
                 'Count +1
                 player(index).PlayerQuest(questnum).CurrentCount = player(index).PlayerQuest(questnum).CurrentCount + 1
                 'show msg
-                PlayerMsg index, GetTranslation("Quest:") & " " & Trim$(Quest(questnum).TranslatedName) & " - " & Trim$(player(index).PlayerQuest(questnum).CurrentCount) & "/" & Trim$(Quest(questnum).Task(ActualTask).amount) & " " & Trim$(NPC(TargetIndex).TranslatedName) & " " & GetTranslation("matados."), Yellow, , False
+                PlayerMsg index, GetTranslation("Quest:", , UnTrimBack) & Trim$(Quest(questnum).TranslatedName) & " - " & Trim$(player(index).PlayerQuest(questnum).CurrentCount) & "/" & Trim$(Quest(questnum).Task(ActualTask).amount) & " " & Trim$(NPC(TargetIndex).TranslatedName) & GetTranslation("matados.", , UnTrimFront), Yellow, , False
                 'did i finish the work?
                 If player(index).PlayerQuest(questnum).CurrentCount >= Quest(questnum).Task(ActualTask).amount Then
                     QuestMessage index, questnum, "Tarea completada", 0, True
@@ -645,7 +645,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
                     End If
                 Next
                 
-                PlayerMsg index, GetTranslation("Quest:") + " " + Trim$(Quest(questnum).TranslatedName) + " - " + GetTranslation("Tienes") + " " + Trim$(player(index).PlayerQuest(questnum).CurrentCount) + "/" + Trim$(Quest(questnum).Task(ActualTask).amount) + " " + Trim$(item(TargetIndex).TranslatedName), Yellow, , False
+                PlayerMsg index, GetTranslation("Quest:", , UnTrimBack) & Trim$(Quest(questnum).TranslatedName) & " - " & GetTranslation("Tienes", , UnTrimBack) & Trim$(player(index).PlayerQuest(questnum).CurrentCount) & "/" & Trim$(Quest(questnum).Task(ActualTask).amount) & " " & Trim$(item(TargetIndex).TranslatedName), Yellow, , False
                 
                 If player(index).PlayerQuest(questnum).CurrentCount >= Quest(questnum).Task(ActualTask).amount Then
                     QuestMessage index, questnum, "Tarea completada", 0, True
@@ -708,7 +708,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
                         Next
                     End If
                     
-                    PlayerMsg index, GetTranslation("Quest:") & " " + Trim$(Quest(questnum).TranslatedName) + " - " & GetTranslation("Has dado") & " " + Trim$(Quest(questnum).Task(ActualTask).amount) + " " + Trim$(item(TargetIndex).TranslatedName), Yellow, , False
+                    PlayerMsg index, GetTranslation("Quest:", , UnTrimBack) & Trim$(Quest(questnum).TranslatedName) & " - " & GetTranslation("Has dado", , UnTrimBack) & Trim$(Quest(questnum).Task(ActualTask).amount) & " " & Trim$(item(TargetIndex).TranslatedName), Yellow, , False
                     QuestMessage index, questnum, GetTranslation(Quest(questnum).Task(ActualTask).Speech), 0
                     
                     If CanEndQuest(index, questnum) Then
@@ -722,7 +722,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
                     
         Case QUEST_TYPE_GOKILL 'Kill X amount of players.
             player(index).PlayerQuest(questnum).CurrentCount = player(index).PlayerQuest(questnum).CurrentCount + 1
-            PlayerMsg index, GetTranslation("Quest:") & " " + Trim$(Quest(questnum).TranslatedName) + " - " + Trim$(player(index).PlayerQuest(questnum).CurrentCount) + "/" + Trim$(Quest(questnum).Task(ActualTask).amount) + " " + GetTranslation("jugadores matados."), Yellow, , False
+            PlayerMsg index, GetTranslation("Quest:", , UnTrimBack) & Trim$(Quest(questnum).TranslatedName) & " - " & Trim$(player(index).PlayerQuest(questnum).CurrentCount) & "/" & Trim$(Quest(questnum).Task(ActualTask).amount) & GetTranslation("jugadores matados.", , UnTrimFront), Yellow, , False
             If player(index).PlayerQuest(questnum).CurrentCount >= Quest(questnum).Task(ActualTask).amount Then
                 QuestMessage index, questnum, "Tarea completada", 0, True
                 If CanEndQuest(index, questnum) Then
@@ -736,7 +736,7 @@ Public Sub CheckTask(ByVal index As Long, ByVal questnum As Long, ByVal TaskType
         Case QUEST_TYPE_GOTRAIN 'Hit X amount of times X resource.
             If TargetIndex = Quest(questnum).Task(ActualTask).Resource Then
                 player(index).PlayerQuest(questnum).CurrentCount = player(index).PlayerQuest(questnum).CurrentCount + 1
-                PlayerMsg index, GetTranslation("Quest:") & " " + Trim$(Quest(questnum).TranslatedName) + " - " + Trim$(player(index).PlayerQuest(questnum).CurrentCount) + "/" + Trim$(Quest(questnum).Task(ActualTask).amount) + GetTranslation("golpes."), Yellow, , False
+                PlayerMsg index, GetTranslation("Quest:", , UnTrimBack) & Trim$(Quest(questnum).TranslatedName) & " - " & Trim$(player(index).PlayerQuest(questnum).CurrentCount) & "/" & Trim$(Quest(questnum).Task(ActualTask).amount) & GetTranslation("golpes.", , UnTrimFront), Yellow, , False
                 If player(index).PlayerQuest(questnum).CurrentCount >= Quest(questnum).Task(ActualTask).amount Then
                     QuestMessage index, questnum, "Tarea completada", 0, True
                     If CanEndQuest(index, questnum) Then
@@ -852,56 +852,56 @@ End Sub
 
 
 Sub SetQuestData(ByRef Data() As Byte, ByVal questnum As Long)
-Dim Buffer As clsBuffer
-Set Buffer = New clsBuffer
-Buffer.WriteBytes Data
+Dim buffer As clsBuffer
+Set buffer = New clsBuffer
+buffer.WriteBytes Data
     
     
     With Quest(questnum)
-    .Name = Buffer.ReadString
+    .Name = buffer.ReadString
     .TranslatedName = GetTranslation(.Name)
-    .Repeat = Buffer.ReadLong
-    .QuestLog = Buffer.ReadString
+    .Repeat = buffer.ReadLong
+    .QuestLog = buffer.ReadString
     Dim i As Long
     
     For i = 1 To 3
-       .Speech(i) = Buffer.ReadString
+       .Speech(i) = buffer.ReadString
     Next
     
     For i = 1 To MAX_QUESTS_ITEMS
-        .GiveItem(i).item = Buffer.ReadLong
-        .GiveItem(i).Value = Buffer.ReadLong
+        .GiveItem(i).item = buffer.ReadLong
+        .GiveItem(i).Value = buffer.ReadLong
         
-        .TakeItem(i).item = Buffer.ReadLong
-        .TakeItem(i).Value = Buffer.ReadLong
+        .TakeItem(i).item = buffer.ReadLong
+        .TakeItem(i).Value = buffer.ReadLong
         
-        .RequiredItem(i).item = Buffer.ReadLong
-        .RequiredItem(i).Value = Buffer.ReadLong
+        .RequiredItem(i).item = buffer.ReadLong
+        .RequiredItem(i).Value = buffer.ReadLong
         
-        .RewardItem(i).item = Buffer.ReadLong
-        .RewardItem(i).Value = Buffer.ReadLong
+        .RewardItem(i).item = buffer.ReadLong
+        .RewardItem(i).Value = buffer.ReadLong
     Next
     
-    .RequiredLevel = Buffer.ReadLong
-    .RequiredQuest = Buffer.ReadLong
+    .RequiredLevel = buffer.ReadLong
+    .RequiredQuest = buffer.ReadLong
     For i = 1 To 5
-        .RequiredClass(i) = Buffer.ReadLong
+        .RequiredClass(i) = buffer.ReadLong
     Next
     
-    .RewardExp = Buffer.ReadLong
+    .RewardExp = buffer.ReadLong
     
     For i = 1 To MAX_TASKS
-        .Task(i).Order = Buffer.ReadLong
-        .Task(i).NPC = Buffer.ReadLong
-        .Task(i).item = Buffer.ReadLong
-        .Task(i).map = Buffer.ReadLong
-        .Task(i).Resource = Buffer.ReadLong
-        .Task(i).amount = Buffer.ReadLong
-        .Task(i).Speech = Buffer.ReadString
-        .Task(i).TaskLog = Buffer.ReadString
-        .Task(i).QuestEnd = Buffer.ReadByte
+        .Task(i).Order = buffer.ReadLong
+        .Task(i).NPC = buffer.ReadLong
+        .Task(i).item = buffer.ReadLong
+        .Task(i).map = buffer.ReadLong
+        .Task(i).Resource = buffer.ReadLong
+        .Task(i).amount = buffer.ReadLong
+        .Task(i).Speech = buffer.ReadString
+        .Task(i).TaskLog = buffer.ReadString
+        .Task(i).QuestEnd = buffer.ReadByte
     Next
     
-    .level = Buffer.ReadLong
+    .level = buffer.ReadLong
     End With
 End Sub

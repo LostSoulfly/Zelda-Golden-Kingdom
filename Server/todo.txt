@@ -1,9 +1,28 @@
 increase max_pets on server
 add more NPCs into pets?
 more details on tame points?
-pets move faster
+pets move faster! Partially done. They are faster, 
 if pet is x tiles away, warp pet to owner?
 if pet is x tiles away, warp to target? (cooldown? Skill/spell?)
 Check if spells allow target warping. That could be interesting to implement.
 improve pet changemap/spawnpet/spawnlocation.
 Pets can say things or make noises when given a target?
+
+multi-server support?
+When character logs in, create a file in a lock folder so they cannot log in on a different server with same character.
+Load-balance/multi server launcher. Easiest way?
+	Servers have API/write current status to a file/ aggregate program reads these and sends them to player launchers.
+	Launcher determines a server for them to connect to, but gives them a choice if they wish to play with friends.
+	Perhaps put that on my website for the launcher to download? Maybe update it every time a new player logs in?
+	VB isn't multi-threaded and couldn't handle a lot of traffic/winsock connections. That would be safest option..
+
+hub server
+	sync weather
+	sync map/item/npc updates (essientially just send a reload command to each server after saving the change to file)
+	Make server-hopping quick/easy. Simple /command? Could simply be a command sent to the client
+	to close its socket and re-login to the new server IP/port.. but it could also be much more.
+	It wouldn't be too hard to make the server's compatible across the internet.
+	The Hub could be the central save/load point for player saves. The servers would request a player save to be loaded
+	and sent (compressed, naturally) and the Hub would place a lock on that player.
+	To save a character, the server's would simply send a save command with that player's data.
+	

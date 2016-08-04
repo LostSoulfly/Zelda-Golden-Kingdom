@@ -15,6 +15,14 @@ Public LangFrom As String
 Public strTransPath As String
 Public strOrigPath As String
 
+Public Enum UnTrimType
+
+    UnTrimFront = 1
+    UnTrimBack = 2
+    UnTrimBoth = 3
+
+End Enum
+
 'last number of total translations saved at
 Private lastSave As Long
 'timer for the translations
@@ -39,12 +47,12 @@ Private T As GTranslate.DLL
 'it should actually lead to a small speed increase,
 'but you have to be careful to not modify the original string.
 
-Public Function GetTranslation(ByRef Text As String, Optional transLock As Boolean) As String
+Public Function GetTranslation(ByRef text As String, Optional transLock As Boolean, Optional UnTrim As UnTrimType) As String
 'weed out easy stuff
 Dim txtTemp As String
-txtTemp = Trim$(Text) 'if there are spaces on the ends, trim them
+txtTemp = Trim$(text) 'if there are spaces on the ends, trim them
 If LenB(txtTemp) <= 1 Then GetTranslation = txtTemp: Exit Function 'if the length of the string is <=1 then we aren't translating it.
-If IsNumeric(txtTemp) = True Then GetTranslation = Text: Exit Function 'if it's a number.. we aren't translating it.
+If IsNumeric(txtTemp) = True Then GetTranslation = text: Exit Function 'if it's a number.. we aren't translating it.
 
 
 'I didn't feel like creating a translation queue or something of the sort,
@@ -86,19 +94,36 @@ If InStr(1, GetTranslation, "\r\n", vbBinaryCompare) <> 0 Then
     GetTranslation = Replace(GetTranslation, "\r\n", vbNewLine)
 End If
 
+Select Case UnTrim
+
+    Case UnTrimType.UnTrimFront
+        GetTranslation = " " & GetTranslation
+    
+    Case UnTrimType.UnTrimBack
+        GetTranslation = GetTranslation & " "
+    
+    Case UnTrimType.UnTrimBoth
+        GetTranslation = " " & GetTranslation & " "
+
+End Select
+
+'release the lock and reset current translation
+currentTranslation = vbNullString
+isLocked = False
+
 End Function
 
-Private Sub AddLog(Text As String)
+Private Sub AddLog(text As String)
 With frmTransLog.txtLog
 
 If frmTransLog.txtLog.Visible = False Then Exit Sub
 
-    .SelText = vbCrLf & Time & ": " & Text
+    .SelText = vbCrLf & Time & ": " & text
     '.Text = .Text & vbCrLf & Time & ": " & Text
 End With
 End Sub
 
-Private Function Translate(ByRef Text As String) As String
+Private Function Translate(ByRef text As String) As String
 Dim strTranslation As String
 Dim strHash As String
 Dim SleepTime As Long
@@ -115,7 +140,7 @@ If langCol Is Nothing Then Set langCol = New Collection: loadLang strTransPath, 
 If origCol Is Nothing Then Set origCol = New Collection: loadLang strOrigPath, origCol
 
 'get the md5 of our current string
-strHash = T.GetMD5Hash(Text)
+strHash = T.GetMD5Hash(text)
 'read from the file to see if it's already been translated
 strTranslation = ReadFromCache(strHash, langCol)
 'If the length of it is 0, translate it.
@@ -148,7 +173,7 @@ StartOver:
                 'This is the best setting for a populated server, as otherwise
                 'it would slow down a bit and lag for people.
                 AddLog "Skipping translation; over quota.."
-                Translate = Text
+                Translate = text
                 Exit Function
             End If
         Else
@@ -157,26 +182,26 @@ StartOver:
         Select Case Rand(0, 2)
 
         Case Is = 0
-            Translate = T.BingTranslate(LangTo, LangFrom, Text, "myBTranslate", "zgQQfksRpj8H60LVHq4afeHtmVTldKrE7PQxRnqxOy4=")
-            AddLog "Translated(Bing): [" & Text & "] to [" & Translate & "]"
+            Translate = T.BingTranslate(LangTo, LangFrom, text, "myBTranslate", "zgQQfksRpj8H60LVHq4afeHtmVTldKrE7PQxRnqxOy4=")
+            AddLog "Translated(Bing): [" & text & "] to [" & Translate & "]"
         Case Is = 1
-            Translate = T.GoogleTranslate(LangTo, LangFrom, Text)
-            AddLog "Translated(Google): [" & Text & "] to [" & Translate & "]"
+            Translate = T.GoogleTranslate(LangTo, LangFrom, text)
+            AddLog "Translated(Google): [" & text & "] to [" & Translate & "]"
         Case Is = 2
-            Translate = T.YandexTranslate(LangTo, LangFrom, Text, "trnsl.1.1.20141229T202549Z.5f61901044d9ab3e.4d5c2d268897918f1adbfa15eb58b66d970ecbef")
-            AddLog "Translated(Yandex): [" & Text & "] to [" & Translate & "]"
+            Translate = T.YandexTranslate(LangTo, LangFrom, text, "trnsl.1.1.20141229T202549Z.5f61901044d9ab3e.4d5c2d268897918f1adbfa15eb58b66d970ecbef")
+            AddLog "Translated(Yandex): [" & text & "] to [" & Translate & "]"
         End Select
         DoEvents
         
         'for now, if it's blank, just return the original text. However, this means that a translation error happened most likely.
         If LenB(Translate) <= 1 Then
-        Translate = Text
+        Translate = text
         Exit Function
         End If
         
         'check that an error didn't occur.. log it to server log?
             AddToCache strHash, Translate, langCol ', Text
-            AddToCache strHash, Text, origCol
+            AddToCache strHash, text, origCol
         'uncomment this to save the collection every time a new translation is made, but be careful as it could get slow..
             'saveLang strTransPath, langCol
             'saveLang strOrigPath, origCol
@@ -191,10 +216,10 @@ If Exists(origCol, strHash) = False Then
 'if it's not in the cache, let's add it.
 'This shouldn't happen, but I didn't have a separate collection
 'for the original untranslated text.
-    AddToCache strHash, Text, origCol
+    AddToCache strHash, text, origCol
 End If
 
-AddLog "Cached: [" & strTranslation & "] original: [" & Text & "]"
+'AddLog "Cached: [" & strTranslation & "] original: [" & text & "]"
 
 End If
 
@@ -228,7 +253,7 @@ Public Sub loadLang(Path As String, ByRef col As Collection)
 'Dim strTemp As String
 Dim Temp() As Byte
 Dim tempArray(1) As String
-Dim buffer As New clsBuffer
+Dim Buffer As New clsBuffer
 Dim lngBufferCount As Long
 Dim NF As Integer
 Dim NotNull As Boolean
@@ -247,13 +272,13 @@ If NotNull = False Then Exit Sub
 
     Temp = Decompress(Temp, bfFail)
     If bfFail = True Then GoTo skip
-    buffer.WriteBytes Temp
+    Buffer.WriteBytes Temp
     
-lngBufferCount = buffer.ReadLong
+lngBufferCount = Buffer.ReadLong
 lastSave = lngBufferCount
 Dim i As Long
 For i = 1 To lngBufferCount
-    buildArray buffer.ReadString, buffer.ReadString, tempArray
+    buildArray Buffer.ReadString, Buffer.ReadString, tempArray
     col.Add tempArray, tempArray(0)
 Next
 
@@ -261,13 +286,13 @@ Next
 lastSave = col.Count
 
 skip:
-Set buffer = Nothing
+Set Buffer = Nothing
 End Sub
 
 Public Sub saveLang(Path As String, ByRef col As Collection, Optional blForceSave As Boolean = False)
 Dim NF As Integer
 Dim tempOut() As Byte
-Dim buffer As New clsBuffer
+Dim Buffer As New clsBuffer
 Dim i As Long
 NF = FreeFile
 
@@ -275,17 +300,17 @@ If col Is Nothing Then Exit Sub
 
 If blForceSave = False Then If (lastSave) = (langCol.Count) Then Exit Sub
 AddLog "Saving lang to: " & Path
-buffer.WriteLong col.Count
+Buffer.WriteLong col.Count
 
 For i = 1 To col.Count
 'write the key first
-    buffer.WriteString (col.Item(i)(0))
+    Buffer.WriteString (col.Item(i)(0))
 'write the actual translation
-    buffer.WriteString (col.Item(i)(1))
+    Buffer.WriteString (col.Item(i)(1))
 Next
 
 'write buffer to temp out
-tempOut = Compress(buffer.ReadBytes(buffer.length))
+tempOut = Compress(Buffer.ReadBytes(Buffer.length))
 
     Open Path For Binary As #NF
     Put #NF, , tempOut
@@ -294,10 +319,10 @@ tempOut = Compress(buffer.ReadBytes(buffer.length))
 lastSave = langCol.Count
 End Sub
 
-Private Sub buildArray(ByRef key As String, ByRef Text As String, ByRef myArr() As String)
+Private Sub buildArray(ByRef key As String, ByRef text As String, ByRef myArr() As String)
 
 myArr(0) = key
-myArr(1) = Text
+myArr(1) = text
 
 End Sub
 
@@ -325,7 +350,7 @@ Public Sub debugLangFile(Path As String)
 
 Dim NF As Integer
 Dim tempOut() As Byte
-Dim buffer As New clsBuffer
+Dim Buffer As New clsBuffer
 NF = FreeFile
 
 Dim col As Collection
@@ -335,20 +360,20 @@ Dim myArr(1) As String
 col.Add Array("0a-6d-d0-dd-a2-ee-52-6b-57-55-6b-68-97-33-4a-b1", "Level 40-50"), "0a-6d-d0-dd-a2-ee-52-6b-57-55-6b-68-97-33-4a-b1"
 col.Add Array("da-f8-9b-9c-2d-b8-51-d6-91-84-f0-95-6a-44-a0-d3", "Level 5-10"), "da-f8-9b-9c-2d-b8-51-d6-91-84-f0-95-6a-44-a0-d3"
 col.Add Array("7e-54-5b-21-c5-a5-49-23-4b-ca-43-23-32-cf-54-82", "Level 10-20"), "7e-54-5b-21-c5-a5-49-23-4b-ca-43-23-32-cf-54-82"
-buffer.WriteLong col.Count
+Buffer.WriteLong col.Count
 
 Dim i As Long
 
 
 For i = 1 To col.Count
 'write the key first
-    buffer.WriteString (col.Item(i)(0))
+    Buffer.WriteString (col.Item(i)(0))
 'write the actual translation
-    buffer.WriteString (col.Item(i)(1))
+    Buffer.WriteString (col.Item(i)(1))
 Next i
 
 'write buffer to temp out
-tempOut = Compress(buffer.ReadBytes(buffer.length))
+tempOut = Compress(Buffer.ReadBytes(Buffer.length))
 
     Open Path For Binary As #NF
     Put #NF, , tempOut

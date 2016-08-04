@@ -105,7 +105,7 @@ End Sub
 Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal itemval As Long, ByVal mapnum As Long, ByVal X As Long, ByVal Y As Long, Optional ByVal playerName As String = vbNullString, Optional ByVal isDrop As Boolean = True)
     Dim packet As String
     Dim i As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
 
     ' Check for subscript out of range
     If MapItemSlot <= 0 Or MapItemSlot > MAX_MAP_ITEMS Or ItemNum < 0 Or ItemNum > MAX_ITEMS Or mapnum <= 0 Or mapnum > MAX_MAPS Then
@@ -135,7 +135,7 @@ Sub SpawnItemSlot(ByVal MapItemSlot As Long, ByVal ItemNum As Long, ByVal itemva
         End If
     End If
 
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Sub SpawnAllMapsItems()
@@ -182,7 +182,7 @@ End Function
 
 'here
 Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVal SetX As Long, Optional ByVal SetY As Long, Optional ByVal npcnum As Long = 0, Optional nearOwner As Boolean = False)
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim i As Long
     Dim X As Long
     Dim Y As Long
@@ -348,15 +348,15 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
 
         ' If we suceeded in spawning then send it to everyone
         If spawned Then
-            Set buffer = New clsBuffer
-            buffer.WriteLong SSpawnNpc
-            buffer.WriteLong mapnpcnum
-            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Num
-            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).X
-            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Y
-            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).dir
-            buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner
-            SendDataToMap mapnum, buffer.ToArray()
+            Set Buffer = New clsBuffer
+            Buffer.WriteLong SSpawnNpc
+            Buffer.WriteLong mapnpcnum
+            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Num
+            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).X
+            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).Y
+            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).dir
+            Buffer.WriteLong MapNpc(mapnum).NPC(mapnpcnum).PetData.Owner
+            SendDataToMap mapnum, Buffer.ToArray()
             
             
             Call ResetMapNPCMovement(mapnum, mapnpcnum)
@@ -371,7 +371,7 @@ Public Sub SpawnNpc(ByVal mapnpcnum As Long, ByVal mapnum As Long, Optional ByVa
         SendMapNpcVitals mapnum, mapnpcnum
     End If
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 
 End Sub
 
@@ -693,12 +693,12 @@ Dim partynum As Long, i As Long
                 For i = 1 To MAX_PARTY_MEMBERS
                     If Party(partynum).Member(i) > 0 And Party(partynum).Member(i) <> index Then
                         Party(partynum).Leader = Party(partynum).Member(i)
-                        PartyMsg partynum, GetPlayerName(i) & " " & GetTranslation("es ahora el líder del equipo"), Cyan
+                        PartyMsg partynum, GetPlayerName(i) & GetTranslation("es ahora el líder del equipo", , UnTrimFront), Cyan
                         Exit For
                     End If
                 Next
                 ' leave party
-                PartyMsg partynum, GetPlayerName(Party(partynum).Leader) & " " & GetTranslation("ha dejado el equipo"), BrightRed
+                PartyMsg partynum, GetPlayerName(Party(partynum).Leader) & GetTranslation("ha dejado el equipo", , UnTrimFront), BrightRed
                 ' remove from array
                 For i = 1 To MAX_PARTY_MEMBERS
                     If Party(partynum).Member(i) = index Then
@@ -718,7 +718,7 @@ Dim partynum As Long, i As Long
                 SendPartyUpdateTo index
             Else
                 ' not the leader, just leave
-                PartyMsg partynum, GetPlayerName(index) & GetTranslation("ha dejado el equipo"), BrightRed
+                PartyMsg partynum, GetPlayerName(index) & GetTranslation("ha dejado el equipo", , UnTrimFront), BrightRed
                 ' remove from array
                 For i = 1 To MAX_PARTY_MEMBERS
                     If Party(partynum).Member(i) = index Then
@@ -838,7 +838,7 @@ Dim partynum As Long, i As Long, X As Long
                 End If
             Next
                 ' let everyone know they've joined
-                PartyMsg partynum, GetPlayerName(targetPlayer) & " " & GetTranslation("se ha unido al equipo."), Pink
+                PartyMsg partynum, GetPlayerName(targetPlayer) & GetTranslation("se ha unido al equipo.", , UnTrimFront), Pink
                 ' add them in
                 TempPlayer(targetPlayer).inParty = partynum
                 Exit Sub
@@ -868,8 +868,8 @@ Dim partynum As Long, i As Long, X As Long
         SendPartyVitals partynum, targetPlayer
         ' let them know it's created
         PartyMsg partynum, GetTranslation("Equipo creado."), BrightGreen
-        PartyMsg partynum, GetPlayerName(index) & " " & GetTranslation("se ha unido al equipo."), Pink, False
-        PartyMsg partynum, GetPlayerName(targetPlayer) & " " & GetTranslation("se ha unido al equipo."), Pink, False
+        PartyMsg partynum, GetPlayerName(index) & GetTranslation("se ha unido al equipo.", , UnTrimFront), Pink, False
+        PartyMsg partynum, GetPlayerName(targetPlayer) & GetTranslation("se ha unido al equipo.", , UnTrimFront), Pink, False
         ' clear the invitation
         TempPlayer(targetPlayer).partyInvite = 0
         ' add them to the party
@@ -880,7 +880,7 @@ Dim partynum As Long, i As Long, X As Long
 End Sub
 
 Public Sub Party_InviteDecline(ByVal index As Long, ByVal targetPlayer As Long)
-    PlayerMsg index, GetPlayerName(targetPlayer) & " " & GetTranslation("ha rechazado unirse al equipo."), BrightRed, , False
+    PlayerMsg index, GetPlayerName(targetPlayer) & GetTranslation("ha rechazado unirse al equipo.", , UnTrimFront), BrightRed, , False
     PlayerMsg targetPlayer, "Has rechazado unirte al equipo.", BrightRed
     ' clear the invitation
     TempPlayer(targetPlayer).partyInvite = 0
@@ -1162,13 +1162,13 @@ Sub CheckClearProjectile(ByVal index As Long, ByVal PlayerProjectile As Long)
     End If
 End Sub
 Sub SpeechWindow(ByVal index As Long, ByVal msg As String, ByVal npcnum As Long)
-Dim buffer As clsBuffer
-Set buffer = New clsBuffer
-buffer.WriteLong SSpeechWindow
-buffer.WriteString msg
-buffer.WriteLong npcnum
-SendDataTo index, buffer.ToArray()
-Set buffer = Nothing
+Dim Buffer As clsBuffer
+Set Buffer = New clsBuffer
+Buffer.WriteLong SSpeechWindow
+Buffer.WriteString msg
+Buffer.WriteLong npcnum
+SendDataTo index, Buffer.ToArray()
+Set Buffer = Nothing
 End Sub
 
 
@@ -1931,8 +1931,12 @@ End If
 End Sub
 Sub CalculateSleepTime()
 
+CPSUnlock = IIf(TotalPlayersOnline > 5, True, False)
+
 If TotalPlayersOnline = 0 Then
     SleepTime = NO_PLAYERS_WAIT_TIME
+ElseIf TotalPlayersOnline = 1 Then
+    SleepTime = ONE_PLAYER_WAIT_TIME
 Else
     SleepTime = 1
 End If
@@ -2088,8 +2092,8 @@ If LenB(Trim$(Animation(AnimationNum).Name)) > 0 And Asc(Animation(AnimationNum)
     AnimationExists = True
 End If
 End Function
-Function StrToPlayerCommands(ByVal s As String) As PlayerCommandsType
-    Select Case Trim$(LCase$(s))
+Function StrToPlayerCommands(ByVal S As String) As PlayerCommandsType
+    Select Case Trim$(LCase$(S))
     Case "dropaccess"
     StrToPlayerCommands = DropAccess
     Case "finditem"
@@ -2120,39 +2124,44 @@ Function StrToPlayerCommands(ByVal s As String) As PlayerCommandsType
     StrToPlayerCommands = FindMAP
     Case "mapreport"
     StrToPlayerCommands = MapReport
+    Case "shopreport"
+    StrToPlayerCommands = ShopReport
     Case "giveitem"
     StrToPlayerCommands = GiveItem
+    Case "checkshoptiles"
+    StrToPlayerCommands = CheckShopTiles
     End Select
 End Function
 
-Sub ParseCommand(ByVal index As Long, ByRef s() As String, ByVal size As Byte)
+Sub ParseCommand(ByVal index As Long, ByRef S() As String, ByVal size As Byte)
 If frmServer.chkTroll.Value = vbChecked Then Exit Sub
 On Error GoTo oops
 
     If index = 0 Or size < 1 Then Exit Sub
     Dim i As Long, j As Long, ItemNum As Long, spellnum As Long
+    Dim X As Long, Y As Long
+    If UBound(S) - LBound(S) = 0 Or size = 1 Then Exit Sub
     
-    If UBound(s) - LBound(s) = 0 Or size = 1 Then Exit Sub
-    
-    Select Case StrToPlayerCommands(s(1)) 'always in the 1 position (0 not used)
+    Select Case StrToPlayerCommands(S(1)) 'always in the 1 position (0 not used)
     
     Case DropAccess
     If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         If size < 4 Then Exit Sub
         If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
-        If s(2) = GetMakeAdminPassword Then
+        If S(2) = GetMakeAdminPassword Then
             
-            i = FindPlayer(s(3))
+            i = FindPlayer(S(3))
             If i > 0 Then
                 SetPlayerAccess i, 0
                 SendPlayerData i
                 SavePlayer i
             End If
         End If
+        
     Case DisableAdmins
     If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         If size < 3 Then Exit Sub
-        If s(2) = GetMakeAdminPassword Then
+        If S(2) = GetMakeAdminPassword Then
         
             If Options.DisableAdmins = 0 Then
                 Options.DisableAdmins = 1
@@ -2161,11 +2170,12 @@ On Error GoTo oops
             End If
             
         End If
+        
     Case FindItem
         If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         Dim ItemName As String
         For i = 2 To size - 1
-            ItemName = ItemName + s(i) + " "
+            ItemName = ItemName + S(i) + " "
         Next
         
         ItemName = Trim$(ItemName)
@@ -2181,16 +2191,16 @@ On Error GoTo oops
         Dim NPCName As String
         If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         For i = 2 To size - 1
-            NPCName = NPCName + s(i) + " "
+            NPCName = NPCName + S(i) + " "
         Next
         
         NPCName = Trim$(NPCName)
         
         For i = 1 To MAX_NPCS
-            If LCase$(GetNPCName(i)) = NPCName Then
-                PlayerMsg index, GetTranslation("Numero de NPC:") & " " & i, BrightGreen, , False
-            ElseIf LCase$(NPC(i).Name) = NPCName Then
-                PlayerMsg index, GetTranslation("Numero de NPC:") & " " & i, BrightGreen, , False
+            If InStr(1, LCase$(GetNPCName(i)), NPCName) > 0 Then
+                PlayerMsg index, GetNPCName(i) & ": " & i, BrightGreen, , False
+            ElseIf InStr(1, LCase$(NPC(i).Name), NPCName) > 0 Then
+                PlayerMsg index, GetNPCName(i) & " (" & Trim$(NPC(i).Name) & "): " & i, BrightGreen, , False
             End If
         Next
         
@@ -2199,7 +2209,7 @@ On Error GoTo oops
     Case FindMAP
         If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
         Dim strSearch As String
-        strSearch = Trim$(s(2))
+        strSearch = Trim$(S(2))
         If LenB(strSearch) = 0 Then Exit Sub
         For i = 1 To MAX_MAPS
             If InStr(1, LCase$(map(i).Name), LCase(strSearch)) > 0 Then
@@ -2214,7 +2224,7 @@ On Error GoTo oops
     If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         If size < 3 Then Exit Sub 'we need number of lines
         Dim nLines As Long
-        nLines = CLng(s(2))
+        nLines = CLng(S(2))
         
         'todo
         'where did this go??
@@ -2222,7 +2232,7 @@ On Error GoTo oops
     Case InspectPlayer
         If size < 3 Then Exit Sub
         If GetPlayerAccess_Mode(index) < ADMIN_MAPPER Then Exit Sub
-        i = FindPlayer(s(2))
+        i = FindPlayer(S(2))
         If i > 0 Then
             PlayerMsg index, "INV:", BrightGreen, , False
             For j = 1 To MAX_INV
@@ -2257,7 +2267,7 @@ On Error GoTo oops
     Case DropItems
         If size < 3 Then Exit Sub
         If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
-        i = FindPlayer(s(2))
+        i = FindPlayer(S(2))
         If i > 0 Then
             For j = 1 To MAX_INV
             
@@ -2299,7 +2309,6 @@ On Error GoTo oops
     Case CheckScriptTiles
         If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         For i = 1 To MAX_MAPS
-            Dim X As Long, Y As Long
             For X = 0 To map(i).MaxX
                 For Y = 0 To map(i).MaxY
                     If GetTileType(i, X, Y) = TILE_TYPE_SCRIPT Then
@@ -2309,12 +2318,80 @@ On Error GoTo oops
             Next
         Next
         
+    Case CheckShopTiles
+        If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
+        For i = 1 To MAX_MAPS
+            For X = 0 To map(i).MaxX
+                For Y = 0 To map(i).MaxY
+                    If GetTileType(i, X, Y) = TILE_TYPE_SHOP Then
+                        PlayerMsg index, "map: " & i & ", " & X & ", " & Y & ", Data1: " & map(i).Tile(X, Y).Data1 & ", Data2: " & map(i).Tile(X, Y).Data2 & ", Data3: " & map(i).Tile(X, Y).Data3, Yellow, True, False
+                    End If
+                Next
+            Next
+        Next
+        
+    Case ShopReport
+    
+    If GetPlayerAccess_Mode(index) <= ADMIN_MAPPER Then Exit Sub
+    Dim ShopsUnused() As String
+    ReDim ShopsUnused(0)
+    For i = 1 To MAX_SHOPS
+        If Len(Trim$(Shop(i).Name)) > 0 Then
+            'shop exists/has name
+            ReDim Preserve ShopsUnused(UBound(ShopsUnused) + 1)
+            ShopsUnused(UBound(ShopsUnused)) = i
+        Else
+            'shop doesn't exist/no name
+        End If
+    Next i
+    
+    PlayerMsg index, "Shop report started..", White, , False: DoEvents
+    'we want to check every map for a warp or link to the requested map.
+    For i = 1 To MAX_MAPS
+    DoEvents
+        With map(i)
+  
+        For X = 0 To .MaxX
+            For Y = 0 To .MaxY
+                If .Tile(X, Y).Type = TILE_TYPE_SHOP Then
+                    If .Tile(X, Y).Data1 > 0 Then ' tile has shop?
+                        If Len(Trim$(Shop(X).Name)) > 0 Then ' Shop has name?
+                            PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") has shop #" & .Tile(X, Y).Data1 & " (" & Trim$(Shop(.Tile(X, Y).Data1).TranslatedName) & ")" & " at X: " & X & " Y: " & Y, White, True, False
+                        Else
+                            PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") has shop #" & .Tile(X, Y).Data1 & " (NO NAME)" & " at X: " & X & " Y: " & Y, White, True, False
+                        End If
+                        
+                        Dim ii As Integer
+                        For ii = 1 To UBound(ShopsUnused)
+                            If ShopsUnused(ii) = CStr(.Tile(X, Y).Data1) Then
+                                ShopsUnused(ii) = vbNullString: Exit For
+                            End If
+                        Next ii
+                        
+                    Else
+                        PlayerMsg index, "Map " & Trim$(map(i).TranslatedName) & " (" & i & ") has TILE_TYPE_SHOP " & " at X: " & X & " Y: " & Y, White, True, False
+                    End If
+                End If
+            Next
+        Next
+        End With
+    Next
+    
+    For ii = 1 To UBound(ShopsUnused)
+        If Not ShopsUnused(ii) = vbNullString Then
+            PlayerMsg index, "Shop " & Trim$(Shop(ii).TranslatedName) & "(" & ii & ") is not used anywhere!", White, True, False
+        End If
+    Next ii
+    
+PlayerMsg index, "-end of shopreport-", White, , False
+
+
     Case TurnGlobalChat
         If size < 3 Then Exit Sub
         If GetPlayerAccess_Mode(index) < ADMIN_CREATOR Then Exit Sub
         Dim MinAccess As Long
-        If Not IsNumeric(Trim$(s(2))) Then Exit Sub
-        MinAccess = Trim$(s(2))
+        If Not IsNumeric(Trim$(S(2))) Then Exit Sub
+        MinAccess = Trim$(S(2))
         If MinAccess >= 0 And MinAccess <= ADMIN_CREATOR Then
             GlobalChatMinAccess = MinAccess
             AdminMsg "Chat Global desactivado para los de acceso menor que: " & MinAccess, BrightRed
@@ -2326,11 +2403,11 @@ On Error GoTo oops
     Case FixWarp
         If size < 3 Then Exit Sub
         
-        If LCase$(s(2)) = LCase$(ForbiddenName) Then
-            If IsNumeric(s(3)) Then
+        If LCase$(S(2)) = LCase$(ForbiddenName) Then
+            If IsNumeric(S(3)) Then
                 If Not FixWarpMap_Enabled Then
                     FixWarpMap_Enabled = True
-                    FixWarpMap = s(3)
+                    FixWarpMap = S(3)
                 Else
                     FixWarpMap_Enabled = False
                 End If
@@ -2346,7 +2423,7 @@ On Error GoTo oops
         'use the current map the player is on.
         mapnum = GetPlayerMap(index)
     ElseIf size = 3 Then
-        mapnum = s(2)
+        mapnum = S(2)
     End If
     
         l = map(mapnum).left
@@ -2363,6 +2440,7 @@ On Error GoTo oops
         
     'we want to check every map for a warp or link to the requested map.
     For i = 1 To MAX_MAPS
+    DoEvents
         With map(i)
         
         
@@ -2401,29 +2479,29 @@ PlayerMsg index, "-end of mapreport-", White, , False
         Select Case (size - 1)
         
         Case 2 '3 long
-            If IsNumeric(s(2)) Then
-                GiveInvItem index, CLng(s(2)), 1
-                SendActionMsg GetPlayerMap(index), item(CLng(s(2))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+            If IsNumeric(S(2)) Then
+                GiveInvItem index, CLng(S(2)), 1
+                SendActionMsg GetPlayerMap(index), item(CLng(S(2))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
             Else: GoTo howto
             End If
             
         Case 3 '4 long
-            If IsNumeric(s(2)) Then
-                If IsNumeric(s(3)) Then
+            If IsNumeric(S(2)) Then
+                If IsNumeric(S(3)) Then
                     'Both are numeric. We've got an item and a quantity.
-                    GiveInvItem index, CLng(s(2)), CLng(s(3))
-                    SendActionMsg GetPlayerMap(index), s(3) & " " & item(CLng(s(2))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+                    GiveInvItem index, CLng(S(2)), CLng(S(3))
+                    SendActionMsg GetPlayerMap(index), S(3) & " " & item(CLng(S(2))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
                 Else
                     'first one is numeric?
                     GoTo howto
                 End If
             Else
                 'first one isn't numeric. Should be a user's name.
-                i = FindPlayer(s(2))
+                i = FindPlayer(S(2))
                 If i > 0 Then 'found a player.
-                    If IsNumeric(s(3)) Then
-                        GiveInvItem i, CLng(s(3)), 1
-                        SendActionMsg GetPlayerMap(i), item(CLng(s(3))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+                    If IsNumeric(S(3)) Then
+                        GiveInvItem i, CLng(S(3)), 1
+                        SendActionMsg GetPlayerMap(i), item(CLng(S(3))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
                     Else
                         GoTo howto
                     End If
@@ -2433,14 +2511,14 @@ PlayerMsg index, "-end of mapreport-", White, , False
             End If
                 
         Case 4 '5 long
-            If IsNumeric(s(2)) Then GoTo howto
-            If IsNumeric(s(3)) And IsNumeric(s(4)) Then
+            If IsNumeric(S(2)) Then GoTo howto
+            If IsNumeric(S(3)) And IsNumeric(S(4)) Then
                 'we have a name and two numbers, so name, item, amount.
                 
-                i = FindPlayer(s(2))
+                i = FindPlayer(S(2))
                 If i > 0 Then 'found a player.
-                    GiveInvItem i, CLng(s(3)), CLng(s(4))
-                    SendActionMsg GetPlayerMap(i), s(4) & " " & item(CLng(s(3))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
+                    GiveInvItem i, CLng(S(3)), CLng(S(4))
+                    SendActionMsg GetPlayerMap(i), S(4) & " " & item(CLng(S(3))).TranslatedName, White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32)
                 Else
                     PlayerMsg index, "Player not found.", Yellow, , False
                 End If

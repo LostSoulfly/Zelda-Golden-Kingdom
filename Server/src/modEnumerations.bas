@@ -434,6 +434,7 @@ Public Enum PlayerCommandsType
     DropItems = 7
     ViewKillPoints
     CheckScriptTiles
+    CheckShopTiles
     TurnGlobalChat
     Visible
     FixWarp
@@ -441,6 +442,7 @@ Public Enum PlayerCommandsType
     FindMAP
     GiveItem
     MapReport
+    ShopReport
 End Enum
 
 

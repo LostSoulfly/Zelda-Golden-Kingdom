@@ -208,7 +208,7 @@ If Not GetPlayerAccess_Mode(Founder_Index) > ADMIN_MAPPER Then
     
     'Change 500 to amount
     If ItemAmount = 0 Or ItemAmount < GUILD_PRICE Then
-        PlayerMsg Founder_Index, GetTranslation("Rupias insuficientes. Debes tener al menos") & " " & GUILD_PRICE & " " & GetTranslation("Rupias Verdes"), BrightRed, , False
+        PlayerMsg Founder_Index, GetTranslation("Rupias insuficientes. Debes tener al menos", , UnTrimBacl) & GUILD_PRICE & GetTranslation("Rupias Verdes", , UnTrimFront), BrightRed, , False
         'Exit Sub
     End If
     
@@ -263,7 +263,7 @@ End If
     
     'Inform users
     PlayerMsg Founder_Index, "¡Clan creado satisfactoriamente!", BrightGreen
-    PlayerMsg Founder_Index, GetTranslation("¡Bienvenido a") & " " & GuildData(GuildSlot).Guild_Name & ".", BrightGreen, , False
+    PlayerMsg Founder_Index, GetTranslation("¡Bienvenido a", , UnTrimBack) & GuildData(GuildSlot).Guild_Name & ".", BrightGreen, , False
     
     PlayerMsg Founder_Index, "Puedes hablar en el chat del clan seleccionando desde Opciones Chat: Clan", BrightGreen
     
@@ -310,7 +310,7 @@ End Function
 Public Sub Request_Guild_Invite(index As Long, GuildSlot As Long, Inviter_Index As Long)
 
     If player(index).GuildFileId > 0 Then
-        PlayerMsg index, GetTranslation("¡Debe abandonar su clan actual antes de poder unirse a") & " " & GuildData(GuildSlot).Guild_Name & "!", BrightRed, , False
+        PlayerMsg index, GetTranslation("¡Debe abandonar su clan actual antes de poder unirse a", , UnTrimBack) & GuildData(GuildSlot).Guild_Name & "!", BrightRed, , False
         PlayerMsg Inviter_Index, "¡No pueden unirse al clan porque ya están en otro!", BrightRed
         Exit Sub
     End If
@@ -333,7 +333,7 @@ Public Sub Request_Guild_Invite(index As Long, GuildSlot As Long, Inviter_Index 
     TempPlayer(index).tmpGuildInviteId = player(Inviter_Index).GuildFileId
     
     PlayerMsg Inviter_Index, "¡Invitación al Clan enviada!", Green
-    PlayerMsg index, player(Inviter_Index).Name & " " & GetTranslation("te ha invitado al clan") & " " & GuildData(GuildSlot).Guild_Name & "!", Green, , False
+    PlayerMsg index, player(Inviter_Index).Name & GetTranslation("te ha invitado al clan", , UnTrimBoth) & GuildData(GuildSlot).Guild_Name & "!", Green, , False
     PlayerMsg index, "Para aceptarla, pulsa en Aceptar desde el Panel del Clan, el cual se abre desde Opciones, antes de 2 minutos.", Green
     PlayerMsg index, "O bien pulsa en Rechazar, para rechazar la oferta.", Green
 End Sub
@@ -366,7 +366,7 @@ Dim OpenSlot As Long
             
             'Send player guild data and display welcome
             Call SendGuild(False, index, GuildSlot)
-            PlayerMsg index, GetTranslation("Bienvenido a") & " " & GuildData(GuildSlot).Guild_Name & ".", BrightGreen, , False
+            PlayerMsg index, GetTranslation("Bienvenido a", , UnTrimBack) & GuildData(GuildSlot).Guild_Name & ".", BrightGreen, , False
             
             PlayerMsg index, "Puedes hablar en el chat del clan seleccionando desde Opciones Chat: Clan", BrightGreen
             
@@ -917,7 +917,7 @@ Sub SayMsg_Party(ByVal index As Long, ByVal message As String, ByVal saycolour A
 End Sub
 Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim msg As String
-    Dim s As String
+    Dim S As String
     Dim i As Long
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
@@ -940,10 +940,10 @@ Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Start
         Exit Sub
     End If
     
-    s = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
+    S = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
     
     Call SayMsg_Guild(TempPlayer(index).tmpGuildSlot, index, msg, QBColor(White))
-    Call AddLog(index, s, PLAYER_LOG)
+    Call AddLog(index, S, PLAYER_LOG)
     Call TextAdd(msg)
     
     Set buffer = Nothing
@@ -1072,7 +1072,7 @@ Public Sub HandleGuildCommands(ByVal index As Long, ByRef Data() As Byte, ByVal 
         If SelectedIndex > 0 Then
             Call Request_Guild_Invite(SelectedIndex, TempPlayer(index).tmpGuildSlot, index)
         Else
-            PlayerMsg index, GetTranslation("No se pudo encontrar el usuario") & " " & SendText & ".", BrightRed, , False
+            PlayerMsg index, GetTranslation("No se pudo encontrar el usuario", , UnTrimBack) & SendText & ".", BrightRed, , False
         End If
         
     Case 3
@@ -1178,7 +1178,7 @@ Public Sub HandleGuildCommands(ByVal index As Long, ByRef Data() As Byte, ByVal 
                         PlayerMsg SelectedIndex, "¡Te ha sido otorgado el grado de Fundador del Clan!.", Green
                     End If
                 Else
-                    PlayerMsg index, GetTranslation("No se pudo encontrar el usuario") & " " & SendText & ".", BrightRed, , False
+                    PlayerMsg index, GetTranslation("No se pudo encontrar el usuario", , UnTrimBack) & SendText & ".", BrightRed, , False
                 End If
             Else
                  PlayerMsg index, "Usted debe ser el fundador para utilizar este comando.", BrightRed

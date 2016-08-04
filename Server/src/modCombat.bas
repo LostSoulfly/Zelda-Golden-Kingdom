@@ -1915,7 +1915,7 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
         If Not map(GetPlayerMap(attacker)).moral = MAP_MORAL_ARENA Then
             
             ' Player is dead
-            Call GlobalMsg(GetPlayerName(victim) & " " & GetTranslation(" ha sido asesinado por ") & " " & GetPlayerName(attacker), BrightRed, False, True)
+            Call GlobalMsg(GetPlayerName(victim) & GetTranslation(" ha sido asesinado por ", , UnTrimBoth) & GetPlayerName(attacker), BrightRed, False, True)
             ' Calculate exp to give attacker
             Call ComputePlayerExp(attacker, TARGET_TYPE_PLAYER, victim, TARGET_TYPE_PLAYER)
             
@@ -1932,7 +1932,7 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
             Call SetPlayerJustice(attacker, victim)
             Call ComputeArmyPvP(attacker, victim)
         Else
-            Call GlobalMsg(GetPlayerName(attacker) & " " & GetTranslation(" ha vencido a ") & " " & GetPlayerName(victim), White, False, True)
+            Call GlobalMsg(GetPlayerName(attacker) & GetTranslation(" ha vencido a ", , UnTrimBoth) & GetPlayerName(victim), White, False, True)
         End If
         
         ' purge target info of anyone who targetted dead guy
@@ -2065,7 +2065,7 @@ Public Sub BufferSpell(ByVal index As Long, ByVal spellslot As Long)
 
     ' Make sure they are the right level
     If LevelReq > GetPlayerLevel(index) Then
-        Call PlayerMsg(index, GetTranslation("Necesitas el lvl") & " " & LevelReq & " " & GetTranslation("para usar esta habilidad."), BrightRed, , False)
+        Call PlayerMsg(index, GetTranslation("Necesitas el lvl", , UnTrimBack) & LevelReq & GetTranslation("para usar esta habilidad.", , UnTrimFront), BrightRed, , False)
         ' send the sound
         SendPlayerSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seError, 1
         Exit Sub
@@ -2086,7 +2086,7 @@ Public Sub BufferSpell(ByVal index As Long, ByVal spellslot As Long)
     ' make sure the classreq > 0
     If ClassReq > 0 Then ' 0 = no req
         If ClassReq <> GetPlayerClass(index) Then
-            Call PlayerMsg(index, GetTranslation("Solo la clase") & " " & CheckGrammar(Trim$(Class(ClassReq).TranslatedName)) & " " & GetTranslation("puede utilizar esta magia."), BrightRed, , False)
+            Call PlayerMsg(index, GetTranslation("Solo la clase", , UnTrimBack) & CheckGrammar(Trim$(Class(ClassReq).TranslatedName)) & GetTranslation("puede utilizar esta magia.", , UnTrimFront), BrightRed, , False)
             Exit Sub
         End If
     End If
@@ -2216,7 +2216,7 @@ Public Sub CastSpell(ByVal index As Long, ByVal spellslot As Long, ByVal Target 
 
     ' Make sure they are the right level
     If LevelReq > GetPlayerLevel(index) Then
-        Call PlayerMsg(index, GetTranslation("Debes ser de nivel") & " " & LevelReq & " " & GetTranslation("para usar ésta habilidad."), BrightRed, , False)
+        Call PlayerMsg(index, GetTranslation("Debes ser de nivel", , UnTrimBack) & LevelReq & GetTranslation("para usar ésta habilidad.", , UnTrimFront), BrightRed, , False)
         Exit Sub
     End If
    
@@ -2233,7 +2233,7 @@ Public Sub CastSpell(ByVal index As Long, ByVal spellslot As Long, ByVal Target 
     ' make sure the classreq > 0
     If ClassReq > 0 Then ' 0 = no req
         If ClassReq <> GetPlayerClass(index) Then
-            Call PlayerMsg(index, GetTranslation("Solo") & " " & Trim$((Class(ClassReq).TranslatedName)) & " " & GetTranslation("puede usar esta habilidad."), BrightRed, , False)
+            Call PlayerMsg(index, GetTranslation("Solo", , UnTrimBack) & Trim$((Class(ClassReq).TranslatedName)) & GetTranslation("puede usar esta habilidad.", , UnTrimFront), BrightRed, , False)
             Exit Sub
         End If
     End If
