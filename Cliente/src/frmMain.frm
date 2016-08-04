@@ -27,171 +27,6 @@ Begin VB.Form frmMain
    ScaleWidth      =   800
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.PictureBox picTriforce 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000005&
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   15.75
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   4500
-      Left            =   3120
-      Picture         =   "frmMain.frx":0A4E
-      ScaleHeight     =   4470
-      ScaleWidth      =   5970
-      TabIndex        =   241
-      Top             =   1200
-      Visible         =   0   'False
-      Width           =   6000
-      Begin VB.Label lblTriforceClose 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Cerrar"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   4800
-         TabIndex        =   248
-         Top             =   240
-         Width           =   975
-      End
-      Begin VB.Label lblTriforceDecline 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "No"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   5040
-         TabIndex        =   247
-         Top             =   4080
-         Visible         =   0   'False
-         Width           =   495
-      End
-      Begin VB.Label lblTriforceAccept 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Yes"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   360
-         TabIndex        =   246
-         Top             =   4080
-         Visible         =   0   'False
-         Width           =   495
-      End
-      Begin VB.Label lblTriforceInfo 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Selecciona una Trifuerza"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   255
-         Left            =   1560
-         TabIndex        =   245
-         Top             =   4080
-         Width           =   3015
-      End
-      Begin VB.Label lblTriforcePower 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Poder"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   375
-         Left            =   2160
-         TabIndex        =   244
-         Top             =   600
-         Width           =   1695
-      End
-      Begin VB.Label lblTriforceCourage 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Valor"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   375
-         Left            =   4200
-         TabIndex        =   243
-         Top             =   3240
-         Width           =   1335
-      End
-      Begin VB.Label lblTriforceWisdom 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Sabiduría"
-         BeginProperty Font 
-            Name            =   "Georgia"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H0000FFFF&
-         Height          =   375
-         Left            =   0
-         TabIndex        =   242
-         Top             =   3240
-         Width           =   1935
-      End
-   End
    Begin VB.PictureBox picPets 
       Appearance      =   0  'Flat
       AutoRedraw      =   -1  'True
@@ -244,7 +79,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H80000000&
          Height          =   255
          Left            =   360
-         TabIndex        =   350
+         TabIndex        =   342
          Top             =   1320
          Width           =   975
       End
@@ -265,7 +100,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H8000000E&
          Height          =   255
          Left            =   1560
-         TabIndex        =   349
+         TabIndex        =   341
          Top             =   1320
          Width           =   975
       End
@@ -1236,7 +1071,7 @@ Begin VB.Form frmMain
          Index           =   1
          Left            =   1680
          MaskColor       =   &H00FFFFFF&
-         TabIndex        =   340
+         TabIndex        =   332
          Top             =   4200
          Width           =   1095
       End
@@ -1256,7 +1091,7 @@ Begin VB.Form frmMain
          Index           =   0
          Left            =   1680
          MaskColor       =   &H00FFFFFF&
-         TabIndex        =   339
+         TabIndex        =   331
          Top             =   3960
          Width           =   1095
       End
@@ -1301,7 +1136,7 @@ Begin VB.Form frmMain
          Height          =   210
          Index           =   1
          Left            =   1680
-         TabIndex        =   344
+         TabIndex        =   336
          Top             =   4440
          Width           =   1125
       End
@@ -1322,7 +1157,7 @@ Begin VB.Form frmMain
          Height          =   210
          Index           =   0
          Left            =   240
-         TabIndex        =   343
+         TabIndex        =   335
          Top             =   4440
          Width           =   465
       End
@@ -1342,7 +1177,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   195
          Left            =   240
-         TabIndex        =   334
+         TabIndex        =   326
          Top             =   4200
          Width           =   1260
       End
@@ -1362,7 +1197,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   240
-         TabIndex        =   333
+         TabIndex        =   325
          Top             =   3960
          Width           =   1380
       End
@@ -1642,7 +1477,7 @@ Begin VB.Form frmMain
       Index           =   0
       Left            =   6630
       MaskColor       =   &H00FFFFFF&
-      TabIndex        =   347
+      TabIndex        =   339
       Top             =   9285
       UseMaskColor    =   -1  'True
       Width           =   570
@@ -1665,7 +1500,7 @@ Begin VB.Form frmMain
       Index           =   2
       Left            =   6210
       MaskColor       =   &H00FFFFFF&
-      TabIndex        =   346
+      TabIndex        =   338
       Top             =   9285
       Width           =   420
    End
@@ -1687,7 +1522,7 @@ Begin VB.Form frmMain
       Index           =   1
       Left            =   5790
       MaskColor       =   &H00FFFFFF&
-      TabIndex        =   345
+      TabIndex        =   337
       Top             =   9285
       Width           =   420
    End
@@ -1740,7 +1575,7 @@ Begin VB.Form frmMain
    Begin TabDlg.SSTab WorldMap 
       Height          =   6255
       Left            =   1320
-      TabIndex        =   254
+      TabIndex        =   246
       Top             =   960
       Visible         =   0   'False
       Width           =   9045
@@ -1761,13 +1596,13 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       TabCaption(0)   =   "Hyrule"
-      TabPicture(0)   =   "frmMain.frx":9C46
+      TabPicture(0)   =   "frmMain.frx":0A4E
       Tab(0).ControlEnabled=   -1  'True
       Tab(0).Control(0)=   "MiniMapHyrule(0)"
       Tab(0).Control(0).Enabled=   0   'False
       Tab(0).ControlCount=   1
       TabCaption(1)   =   "Términa"
-      TabPicture(1)   =   "frmMain.frx":9C62
+      TabPicture(1)   =   "frmMain.frx":0A6A
       Tab(1).ControlEnabled=   0   'False
       Tab(1).Control(0)=   "MiniMapTermina(1)"
       Tab(1).ControlCount=   1
@@ -1786,10 +1621,10 @@ Begin VB.Form frmMain
          Height          =   5520
          Index           =   1
          Left            =   -74760
-         Picture         =   "frmMain.frx":9C7E
+         Picture         =   "frmMain.frx":0A86
          ScaleHeight     =   5520
          ScaleWidth      =   8580
-         TabIndex        =   277
+         TabIndex        =   269
          Top             =   480
          Width           =   8580
          Begin VB.OptionButton NoneTermina 
@@ -1808,7 +1643,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   1
             Left            =   4320
-            TabIndex        =   281
+            TabIndex        =   273
             Top             =   5160
             Width           =   1215
          End
@@ -1828,7 +1663,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   1
             Left            =   3000
-            TabIndex        =   280
+            TabIndex        =   272
             Top             =   5160
             Width           =   1215
          End
@@ -1848,7 +1683,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   1
             Left            =   240
-            TabIndex        =   279
+            TabIndex        =   271
             Top             =   5160
             Width           =   1215
          End
@@ -1868,7 +1703,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   1
             Left            =   1560
-            TabIndex        =   278
+            TabIndex        =   270
             Top             =   5160
             Width           =   1215
          End
@@ -1890,7 +1725,7 @@ Begin VB.Form frmMain
             Height          =   540
             Index           =   9
             Left            =   6240
-            TabIndex        =   294
+            TabIndex        =   286
             Top             =   0
             Visible         =   0   'False
             Width           =   2355
@@ -1913,7 +1748,7 @@ Begin VB.Form frmMain
             Height          =   540
             Index           =   8
             Left            =   240
-            TabIndex        =   293
+            TabIndex        =   285
             Top             =   1320
             Visible         =   0   'False
             Width           =   1515
@@ -1936,7 +1771,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   7
             Left            =   5280
-            TabIndex        =   292
+            TabIndex        =   284
             Top             =   960
             Visible         =   0   'False
             Width           =   1995
@@ -1959,7 +1794,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   6
             Left            =   3600
-            TabIndex        =   291
+            TabIndex        =   283
             Top             =   4440
             Visible         =   0   'False
             Width           =   2595
@@ -1982,7 +1817,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   9
             Left            =   960
-            TabIndex        =   290
+            TabIndex        =   282
             Top             =   3360
             Visible         =   0   'False
             Width           =   1395
@@ -2005,7 +1840,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   8
             Left            =   4440
-            TabIndex        =   289
+            TabIndex        =   281
             Top             =   600
             Visible         =   0   'False
             Width           =   1635
@@ -2028,7 +1863,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   7
             Left            =   3600
-            TabIndex        =   288
+            TabIndex        =   280
             Top             =   3360
             Visible         =   0   'False
             Width           =   1515
@@ -2051,7 +1886,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   10
             Left            =   6600
-            TabIndex        =   287
+            TabIndex        =   279
             Top             =   3000
             Visible         =   0   'False
             Width           =   1395
@@ -2074,7 +1909,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   9
             Left            =   720
-            TabIndex        =   286
+            TabIndex        =   278
             Top             =   2760
             Visible         =   0   'False
             Width           =   1275
@@ -2097,7 +1932,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   8
             Left            =   3840
-            TabIndex        =   285
+            TabIndex        =   277
             Top             =   120
             Visible         =   0   'False
             Width           =   1995
@@ -2120,7 +1955,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   7
             Left            =   4080
-            TabIndex        =   284
+            TabIndex        =   276
             Top             =   3600
             Visible         =   0   'False
             Width           =   1395
@@ -2141,7 +1976,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   1
             Left            =   7680
-            TabIndex        =   282
+            TabIndex        =   274
             Top             =   5160
             Width           =   735
          End
@@ -2161,10 +1996,10 @@ Begin VB.Form frmMain
          Height          =   5520
          Index           =   0
          Left            =   240
-         Picture         =   "frmMain.frx":978C2
+         Picture         =   "frmMain.frx":8E6CA
          ScaleHeight     =   5520
          ScaleWidth      =   8580
-         TabIndex        =   255
+         TabIndex        =   247
          Top             =   480
          Width           =   8580
          Begin VB.OptionButton CitiesHyrule 
@@ -2183,7 +2018,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   0
             Left            =   1560
-            TabIndex        =   259
+            TabIndex        =   251
             Top             =   5160
             Width           =   1215
          End
@@ -2203,7 +2038,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   0
             Left            =   240
-            TabIndex        =   258
+            TabIndex        =   250
             Top             =   5160
             Width           =   1215
          End
@@ -2223,7 +2058,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   0
             Left            =   3000
-            TabIndex        =   257
+            TabIndex        =   249
             Top             =   5160
             Width           =   1215
          End
@@ -2243,7 +2078,7 @@ Begin VB.Form frmMain
             Height          =   210
             Index           =   0
             Left            =   4320
-            TabIndex        =   256
+            TabIndex        =   248
             Top             =   5160
             Width           =   1215
          End
@@ -2265,7 +2100,7 @@ Begin VB.Form frmMain
             Height          =   540
             Index           =   5
             Left            =   7080
-            TabIndex        =   283
+            TabIndex        =   275
             Top             =   120
             Visible         =   0   'False
             Width           =   1455
@@ -2288,7 +2123,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   1
             Left            =   6720
-            TabIndex        =   276
+            TabIndex        =   268
             Top             =   840
             Visible         =   0   'False
             Width           =   1065
@@ -2311,7 +2146,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   3
             Left            =   3120
-            TabIndex        =   275
+            TabIndex        =   267
             Top             =   3000
             Visible         =   0   'False
             Width           =   765
@@ -2334,7 +2169,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   2
             Left            =   4080
-            TabIndex        =   274
+            TabIndex        =   266
             Top             =   240
             Visible         =   0   'False
             Width           =   855
@@ -2357,7 +2192,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   5
             Left            =   7200
-            TabIndex        =   273
+            TabIndex        =   265
             Top             =   2160
             Visible         =   0   'False
             Width           =   705
@@ -2380,7 +2215,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   4
             Left            =   5640
-            TabIndex        =   272
+            TabIndex        =   264
             Top             =   960
             Visible         =   0   'False
             Width           =   825
@@ -2403,7 +2238,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   1
             Left            =   2160
-            TabIndex        =   271
+            TabIndex        =   263
             Top             =   3720
             Visible         =   0   'False
             Width           =   1995
@@ -2426,7 +2261,7 @@ Begin VB.Form frmMain
             Height          =   585
             Index           =   2
             Left            =   5520
-            TabIndex        =   270
+            TabIndex        =   262
             Top             =   1320
             Visible         =   0   'False
             Width           =   1425
@@ -2449,7 +2284,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   3
             Left            =   360
-            TabIndex        =   269
+            TabIndex        =   261
             Top             =   3480
             Visible         =   0   'False
             Width           =   1275
@@ -2472,7 +2307,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   4
             Left            =   5880
-            TabIndex        =   268
+            TabIndex        =   260
             Top             =   2400
             Visible         =   0   'False
             Width           =   1035
@@ -2495,7 +2330,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   5
             Left            =   4080
-            TabIndex        =   267
+            TabIndex        =   259
             Top             =   3000
             Visible         =   0   'False
             Width           =   1875
@@ -2518,7 +2353,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   1
             Left            =   1800
-            TabIndex        =   266
+            TabIndex        =   258
             Top             =   4560
             Visible         =   0   'False
             Width           =   2235
@@ -2541,7 +2376,7 @@ Begin VB.Form frmMain
             Height          =   540
             Index           =   2
             Left            =   5400
-            TabIndex        =   265
+            TabIndex        =   257
             Top             =   120
             Visible         =   0   'False
             Width           =   1215
@@ -2564,7 +2399,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   3
             Left            =   120
-            TabIndex        =   264
+            TabIndex        =   256
             Top             =   2160
             Visible         =   0   'False
             Width           =   2055
@@ -2585,7 +2420,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   0
             Left            =   7680
-            TabIndex        =   263
+            TabIndex        =   255
             Top             =   5160
             Width           =   735
          End
@@ -2607,7 +2442,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   4
             Left            =   120
-            TabIndex        =   262
+            TabIndex        =   254
             Top             =   120
             Visible         =   0   'False
             Width           =   2295
@@ -2630,7 +2465,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   6
             Left            =   1680
-            TabIndex        =   261
+            TabIndex        =   253
             Top             =   480
             Visible         =   0   'False
             Width           =   1755
@@ -2653,7 +2488,7 @@ Begin VB.Form frmMain
             Height          =   300
             Index           =   6
             Left            =   720
-            TabIndex        =   260
+            TabIndex        =   252
             Top             =   1200
             Visible         =   0   'False
             Width           =   885
@@ -2818,7 +2653,7 @@ Begin VB.Form frmMain
          Height          =   495
          Index           =   11
          Left            =   120
-         TabIndex        =   311
+         TabIndex        =   303
          Top             =   4440
          Width           =   5655
       End
@@ -2838,7 +2673,7 @@ Begin VB.Form frmMain
          Height          =   255
          Index           =   10
          Left            =   120
-         TabIndex        =   310
+         TabIndex        =   302
          Top             =   4200
          Width           =   975
       End
@@ -2984,7 +2819,7 @@ Begin VB.Form frmMain
       End
       Begin VB.Label lblTutorialText 
          BackStyle       =   0  'Transparent
-         Caption         =   $"frmMain.frx":125506
+         Caption         =   $"frmMain.frx":11C30E
          BeginProperty Font 
             Name            =   "Georgia"
             Size            =   8.25
@@ -3069,7 +2904,7 @@ Begin VB.Form frmMain
          Caption         =   "x"
          Height          =   300
          Left            =   2400
-         TabIndex        =   348
+         TabIndex        =   340
          Top             =   0
          Width           =   375
       End
@@ -3086,7 +2921,7 @@ Begin VB.Form frmMain
          EndProperty
          Height          =   255
          Left            =   1440
-         TabIndex        =   250
+         TabIndex        =   242
          Top             =   5280
          Width           =   1095
       End
@@ -4338,7 +4173,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   330
          Left            =   240
-         TabIndex        =   251
+         TabIndex        =   243
          Top             =   3000
          Width           =   2640
       End
@@ -4958,7 +4793,7 @@ Begin VB.Form frmMain
       Height          =   210
       Index           =   3
       Left            =   2640
-      TabIndex        =   338
+      TabIndex        =   330
       Top             =   6660
       Width           =   750
    End
@@ -4979,7 +4814,7 @@ Begin VB.Form frmMain
       Height          =   210
       Index           =   2
       Left            =   1710
-      TabIndex        =   337
+      TabIndex        =   329
       Top             =   6660
       Width           =   930
    End
@@ -5000,7 +4835,7 @@ Begin VB.Form frmMain
       Height          =   210
       Index           =   1
       Left            =   810
-      TabIndex        =   336
+      TabIndex        =   328
       Top             =   6660
       Value           =   -1  'True
       Width           =   900
@@ -5022,7 +4857,7 @@ Begin VB.Form frmMain
       Height          =   210
       Index           =   0
       Left            =   0
-      TabIndex        =   335
+      TabIndex        =   327
       Top             =   6660
       Width           =   825
    End
@@ -5037,11 +4872,10 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   -2147483641
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ScrollBars      =   2
       DisableNoScroll =   -1  'True
       Appearance      =   0
-      TextRTF         =   $"frmMain.frx":1255AE
+      TextRTF         =   $"frmMain.frx":11C3B6
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Georgia"
          Size            =   8.25
@@ -5149,19 +4983,19 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       TabCaption(0)   =   "Teclas"
-      TabPicture(0)   =   "frmMain.frx":12562A
+      TabPicture(0)   =   "frmMain.frx":11C432
       Tab(0).ControlEnabled=   0   'False
       Tab(0).Control(0)=   "Picture2"
       Tab(0).Control(1)=   "CloseHelpBoard(0)"
       Tab(0).ControlCount=   2
       TabCaption(1)   =   "Entrenar"
-      TabPicture(1)   =   "frmMain.frx":125646
+      TabPicture(1)   =   "frmMain.frx":11C44E
       Tab(1).ControlEnabled=   0   'False
       Tab(1).Control(0)=   "CloseHelpBoard(1)"
       Tab(1).Control(1)=   "Picture7"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Estadísticas"
-      TabPicture(2)   =   "frmMain.frx":125662
+      TabPicture(2)   =   "frmMain.frx":11C46A
       Tab(2).ControlEnabled=   -1  'True
       Tab(2).Control(0)=   "CloseHelpBoard(2)"
       Tab(2).Control(0).Enabled=   0   'False
@@ -5169,13 +5003,13 @@ Begin VB.Form frmMain
       Tab(2).Control(1).Enabled=   0   'False
       Tab(2).ControlCount=   2
       TabCaption(3)   =   "Habilidades"
-      TabPicture(3)   =   "frmMain.frx":12567E
+      TabPicture(3)   =   "frmMain.frx":11C486
       Tab(3).ControlEnabled=   0   'False
       Tab(3).Control(0)=   "Picture9(0)"
       Tab(3).Control(1)=   "CloseHelpBoard(3)"
       Tab(3).ControlCount=   2
       TabCaption(4)   =   "Mascotas"
-      TabPicture(4)   =   "frmMain.frx":12569A
+      TabPicture(4)   =   "frmMain.frx":11C4A2
       Tab(4).ControlEnabled=   0   'False
       Tab(4).Control(0)=   "Picture9(1)"
       Tab(4).Control(1)=   "CloseHelpBoard(4)"
@@ -5196,13 +5030,13 @@ Begin VB.Form frmMain
          Left            =   -74880
          ScaleHeight     =   4275
          ScaleWidth      =   5355
-         TabIndex        =   299
+         TabIndex        =   291
          Top             =   720
          Width           =   5415
          Begin VB.Label lblSpells 
             Alignment       =   2  'Center
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmMain.frx":1256B6
+            Caption         =   $"frmMain.frx":11C4BE
             BeginProperty Font 
                Name            =   "Georgia"
                Size            =   8.25
@@ -5216,7 +5050,7 @@ Begin VB.Form frmMain
             Height          =   855
             Index           =   9
             Left            =   120
-            TabIndex        =   306
+            TabIndex        =   298
             Top             =   3000
             Width           =   5115
          End
@@ -5237,14 +5071,14 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   1
             Left            =   240
-            TabIndex        =   305
+            TabIndex        =   297
             Top             =   2760
             Width           =   4875
          End
          Begin VB.Label lblSpells 
             Alignment       =   2  'Center
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmMain.frx":125755
+            Caption         =   $"frmMain.frx":11C55D
             BeginProperty Font 
                Name            =   "Georgia"
                Size            =   8.25
@@ -5258,7 +5092,7 @@ Begin VB.Form frmMain
             Height          =   1095
             Index           =   8
             Left            =   120
-            TabIndex        =   304
+            TabIndex        =   296
             Top             =   1680
             Width           =   5115
          End
@@ -5279,14 +5113,14 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   0
             Left            =   240
-            TabIndex        =   303
+            TabIndex        =   295
             Top             =   1440
             Width           =   4875
          End
          Begin VB.Label lblSpells 
             Alignment       =   2  'Center
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmMain.frx":125811
+            Caption         =   $"frmMain.frx":11C619
             BeginProperty Font 
                Name            =   "Georgia"
                Size            =   8.25
@@ -5300,7 +5134,7 @@ Begin VB.Form frmMain
             Height          =   1095
             Index           =   7
             Left            =   120
-            TabIndex        =   302
+            TabIndex        =   294
             Top             =   360
             Width           =   5115
          End
@@ -5321,7 +5155,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   10
             Left            =   240
-            TabIndex        =   300
+            TabIndex        =   292
             Top             =   120
             Width           =   4875
          End
@@ -5362,7 +5196,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   11
             Left            =   240
-            TabIndex        =   317
+            TabIndex        =   309
             Top             =   3360
             Width           =   4875
          End
@@ -5383,7 +5217,7 @@ Begin VB.Form frmMain
             Height          =   495
             Index           =   10
             Left            =   720
-            TabIndex        =   316
+            TabIndex        =   308
             Top             =   3600
             Width           =   3915
          End
@@ -5570,7 +5404,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   6
             Left            =   120
-            TabIndex        =   298
+            TabIndex        =   290
             Top             =   4320
             Width           =   5055
          End
@@ -5590,7 +5424,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   6
             Left            =   120
-            TabIndex        =   297
+            TabIndex        =   289
             Top             =   4080
             Width           =   3255
          End
@@ -5611,7 +5445,7 @@ Begin VB.Form frmMain
             Height          =   495
             Index           =   5
             Left            =   120
-            TabIndex        =   296
+            TabIndex        =   288
             Top             =   3720
             Width           =   5055
          End
@@ -5631,7 +5465,7 @@ Begin VB.Form frmMain
             Height          =   255
             Index           =   5
             Left            =   120
-            TabIndex        =   295
+            TabIndex        =   287
             Top             =   3480
             Width           =   3255
          End
@@ -6208,7 +6042,7 @@ Begin VB.Form frmMain
          Height          =   255
          Index           =   4
          Left            =   -70320
-         TabIndex        =   301
+         TabIndex        =   293
          Top             =   5040
          Width           =   735
       End
@@ -6327,7 +6161,7 @@ Begin VB.Form frmMain
          Left            =   120
          ScaleHeight     =   255
          ScaleWidth      =   1455
-         TabIndex        =   328
+         TabIndex        =   320
          Top             =   3240
          Width           =   1455
          Begin VB.OptionButton optMiniMapOff 
@@ -6346,7 +6180,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   720
-            TabIndex        =   330
+            TabIndex        =   322
             Top             =   0
             Width           =   615
          End
@@ -6366,7 +6200,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   120
-            TabIndex        =   329
+            TabIndex        =   321
             Top             =   0
             Width           =   615
          End
@@ -6388,7 +6222,7 @@ Begin VB.Form frmMain
          Left            =   240
          ScaleHeight     =   255
          ScaleWidth      =   1455
-         TabIndex        =   324
+         TabIndex        =   316
          Top             =   2760
          Width           =   1455
          Begin VB.OptionButton optSafeOn 
@@ -6407,7 +6241,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   0
-            TabIndex        =   326
+            TabIndex        =   318
             Top             =   0
             Width           =   615
          End
@@ -6427,7 +6261,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   600
-            TabIndex        =   325
+            TabIndex        =   317
             Top             =   0
             Width           =   615
          End
@@ -6449,7 +6283,7 @@ Begin VB.Form frmMain
          Left            =   240
          ScaleHeight     =   255
          ScaleWidth      =   1455
-         TabIndex        =   321
+         TabIndex        =   313
          Top             =   2280
          Width           =   1455
          Begin VB.OptionButton optLvlOn 
@@ -6468,7 +6302,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   0
-            TabIndex        =   323
+            TabIndex        =   315
             Top             =   0
             Width           =   615
          End
@@ -6488,7 +6322,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   600
-            TabIndex        =   322
+            TabIndex        =   314
             Top             =   0
             Width           =   615
          End
@@ -6510,7 +6344,7 @@ Begin VB.Form frmMain
          Left            =   240
          ScaleHeight     =   255
          ScaleWidth      =   1455
-         TabIndex        =   318
+         TabIndex        =   310
          Top             =   1800
          Width           =   1455
          Begin VB.OptionButton optNOff 
@@ -6529,7 +6363,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   600
-            TabIndex        =   320
+            TabIndex        =   312
             Top             =   0
             Width           =   615
          End
@@ -6549,7 +6383,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   255
             Left            =   0
-            TabIndex        =   319
+            TabIndex        =   311
             Top             =   0
             Width           =   615
          End
@@ -6570,7 +6404,7 @@ Begin VB.Form frmMain
          Left            =   1800
          MaskColor       =   &H00FFFFFF&
          Style           =   1  'Graphical
-         TabIndex        =   315
+         TabIndex        =   307
          Top             =   2880
          Width           =   1695
       End
@@ -6590,7 +6424,7 @@ Begin VB.Form frmMain
          Left            =   1800
          MaskColor       =   &H00FFFFFF&
          Style           =   1  'Graphical
-         TabIndex        =   309
+         TabIndex        =   301
          Top             =   2040
          Width           =   1695
       End
@@ -6599,7 +6433,7 @@ Begin VB.Form frmMain
          LargeChange     =   10
          Left            =   1800
          Max             =   100
-         TabIndex        =   307
+         TabIndex        =   299
          Top             =   2520
          Width           =   1695
       End
@@ -6619,7 +6453,7 @@ Begin VB.Form frmMain
          Left            =   1800
          MaskColor       =   &H00FFFFFF&
          Style           =   1  'Graphical
-         TabIndex        =   253
+         TabIndex        =   245
          Top             =   1680
          Width           =   1695
       End
@@ -6639,7 +6473,7 @@ Begin VB.Form frmMain
          Left            =   1800
          MaskColor       =   &H00FFFFFF&
          Style           =   1  'Graphical
-         TabIndex        =   252
+         TabIndex        =   244
          Top             =   600
          Width           =   1695
       End
@@ -6840,7 +6674,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   210
          Left            =   1800
-         TabIndex        =   332
+         TabIndex        =   324
          Top             =   3330
          Width           =   1650
       End
@@ -6859,7 +6693,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   331
+         TabIndex        =   323
          Top             =   3000
          Width           =   1455
       End
@@ -6879,7 +6713,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   1800
-         TabIndex        =   308
+         TabIndex        =   300
          Top             =   2280
          Width           =   975
       End
@@ -6898,7 +6732,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   249
+         TabIndex        =   241
          Top             =   2520
          Width           =   1455
       End
@@ -7308,7 +7142,7 @@ Begin VB.Form frmMain
          Left            =   150
          ScaleHeight     =   120
          ScaleWidth      =   4140
-         TabIndex        =   341
+         TabIndex        =   333
          Top             =   600
          Width           =   4170
          Begin VB.Label lblMP 
@@ -7328,7 +7162,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   195
             Left            =   3480
-            TabIndex        =   342
+            TabIndex        =   334
             Top             =   -45
             Width           =   615
          End
@@ -7357,7 +7191,7 @@ Begin VB.Form frmMain
          Left            =   7440
          ScaleHeight     =   300
          ScaleWidth      =   4350
-         TabIndex        =   313
+         TabIndex        =   305
          Top             =   120
          Width           =   4380
          Begin VB.Label lblEXP 
@@ -7377,7 +7211,7 @@ Begin VB.Form frmMain
             ForeColor       =   &H00FFFFFF&
             Height          =   210
             Left            =   2400
-            TabIndex        =   314
+            TabIndex        =   306
             Top             =   0
             Width           =   1845
          End
@@ -7406,7 +7240,7 @@ Begin VB.Form frmMain
          Left            =   75
          ScaleHeight     =   420
          ScaleWidth      =   4290
-         TabIndex        =   312
+         TabIndex        =   304
          Top             =   75
          Visible         =   0   'False
          Width           =   4320
@@ -7540,7 +7374,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   210
       Left            =   900
-      TabIndex        =   327
+      TabIndex        =   319
       Top             =   11250
       Width           =   1905
    End
@@ -7854,7 +7688,7 @@ frmMain.HelpBoard.Visible = False
 End If
 End Sub
 
-Private Sub form_load()
+Private Sub Form_Load()
 Dim X As Long, Y As Long, xwidth As Long, yheight As Long
 Dim sRECT As DxVBLib.RECT
 
@@ -8054,78 +7888,6 @@ Private Sub lblPetTame_Click()
     End If
     'play sound
      PlaySound Sound_ButtonClick2
-End Sub
-
-Private Sub lblTriforceAccept_Click()
-    If SelectedTriforce > 0 And SelectedTriforce < TriforceType.TriforceType_Count Then
-        Dim message As String
-        message = "Warning: This will reset the following: " & vbNewLine
-        message = message & "Level" & vbNewLine
-        message = message & "Stats Points" & vbNewLine
-        message = message & "Experience" & vbNewLine
-        message = message & "Inventory" & vbNewLine
-        message = message & "Equipment" & vbNewLine
-        message = message & "Quests" & vbNewLine
-        message = message & "Spells" & vbNewLine
-        message = message & "Rupee Bags" & vbNewLine
-        message = message & "PK status" & vbNewLine
-        
-        If MsgBox(message, vbYesNoCancel, "Triforce") = vbYes Then
-            Call SendResetPlayer(MyIndex, SelectedTriforce)
-        End If
-    End If
-    
-    ResetTriforcePicInfo True
-    picTriforce.Visible = False
-    'play sound
-    PlaySound Sound_ButtonTriforce
-    
-End Sub
-
-Private Sub lblTriforceClose_Click()
-    ResetTriforcePicInfo True
-    picTriforce.Visible = False
-    'play sound
-    PlaySound Sound_ButtonClose
-End Sub
-
-Private Sub ResetTriforcePicInfo(ByVal Control As Boolean)
-If Control Then
-    lblTriforceAccept.Visible = False
-    lblTriforceDecline.Visible = False
-    lblTriforceInfo.Caption = GetTranslation("Selecciona una Trifuerza")
-Else
-    lblTriforceAccept.Visible = True
-    lblTriforceDecline.Visible = True
-    lblTriforceInfo.Caption = GetTranslation("¿Estás seguro?")
-End If
-End Sub
-
-Private Sub lblTriforceDecline_Click()
-    ResetTriforcePicInfo True
-    'play sound
-    PlaySound Sound_ButtonCancel
-End Sub
-
-Private Sub lblTriforceCourage_Click()
-    ResetTriforcePicInfo False
-    SelectedTriforce = TriforceType.TRIFORCE_COURAGE
-    'play sound
-    PlaySound Sound_ButtonAccept
-End Sub
-
-Private Sub lblTriforcePower_Click()
-    ResetTriforcePicInfo False
-    SelectedTriforce = TriforceType.TRIFORCE_POWER
-    'play sound
-    PlaySound Sound_ButtonAccept
-    End Sub
-
-Private Sub lblTriforceWisdom_Click()
-    ResetTriforcePicInfo False
-    SelectedTriforce = TriforceType.TRIFORCE_WISDOM
-    'play sound
-    PlaySound Sound_ButtonAccept
 End Sub
 
 Private Sub MapChat_Click()
@@ -9375,6 +9137,7 @@ End Sub
 Private Sub picTrade_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dragging = False
 End Sub
+
 Private Sub picYourTrade_DblClick()
 Dim TradeNum As Long
 
@@ -10631,15 +10394,16 @@ Dim bankNum As Long
     bankNum = IsBankItem(X, Y)
     
     If bankNum <> 0 Then
-        
         If Button = 1 Then
             DragBankSlotNum = bankNum
         End If
+    Else
+        Dragging = True
+        prevX = X
+        prevY = Y
     End If
     
-    Dragging = True
-    prevX = X
-    prevY = Y
+
     
     ' Error handler
     Exit Sub

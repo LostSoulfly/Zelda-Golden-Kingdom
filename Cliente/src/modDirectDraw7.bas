@@ -3190,6 +3190,9 @@ Dim rec_pos As DxVBLib.RECT
     ' check if player is loading the map
     If TempPlayer(MyIndex).IsLoading = True Then Exit Sub
     
+    If InGame = False Then Exit Sub
+
+    
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
     

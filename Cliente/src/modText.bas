@@ -205,6 +205,8 @@ Dim Name As String, NameSize As Long
 
 Dim NPCNum As Long
 
+If InGame = False Then Exit Sub
+
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
 
@@ -233,7 +235,7 @@ Dim NPCNum As Long
             Color = QBColor(BrightGreen)
     End Select
 
-    Name = Trim$(NPC(NPCNum).Name)
+    Name = Trim$(NPC(NPCNum).TranslatedName)
     NameSize = getWidth(TexthDC, Name)
     TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (NameSize / 2)
 
@@ -283,7 +285,7 @@ Dim NPCNum As Long
                     Exit For
                 End If
             End If
-            
+            Exit Sub
             'check if the npc is the starter to any quest: [!] symbol
             'can accept the quest as a new one?
             If Player(MyIndex).PlayerQuest(i).Status = QUEST_NOT_STARTED Or Player(MyIndex).PlayerQuest(i).Status = QUEST_COMPLETED_BUT Then

@@ -65,9 +65,9 @@ End If
     strTransPath = App.Path & "\" & LangTo & ".dat"
     strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
 
-    'frmTransLog.Show
+    frmTransLog.Show
     frmTransLog.txtLog.text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
-    'DoEvents
+    DoEvents
 
     ' set loading screen
     loadGUI True
@@ -393,6 +393,7 @@ End Sub
 Public Sub logoutGame()
 Dim Buffer As clsBuffer, i As Long
 
+    DoEvents
     isLogging = True
     InGame = False
     Set Buffer = New clsBuffer

@@ -696,7 +696,7 @@ Dim TNL As Long
     
     SetPlayerExp MyIndex, Buffer.ReadLong
     TNL = Buffer.ReadLong
-    frmMain.lblExp.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
+    frmMain.lblEXP.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
     ' mp bar
     frmMain.imgEXPBar.Width = ((GetPlayerExp(MyIndex) / EXPBar_Width) / (TNL / EXPBar_Width)) * EXPBar_Width
     
@@ -3644,7 +3644,10 @@ errorhandler:
 End Sub
 
 Private Sub HandleOpenTriforce(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    frmMain.picTriforce.Visible = True
+    On Error Resume Next
+    If Not frmTriForce.Visible Then frmTriForce.Visible = True
+    frmTriForce.SetFocus
+    'frmMain.picTriforce.Visible = True
 End Sub
 
 
