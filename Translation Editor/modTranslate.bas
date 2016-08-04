@@ -42,11 +42,11 @@ If Exists(col, strHash) = True Then ReadFromCache = col.Item(strHash)(1)
 
 End Function
 
-Public Sub AddToCache(ByRef strHash As String, ByRef Translate As String, ByRef col As Collection)
+Public Sub AddToCache(ByRef strHash As String, ByRef Translate As String, ByRef TransCol As Collection)
 Dim temp(1) As String
 
 buildArray strHash, Translate, temp
-col.Add temp, temp(0)
+TransCol.Add temp, temp(0)
 
 End Sub
 
@@ -66,10 +66,27 @@ NF = FreeFile
     Close NF
 
 temp = ReadFile(Path, NotNull)
+Debug.Print "Char: " & Left(temp, 1)
+Debug.Print "Ascw: " & AscW(Left(temp, 1))
+
+If AscW(Left(temp, 1)) = 17233 Then 'Compressed data
+    If frmMain.chkCompression.Value = vbUnchecked Then
+        If MsgBox("The data appears to be compressed but you've deselected compression!" & _
+        vbNewLine & "Would you like to re-enable compression?", vbYesNo) = vbYes Then
+            frmMain.chkCompression.Value = vbChecked
+        End If
+    End If
+ElseIf AscW(Left(temp, 1)) = 1940 Then 'uncompressed
+        If MsgBox("The data appears to be uncompressed but you've selected compression!" & _
+        vbNewLine & "Would you like to disable compression?", vbYesNo) = vbYes Then
+            frmMain.chkCompression.Value = vbUnchecked
+        End If
+End If
 
 If NotNull = False Then Exit Sub
 
-    temp = Decompress(temp, bfFail)
+If frmMain.chkCompression.Value = vbChecked Then temp = Decompress(temp, bfFail)
+
     If bfFail = True Then GoTo skip
     buffer.WriteBytes temp
     
@@ -107,7 +124,11 @@ For i = 1 To col.Count
 Next
 
 'write buffer to temp out
-tempOut = Compress(buffer.ReadBytes(buffer.length))
+If frmMain.chkCompression.Value = vbChecked Then
+    tempOut = Compress(buffer.ReadBytes(buffer.length))
+Else
+    tempOut = buffer.ReadBytes(buffer.length)
+End If
 
     Open Path For Binary As #NF
     Put #NF, , tempOut

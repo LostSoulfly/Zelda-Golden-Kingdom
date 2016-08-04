@@ -9,8 +9,18 @@ Begin VB.Form frmMain
    ScaleHeight     =   5655
    ScaleWidth      =   6990
    StartUpPosition =   3  'Windows Default
+   Begin VB.CheckBox chkCompression 
+      Caption         =   "Enable Compression"
+      Height          =   495
+      Left            =   120
+      TabIndex        =   13
+      Top             =   3720
+      Value           =   1  'Checked
+      Width           =   1575
+   End
    Begin VB.CommandButton cmdClean 
       Caption         =   "Clean Translation"
+      Enabled         =   0   'False
       Height          =   255
       Left            =   120
       TabIndex        =   12
@@ -184,33 +194,33 @@ End Sub
 
 Private Sub cmdClean_Click()
 Dim MD5 As String
-Dim removed As Long
+Dim Removed As Long
 Dim removed2 As Long
 Dim removedTotal As Long
 Dim i As Long
 Dim ii As Long
-Dim count As Long
+Dim Count As Long
 If MsgBox("This will clean out the collection of unknown original translations and should bring the original and translated collections to the same number of records.", vbYesNo) = vbYes Then
 
 Me.Caption = "Cleaning collections.."
 DoEvents
     For ii = 0 To 5
-        count = col.count
-        For i = 1 To count
-        If i < (count - removed) Then
+        Count = col.Count
+        For i = 1 To Count
+        If i < (Count - Removed) Then
             MD5 = col.Item(i)(0)
                 If Exists(origCol, MD5) = False Then
                     Debug.Print "Removing:" & col.Item(i)(1)
                     'DeleteFromCollection MD5, origCol
                     DeleteFromCollection MD5, col
-                    removed = removed + 1
+                    Removed = Removed + 1
                 End If
         End If
         Next i
         
-        count = origCol.count
-        For i = 1 To count
-        If i < (count - removed2) Then
+        Count = origCol.Count
+        For i = 1 To Count
+        If i < (Count - removed2) Then
             MD5 = origCol.Item(i)(0)
                 If Exists(col, MD5) = False Then
                     Debug.Print "Removing:" & origCol.Item(i)(1)
@@ -221,9 +231,9 @@ DoEvents
         End If
         Next i
         
-        removedTotal = removedTotal + removed + removed2
+        removedTotal = removedTotal + Removed + removed2
         removed2 = 0
-        removed = 0
+        Removed = 0
     Next ii
 End If
     
@@ -270,10 +280,56 @@ cmdSearchOrig.Enabled = True
 cmdFind.Enabled = True
 cmdAll.Enabled = True
 cmdAdd.Enabled = True
+cmdClean.Enabled = True
 cmdMassReplace.Enabled = True
 LoadLanguage App.Path & "\en.dat", col
 LoadLanguage App.Path & "\es-en.dat", origCol
 updateCaption
+End Sub
+
+Private Sub cmdMassReplace_Click()
+
+Dim strFind As String
+Dim strReplace As String
+Dim strTemp As String
+Dim MD5 As String
+Dim Count As Long
+Dim Removed As Long
+Dim TotalRemoved As Long
+
+MsgBox "This will only replace text in the Translated collection!"
+
+strFind = InputBox("What text are we looking for? CASE SENSITIVE!", "Find Text")
+strReplace = InputBox("What text are we Replacing it with? CASE SENSITIVE!", "Replace Text")
+
+If LenB(strFind) = 0 Then Exit Sub
+If LenB(strReplace) = 0 Then Exit Sub
+
+Dim i As Long
+
+Removed = 1
+
+Do While Removed > 0
+    Removed = 0
+    
+    Count = col.Count
+    For i = 1 To Count
+        If i < (Count - Removed) Then
+            If InStr(1, col.Item(i)(1), strFind) <> 0 Then
+                MD5 = col.Item(i)(0)
+                strTemp = Replace(col.Item(i)(1), strFind, strReplace)
+                DeleteFromCollection MD5, col
+                DoEvents
+                AddToCache MD5, strTemp, col
+                Removed = Removed + 1
+            End If
+        End If
+    Next i
+TotalRemoved = TotalRemoved + Removed
+Loop
+    
+    MsgBox "Removed items from the collections: " & TotalRemoved, vbOKOnly
+    
 End Sub
 
 Private Sub cmdModify_Click()
@@ -282,10 +338,22 @@ If lstResults.List(lstResults.ListIndex) = "" Then Exit Sub
     
     Dim newTemp As String
     Dim temp As String
+    Dim strOriginal As String
     Dim MD5 As String
+    
     temp = col.Item(lstResults.ItemData(lstResults.ListIndex))(1)
+    temp = Replace(temp, vbCr, "\r")
+    temp = Replace(temp, vbLf, "\n")
+    temp = Replace(temp, vbNewLine, "\r\n")
+    
     MD5 = col.Item(lstResults.ItemData(lstResults.ListIndex))(0)
-    newTemp = InputBox("Current Translation: & temp", "Edit Translation", temp)
+    strOriginal = origCol.Item(MD5)(1)
+    newTemp = InputBox("Current Translation: " & strOriginal, "Edit Translation", temp)
+    
+    temp = Replace(temp, "\r", vbCr)
+    temp = Replace(temp, "\n", vbLf)
+    temp = Replace(temp, "\r\n", vbNewLine)
+    
     
     If LenB(newTemp) <= 0 Then Exit Sub
     If newTemp = temp Then Exit Sub
@@ -300,10 +368,10 @@ If lstResults.List(lstResults.ListIndex) = "" Then Exit Sub
 End Sub
 
 Private Sub updateCaption()
-If col.count = origCol.count Then
-Me.Caption = "TranslationEditor - Records: " & origCol.count
+If col.Count = origCol.Count Then
+Me.Caption = "TranslationEditor - Records: " & origCol.Count
 Else
-Me.Caption = "TranslationEditor - Trans:" & col.count & " - Orig:" & origCol.count
+Me.Caption = "TranslationEditor - Trans:" & col.Count & " - Orig:" & origCol.Count
 End If
 
 End Sub
@@ -394,7 +462,7 @@ End Sub
 Public Sub SearchCollection(text As String, coll As Collection, Optional blMD5Search As Boolean)
 lstResults.Clear
 Dim i As Long
-For i = 1 To coll.count
+For i = 1 To coll.Count
     
     If blMD5Search = True Then
         If InStr(1, LCase$(coll.Item(i)(0)), LCase$(text)) <> 0 Then
@@ -404,7 +472,7 @@ For i = 1 To coll.count
         End If
     Else
         If InStr(1, LCase$(coll.Item(i)(1)), LCase$(text)) <> 0 Then
-            lstResults.AddItem coll.Item(i)(1)
+            lstResults.AddItem Replace(coll.Item(i)(1), vbNewLine, "\r\n")
             lstResults.ItemData(lstResults.NewIndex) = i
         End If
     End If
@@ -415,9 +483,9 @@ End Sub
 Public Sub EnumCollection(coll As Collection)
 lstResults.Clear
 Dim i As Long
-For i = 1 To coll.count
+For i = 1 To coll.Count
 
-            lstResults.AddItem coll.Item(i)(1)
+            lstResults.AddItem Replace(coll.Item(i)(1), vbNewLine, "\r\n")
             lstResults.ItemData(lstResults.NewIndex) = i
 
 Next i
@@ -446,6 +514,7 @@ End Sub
 Private Sub lstResults_Click()
 On Error Resume Next
 Dim MD5 As String
+Dim temp As String
 cmdDelete.Enabled = True
 cmdModify.Enabled = True
 cmdReTranslate.Enabled = True
@@ -456,9 +525,22 @@ Else
 MD5 = origCol.Item(lstResults.ItemData(lstResults.ListIndex))(0)
 End If
 
-Debug.Print "Selected: " & col.Item(lstResults.ItemData(lstResults.ListIndex))(1)
-Debug.Print "Original: " & origCol.Item(MD5)(1)
+'example of the different types of issues that could crop up when editing the translation..
+'I probably should have enforced a stricter control on these initially.
+'Oops.
+temp = col.Item(lstResults.ItemData(lstResults.ListIndex))(1)
+temp = Replace(temp, vbCr, "\r")
+temp = Replace(temp, vbLf, "\n")
+temp = Replace(temp, vbNewLine, "\r\n")
 
-lstResults.ToolTipText = origCol.Item(MD5)(1)
+Debug.Print "Selected: " & temp
+If usingOrigCol Then
+Debug.Print "Original: " & Replace(col.Item(MD5)(1), vbNewLine, "\r\n")
+Else
+Debug.Print "Original: " & Replace(origCol.Item(MD5)(1), vbNewLine, "\r\n")
+End If
+Debug.Print MD5
+
+lstResults.ToolTipText = Replace(origCol.Item(MD5)(1), vbNewLine, "\r\n")
 
 End Sub
