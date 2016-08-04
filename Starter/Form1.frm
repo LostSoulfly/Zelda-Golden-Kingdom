@@ -41,14 +41,16 @@ Dim regasm As String, GtDLL As String, GtTLB As String
 Public Sub registerDLL()
 On Error Resume Next
 Label1.Caption = "Waiting.."
-
+Sleep 500
 If FileExist(Environ("windir") & "\System32\GTranslate.dll", True) Then
     
 Else
 
     FileCopy GtDLL, Environ("windir") & "\System32\GTranslate.dll"
+    Sleep 100
     FileCopy GtTLB, Environ("windir") & "\System32\GTranslate.tlb"
-
+    Sleep 100
+    DoEvents
 End If
 
 If FileExist(regasm, True) Then
@@ -71,6 +73,7 @@ If FileExist(regasm, True) Then
     Shell regasm & " /codebase " & "GTranslate.dll", vbNormalFocus
         Sleep 500
     Shell Chr(34) & App.Path & "\Launcher.exe" & Chr(34), vbNormalFocus
+    DoEvents
     End
 Else
 
