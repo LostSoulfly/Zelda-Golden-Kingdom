@@ -208,7 +208,7 @@ If Not GetPlayerAccess_Mode(Founder_Index) > ADMIN_MAPPER Then
     
     'Change 500 to amount
     If ItemAmount = 0 Or ItemAmount < GUILD_PRICE Then
-        PlayerMsg Founder_Index, GetTranslation("Rupias insuficientes. Debes tener al menos", , UnTrimBacl) & GUILD_PRICE & GetTranslation("Rupias Verdes", , UnTrimFront), BrightRed, , False
+        PlayerMsg Founder_Index, GetTranslation("Rupias insuficientes. Debes tener al menos", , UnTrimBack) & GUILD_PRICE & GetTranslation("Rupias Verdes", , UnTrimFront), BrightRed, , False
         'Exit Sub
     End If
     
@@ -917,7 +917,7 @@ Sub SayMsg_Party(ByVal index As Long, ByVal message As String, ByVal saycolour A
 End Sub
 Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim msg As String
-    Dim S As String
+    Dim s As String
     Dim i As Long
     Dim buffer As clsBuffer
     Set buffer = New clsBuffer
@@ -940,10 +940,10 @@ Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Start
         Exit Sub
     End If
     
-    S = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
+    s = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
     
     Call SayMsg_Guild(TempPlayer(index).tmpGuildSlot, index, msg, QBColor(White))
-    Call AddLog(index, S, PLAYER_LOG)
+    Call AddLog(index, s, PLAYER_LOG)
     Call TextAdd(msg)
     
     Set buffer = Nothing
