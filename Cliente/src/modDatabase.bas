@@ -128,7 +128,7 @@ Dim Filename As String
     Call PutVar(Filename, "Options", "MiniMap", Str(Options.MiniMap))
     Call PutVar(Filename, "Options", "MappingMode", Str(Options.MappingMode))
     Call PutVar(Filename, "Options", "ChatToScreen", Str(Options.ChatToScreen))
-    
+    Call PutVar(Filename, "Options", "RequireLauncher", Str(Options.RequireLauncher))
     Dim i As Byte
     For i = 1 To ChatType.ChatType_Count - 1
         Call PutVar(Filename, "ChatOptions", Str(i), Str(BTI(Options.ActivatedChats(i))))
@@ -171,6 +171,7 @@ Dim i As Byte
         Options.MiniMapBltElse = 0
         Options.MappingMode = 0
         Options.ChatToScreen = 1
+        Options.RequireLauncher = 1
         For i = 1 To ChatType.ChatType_Count - 1
            Options.ActivatedChats(i) = True
         Next
@@ -183,8 +184,8 @@ Dim i As Byte
         Options.SavePass = Val(GetVar(Filename, "Options", "SavePass"))
         
         'Call PutVar(Filename, "Options", "RequireLauncher", "0")
-        
-        If GetVar(Filename, "Options", "RequireLauncher") = 1 Then
+        Options.RequireLauncher = GetVar(Filename, "Options", "RequireLauncher")
+        If Options.RequireLauncher = 1 Then
             If InStr(1, Command, "-launcher 1") <= 0 Then
                 MsgBox "Please launch the game with the Launcher." & vbNewLine & _
                 "This keeps your client on the latest version!", vbCritical, "Launcher Required"

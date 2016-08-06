@@ -275,7 +275,7 @@ Dim Buffer As clsBuffer
         Options.Password = Trim$(frmMenu.txtLPass.text)
     End If
     
-    SaveOptions
+    'SaveOptions
     
     ' Now we can receive game data
     MyIndex = Buffer.ReadLong
@@ -696,7 +696,7 @@ Dim TNL As Long
     
     SetPlayerExp MyIndex, Buffer.ReadLong
     TNL = Buffer.ReadLong
-    frmMain.lblEXP.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
+    frmMain.lblExp.Caption = GetTranslation(("Experiencia:")) & GetPlayerExp(MyIndex) & "/" & TNL
     ' mp bar
     frmMain.imgEXPBar.Width = ((GetPlayerExp(MyIndex) / EXPBar_Width) / (TNL / EXPBar_Width)) * EXPBar_Width
     

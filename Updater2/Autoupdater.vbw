@@ -1,6 +1,6 @@
 frmMain = 94, 11, 1067, 513, , 754, 320, 1454, 740, C
 modUnrar = 94, 19, 882, 646, 
-modMain = 91, 8, 1244, 754, Z
+modMain = 91, 8, 1244, 754, 
 modDatabase = 77, 46, 1003, 639, 
 modGlobals = 25, 25, 920, 486, 
 modRegister = 121, 52, 990, 612, 
