@@ -65,9 +65,9 @@ End If
     strTransPath = App.Path & "\" & LangTo & ".dat"
     strOrigPath = App.Path & "\" & LangFrom & "-" & LangTo & ".dat"
 
-    frmTransLog.Show
-    frmTransLog.txtLog.text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
-    DoEvents
+    'frmTransLog.Show
+    'frmTransLog.txtLog.text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
+    'DoEvents
 
     ' set loading screen
     loadGUI True
