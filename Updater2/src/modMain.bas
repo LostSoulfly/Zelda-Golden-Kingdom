@@ -42,7 +42,7 @@ Sub Main()
     UpdateURL = GetVar(App.Path & "\data\UpdateConfig.ini", "UPDATER", "UpdateURL")
     'NewsURL = GetVar(App.Path & "\data\UpdateConfig.ini", "UPDATER", "NewsURL")
     'GameWebsite = GetVar(App.Path & "\data\UpdateConfig.ini", "UPDATER", "GameWebsite")
-    GameName = GetVar(App.Path & "\data\UpdateConfig.ini", "OPTIONS", "Game_Name")
+    GameName = GetVar(App.Path & "\data\UpdateConfig.ini", "Options", "Game_Name")
     ClientName = Trim(GetVar(App.Path & "\data\UpdateConfig.ini", "UPDATER", "ClientName"))
     
     ' Set the base value for a single %.
@@ -89,7 +89,7 @@ Dim Filename As String
     If FileExist("launcher.update.exe") Then
     ChangeStatus "Updating Launcher.."
     DoEvents
-    Sleep 100
+    Sleep 300
         'MsgBox "launcher.update found"
         If App.EXEName = "launcher.update" Then
             'MsgBox "launcher.update is the app name. Updating!"
@@ -97,18 +97,17 @@ Dim Filename As String
             ShellExecute 1, "Open", "taskkill /F /IM " & Chr(34) & "El Reino Dorado Translated.exe" & Chr(34), "", 0&, 0
             ChangeStatus "Replacing Old Launcher.."
             DoEvents
-            Sleep 100
+            Sleep 200
             Kill App.Path & "\launcher.exe"
             FileCopy App.Path & "\launcher.update.exe", App.Path & "\launcher.exe"
-            Sleep 100
+            Sleep 200
             Shell App.Path & "\launcher.exe", vbNormalFocus
             End
         Else
         ChangeStatus "Removing Old Launcher.."
         DoEvents
-        Sleep 100
+        Sleep 200
             Kill App.Path & "\launcher.update.exe"
-        
         End If
         
     'replace myself with the new version?
@@ -153,7 +152,7 @@ Dim Filename As String
     DoEvents
     ' Disable it, we have progress!
     frmMain.tmrTimeout.Enabled = False
-    
+
     ' are we up to date?
     If CurVersion < VersionCount Then
         UpToDate = 0
@@ -253,6 +252,7 @@ Dim CurProgress As Long
             Shell App.Path & "\launcher.update.exe"
             DoEvents
             DestroyUpdater
+            End
     End If
         
     Next
@@ -278,23 +278,26 @@ Dim CurProgress As Long
     'End If
     SetProgress 95
     ChangeStatus "Resetting Config Settings.."
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "SafeMode", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Game_Name", "The Legend Of Zelda: The Golden Kingdom"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "SavePass", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Port", "4000"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Music", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Sound", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Debug", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Names", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Level", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "WASD", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "MiniMapBltElse", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "Chat", "0"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "DefaultVolume", "50"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "MiniMap", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "IP", "trollparty.org"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "ChatToScreen", "1"
-    PutVar App.Path & "\data\Config.ini", "OPTIONS", "MappingMode", "0"
+    DoEvents
+    
+    PutVar App.Path & "\data\Config.ini", "Options", "SafeMode", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Game_Name", "The Legend Of Zelda: The Golden Kingdom"
+    PutVar App.Path & "\data\Config.ini", "Options", "SavePass", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Port", "4000"
+    PutVar App.Path & "\data\Config.ini", "Options", "Music", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Sound", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Debug", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Names", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Level", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "WASD", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "MiniMapBltElse", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "Chat", "0"
+    PutVar App.Path & "\data\Config.ini", "Options", "DefaultVolume", "50"
+    PutVar App.Path & "\data\Config.ini", "Options", "MiniMap", "1"
+    PutVar App.Path & "\data\Config.ini", "Options", "IP", "trollparty.org"
+    PutVar App.Path & "\data\Config.ini", "Options", "ChatToScreen", "2"
+    PutVar App.Path & "\data\Config.ini", "Options", "MappingMode", "0"
+    PutVar App.Path & "\data\Config.ini", "Options", "RequireLauncher", "1"
     
     PutVar App.Path & "\data\Config.ini", "ChatOptions", "1", "1"
     PutVar App.Path & "\data\Config.ini", "ChatOptions", "2", "1"
@@ -302,6 +305,7 @@ Dim CurProgress As Long
     PutVar App.Path & "\data\Config.ini", "ChatOptions", "4", "1"
     PutVar App.Path & "\data\Config.ini", "ChatOptions", "5", "1"
     PutVar App.Path & "\data\Config.ini", "ChatOptions", "6", "1"
+    Sleep 2000
     
     ' Done? Niiiice..
     SetProgress 100 'Just to be sure, sometimes it misses ~1% due to the lack of decimals.
@@ -469,7 +473,7 @@ File = App.Path & "\Data\config.ini"
 'MsgBox "Server chosen: " & CStr(Server(SelectedServer).Name)
 
 PutVar File, "Options", "Port", CStr(Server(SelectedServer).Port)
-PutVar File, "Options", "RequireLauncher", " 1"
+PutVar File, "Options", "RequireLauncher", "1"
 
 DoEvents
 

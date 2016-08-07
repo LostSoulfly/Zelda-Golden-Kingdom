@@ -289,19 +289,11 @@ DoEvents
 
 If FileExist(Environ("windir") & "\System32\MSWINSCK.OCX") Or FileExist(Environ("windir") & "\SysWow64\MSWINSCK.OCX") Then
     'this is promising!
-    If FileExist(Environ("windir") & "\System32\Richtx32.ocx") Or FileExist(Environ("windir") & "\SysWow64\Richtx32.ocx") Then
-        'looks like they have the runtimes
-        frmMain.Label1.Caption = "Registering.."
-        Sleep 100
-        
-        Sleep 100
-        frmMain.Label1.Caption = "Register DLLs.."
-    Else
+    If Not FileExist(Environ("windir") & "\System32\Richtx32.ocx") Or Not FileExist(Environ("windir") & "\SysWow64\Richtx32.ocx") Then
         MsgBox "You need to install the VB6 runtime files."
         Label2.Caption = "Installing VB6 Libraries.."
         Sleep 100
         Label2_Click
-        Label2.Caption = "Install Libraries.."
         Sleep 100
     End If
 
