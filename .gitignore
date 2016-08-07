@@ -3,3 +3,4 @@ Cliente/data/logs/errors.txt
 *.log
 *.tmp
 *.db
+Cliente/data/config.ini
