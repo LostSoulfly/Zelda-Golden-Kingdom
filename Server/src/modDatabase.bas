@@ -155,6 +155,7 @@ Sub BanIndex(ByVal BanPlayerIndex As Long, ByVal BannedByIndex As Long)
     Print #F, IP & "," & GetPlayerName(BannedByIndex)
     Close #F
     Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " has been banned by " & GetPlayerName(BannedByIndex) & "!", White, False, True)
+    ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] " & GetPlayerName(BanPlayerIndex) & " has been banned by " & GetPlayerName(BannedByIndex) & "!"
     Call AddLog(BannedByIndex, GetPlayerName(BannedByIndex) & GetTranslation(" ha baneado a ", , UnTrimBoth) & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, "Has sido baneado por " & GetPlayerName(BannedByIndex) & "!")
 End Sub
@@ -191,6 +192,7 @@ If frmServer.chkTroll.Value = vbChecked Then Exit Sub
     Print #F, IP & "," & "Server"
     Close #F
     Call GlobalMsg(GetPlayerName(BanPlayerIndex) & " has been banned by the Server" & "!", White, False, True)
+        ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] " & GetPlayerName(BanPlayerIndex) & " has been banned!"
     Call AddLog(0, "The Server" & GetTranslation(" ha baneado a ", , UnTrimBoth) & GetPlayerName(BanPlayerIndex) & ".", ADMIN_LOG)
     Call AlertMsg(BanPlayerIndex, GetTranslation("Has sido baneado por ", , UnTrimBack) & "the server" & "!", False)
 End Sub
@@ -424,7 +426,7 @@ Sub ClearPlayer(ByVal index As Long)
     Dim i As Long
     
     Call ZeroMemory(ByVal VarPtr(TempPlayer(index)), LenB(TempPlayer(index)))
-    Set TempPlayer(index).buffer = New clsBuffer
+    Set TempPlayer(index).Buffer = New clsBuffer
     
     Call ZeroMemory(ByVal VarPtr(player(index)), LenB(player(index)))
     player(index).login = vbNullString

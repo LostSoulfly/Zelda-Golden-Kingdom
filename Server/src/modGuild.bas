@@ -815,114 +815,114 @@ Sub SendDataToGuild(ByVal GuildSlot As Long, ByRef Data() As Byte)
 End Sub
 
 Sub SendGuild(ByVal SendToWholeGuild As Boolean, ByVal index As Long, ByVal GuildSlot As Long)
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim i As Integer
     Dim b As Integer
     
     If GuildSlot < 1 Or GuildSlot > MAX_PLAYERS Then Exit Sub
 
-    Set buffer = New clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong SSendGuild
+    Buffer.WriteLong SSendGuild
     
     'General data
-    buffer.WriteString GuildData(GuildSlot).Guild_Name
-    buffer.WriteInteger GuildData(GuildSlot).Guild_Color
-    buffer.WriteString GuildData(GuildSlot).Guild_MOTD
-    buffer.WriteInteger GuildData(GuildSlot).Guild_RecruitRank
+    Buffer.WriteString GuildData(GuildSlot).Guild_Name
+    Buffer.WriteInteger GuildData(GuildSlot).Guild_Color
+    Buffer.WriteString GuildData(GuildSlot).Guild_MOTD
+    Buffer.WriteInteger GuildData(GuildSlot).Guild_RecruitRank
     
     
     'Send Members
     For i = 1 To MAX_GUILD_MEMBERS
-        buffer.WriteString GuildData(GuildSlot).Guild_Members(i).User_Name
-        buffer.WriteInteger GuildData(GuildSlot).Guild_Members(i).Rank
-        buffer.WriteString GuildData(GuildSlot).Guild_Members(i).Comment
+        Buffer.WriteString GuildData(GuildSlot).Guild_Members(i).User_Name
+        Buffer.WriteInteger GuildData(GuildSlot).Guild_Members(i).Rank
+        Buffer.WriteString GuildData(GuildSlot).Guild_Members(i).Comment
     Next i
     
     'Send Ranks
     For i = 1 To MAX_GUILD_RANKS
-            buffer.WriteString GuildData(GuildSlot).Guild_Ranks(i).Name
+            Buffer.WriteString GuildData(GuildSlot).Guild_Ranks(i).Name
         For b = 1 To MAX_GUILD_RANKS_PERMISSION
-            buffer.WriteByte GuildData(GuildSlot).Guild_Ranks(i).RankPermission(b)
-            buffer.WriteString Guild_Ranks_Premission_Names(b)
+            Buffer.WriteByte GuildData(GuildSlot).Guild_Ranks(i).RankPermission(b)
+            Buffer.WriteString Guild_Ranks_Premission_Names(b)
         Next b
     Next i
     
     If SendToWholeGuild = False Then
-        SendDataTo index, buffer.ToArray()
+        SendDataTo index, Buffer.ToArray()
     Else
-        SendDataToGuild GuildSlot, buffer.ToArray()
+        SendDataToGuild GuildSlot, Buffer.ToArray()
     End If
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 Sub ToggleGuildAdmin(ByVal index As Long, ByVal GuildSlot, ByVal OpenAdmin As Boolean)
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim i As Integer
     Dim b As Integer
 
-    Set buffer = New clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong SAdminGuild
+    Buffer.WriteLong SAdminGuild
     
     
     If OpenAdmin = True Then
-        buffer.WriteByte 1
+        Buffer.WriteByte 1
     Else
-        buffer.WriteByte 0
+        Buffer.WriteByte 0
     End If
 
-        SendDataTo index, buffer.ToArray()
+        SendDataTo index, Buffer.ToArray()
 
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 Sub SayMsg_Guild(ByVal GuildSlot As Long, ByVal index As Long, ByVal message As String, ByVal saycolour As Long)
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     
-    Set buffer = New clsBuffer
-    buffer.WriteLong SSayMsg
-    buffer.WriteString GetPlayerName(index)
-    buffer.WriteLong GetPlayerAccess_Mode(index)
-    buffer.WriteLong GetPlayerPK(index)
-    buffer.WriteString message
-    buffer.WriteString "[" & GuildData(GuildSlot).Guild_Name & "]"
-    buffer.WriteLong saycolour
-    buffer.WriteLong ClanChat
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SSayMsg
+    Buffer.WriteString GetPlayerName(index)
+    Buffer.WriteLong GetPlayerAccess_Mode(index)
+    Buffer.WriteLong GetPlayerPK(index)
+    Buffer.WriteString message
+    Buffer.WriteString "[" & GuildData(GuildSlot).Guild_Name & "]"
+    Buffer.WriteLong saycolour
+    Buffer.WriteLong ClanChat
     
-    SendDataToGuild GuildSlot, buffer.ToArray()
+    SendDataToGuild GuildSlot, Buffer.ToArray()
 
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Sub SayMsg_Party(ByVal index As Long, ByVal message As String, ByVal saycolour As Long)
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     
-    Set buffer = New clsBuffer
-    buffer.WriteLong SSayMsg
-    buffer.WriteString GetPlayerName(index)
-    buffer.WriteLong GetPlayerAccess_Mode(index)
-    buffer.WriteLong GetPlayerPK(index)
-    buffer.WriteString message
-    buffer.WriteString "[Party]"
-    buffer.WriteLong saycolour
-    buffer.WriteLong PartyChat
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SSayMsg
+    Buffer.WriteString GetPlayerName(index)
+    Buffer.WriteLong GetPlayerAccess_Mode(index)
+    Buffer.WriteLong GetPlayerPK(index)
+    Buffer.WriteString message
+    Buffer.WriteString "[Party]"
+    Buffer.WriteLong saycolour
+    Buffer.WriteLong PartyChat
     
-    SendDataToParty TempPlayer(index).inParty, buffer.ToArray()
+    SendDataToParty TempPlayer(index).inParty, Buffer.ToArray()
 
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 
 End Sub
 Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim msg As String
-    Dim s As String
+    Dim S As String
     Dim i As Long
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data()
-    msg = buffer.ReadString
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data()
+    msg = Buffer.ReadString
 
     ' Prevent hacking
     'For i = 1 To Len(Msg)
@@ -940,29 +940,29 @@ Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Start
         Exit Sub
     End If
     
-    s = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
+    S = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
     
     Call SayMsg_Guild(TempPlayer(index).tmpGuildSlot, index, msg, QBColor(White))
-    Call AddLog(index, s, PLAYER_LOG)
+    Call AddLog(index, S, PLAYER_LOG)
     Call TextAdd(msg)
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 Public Sub HandleGuildSave(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
 
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 Dim SaveType As Integer
 Dim SentIndex As Integer
 Dim HoldInt As Integer
 Dim i As Integer
 
 
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data()
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data()
     
     
-    SaveType = buffer.ReadInteger
-    SentIndex = buffer.ReadInteger
+    SaveType = Buffer.ReadInteger
+    SentIndex = Buffer.ReadInteger
     
     If SaveType = 0 Or SentIndex = 0 Then Exit Sub
     
@@ -973,17 +973,17 @@ Dim i As Integer
         If CheckGuildPermission(index, 6) = True Then
             
             'Guild Color
-            HoldInt = buffer.ReadInteger
+            HoldInt = Buffer.ReadInteger
             If HoldInt > 0 Then
                 GuildData(TempPlayer(index).tmpGuildSlot).Guild_Color = HoldInt
                 HoldInt = 0
             End If
             
             'Guild Recruit rank
-            HoldInt = buffer.ReadInteger
+            HoldInt = Buffer.ReadInteger
             
             'Guild MOTD
-            GuildData(TempPlayer(index).tmpGuildSlot).Guild_MOTD = buffer.ReadString
+            GuildData(TempPlayer(index).tmpGuildSlot).Guild_MOTD = Buffer.ReadString
             
             
             'Did Recruit Rank change? Make sure they didnt set recruit rank at or above their rank
@@ -1003,7 +1003,7 @@ Dim i As Integer
         'users
         If CheckGuildPermission(index, 5) = True Then
             'Guild Member Rank
-            HoldInt = buffer.ReadInteger
+            HoldInt = Buffer.ReadInteger
             If HoldInt > 0 Then
                 GuildData(TempPlayer(index).tmpGuildSlot).Guild_Members(SentIndex).Rank = HoldInt
             Else
@@ -1011,7 +1011,7 @@ Dim i As Integer
             End If
             
             'Guild Member Comment
-            GuildData(TempPlayer(index).tmpGuildSlot).Guild_Members(SentIndex).Comment = buffer.ReadString
+            GuildData(TempPlayer(index).tmpGuildSlot).Guild_Members(SentIndex).Comment = Buffer.ReadString
         Else
             PlayerMsg index, "No estas autorizado para guardar usuarios.", BrightRed
         End If
@@ -1019,9 +1019,9 @@ Dim i As Integer
     Case 3
         'ranks
         If CheckGuildPermission(index, 4) = True Then
-            GuildData(TempPlayer(index).tmpGuildSlot).Guild_Ranks(SentIndex).Name = buffer.ReadString
+            GuildData(TempPlayer(index).tmpGuildSlot).Guild_Ranks(SentIndex).Name = Buffer.ReadString
                 For i = 1 To MAX_GUILD_RANKS_PERMISSION
-                    GuildData(TempPlayer(index).tmpGuildSlot).Guild_Ranks(SentIndex).RankPermission(i) = buffer.ReadByte
+                    GuildData(TempPlayer(index).tmpGuildSlot).Guild_Ranks(SentIndex).RankPermission(i) = Buffer.ReadByte
                 Next i
         Else
             PlayerMsg index, "No estas autorizado para guardar rangos.", BrightRed
@@ -1031,7 +1031,7 @@ Dim i As Integer
     
     Call SendGuild(True, index, TempPlayer(index).tmpGuildSlot)
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 Public Sub HandleGuildCommands(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim i As Integer
@@ -1039,14 +1039,14 @@ Public Sub HandleGuildCommands(ByVal index As Long, ByRef Data() As Byte, ByVal 
     Dim SendText As String
     Dim SelectedCommand As Integer
     Dim MembersCount As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     
-    Set buffer = New clsBuffer
-    buffer.WriteBytes Data()
+    Set Buffer = New clsBuffer
+    Buffer.WriteBytes Data()
     
     
-    SelectedCommand = buffer.ReadInteger
-    SendText = buffer.ReadString
+    SelectedCommand = Buffer.ReadInteger
+    SendText = Buffer.ReadString
     
     'Command 1/6/7 can be used while not in a guild
     If player(index).GuildFileId = 0 And Not (SelectedCommand = 1 Or SelectedCommand = 6 Or SelectedCommand = 7) Then
@@ -1195,7 +1195,7 @@ Public Sub HandleGuildCommands(ByVal index As Long, ByRef Data() As Byte, ByVal 
     
     End Select
   
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Function GuildNameExist(ByRef Name As String) As Boolean
@@ -1251,22 +1251,22 @@ Public Sub DeleteGuildName(ByRef Name As String)
 End Sub
 
 Public Sub SendPlayerGuildData(ByVal index As Long)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
     
-    buffer.WriteLong SGuildData
+    Buffer.WriteLong SGuildData
 
     If player(index).GuildFileId > 0 Then
         If TempPlayer(index).tmpGuildSlot > 0 Then
-            buffer.WriteByte 1
-            buffer.WriteString GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name
-            buffer.WriteLong player(index).GuildMemberId
+            Buffer.WriteByte 1
+            Buffer.WriteString GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name
+            Buffer.WriteLong player(index).GuildMemberId
         End If
     Else
-        buffer.WriteByte 0
+        Buffer.WriteByte 0
     End If
     
-    SendDataTo index, buffer.ToArray
+    SendDataTo index, Buffer.ToArray
 End Sub
 
 

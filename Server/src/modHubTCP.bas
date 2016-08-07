@@ -70,18 +70,18 @@ Dim MsgType As Long
 End Sub
 
 Sub SendDataHub(ByRef Data() As Byte)
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 Dim TempData() As Byte
 If Not useHubServer Then Exit Sub
     If frmServer.hubSocket.state = sckConnected Then
-        Set buffer = New clsBuffer
+        Set Buffer = New clsBuffer
         TempData = Data
         
-        buffer.PreAllocate 4 + (UBound(TempData) - LBound(TempData)) + 1
-        buffer.WriteLong (UBound(TempData) - LBound(TempData)) + 1
-        buffer.WriteBytes TempData()
+        Buffer.PreAllocate 4 + (UBound(TempData) - LBound(TempData)) + 1
+        Buffer.WriteLong (UBound(TempData) - LBound(TempData)) + 1
+        Buffer.WriteBytes TempData()
               
-        frmServer.hubSocket.SendData buffer.ToArray()
+        frmServer.hubSocket.SendData Buffer.ToArray()
         
         PacketsSent = PacketsSent + 1
         BytesSent = BytesSent + (UBound(TempData) - LBound(TempData)) + 1
@@ -130,14 +130,14 @@ If hubLastHeard = 0 Then hubLastHeard = GetRealTickCount
 End Sub
 
 Public Sub HubIncomingData(ByVal DataLength As Long)
-Dim buffer() As Byte
+Dim Buffer() As Byte
 Dim pLength As Long
 
 If hubBuffer Is Nothing Then Set hubBuffer = New clsBuffer
 
-    frmServer.hubSocket.GetData buffer, vbUnicode, DataLength
+    frmServer.hubSocket.GetData Buffer, vbUnicode, DataLength
     
-    hubBuffer.WriteBytes buffer()
+    hubBuffer.WriteBytes Buffer()
     
     If hubBuffer.length >= 4 Then pLength = hubBuffer.ReadLong(False)
     Do While pLength > 0 And pLength <= hubBuffer.length - 4
@@ -154,41 +154,41 @@ If hubBuffer Is Nothing Then Set hubBuffer = New clsBuffer
 End Sub
 
 Public Sub SendServerInfo()
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong HServerInfo
-    buffer.WriteLong TotalPlayersOnline
-    buffer.WriteLong MAX_PLAYERS
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong HServerInfo
+    Buffer.WriteLong TotalPlayersOnline
+    Buffer.WriteLong MAX_PLAYERS
     'server name
-    buffer.WriteString IIf(Len(SERVER_NAME) = 0, frmServer.Socket(0).LocalPort, SERVER_NAME)
-    buffer.WriteLong StartTick
-    buffer.WriteLong frmServer.Socket(0).LocalPort
+    Buffer.WriteString IIf(Len(SERVER_NAME) = 0, frmServer.Socket(0).LocalPort, SERVER_NAME)
+    Buffer.WriteLong StartTick
+    Buffer.WriteLong frmServer.Socket(0).LocalPort
     
-    SendDataHub buffer.ToArray
+    SendDataHub Buffer.ToArray
 
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Public Sub SendHubLog(Text As String)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong HLog
-    buffer.WriteString Text
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong HLog
+    Buffer.WriteString Text
     
-    SendDataHub buffer.ToArray
+    SendDataHub Buffer.ToArray
 
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub
 
 Public Sub ForwardGlobalMsg(ByVal msg As String)
-    Dim buffer As clsBuffer
-    Set buffer = New clsBuffer
-    buffer.WriteLong HGlobalMsg
-    buffer.WriteString msg
+    Dim Buffer As clsBuffer
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong HGlobalMsg
+    Buffer.WriteString msg
     
-    SendDataHub buffer.ToArray
+    SendDataHub Buffer.ToArray
 
-    Set buffer = Nothing
+    Set Buffer = Nothing
 
 End Sub
 
@@ -202,30 +202,30 @@ End Sub
 
 Public Sub SendHubCommand(CommandNum As Long, Data As String)
 If Not useHubServer Then Exit Sub
-Dim buffer As New clsBuffer
-Set buffer = New clsBuffer
+Dim Buffer As New clsBuffer
+Set Buffer = New clsBuffer
 
-buffer.WriteLong HCommand
-buffer.WriteLong CommandNum
-buffer.WriteString Data
+Buffer.WriteLong HCommand
+Buffer.WriteLong CommandNum
+Buffer.WriteString Data
 
-SendDataHub buffer.ToArray
+SendDataHub Buffer.ToArray
 
-Set buffer = Nothing
+Set Buffer = Nothing
 
 End Sub
 
 Private Sub HandleServerCommand(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
 
-    Dim buffer As New clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As New clsBuffer
+    Set Buffer = New clsBuffer
     Dim Command As Long
     Dim sData As String
-    buffer.WriteBytes Data()
-    Command = buffer.ReadLong
-    sData = buffer.ReadString
+    Buffer.WriteBytes Data()
+    Command = Buffer.ReadLong
+    sData = Buffer.ReadString
     
-        'GlobalMsg "There may be a brief moment of lag while the servers are synced..", Green, False, False
+        GlobalMsg "Syncing with Hub server..", Green, False, False
         'DoEvents
         
     Select Case Command
@@ -331,7 +331,7 @@ Private Sub HandleServerCommand(ByVal index As Long, ByRef Data() As Byte, ByVal
     End Select
 
 
-    Set buffer = Nothing
+    Set Buffer = Nothing
 
 End Sub
 
@@ -346,14 +346,14 @@ On Error Resume Next
 End Sub
 
 Private Sub HandleForwardGlobalMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
-    Dim buffer As New clsBuffer
-    Set buffer = New clsBuffer
+    Dim Buffer As New clsBuffer
+    Set Buffer = New clsBuffer
     Dim msg As String, color As Long
-    buffer.WriteBytes Data()
-    msg = buffer.ReadString
+    Buffer.WriteBytes Data()
+    msg = Buffer.ReadString
     'color = buffer.ReadLong
     
     Call GlobalMsg(msg, White, False, False)
     
-    Set buffer = Nothing
+    Set Buffer = Nothing
 End Sub

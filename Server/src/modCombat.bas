@@ -739,7 +739,7 @@ Public Sub PlayerAttackNpc(ByVal attacker As Long, ByVal mapnpcnum As Long, ByVa
     Dim Def As Long
     Dim mapnum As Long
     Dim npcnum As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
 
     ' Check for subscript out of range
     If IsPlaying(attacker) = False Or mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Or Damage < 0 Then
@@ -918,7 +918,7 @@ End Sub
 
 Public Sub TryNpcAttackPlayer(ByVal mapnpcnum As Long, ByVal index As Long)
 Dim mapnum As Long, npcnum As Long, blockAmount As Long, Damage As Long
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
     ' Can the npc attack the player?
     If CanNpcAttackPlayer(mapnpcnum, index) Then
         mapnum = GetPlayerMap(index)
@@ -928,11 +928,11 @@ Dim buffer As clsBuffer
         SendMapSound index, GetPlayerX(index), GetPlayerY(index), SoundEntity.seNpc, MapNpc(mapnum).NPC(mapnpcnum).Num
         
         ' Send this packet so they can see the npc attacking
-        Set buffer = New clsBuffer
-        buffer.WriteLong ServerPackets.SNpcAttack
-        buffer.WriteLong mapnpcnum
-        SendDataToMap mapnum, buffer.ToArray()
-        Set buffer = Nothing
+        Set Buffer = New clsBuffer
+        Buffer.WriteLong ServerPackets.SNpcAttack
+        Buffer.WriteLong mapnpcnum
+        SendDataToMap mapnum, Buffer.ToArray()
+        Set Buffer = Nothing
         
         MapNpc(mapnum).NPC(mapnpcnum).AttackTimer = GetRealTickCount + GetNPCAttackTimer(mapnum, mapnpcnum)
         
@@ -982,7 +982,7 @@ End Sub
 Function CanNpcAttackPlayer(ByVal mapnpcnum As Long, ByVal index As Long, Optional ByVal IsSpell As Boolean = False) As Boolean
     Dim mapnum As Long
     Dim npcnum As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     
     ' Check if player is loading
     If TempPlayer(index).IsLoading = True Then Exit Function
@@ -1066,7 +1066,7 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
     Dim exp As Long
     Dim mapnum As Long
     Dim i As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
 
     ' Check for subscript out of range
     If mapnpcnum <= 0 Or mapnpcnum > MAX_MAP_NPCS Or IsPlaying(victim) = False Then
@@ -1139,6 +1139,7 @@ Sub NpcAttackPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, ByVal Damage 
         
         ' Player is dead
         Call GlobalMsg(GetPlayerName(victim) & " has been killed by a " & Trim$(NPC(GetNPCNum(mapnum, mapnpcnum)).TranslatedName) & "!", BrightRed, False, False)
+        ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] " & GetPlayerName(victim) & " has been killed by a " & Trim$(NPC(GetNPCNum(mapnum, mapnpcnum)).TranslatedName) & "!"
         Call AddLog(victim, GetPlayerName(victim) & " has been killed by a " & Trim$(NPC(GetNPCNum(mapnum, mapnpcnum)).TranslatedName) & "!", PLAYER_LOG)
         
         'Kill Counter
@@ -1313,7 +1314,7 @@ Sub NpcSpellPlayer(ByVal mapnpcnum As Long, ByVal victim As Long, SpellSlotNum A
         Dim i As Long
         Dim N As Long
         Dim spellnum As Long
-        Dim buffer As clsBuffer
+        Dim Buffer As clsBuffer
         Dim InitDamage As Long
         Dim Damage As Long
         Dim index As Long
@@ -1490,7 +1491,7 @@ Sub NpcSpellNpc(ByVal mapnum As Long, ByVal aMapNPCNum As Long, ByVal vMapNPCNum
         Dim i As Long
         Dim N As Long
         Dim spellnum As Long
-        Dim buffer As clsBuffer
+        Dim Buffer As clsBuffer
         Dim InitDamage As Long
         Dim Damage As Long
         Dim MaxHeals As Long
@@ -1650,7 +1651,7 @@ End Sub
 Public Sub TryPlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long)
 Dim blockAmount As Long
 Dim npcnum As Long
-Dim buffer As clsBuffer
+Dim Buffer As clsBuffer
 Dim mapnum As Long
 Dim Damage As Long
 
@@ -1870,7 +1871,7 @@ Sub PlayerAttackPlayer(ByVal attacker As Long, ByVal victim As Long, ByVal Damag
     Dim exp As Long
     Dim N As Long
     Dim i As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim mapnum As Long
 
     ' Check for subscript out of range
@@ -2187,7 +2188,7 @@ Public Sub CastSpell(ByVal index As Long, ByVal spellslot As Long, ByVal Target 
     Dim increment As Boolean
     Dim X As Long, Y As Long
    
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim SpellCastType As Long
    
     DidCast = False
@@ -3049,7 +3050,7 @@ Function CanNpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal vic
 End Function
 Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As Long, ByVal Damage As Long)
     Dim i As Long
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim aNPCNum As Long
     Dim vNPCNum As Long
     Dim N As Long
@@ -3102,11 +3103,11 @@ Sub NpcAttackNpc(ByVal mapnum As Long, ByVal attacker As Long, ByVal victim As L
     MapNpc(mapnum).NPC(victim).stopRegenTimer = GetRealTickCount
     
     ' Send this packet so they can see the person attacking
-    Set buffer = New clsBuffer
-    buffer.WriteLong SNpcAttack
-    buffer.WriteLong attacker
-    SendDataToMap mapnum, buffer.ToArray()
-    Set buffer = Nothing
+    Set Buffer = New clsBuffer
+    Buffer.WriteLong SNpcAttack
+    Buffer.WriteLong attacker
+    SendDataToMap mapnum, Buffer.ToArray()
+    Set Buffer = Nothing
 
     If Damage >= MapNpc(mapnum).NPC(victim).vital(Vitals.HP) Then
         SendActionMsg mapnum, "-" & Damage, BrightRed, 1, (MapNpc(mapnum).NPC(victim).X * 32), (MapNpc(mapnum).NPC(victim).Y * 32)
@@ -3620,7 +3621,7 @@ Public Sub CastSpell2(ByVal index As Long, ByVal spellnum As Long, ByVal Target 
     Dim increment As Boolean
     Dim X As Long, Y As Long
    
-    Dim buffer As clsBuffer
+    Dim Buffer As clsBuffer
     Dim SpellCastType As Long
    
     DidCast = False

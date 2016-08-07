@@ -112,6 +112,8 @@ Sub JoinGame(ByVal index As Long, ByVal NeedData As Boolean)
         Call GlobalMsg(GetPlayerName(index) & GetTranslation(" se ha conectado", , UnTrimFront), BrightGreen, False)
     End If
     
+    ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] You sense someone not of this world.. " & GetPlayerName(index) & " has connected."
+    
     ' Send welcome messages
     Call SendWelcome(index)
     
@@ -198,8 +200,10 @@ Sub LeftGame(ByVal index As Long)
         If GetPlayerAccess_Mode(index) <= ADMIN_MONITOR Then
             Call GlobalMsg(GetPlayerName(index) & GetTranslation(" se ha desconectado", , UnTrimFront), BrightRed, False)
         Else
-            'Call GlobalMsg(GetPlayerName(index) & " se ha desconectado", BrightRed)
+            Call GlobalMsg(GetPlayerName(index) & " se ha desconectado", BrightRed)
         End If
+
+            ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] " & GetPlayerName(index) & " has disconnected."
 
         Call TextAdd(GetPlayerName(index) & GetTranslation(" se ha desconectado ", , UnTrimFront) & ".")
         Call SendLeftGame(index)
@@ -2176,6 +2180,8 @@ Public Sub ComputePlayerReset(ByVal index As Long, ByVal triforce As TriforceTyp
     
     GlobalMsg GetPlayerName(index) & GetTranslation(" ha adquirido la trifuerza ", , UnTrimBoth) & GetTranslation(message), colour, False, True
     
+    ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] " & GetPlayerName(index) & GetTranslation(" ha adquirido la trifuerza ", , UnTrimBoth) & GetTranslation(message)
+    
 End Sub
 Public Function GetPlayerTriforcesNum(ByVal index As Long) As Byte
 Dim i As Byte
@@ -2560,6 +2566,7 @@ Sub KickPlayer(ByVal index As Long, Optional ByRef Reason As String = "")
     If index = 0 Or Not IsPlaying(index) Then Exit Sub
     
     Call GlobalMsg(GetPlayerName(index) & GetTranslation(" ha sido expulsado por: ", , UnTrimBoth) & Reason, White, False, True)
+    ForwardGlobalMsg "[Hub - " & SERVER_NAME & "] " & GetPlayerName(index) & GetTranslation(" ha sido expulsado por: ", , UnTrimBoth) & Reason
     Call AddLog(0, GetPlayerName(index) & GetTranslation(" ha sido expulsado por: ", , UnTrimBoth) & Reason, ADMIN_LOG)
     Call AlertMsg(index, GetTranslation("Has sido expulsado por: ", , UnTrimBack) & Reason, False)
 End Sub
