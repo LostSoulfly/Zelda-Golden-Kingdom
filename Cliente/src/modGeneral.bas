@@ -106,6 +106,7 @@ End If
                 'anything above 0 will enable it.
                 Options.port = Val(Trim$(strsplit(i + 1)))
                 'MsgBox CStr(Options.port)
+                
             Case Is = "-auto"
                 AutoLogin = Val(Trim$(strsplit(i + 1)))
                 
