@@ -275,7 +275,7 @@ Dim Buffer As clsBuffer
         Options.Password = Trim$(frmMenu.txtLPass.text)
     End If
     
-    'SaveOptions
+    SaveOptions
     
     ' Now we can receive game data
     MyIndex = Buffer.ReadLong

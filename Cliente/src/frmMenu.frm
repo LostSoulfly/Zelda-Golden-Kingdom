@@ -889,7 +889,7 @@ frmMain.Caption = Options.Game_Name & " - " & ip
 TcpInit
 End Sub
 
-Private Sub form_load()
+Private Sub Form_Load()
     Dim tmpTxt As String, tmpArray() As String, i As Long
     ' If debug mode, handle error then exit out
     If Options.Debug = 1 Then On Error GoTo errorhandler
@@ -924,17 +924,18 @@ Private Sub form_load()
     
     ' general menu stuff
     Me.Caption = Options.Game_Name
-    
+    lblNews.Caption = vbNullString
     ' load news
     Open App.Path & "\data\news.txt" For Input As #1
+    Do While Not EOF(1)
         Line Input #1, tmpTxt
+        lblNews.Caption = lblNews.Caption & tmpTxt & vbNewLine
+    Loop
     Close #1
-    ' split breaks
-    tmpArray() = Split(tmpTxt, "<br />")
-    lblNews.Caption = vbNullString
-    For i = 0 To UBound(tmpArray)
-        lblNews.Caption = lblNews.Caption & tmpArray(i) & vbNewLine
-    Next
+
+    'For i = 0 To UBound(tmpArray)
+    '    lblNews.Caption = lblNews.Caption & tmpArray(i) & vbNewLine
+    'Next
 
     ' Load the username + pass
     txtLUser.text = Trim$(Options.Username)

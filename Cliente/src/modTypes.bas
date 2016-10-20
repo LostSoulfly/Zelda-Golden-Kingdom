@@ -59,7 +59,6 @@ Private Type OptionsRec
     MappingMode As Byte
     ChatToScreen As Byte
     DllRegistered As Byte
-    RequireLauncher As Byte
 End Type
 
 Public Type PartyRec

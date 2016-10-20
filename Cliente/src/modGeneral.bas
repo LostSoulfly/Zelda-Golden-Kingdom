@@ -67,7 +67,7 @@ End If
 
     'frmTransLog.Show
     'frmTransLog.txtLog.text = "GTranslate and modTranslate by Dragoon/LostSoulFly!"
-    'DoEvents
+    DoEvents
 
     ' set loading screen
     loadGUI True
@@ -106,7 +106,6 @@ End If
                 'anything above 0 will enable it.
                 Options.port = Val(Trim$(strsplit(i + 1)))
                 'MsgBox CStr(Options.port)
-                
             Case Is = "-auto"
                 AutoLogin = Val(Trim$(strsplit(i + 1)))
                 
@@ -328,7 +327,7 @@ Public Sub MenuState(ByVal State As Long)
     Select Case State
         Case MENU_STATE_ADDCHAR
             frmMain.txtMyChat.Locked = True
-            frmMain.picTutorial.Visible = True
+            frmTutorial.Visible = True
             frmMenu.Visible = False
             frmMenu.picCredits.Visible = False
             frmMenu.picLogin.Visible = False

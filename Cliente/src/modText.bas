@@ -235,11 +235,11 @@ If InGame = False Then Exit Sub
             Color = QBColor(BrightGreen)
     End Select
 
-    'Name = Trim$(NPC(NPCNum).TranslatedName)
+    Name = Trim$(NPC(NPCNum).TranslatedName)
     NameSize = getWidth(TexthDC, Name)
     TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (NameSize / 2)
 
-If LenB(Name) > 0 Then
+    
     If NPC(NPCNum).sprite < 1 Or NPC(NPCNum).sprite > NumCharacters Then
         TextY = ConvertMapY(MapNpc(index).Y * PIC_Y) + MapNpc(index).YOffset - 12
     Else
@@ -266,7 +266,6 @@ If LenB(Name) > 0 Then
 
     ' Draw name
     Call DrawText(TexthDC, TextX, TextY, Name, Color)
-End If
         'Alatar v1.2
     Dim i As Long
     

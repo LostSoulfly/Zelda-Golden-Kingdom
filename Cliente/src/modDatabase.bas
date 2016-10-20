@@ -128,7 +128,7 @@ Dim Filename As String
     Call PutVar(Filename, "Options", "MiniMap", Str(Options.MiniMap))
     Call PutVar(Filename, "Options", "MappingMode", Str(Options.MappingMode))
     Call PutVar(Filename, "Options", "ChatToScreen", Str(Options.ChatToScreen))
-    Call PutVar(Filename, "Options", "RequireLauncher", Str(Options.RequireLauncher))
+    
     Dim i As Byte
     For i = 1 To ChatType.ChatType_Count - 1
         Call PutVar(Filename, "ChatOptions", Str(i), Str(BTI(Options.ActivatedChats(i))))
@@ -171,7 +171,6 @@ Dim i As Byte
         Options.MiniMapBltElse = 0
         Options.MappingMode = 0
         Options.ChatToScreen = 1
-        Options.RequireLauncher = 1
         For i = 1 To ChatType.ChatType_Count - 1
            Options.ActivatedChats(i) = True
         Next
@@ -184,8 +183,8 @@ Dim i As Byte
         Options.SavePass = Val(GetVar(Filename, "Options", "SavePass"))
         
         'Call PutVar(Filename, "Options", "RequireLauncher", "0")
-        Options.RequireLauncher = GetVar(Filename, "Options", "RequireLauncher")
-        If Options.RequireLauncher = 1 Then
+        
+        If GetVar(Filename, "Options", "RequireLauncher") = 1 Then
             If InStr(1, Command, "-launcher 1") <= 0 Then
                 MsgBox "Please launch the game with the Launcher." & vbNewLine & _
                 "This keeps your client on the latest version!", vbCritical, "Launcher Required"
@@ -255,25 +254,14 @@ Dim i As Byte
     End If
     
         'chat options
-    If Options.ChatToScreen = 1 Then
-        frmMain.txtChat.Visible = True
-        frmMain.ChatOpts(0).Top = 444
-        frmMain.ChatOpts(1).Top = 444
-        frmMain.ChatOpts(2).Top = 444
-        frmMain.ChatOpts(3).Top = 444
-    ElseIf Options.ChatToScreen = 2 Then
-        frmMain.txtChat.Visible = False
-        frmMain.ChatOpts(0).Top = 594
-        frmMain.ChatOpts(1).Top = 594
-        frmMain.ChatOpts(2).Top = 594
-        frmMain.ChatOpts(3).Top = 594
-    Else
-        frmMain.txtChat.Visible = False
-        frmMain.ChatOpts(0).Visible = False
-        frmMain.ChatOpts(1).Visible = False
-        frmMain.ChatOpts(2).Visible = False
-        frmMain.ChatOpts(3).Visible = False
-    End If
+    frmMain.cmbChat.ListIndex = Options.ChatToScreen
+    'If Options.ChatToScreen = 1 Then
+    '    frmMain.txtChat.Visible = True
+    'ElseIf Options.ChatToScreen = 2 Then
+    '    frmMain.txtChat.Visible = False
+    'Else
+    '    frmMain.txtChat.Visible = False
+    'End If
     
     frmMain.scrlVolume.value = Options.DefaultVolume
     DefaultVolume = Options.DefaultVolume
