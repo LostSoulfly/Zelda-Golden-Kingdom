@@ -84,8 +84,8 @@ End If
 'get the actual translation (either from cache, or from a translation service)
 GetTranslation = Translate(txtTemp)
 
-currentTranslation = vbNullString
-isLocked = False
+'currentTranslation = vbNullString
+'isLocked = False
 
 'checking for a new line in the text first is faster than
 'simply running the replace on every translation
@@ -219,7 +219,7 @@ If Exists(origCol, strHash) = False Then
     AddToCache strHash, text, origCol
 End If
 
-'AddLog "Cached: [" & strTranslation & "] original: [" & text & "]"
+AddLog "Cached: [" & strTranslation & "] original: [" & text & "]"
 
 End If
 
