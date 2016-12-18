@@ -162,15 +162,16 @@ Dim i As Byte
         Options.Sound = 1
         Options.Debug = 1
         Options.Names = 1
-        Options.Level = 0
+        Options.Level = 1
         Options.WASD = 1
         Options.Chat = 1
-        Options.SafeMode = NO
+        Options.SafeMode = 0
         Options.DefaultVolume = 50
         Options.MiniMap = 1
-        Options.MiniMapBltElse = 0
+        Options.MiniMapBltElse = 1
         Options.MappingMode = 0
         Options.ChatToScreen = 1
+        Options.SavePass = 1
         For i = 1 To ChatType.ChatType_Count - 1
            Options.ActivatedChats(i) = True
         Next
@@ -184,7 +185,7 @@ Dim i As Byte
         
         'Call PutVar(Filename, "Options", "RequireLauncher", "0")
         
-        If GetVar(Filename, "Options", "RequireLauncher") = 1 Then
+        If Val(GetVar(Filename, "Options", "RequireLauncher")) = 1 Then
             If InStr(1, Command, "-launcher 1") <= 0 Then
                 MsgBox "Please launch the game with the Launcher." & vbNewLine & _
                 "This keeps your client on the latest version!", vbCritical, "Launcher Required"
