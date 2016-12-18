@@ -12,7 +12,7 @@ Public Const MAX_GUILD_RANKS_PERMISSION As Long = 6
 'Max guild save files(aka max guilds)
 Public Const MAX_GUILD_SAVES As Long = 200
 'Guild make price
-Public Const GUILD_PRICE As Long = 200
+Public Const GUILD_PRICE As Long = 100
 
 Public Const GUILD_PATH As String = "\guilds"
 Public Const GUILD_NAMES_FILE As String = "\guildnames.txt"
@@ -171,6 +171,11 @@ Public Sub MakeGuild(Founder_Index As Long, Name As String)
 
     Next
 
+    If GuildNameBlacklist(Name) And GetPlayerAccess_Mode(Founder_Index) <= ADMIN_MAPPER Then
+        PlayerMsg Founder_Index, "That guild name has been blacklisted!", BrightRed, True, False
+        Exit Sub
+    End If
+
     If GuildNameExist(Name) Then
         PlayerMsg Founder_Index, "Nombre ya existente", BrightRed
         Exit Sub
@@ -209,7 +214,7 @@ If Not GetPlayerAccess_Mode(Founder_Index) > ADMIN_MAPPER Then
     'Change 500 to amount
     If ItemAmount = 0 Or ItemAmount < GUILD_PRICE Then
         PlayerMsg Founder_Index, GetTranslation("Rupias insuficientes. Debes tener al menos", , UnTrimBack) & GUILD_PRICE & GetTranslation("Rupias Verdes", , UnTrimFront), BrightRed, , False
-        'Exit Sub
+        Exit Sub
     End If
     
     'Change 1 to item number 5000 to amount
@@ -917,7 +922,7 @@ Sub SayMsg_Party(ByVal index As Long, ByVal message As String, ByVal saycolour A
 End Sub
 Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal StartAddr As Long, ByVal ExtraVar As Long)
     Dim msg As String
-    Dim S As String
+    Dim s As String
     Dim i As Long
     Dim Buffer As clsBuffer
     Set Buffer = New clsBuffer
@@ -940,10 +945,10 @@ Public Sub HandleGuildMsg(ByVal index As Long, ByRef Data() As Byte, ByVal Start
         Exit Sub
     End If
     
-    S = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
+    s = "[" & GuildData(TempPlayer(index).tmpGuildSlot).Guild_Name & "]" & GetPlayerName(index) & ": " & msg
     
     Call SayMsg_Guild(TempPlayer(index).tmpGuildSlot, index, msg, QBColor(White))
-    Call AddLog(index, S, PLAYER_LOG)
+    Call AddLog(index, s, PLAYER_LOG)
     Call TextAdd(msg)
     
     Set Buffer = Nothing
@@ -1197,6 +1202,13 @@ Public Sub HandleGuildCommands(ByVal index As Long, ByRef Data() As Byte, ByVal 
   
     Set Buffer = Nothing
 End Sub
+
+Function GuildNameBlacklist(ByRef Name As String) As Boolean
+        If InStr(1, LCase(Name), "admin") > 0 Then GuildNameBlacklist = True
+        If InStr(1, LCase(Name), "game master") > 0 Then GuildNameBlacklist = True
+        If InStr(1, Name, "GM") > 0 Then GuildNameBlacklist = True
+        If InStr(1, LCase(Name), "dragoon") > 0 Then GuildNameBlacklist = True
+End Function
 
 Function GuildNameExist(ByRef Name As String) As Boolean
 
