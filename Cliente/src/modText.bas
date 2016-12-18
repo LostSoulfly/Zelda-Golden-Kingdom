@@ -235,7 +235,9 @@ If InGame = False Then Exit Sub
             Color = QBColor(BrightGreen)
     End Select
 
-    Name = Trim$(NPC(NPCNum).TranslatedName)
+    If LenB(Name) = 0 Then Exit Sub
+
+    'Name = Trim$(NPC(NPCNum).TranslatedName)
     NameSize = getWidth(TexthDC, Name)
     TextX = ConvertMapX(MapNpc(index).X * PIC_X) + MapNpc(index).XOffset + (PIC_X \ 2) - (NameSize / 2)
 
