@@ -1,0 +1,23 @@
+[Servers]
+NumServers=3
+[Server1]
+Players=0
+MaxPlayers=40
+PvPOnly=0
+Name=Saria
+Port=4000
+Online= 0
+[Server2]
+Players=0
+MaxPlayers=40
+PvPOnly=0
+Name=Nayru
+Port=4001
+Online= 0
+[Server3]
+Players=0
+MaxPlayers=40
+PvPOnly=0
+Name=Din
+Port=4002
+Online= 0

@@ -1,0 +1,2 @@
+Reduced Guild cost to 100rp.
+Fixed bug where moveable objects showed their name.
