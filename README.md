@@ -1,6 +1,19 @@
 # Zelda-Golden-Kingdom
 Fan-made Zelda online role playing game made in VB6.
 
+# Update 2023
+Unfortunately the translation component I wrote no longer functions and will crash when encountering any untranslated text.
+I will need to re-install VB6 and develop a new C# translation DLL and possibly use an old version of Visual Studio with .NET 4.0 framework to make it fully functional, but you can still play a lot of the game as it is now.
+I may do this some day.. but today is not that day.
+
+## Help
+In the Cliente folder, install the Libraries.exe to get the VB6 required files.
+Then run Starter.exe as Administrator to register the translation DLLs.
+Then you should be able to start the Zelda client executable.
+If you get a launcher required error, edit the config.ini to: RequireLauncher= 0
+Now, start the Server executable in the server folder. (Server 0.72.exe)
+
+
 I don't understand git. Sorry if it's a mess.
 
 I found this sourcecode online on some forums, turned out to be a near-complete
