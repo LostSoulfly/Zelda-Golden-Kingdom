@@ -7,12 +7,13 @@ I will need to re-install VB6 and develop a new C# translation DLL and possibly 
 I may do this some day.. but today is not that day.
 
 ## Help
-In the Cliente folder, install the Libraries.exe to get the VB6 required files.
-Then run Starter.exe as Administrator to register the translation DLLs.
-Then you should be able to start the Zelda client executable.
-If you get a launcher required error, edit the config.ini to: RequireLauncher= 0
-Now, start the Server executable in the server folder. (Server 0.72.exe)
+1. In the Cliente folder, install the Libraries.exe to get the VB6 required files.
+2. Then run Starter.exe as Administrator to register the translation DLLs.
+3. Then you should be able to start the Zelda client executable.
+4. If you get a launcher required error, edit the config.ini to: `RequireLauncher= 0`
+5. Now, start the Server executable in the server folder. (Server 0.72.exe)
 
+### Original
 
 I don't understand git. Sorry if it's a mess.
 
