@@ -1,6 +1,21 @@
 # Zelda-Golden-Kingdom
 Fan-made Zelda online role playing game made in VB6.
 
+
+# Update 2025
+I did a lot of work on updating the client back in late 2023, but ran into some issues. I don't remember what they were and as such I'm releasing this update as a testing version with no plans to continue.
+
+I created a few additional tools for the translation including a program to read the source files and apply automatic translations rather than doing it on-the-fly. I also wrote a TranslationServer which communicates with the client/server programs to facilitate translation without the need of the GTranslate.DLL or the local translation databases. I've included those tools. I also did a quick update to the Launcher and added a web server to wrap up the package nicely. If the launcher doesn't connect after starting the web server, close and re-open it.
+
+To run your own server and client, you should clone this repo and run the `Launcher.exe` from the Client folder. In the Launcher, click `Start WebSvr` and `Start GameSvr`. You can also run `Start.bat` in the root folder to start everything.
+
+To play with others, you can update the `Client\data\UpdateConfig.ini` to point to your IP address.
+
+You can also run the `TranslationServer.exe` and it will connect to the Client and Server, but I don't think there's any code implemented to use it any more, since I was using it to translate all the text manually when saving it from within the server.
+
+![image](https://github.com/user-attachments/assets/e4fbf37d-c0ed-4dc6-a320-b37997942635)
+
+
 # Update 2023
 Unfortunately the translation component I wrote no longer functions and will crash when encountering any untranslated text.
 I will need to re-install VB6 and develop a new C# translation DLL and possibly use an old version of Visual Studio with .NET 4.0 framework to make it fully functional, but you can still play a lot of the game as it is now.
