@@ -1,0 +1,191 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "FileHelpers/3.5.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/FileHelpers.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/FileHelpers.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "GTranslate/2.1.6": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/GTranslate.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/GTranslate.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FileHelpers/3.5.2": {
+      "sha512": "Z0jwjF4AmDBzRWfHFMdrcuBgmoQ2ChLaTmhRjnmReoUPUkT/+5StzWCB0N0RpslYeXiSyvcntcZNLtY58todFw==",
+      "type": "package",
+      "path": "filehelpers/3.5.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "filehelpers.3.5.2.nupkg.sha512",
+        "filehelpers.nuspec",
+        "lib/net40/FileHelpers.dll",
+        "lib/net40/FileHelpers.xml",
+        "lib/net45/FileHelpers.dll",
+        "lib/net45/FileHelpers.xml",
+        "lib/netstandard2.0/FileHelpers.dll",
+        "lib/netstandard2.0/FileHelpers.xml"
+      ]
+    },
+    "GTranslate/2.1.6": {
+      "sha512": "2ejPoAQDOkd5T54D8T/thwX57KLj2fIi9jcGel8YdJnRu4Ek3eyaWUy/jPMiBu5pG1rXzJc8al+hHuU0LImrHQ==",
+      "type": "package",
+      "path": "gtranslate/2.1.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "gtranslate.2.1.6.nupkg.sha512",
+        "gtranslate.nuspec",
+        "lib/net6.0/GTranslate.dll",
+        "lib/net6.0/GTranslate.xml",
+        "lib/netstandard2.0/GTranslate.dll",
+        "lib/netstandard2.0/GTranslate.xml",
+        "lib/netstandard2.1/GTranslate.dll",
+        "lib/netstandard2.1/GTranslate.xml"
+      ]
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "FileHelpers >= 3.5.2",
+      "GTranslate >= 2.1.6",
+      "Newtonsoft.Json >= 13.0.3"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Dragoon\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Dragoon\\Desktop\\Zelda\\Source\\TranslationServer\\TranslationServer\\TranslationServer.csproj",
+      "projectName": "TranslationServer",
+      "projectPath": "C:\\Users\\Dragoon\\Desktop\\Zelda\\Source\\TranslationServer\\TranslationServer\\TranslationServer.csproj",
+      "packagesPath": "C:\\Users\\Dragoon\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Dragoon\\Desktop\\Zelda\\Source\\TranslationServer\\TranslationServer\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Dragoon\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "FileHelpers": {
+            "target": "Package",
+            "version": "[3.5.2, )"
+          },
+          "GTranslate": {
+            "target": "Package",
+            "version": "[2.1.6, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.3, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

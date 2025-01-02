@@ -1,2 +1,0 @@
-[UPDATER]
-version=33

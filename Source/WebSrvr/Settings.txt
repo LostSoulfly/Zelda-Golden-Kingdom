@@ -1,0 +1,17 @@
+# This is the port it starts on, 80 is recommended.
+port 80
+# Maximum number of concurrent connections, default: 15, max 300.
+MaxUsers 15
+# This changes whether the program saves events to file.
+LogEvents 1
+# This changes whether the program logs URLs requestion to file.
+LogURLs 1
+# This changes whether the program saves settings in this file or not at all.
+save 1
+# This changes the interval all sockets are checked and unloaded, default: 15000ms
+SockCheck 15000
+# Path to the placeholder picture when Manga doesn't have an image to display.
+picture ChocoboDomDomSoft.png
+
+
+//* Any text written in this file not by an old VB6 server I wrote will be deleted *//

@@ -1,0 +1,4 @@
+[11:35:39 a. m.] Server started, listening on port 80
+[11:35:39 a. m.] Max connections set to: 15 (Change in settings.ini)
+[11:35:39 a. m.] Running check on sockets every 15000ms.
+[11:35:47 a. m.] Server shutting down..

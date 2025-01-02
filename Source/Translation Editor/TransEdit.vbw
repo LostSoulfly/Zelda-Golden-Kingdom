@@ -1,0 +1,5 @@
+frmMain = 102, 24, 1015, 734, , 350, 36, 1022, 580, C
+modTranslate = 92, 53, 1357, 683, 
+clsBuffer = 16, 16, 1202, 560, C
+modCompresor = 86, 170, 1179, 714, C
+frmReTranslate = 208, 129, 1314, 702, C, 31, 173, 1137, 823, C

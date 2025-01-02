@@ -1,0 +1,3112 @@
+[
+  {
+    "md5": "528DFF3B9D5433CF9561D4F62BAEBB98",
+    "Translation": "Hello my name is Brian",
+    "Original": null
+  },
+  {
+    "md5": "045C4B52B93319DC51837EEE7026624A",
+    "Translation": "\"Force\"",
+    "Original": null
+  },
+  {
+    "md5": "C94D83269E6B02AF8FAA0F321BC9B2CB",
+    "Translation": "\"Dazed\"",
+    "Original": null
+  },
+  {
+    "md5": "2A0FC7D99E27C7BA531128C27844D0CC",
+    "Translation": "\"Dodged!\"",
+    "Original": null
+  },
+  {
+    "md5": "2D67545F5FDEA0B7E7EAA559A9AD346D",
+    "Translation": "\"Stunned!\"",
+    "Original": null
+  },
+  {
+    "md5": "6DA5926B4A643C70C32C49F0C8CD869A",
+    "Translation": "\"Your attack does nothing.\"",
+    "Original": null
+  },
+  {
+    "md5": "AB828190E164F7ADFFB33E0404889CFD",
+    "Translation": "\"YOU RESISTED!\"",
+    "Original": null
+  },
+  {
+    "md5": "326B5EF09A39F4148AC0B9ECE21D6D8B",
+    "Translation": "\"Your attack did nothing.\"",
+    "Original": null
+  },
+  {
+    "md5": "52D57EA98583D300E5CED3CC1A0299CE",
+    "Translation": "\"Administrators cannot attack other users.\"",
+    "Original": null
+  },
+  {
+    "md5": "FBAAC192BF933FE36F8771823333A600",
+    "Translation": "\"You can't attack a\"",
+    "Original": null
+  },
+  {
+    "md5": "806EFA255117CD482BCDD0E52FB8CF66",
+    "Translation": "\"he is a member of your Guild!\"",
+    "Original": null
+  },
+  {
+    "md5": "0CF382B9ECA7C9E718661A61909CD075",
+    "Translation": "\"If your target is below level 20 and you are above, you cannot attack it!\"",
+    "Original": null
+  },
+  {
+    "md5": "993210E0E5E70DB338C37A084FD604C3",
+    "Translation": "\"If your target is above level 20 and you are below, you cannot attack it!\"",
+    "Original": null
+  },
+  {
+    "md5": "CA3BBDD5382C13D5E1EAC1C1B19CD543",
+    "Translation": "\"Ability to reload quickly\"",
+    "Original": null
+  },
+  {
+    "md5": "AA45190B2384D0FCFF7951E1EEA71D55",
+    "Translation": "\"You don't have enough MP!\"",
+    "Original": null
+  },
+  {
+    "md5": "774F41E23CFCC91654173C4076BC9B07",
+    "Translation": "\"You don't have a goal.\"",
+    "Original": null
+  },
+  {
+    "md5": "2B70C1776B2BE202095944DC5D7D9A92",
+    "Translation": "\"Target out of range.\"",
+    "Original": null
+  },
+  {
+    "md5": "7A9F6A0667C84D81B10932E2F2DBDFB7",
+    "Translation": "\"Out of range.\"",
+    "Original": null
+  },
+  {
+    "md5": "71879AD5AA4872E9DBB951ECDA1FF1D8",
+    "Translation": "\"If you don't have enough MP!\"",
+    "Original": null
+  },
+  {
+    "md5": "4590BE069CD2B79DAF5151913FB3BF14",
+    "Translation": "\"The goal is not within reach.\"",
+    "Original": null
+  },
+  {
+    "md5": "3103FF128D1CE94AFCF3149F1595DE31",
+    "Translation": "\"You can't attack yourself.\"",
+    "Original": null
+  },
+  {
+    "md5": "A3E14D4CD770DDD5B19A63BFC88E50B7",
+    "Translation": "\"Your levels are too different!\"",
+    "Original": null
+  },
+  {
+    "md5": "169C1BF0497B7AAB0F7C36DA93764AE9",
+    "Translation": "\"Shutdown cancelled.\"",
+    "Original": null
+  },
+  {
+    "md5": "4AE8D2FE637C8DF9DC76580023458748",
+    "Translation": "\"You have been promoted to administrator.\"",
+    "Original": null
+  },
+  {
+    "md5": "9661673A9A153F5E5FB329860C1B4A0E",
+    "Translation": "\"You have been revoked from your Administrator position\"",
+    "Original": null
+  },
+  {
+    "md5": "02B5291AC699F4FC62B81D55B11B386B",
+    "Translation": "\"You have won:\"",
+    "Original": null
+  },
+  {
+    "md5": "61F1A8ADC329387DCAB9E18C5E5CE6CA",
+    "Translation": "\"points of\"",
+    "Original": null
+  },
+  {
+    "md5": "AF74FBA3B11FFA23FDB071821A6DB225",
+    "Translation": "\"now you have:\"",
+    "Original": null
+  },
+  {
+    "md5": "5149A717ADCA6A7918354A6CBD30AAFE",
+    "Translation": "\"You have lost:\"",
+    "Original": null
+  },
+  {
+    "md5": "8787A4D3D453F494ADB6939D3CFC042E",
+    "Translation": "\"Hero\"",
+    "Original": null
+  },
+  {
+    "md5": "81F4376055D3751A204D179A74AA80AA",
+    "Translation": "\"Killer\"",
+    "Original": null
+  },
+  {
+    "md5": "9377390E8DF511A8A44E913B52824021",
+    "Translation": "\"Soldier\"",
+    "Original": null
+  },
+  {
+    "md5": "0D40B3257F737502EF14A67278608476",
+    "Translation": "\"Escort\"",
+    "Original": null
+  },
+  {
+    "md5": "23781F2071E4C60A1A501B6939A1273D",
+    "Translation": "\"Lieutenant\"",
+    "Original": null
+  },
+  {
+    "md5": "78A17ACEA5830BC378DAF45F0071A569",
+    "Translation": "\"Commander\"",
+    "Original": null
+  },
+  {
+    "md5": "70AC6A1954CF438B7BFAED350CFF5EFF",
+    "Translation": "\"Ravager\"",
+    "Original": null
+  },
+  {
+    "md5": "AE380B15458AA24BEE78D3358E57E47C",
+    "Translation": "\"Devastating\"",
+    "Original": null
+  },
+  {
+    "md5": "C3202A303FE352E43AB4B95C59B0B23F",
+    "Translation": "\"Annihilator\"",
+    "Original": null
+  },
+  {
+    "md5": "74C63C65F3BA0DA382C2938BA2A4219D",
+    "Translation": "\"Mercenary\"",
+    "Original": null
+  },
+  {
+    "md5": "89EF36CC88E82ED5DE8A2FCC6DC315C6",
+    "Translation": "\"Knight\"",
+    "Original": null
+  },
+  {
+    "md5": "570071C374B62DF065992E1BB37C43A5",
+    "Translation": "\"Neutrals and Murderers can still fight when they get less than 20 lvl's difference\"",
+    "Original": null
+  },
+  {
+    "md5": "09EDD53429A0DBB92982AAB49CE3723C",
+    "Translation": "\"You have been expelled\"",
+    "Original": null
+  },
+  {
+    "md5": "13901E84E4106050DA61C87C76C30990",
+    "Translation": "\"the server has expelled a \"",
+    "Original": null
+  },
+  {
+    "md5": "2FFD40096F6C1E8A964EF0610EDF833A",
+    "Translation": "\"by the server!\"",
+    "Original": null
+  },
+  {
+    "md5": "34B7DFD50611267D99EEDBD0C7AECC37",
+    "Translation": "\"he has been expelled from \"",
+    "Original": null
+  },
+  {
+    "md5": "2377476C5B2B194B0C6C209150AA0245",
+    "Translation": "\"Keeping spells... \"",
+    "Original": null
+  },
+  {
+    "md5": "65339BFD123936378401ED67B6440D00",
+    "Translation": "\"Your inventory is full.\"",
+    "Original": null
+  },
+  {
+    "md5": "F2A376CBAD572F641B2EFF362908F138",
+    "Translation": "\"*[aeiou]*\"",
+    "Original": null
+  },
+  {
+    "md5": "AFB1209E7CDF83B71426AFF0C9DF34EE",
+    "Translation": "\"he is now the leader of the team.\"",
+    "Original": null
+  },
+  {
+    "md5": "4F666153AAE56F61A6B6415EA1AAAA62",
+    "Translation": "\"he has left the team\"",
+    "Original": null
+  },
+  {
+    "md5": "2F09AD443704866FFE55E473D83EF179",
+    "Translation": "\"That player is busy.\"",
+    "Original": null
+  },
+  {
+    "md5": "AA076E7B2E47C5705DD5693277B1181C",
+    "Translation": "\"Team disbanded.\"",
+    "Original": null
+  },
+  {
+    "md5": "C0DEE95D0B518BEBE64CE6FC2AFFA232",
+    "Translation": "\"This player is already part of the team.\"",
+    "Original": null
+  },
+  {
+    "md5": "CC8FC7C5C873DFB72E2C800490C66D9D",
+    "Translation": "\"Invitation has been sent.\"",
+    "Original": null
+  },
+  {
+    "md5": "9F53258C5370D3F4C24665081308D3C8",
+    "Translation": "\"The team is full.\"",
+    "Original": null
+  },
+  {
+    "md5": "850CC3FE2CBADA8CDBF72CBC856E2B27",
+    "Translation": "\"he has joined the team.\"",
+    "Original": null
+  },
+  {
+    "md5": "75D9AF25764383275BB30B6B833F1FBE",
+    "Translation": "\"You are not the leader of the team.\"",
+    "Original": null
+  },
+  {
+    "md5": "99C3C71C7BAFEF6A949B47CC86DE48DB",
+    "Translation": "\"Team created.\"",
+    "Original": null
+  },
+  {
+    "md5": "DD14A996574EC2B181642175CB31EA9C",
+    "Translation": "\"he has refused to join the team.\"",
+    "Original": null
+  },
+  {
+    "md5": "5A679F390AFCC7141C16BECA9552F0E2",
+    "Translation": "\"You have refused to join the team.\"",
+    "Original": null
+  },
+  {
+    "md5": "BB1CA2DAAE3D287EF34310594EED0EFE",
+    "Translation": "\"impossible to attack\"",
+    "Original": null
+  },
+  {
+    "md5": "DFE372F03A51D11C258C68035D98355F",
+    "Translation": "\"The blocks have returned to their position\"",
+    "Original": null
+  },
+  {
+    "md5": "F92C5AA0DDABF6327AC9FFB4356E2717",
+    "Translation": "\"You have stepped on the tile n script.\"",
+    "Original": null
+  },
+  {
+    "md5": "215BFB0722F77862A026F00D0C079093",
+    "Translation": "\"you Have Died.\"",
+    "Original": null
+  },
+  {
+    "md5": "F039B0F768CBD23741ADDC2CB7BA3488",
+    "Translation": "\"Map:\"",
+    "Original": null
+  },
+  {
+    "md5": "2442AFFC554497B428890A0F914C84B9",
+    "Translation": "\"Change made\"",
+    "Original": null
+  },
+  {
+    "md5": "EA9FD4D42E747A651FA7427540566244",
+    "Translation": "\"item number:\"",
+    "Original": null
+  },
+  {
+    "md5": "16875E20CB45A69C3C3BAF063ECEEDB1",
+    "Translation": "\"added correctly\"",
+    "Original": null
+  },
+  {
+    "md5": "922CC652917BC380FC3E30B166CE8B00",
+    "Translation": "\"Global Chat disabled for those with access less than: \"",
+    "Original": null
+  },
+  {
+    "md5": "E8F5BADC5E92D4D90EDF0F708E5F97A7",
+    "Translation": "\"The team of \"",
+    "Original": null
+  },
+  {
+    "md5": "D5F183F9A1C7B2F3BE03FC2B82C3B03F",
+    "Translation": "\"Winner: \"",
+    "Original": null
+  },
+  {
+    "md5": "58A6CEF463DF79445033616508B36A31",
+    "Translation": "\"There is no flag here\"",
+    "Original": null
+  },
+  {
+    "md5": "9FFE82E04E81699DB452CF2615F278EE",
+    "Translation": "\"Download\"",
+    "Original": null
+  },
+  {
+    "md5": "2C0B114B4802EEFB54BEC065C74CE4E0",
+    "Translation": "\"You must leave your current Guild in order to create another one!\"",
+    "Original": null
+  },
+  {
+    "md5": "666491549BBF79C4E8B04A5BB01D5177",
+    "Translation": "\"The name cannot be more than 30 characters long!\"",
+    "Original": null
+  },
+  {
+    "md5": "89B0C208687F70DE0EBC78F33F6A04DD",
+    "Translation": "\"Invidious name, letters only, n only, spaces and _ are allowed.\"",
+    "Original": null
+  },
+  {
+    "md5": "382CD0041A3E1A19A6A0E0A351E9AD00",
+    "Translation": "\"Already existing name\"",
+    "Original": null
+  },
+  {
+    "md5": "5AF3E4A13F4322213DE563B2BB6DBD82",
+    "Translation": "\"in your Guild.\"",
+    "Original": null
+  },
+  {
+    "md5": "D0BBC1FFA7BE9D96BE385BCCF137E4B1",
+    "Translation": "\"Could not find a\"",
+    "Original": null
+  },
+  {
+    "md5": "D9E0F026B33DC302D1F12B75BB46ABEC",
+    "Translation": "\"You can't assign that much level to a recruit.\"",
+    "Original": null
+  },
+  {
+    "md5": "DA7FC688CD393903A464357B90F393B4",
+    "Translation": "\"You are not authorized to save those options.\"",
+    "Original": null
+  },
+  {
+    "md5": "6134A2D7F54C6E16E655B05A95868C7D",
+    "Translation": "\"You are not authorized to save ranks.\"",
+    "Original": null
+  },
+  {
+    "md5": "E7C84FCA9310450352CDE0A19738FE3D",
+    "Translation": "\"You are not authorized to save users.\"",
+    "Original": null
+  },
+  {
+    "md5": "E7841F5BF71CB661A9EB51CE9D7E0067",
+    "Translation": "\"The range must be greater than 0\"",
+    "Original": null
+  },
+  {
+    "md5": "2F0D6AE0A0EBAAE801A0398A5776EDEC",
+    "Translation": "\"No one from this Guild is here, please ask for a new invitation.\"",
+    "Original": null
+  },
+  {
+    "md5": "D00A0C4BAEE655507146796158B0A9D6",
+    "Translation": "\"You must obtain a Guild invite to use this command.\"",
+    "Original": null
+  },
+  {
+    "md5": "914898C14530B4FF668F3F909603764F",
+    "Translation": "\"You have ceded the status of Founder to \"",
+    "Original": null
+  },
+  {
+    "md5": "192E1FF210CF4403CA606F47C0DD531C",
+    "Translation": "\"The name of your account must be between 3 and 12 characters. Your opponent must have between 3 and 20 characters.\"",
+    "Original": null
+  },
+  {
+    "md5": "9E4CF278656F54019B2284ED2E97DB65",
+    "Translation": "\"You can't spend more points on that stat.\"",
+    "Original": null
+  },
+  {
+    "md5": "80A89C767B24D91E71F6E04704B204CB",
+    "Translation": "\"Defense\"",
+    "Original": null
+  },
+  {
+    "md5": "8D4C3A0E1E7B6BC224143945D8BA802C",
+    "Translation": "\"Intelligence\"",
+    "Original": null
+  },
+  {
+    "md5": "19DA7917E92093DBEE10AB79E1552ADC",
+    "Translation": "\"Agility\"",
+    "Original": null
+  },
+  {
+    "md5": "1D59FCAA035AB174886A4E79B2EC04E3",
+    "Translation": "\"Spirit\"",
+    "Original": null
+  },
+  {
+    "md5": "0F3862039E3056A52F2559A70F583B2B",
+    "Translation": "\"You have been teleported to the map\"",
+    "Original": null
+  },
+  {
+    "md5": "C25D54DDCB8239C56916DB46F7F5E341",
+    "Translation": "\"Refreshed map\"",
+    "Original": null
+  },
+  {
+    "md5": "C7537662FAF5B0529E8887AEE5A6A47D",
+    "Translation": "\"he has been silenced\"",
+    "Original": null
+  },
+  {
+    "md5": "273824EA02677DC028959F64E7B812A8",
+    "Translation": "\"has been silenced\"",
+    "Original": null
+  },
+  {
+    "md5": "548C5004BF77BEDD4500DA3A74B48590",
+    "Translation": "\"second/s\"",
+    "Original": null
+  },
+  {
+    "md5": "153D7EC60A0F336340C109D4D5A17E32",
+    "Translation": "\"he has been silenced by\"",
+    "Original": null
+  },
+  {
+    "md5": "1E1196DCC3AA530612217B1E5E55BA20",
+    "Translation": "\"You have been expelled\"",
+    "Original": null
+  },
+  {
+    "md5": "043A1D4B75EC36E49A98D6A1CD3EB49A",
+    "Translation": "\"the server has expelled a \"",
+    "Original": null
+  },
+  {
+    "md5": "4597F2BA4CB87615D66B72591044E89C",
+    "Translation": "\"by the server!\"",
+    "Original": null
+  },
+  {
+    "md5": "B0206F9657DF8E71DBEA6F5E3FEDBBC3",
+    "Translation": "\"he has been expelled from \"",
+    "Original": null
+  },
+  {
+    "md5": "E8B044CD05B84470E673B9073BAA080C",
+    "Translation": "\"Spirit\"",
+    "Original": null
+  },
+  {
+    "md5": "7F4B5158594FD4D6254F51E168F2847F",
+    "Translation": "\"Agility\"",
+    "Original": null
+  },
+  {
+    "md5": "6E9FB39E5E702EFEC9F6F1DAA181C11C",
+    "Translation": "\"Intelligence\"",
+    "Original": null
+  },
+  {
+    "md5": "0BC957204302B4BD9EF3D656A197CB3F",
+    "Translation": "\"Defense\"",
+    "Original": null
+  },
+  {
+    "md5": "D1247D9AFB9C18EACD757FB28712F9AD",
+    "Translation": "\"Force\"",
+    "Original": null
+  },
+  {
+    "md5": "6E145EC27EA8B750E1B53F097576EC51",
+    "Translation": "\"You can't spend more points on that stat.\"",
+    "Original": null
+  },
+  {
+    "md5": "28CBD3042CDD4A1EC69D9ADB6D46A2C9",
+    "Translation": "\"Your name has changed!\"",
+    "Original": null
+  },
+  {
+    "md5": "E8D4E1E23FD2F810B774503BC38E14B1",
+    "Translation": "\"he has been canelled!\"",
+    "Original": null
+  },
+  {
+    "md5": "C52A682EE967E79D45CA299FF3CF65CA",
+    "Translation": "\"You don't have space in the inventory. Please delete something to take the quest.\"",
+    "Original": null
+  },
+  {
+    "md5": "EA2D5B3BDC4BD53620CB3CC89CAD00F3",
+    "Translation": "\", on the map: \"",
+    "Original": null
+  },
+  {
+    "md5": "35EDB7324810C19114EDB0A0F92A2C5C",
+    "Translation": "\") with a value of: \"",
+    "Original": null
+  },
+  {
+    "md5": "1A7AE3ABF5881E7A42C88596D3091748",
+    "Translation": "\"you have spawned the item: \"",
+    "Original": null
+  },
+  {
+    "md5": "AD14DA39D60CD01ACF629309D80554D5",
+    "Translation": "\"You can't use abilities while it's still charging.\"",
+    "Original": null
+  },
+  {
+    "md5": "CD8396BFB6FF7472B6388EAA07C5A17B",
+    "Translation": "\"You cannot change positions to abilities while they are being used.\"",
+    "Original": null
+  },
+  {
+    "md5": "5E3A7F82A5A590B0D8D030EB3349E31B",
+    "Translation": "\"he has been appointed administrator.\"",
+    "Original": null
+  },
+  {
+    "md5": "11D242B25294AF78B5B431228F89A8DB",
+    "Translation": "\"He has the same privileges.\"",
+    "Original": null
+  },
+  {
+    "md5": "86ACA145FBB72BEEE3BE8E9179EC32EE",
+    "Translation": "\"Ban list destroyed\"",
+    "Original": null
+  },
+  {
+    "md5": "126ABDD29F9BFA6FBADAE5A6925FDAF8",
+    "Translation": "\"kill.\"",
+    "Original": null
+  },
+  {
+    "md5": "24366A2E78D81F8DBBA8A98E9D232367",
+    "Translation": "\"Task completed\"",
+    "Original": null
+  },
+  {
+    "md5": "D31B3DB29DC79B9962D6E6FCFA5661C9",
+    "Translation": "\"Have\"",
+    "Original": null
+  },
+  {
+    "md5": "DA5E74FB1959C61C8AC50E4DF9FBD089",
+    "Translation": "\"You have given\"",
+    "Original": null
+  },
+  {
+    "md5": "C47F9978A8DC56DF6AA4968E1C97F374",
+    "Translation": "\"players killed.\"",
+    "Original": null
+  },
+  {
+    "md5": "944CA5EC5D64085EE0ACAC2943C4CD0E",
+    "Translation": "\"blow.\"",
+    "Original": null
+  },
+  {
+    "md5": "11CA22669771E28ADBF2DCF5B80FF04F",
+    "Translation": "\"You don't have space in the inventory.\"",
+    "Original": null
+  },
+  {
+    "md5": "D7D21594DCF41BF7B0D1304CC4855BD5",
+    "Translation": "\"quest completed\"",
+    "Original": null
+  },
+  {
+    "md5": "4264DA265F79396014387EC84C514F5D",
+    "Translation": "\"You don't have enough points!\"",
+    "Original": null
+  },
+  {
+    "md5": "20DDF99B0DA8CCA819A2B64A54C9EBA4",
+    "Translation": "\"You don't have enough money to buy this object.\"",
+    "Original": null
+  },
+  {
+    "md5": "F476CDAEF671B4370BB75EEA78A531D9",
+    "Translation": "\"You can't support the weight of the object!\"",
+    "Original": null
+  },
+  {
+    "md5": "07408E94807490D29AFE02564B2B3C13",
+    "Translation": "\"Purchase made.\"",
+    "Original": null
+  },
+  {
+    "md5": "0559D2C9DD965DA7D22182ADFA67E54D",
+    "Translation": "\", and you can't play.\"",
+    "Original": null
+  },
+  {
+    "md5": "36CCFBF3F7E8D9D6EA73809B044CE2AF",
+    "Translation": "\"Server Down.\"",
+    "Original": null
+  },
+  {
+    "md5": "5732DCA2A16BCE9963B835B6CDEB51BF",
+    "Translation": "\"you have been kicked for inactivity\"",
+    "Original": null
+  },
+  {
+    "md5": "B6FF05968FDADEF55B79D5F9EA10FAFC",
+    "Translation": "\"he wants to teleport you, will you let him?\"",
+    "Original": null
+  },
+  {
+    "md5": "7D7E6D2262011C97306B79733120FAF3",
+    "Translation": "\"he wants to teleport to you, will you let him?\"",
+    "Original": null
+  },
+  {
+    "md5": "9C0B9F9CBD4C34A99ED3DA3473376B84",
+    "Translation": "\"You're carrying too much weight! You can't move, throw items on the floor to lower your weight.\"",
+    "Original": null
+  },
+  {
+    "md5": "FAFCF70B414906799337D0ACE0B9B9B8",
+    "Translation": "\"You can't take any more weight.\"",
+    "Original": null
+  },
+  {
+    "md5": "53DF069E46744E62D893BB9556256B5B",
+    "Translation": "\"You don't have space in your inventory.\"",
+    "Original": null
+  },
+  {
+    "md5": "115953D7B21F099ACCAE4F95E8FEE5F2",
+    "Translation": "\"You can't support the weight of the object.\"",
+    "Original": null
+  },
+  {
+    "md5": "05388D15C1DA5BA52B795F74B3C4C3FA",
+    "Translation": "\"Too many items on the floor.\"",
+    "Original": null
+  },
+  {
+    "md5": "267308D5E839FEA155F1E24A1C03D42D",
+    "Translation": "\"You must be lvl 80 like m minimum\"",
+    "Original": null
+  },
+  {
+    "md5": "843D4B814C39569768A524EBB9A9CAB0",
+    "Translation": "\"he dies and his items fall to the ground!\"",
+    "Original": null
+  },
+  {
+    "md5": "719D73DFE69FE69BEF91DC09810F4451",
+    "Translation": "\"You already have that acquired Triforce\"",
+    "Original": null
+  },
+  {
+    "md5": "1F64C5EA814A07935DFA7221015080A4",
+    "Translation": "\"You can't even summon your pet!, miss\"",
+    "Original": null
+  },
+  {
+    "md5": "0A3AEC226FA0BA7C602F9E969C5ED8A6",
+    "Translation": "\"seconds!\"",
+    "Original": null
+  },
+  {
+    "md5": "DD54FFDF04496CA54EF33078C677B0BF",
+    "Translation": "\"You don't have any free slots\"",
+    "Original": null
+  },
+  {
+    "md5": "172BDDBBD313C763C1758668784D5EC0",
+    "Translation": "\"You don't have...no... NPC fixed\"",
+    "Original": null
+  },
+  {
+    "md5": "21443417A098EBA1F2DBC329483FF288",
+    "Translation": "\"The goal is a pet\"",
+    "Original": null
+  },
+  {
+    "md5": "FEC8027A2962193805244E89A73DE8BF",
+    "Translation": "\"The NPC is not tame\"",
+    "Original": null
+  },
+  {
+    "md5": "9250BB29B9086982F7C7A0B3BCAA8A95",
+    "Translation": "\"points won!\"",
+    "Original": null
+  },
+  {
+    "md5": "6512CED3560BB9AF96F9F5317A57E8C1",
+    "Translation": "\"You abandon your\"",
+    "Original": null
+  },
+  {
+    "md5": "70F95F19D2847B817CCC2A3DDD0AE824",
+    "Translation": "\"You've been mutated for 30 seconds by flood\"",
+    "Original": null
+  },
+  {
+    "md5": "FB768F6A7179E0F8D38E443576A79534",
+    "Translation": "\"enable\"",
+    "Original": null
+  },
+  {
+    "md5": "2E6C827B3DDF373FEF3D2D8D1E317D66",
+    "Translation": "\"disable\"",
+    "Original": null
+  },
+  {
+    "md5": "271EFFB078A174FE6CC0EEF5C2E29BBB",
+    "Translation": "\"Enable\"",
+    "Original": null
+  },
+  {
+    "md5": "FE9FE4545EAE82D1FCE47445181931FE",
+    "Translation": "\"Disable\"",
+    "Original": null
+  },
+  {
+    "md5": "571E4CC8B16A626AB2B16B035F15B075",
+    "Translation": "\"You feel some forces that rejuvenate your body.\"",
+    "Original": null
+  },
+  {
+    "md5": "868907F05365BFB4501CD58931B370CB",
+    "Translation": "\"United: \"",
+    "Original": null
+  },
+  {
+    "md5": "F5256928633558F6A0B306C270408E58",
+    "Translation": "\"You can't do that!\"",
+    "Original": null
+  },
+  {
+    "md5": "3DFED7FFD42BDB530E39694131BC2DFB",
+    "Translation": "\"Guild ousted!\"",
+    "Original": null
+  },
+  {
+    "md5": "F5A3945C40E18F7BF4B4AEA31C70ED97",
+    "Translation": "\"Let's Tame The Target!\"",
+    "Original": "\"�Domar Objetivo!\""
+  },
+  {
+    "md5": "015BB85C7BEEC0F582976698851BF4CF",
+    "Translation": "\"Yes\"",
+    "Original": "\"Si\""
+  },
+  {
+    "md5": "376BA119A1540E23967886CF298349E7",
+    "Translation": "\"Counter\"",
+    "Original": "\"Contador\""
+  },
+  {
+    "md5": "45874DFCC94B91CCD4B245BDF6306CD4",
+    "Translation": "\"Death\"",
+    "Original": "\"Muertes\""
+  },
+  {
+    "md5": "09E37624943E94916844CF0B15BA970B",
+    "Translation": "\"Life:\"",
+    "Original": "\"Vida:\""
+  },
+  {
+    "md5": "90EEC403DBB8615612FEA860AAF6B19C",
+    "Translation": "\"Weight: 100%\"",
+    "Original": "\"Peso: 100%\""
+  },
+  {
+    "md5": "D50A8E76EDEB5D9E477DFEE2AEA39A64",
+    "Translation": "\"Armada: 0\"",
+    "Original": "\"Armada: 0\""
+  },
+  {
+    "md5": "D60392EB06704A2F8A8869CB2BEABF36",
+    "Translation": "\"Cancel\"",
+    "Original": "\"Cancelar\""
+  },
+  {
+    "md5": "2433B4364C95BA0C11EEED0B8ADCBB24",
+    "Translation": "\"Pull\"",
+    "Original": "\"Tirar\""
+  },
+  {
+    "md5": "1080239FC25D81C163C2E0D00EBDF303",
+    "Translation": "\"What do you want to throw away?\"",
+    "Original": "\"�Cu�nto quieres tirar?\""
+  },
+  {
+    "md5": "BB55072C7B1D4F915AE8B129FBEC67E6",
+    "Translation": "\"Del Bans\"",
+    "Original": "\"Del Bans\""
+  },
+  {
+    "md5": "C5A55CF9E71DA2BB301C9F368B965973",
+    "Translation": "\"Invitation to the Guild\"",
+    "Original": "\"Invitaci�n al Clan\""
+  },
+  {
+    "md5": "A44B7AB5A2A210660EBD0E45C68DCF89",
+    "Translation": "\"Creation of the Guild\"",
+    "Original": "\"Creaci�n del Clan\""
+  },
+  {
+    "md5": "E20383B068AC1E19E7DA9827C6F75C11",
+    "Translation": "\"Accept Quest\"",
+    "Original": "\"Aceptar Quest\""
+  },
+  {
+    "md5": "D10E8705494DDDC604496E46D91F7A70",
+    "Translation": "\"Name of Quest\"",
+    "Original": "\"Nombre de Quest\""
+  },
+  {
+    "md5": "639CFF53F9FBBFDD98763A147C8BFC5E",
+    "Translation": "\"Subtitle\"",
+    "Original": "\"Subt�tulo\""
+  },
+  {
+    "md5": "437D1E9FC06D898FAE66D3F96C1D6E92",
+    "Translation": "\"Accept\"",
+    "Original": "\"Aceptar\""
+  },
+  {
+    "md5": "E952DB2887FBB00F8DD70FE981046CF3",
+    "Translation": "\"Reject\"",
+    "Original": "\"Rechazar\""
+  },
+  {
+    "md5": "17F0C59CAAC690D4D3FEB1845D224670",
+    "Translation": "\"Write the name\"",
+    "Original": "\"Escribe el nombre\""
+  },
+  {
+    "md5": "2DE452E9450A3797587C4CCF984A6426",
+    "Translation": "\"Transfer Founder\"",
+    "Original": "\"Transferir Fundador\""
+  },
+  {
+    "md5": "6A4D55BA0A5BC7161D5E88BC686F01F4",
+    "Translation": "\"Founder:\"",
+    "Original": "\"Fundador:\""
+  },
+  {
+    "md5": "C2BC5D3B44193ACFC3564C08FF275904",
+    "Translation": "\"Managing the Guild\"",
+    "Original": "\"Administrar el Clan\""
+  },
+  {
+    "md5": "64C8D83ED78544D1610298ECF72A8F3B",
+    "Translation": "\"Abandon Pet\"",
+    "Original": "\"Abandonar Mascota\""
+  },
+  {
+    "md5": "DB08BB9AB80B7EC6B3BBAB5C739CC982",
+    "Translation": "\"Close\"",
+    "Original": "\"Cerrar\""
+  },
+  {
+    "md5": "4CE1ED8CC38CADED4C4CF126D828F67B",
+    "Translation": "\"Name:\"",
+    "Original": "\"Nombre:\""
+  },
+  {
+    "md5": "EC5DFC9CCD2A43A0DE64E653C506D03C",
+    "Translation": "\"The user cannot be invited to the Guild or has not been selected.\"",
+    "Original": "\"El usuario no se puede invitar al clan o no ha sido seleccionado.\""
+  },
+  {
+    "md5": "2F1A773203AE6273647BEDB2D306B417",
+    "Translation": "\"Invalid map number.\"",
+    "Original": "\"N�mero de mapa no v�lido.\""
+  },
+  {
+    "md5": "1EB4798973B94FB9AA849AD21BD26DFF",
+    "Translation": "\"He's not on a team.\"",
+    "Original": "\"No est�s en un equipo.\""
+  },
+  {
+    "md5": "C49310B5AEA3156224301572BC70247A",
+    "Translation": "\"Wander\"",
+    "Original": "\"Deambular\""
+  },
+  {
+    "md5": "83C2BD1C2B28FA4687F240AAFCDFF378",
+    "Translation": "\"Name\"",
+    "Original": "\"Nombres\""
+  },
+  {
+    "md5": "AFF48FCF18312EEF9A23BCE453116778",
+    "Translation": "\"Sound\"",
+    "Original": "\"Sonido\""
+  },
+  {
+    "md5": "889CDD2D2A7CCD4D9B62937B9A593964",
+    "Translation": "\"Level\"",
+    "Original": "\"Nivel\""
+  },
+  {
+    "md5": "54A567FF959EFCA7B7D35FE096AB9EAA",
+    "Translation": "\"Safe Mode\"",
+    "Original": "\"Modo Seguro\""
+  },
+  {
+    "md5": "8D2DFAE8BA53C6D9319D030FA4C2BA03",
+    "Translation": "\"Volume:\"",
+    "Original": "\"Volumen:\""
+  },
+  {
+    "md5": "664614E391D2C7BBB15CCB2F48E6E7EC",
+    "Translation": "\"Redeem\"",
+    "Original": "\"Canjear\""
+  },
+  {
+    "md5": "3A48DBA93FCD9801B08D43042D19C637",
+    "Translation": "\"Invalid target.\"",
+    "Original": "\"Objetivo inválido.\""
+  },
+  {
+    "md5": "1B85ED7D37270AA95773067CBE353916",
+    "Translation": "\"A request for equipment has been sent.\"",
+    "Original": "\"Se ha enviado una petición de equipo.\""
+  },
+  {
+    "md5": "8F09292DB4ACE2E4CC1EE6B586A1ADC5",
+    "Translation": "\"Sale initiated. Choose the objects to sell\"",
+    "Original": "\"Venta iniciada. Escoge los objetos a vender\""
+  },
+  {
+    "md5": "BFA7AAEC98E7AC163C5AEB020F2EBECF",
+    "Translation": "\"Sale stop\"",
+    "Original": "\"Venta parada\""
+  },
+  {
+    "md5": "440AB5433AAAD527615266DD9C538D92",
+    "Translation": "\"Purchase initiated. Choose the objects to buy\"",
+    "Original": "\"Compra iniciada. Escoge los objetos a comprar\""
+  },
+  {
+    "md5": "B5525E5C7D2E930E12D054270F060012",
+    "Translation": "\"Stop shopping\"",
+    "Original": "\"Compra parada\""
+  },
+  {
+    "md5": "010714C8DAC03B02DD28E69E91573C35",
+    "Translation": "\"Enter a valid amount!\"",
+    "Original": "\"¡Escribe una cantidad válida!\""
+  },
+  {
+    "md5": "B06677341370DE85B57B3C54E15A5B66",
+    "Translation": "\"Security Activated, now you will not attack civilians by accident.\"",
+    "Original": "\"Seguridad Activada, ahora no atacarás a civiles por accidente.\""
+  },
+  {
+    "md5": "44B51EF2EED2723EB2C84E4A4D5B1CE3",
+    "Translation": "\"Be careful, Security Disabled, now you will be able to kill other civilian users.\"",
+    "Original": "\"CUIDADO, Seguridad Desactivada, ahora podrás matar a otros usuarios civiles.\""
+  },
+  {
+    "md5": "F44586C781544073A05206CA4ECF36F5",
+    "Translation": "\"0 Rupees\"",
+    "Original": "\"0 Rupias\""
+  },
+  {
+    "md5": "0123B9721E90679E38A952107E73BAD2",
+    "Translation": "\"...Loading Map...\"",
+    "Original": "\"...Cargando Mapa...\""
+  },
+  {
+    "md5": "6F0E254DD495D6715622EF9452437C3F",
+    "Translation": "\"Team\"",
+    "Original": "\"Equipo\""
+  },
+  {
+    "md5": "E1017714B571FB661A6EE4E148BD51DC",
+    "Translation": "\"Map\"",
+    "Original": "\"Mapa\""
+  },
+  {
+    "md5": "C6B4C8ECA27386B008D0849FA59D3220",
+    "Translation": "\"Yes\"",
+    "Original": "\"Sí\""
+  },
+  {
+    "md5": "08818BD9134589BA5C17912D397351EF",
+    "Translation": "\"Leaving Guild\"",
+    "Original": "\"Abandonar Clan\""
+  },
+  {
+    "md5": "4D3EBE7110EDDBB8FB23C95870375801",
+    "Translation": "\"Expel from the Guild\"",
+    "Original": "\"Expulsar del Clan\""
+  },
+  {
+    "md5": "604B33E669E908E1FD8AA59D882D176F",
+    "Translation": "\"Invite to the Guild\"",
+    "Original": "\"Invitar al Clan\""
+  },
+  {
+    "md5": "8D932FE9F57CF986B1C86CA28D1E2643",
+    "Translation": "\"Create\"",
+    "Original": "\"Crear\""
+  },
+  {
+    "md5": "3FA85C3DA7584EE4208BD361E1581E9D",
+    "Translation": "\"How much do you want to throw?\"",
+    "Original": "\"ÃÂ¿CuÃÂ¡nto quieres tirar?\""
+  },
+  {
+    "md5": "DBC8CC61276A097549291CC51FC48583",
+    "Translation": "\"Invitation to the Clan\"",
+    "Original": "\"Invitation to the Clan\""
+  },
+  {
+    "md5": "DBC8CC61276A097549291CC51FC48583",
+    "Translation": "\"Invitation to the Guild\"",
+    "Original": "\"Invitation to the Clan\""
+  },
+  {
+    "md5": "C580788EE4E4147ADC53E5BBEE49DB83",
+    "Translation": "\"Creation of the Guild\"",
+    "Original": "\"Creation of the Clan\""
+  },
+  {
+    "md5": "2E2DB1B6A0CB7287C9192046E8A5D07D",
+    "Translation": "\"Managing the Guild\"",
+    "Original": "\"Managing the Clan\""
+  },
+  {
+    "md5": "90640ACD3717FDC07722F9C13DD79E77",
+    "Translation": "\"Undo Clan\"",
+    "Original": "\"Deshacer Clan\""
+  },
+  {
+    "md5": "90640ACD3717FDC07722F9C13DD79E77",
+    "Translation": "\"Undo Guild\"",
+    "Original": "\"Deshacer Clan\""
+  },
+  {
+    "md5": "8E30F5766A70ECC4C52415FF64A0293B",
+    "Translation": "\"Guild:\"",
+    "Original": "\"Clan:\""
+  },
+  {
+    "md5": "0B8821185D2FA8706533AB6A2841203C",
+    "Translation": "\"Invite to the Clan\"",
+    "Original": "\"Invite to the Clan\""
+  },
+  {
+    "md5": "0B8821185D2FA8706533AB6A2841203C",
+    "Translation": "\"Invite to the Guild\"",
+    "Original": "\"Invite to the Clan\""
+  },
+  {
+    "md5": "3DB978C5055A14A47220474C9D7FFD70",
+    "Translation": "\"Expel from the Guild\"",
+    "Original": "\"Expel from the Clan\""
+  },
+  {
+    "md5": "7109E262E2D15622080BBC5BF3B8B420",
+    "Translation": "\"Leaving Guild\"",
+    "Original": "\"Leaving Clan\""
+  },
+  {
+    "md5": "167D3B114DB22647E7C0B28FEC059F1F",
+    "Translation": "\"Guild\"",
+    "Original": "\"Clan\""
+  },
+  {
+    "md5": "4169392EA1C557BCD3B7B3959F6EBB87",
+    "Translation": "\"he was killed by\"",
+    "Original": "\" ha sido asesinado por \""
+  },
+  {
+    "md5": "41520475272BE01245B354679EAED2EE",
+    "Translation": "\"Critic!\"",
+    "Original": "\"¡Crítico!\""
+  },
+  {
+    "md5": "41520475272BE01245B354679EAED2EE",
+    "Translation": "\"Critical!\"",
+    "Original": "\"¡Crítico!\""
+  },
+  {
+    "md5": "CBDF851B25A00254DA3E87A1B4323189",
+    "Translation": "\"Blocked!\"",
+    "Original": "\"¡Bloqueado!\""
+  },
+  {
+    "md5": "5B688A9F7FB11211ABE69F921EB874F9",
+    "Translation": "\"Dodged!\"",
+    "Original": "\"¡Esquivado!\""
+  },
+  {
+    "md5": "6CF40DAB56FDC2546E99A165D0542894",
+    "Translation": "\"Averted!\"",
+    "Original": "\"¡Evitado!\""
+  },
+  {
+    "md5": "CD4B71A0B7ACC4180C3417751EC451CD",
+    "Translation": "\"YOU RESISTED!\"",
+    "Original": "\"¡RESISTISTE!\""
+  },
+  {
+    "md5": "CD4B71A0B7ACC4180C3417751EC451CD",
+    "Translation": "\"YOU RESISTED!\"",
+    "Original": "\"¡RESISTISTE!\""
+  },
+  {
+    "md5": "5B688A9F7FB11211ABE69F921EB874F9",
+    "Translation": "\"Dodged!\"",
+    "Original": "\"¡Esquivado!\""
+  },
+  {
+    "md5": "CBDF851B25A00254DA3E87A1B4323189",
+    "Translation": "\"Blocked!\"",
+    "Original": "\"¡Bloqueado!\""
+  },
+  {
+    "md5": "5C81FA15F2EA596FBFB95C5F4F6CD7C4",
+    "Translation": "\"Critical!\"",
+    "Original": "\"Critical!\""
+  },
+  {
+    "md5": "7E76F03BA99141FFFC59A809337E65B6",
+    "Translation": "\"This is a safe area!\"",
+    "Original": "\"¡Ésta es una zona segura!\""
+  },
+  {
+    "md5": "7F11441048666CC31E32F10B0078633F",
+    "Translation": "\"You're under level 10, you can't attack anyone yet!\"",
+    "Original": "\"¡Estás bajo nivel 10, aún no puedes atacar a nadie!\""
+  },
+  {
+    "md5": "C8CA99F841422EA33AEACEF401E385FA",
+    "Translation": "\"he's under level 10, you can't attack him yet\"",
+    "Original": "\" está bajo nivel 10, no puedes atacarle aún\""
+  },
+  {
+    "md5": "1233EE07F3E8B997163E12EFFB225100",
+    "Translation": "\"Your levels are too different!\"",
+    "Original": "\"¡Vuestros niveles son demasiados diferentes!\""
+  },
+  {
+    "md5": "1233EE07F3E8B997163E12EFFB225100",
+    "Translation": "\"Your levels are too different!\"",
+    "Original": "\"¡Vuestros niveles son demasiados diferentes!\""
+  },
+  {
+    "md5": "4169392EA1C557BCD3B7B3959F6EBB87",
+    "Translation": "\"he was killed by\"",
+    "Original": "\" ha sido asesinado por \""
+  },
+  {
+    "md5": "9F499C1A8E19B084A41F3AC112751EBB",
+    "Translation": "\"You have not lost any experience.\"",
+    "Original": "\"No perdistes experiencia.\""
+  },
+  {
+    "md5": "D88A80AFFBF8B3DF1A1228E3F1AB6423",
+    "Translation": "\"You received no experience.\"",
+    "Original": "\"No recibistes experiencia.\""
+  },
+  {
+    "md5": "67FA7E7FE44A29E0C59E1F9137F410AC",
+    "Translation": "\"You have lost\"",
+    "Original": "\"¡Has perdido \""
+  },
+  {
+    "md5": "54E909F28D99557942AB4D7BF197119F",
+    "Translation": "\"of experience!\"",
+    "Original": "\" de experiencia!\""
+  },
+  {
+    "md5": "9BA4E0874E1D1559C7AD03ACF7A87591",
+    "Translation": "\"he has become a murderer!\"",
+    "Original": "\" se ha vuelto un asesino!\""
+  },
+  {
+    "md5": "0EA0914025C80B7FCDC904B2E25EEF90",
+    "Translation": "\"he has paid the price for being a murderer!\"",
+    "Original": "\" ha pagado el precio por ser un asesino!\""
+  },
+  {
+    "md5": "4890664D90665907CCB4C53F63697323",
+    "Translation": "\"You need the LVL\"",
+    "Original": "\"Necesitas el lvl \""
+  },
+  {
+    "md5": "F3E4FB3992B02C1D48D025744076A3F3",
+    "Translation": "\"to use this skill.\"",
+    "Original": "\" para usar esta habilidad.\""
+  },
+  {
+    "md5": "78792AC078453F72BEE3F54CA314E0C7",
+    "Translation": "\"You need to be an admin.\"",
+    "Original": "\"Necesitas ser admin.\""
+  },
+  {
+    "md5": "7768B1987F2C28EEC6DC97E427C16A01",
+    "Translation": "\"Just the Class\"",
+    "Original": "\"Solo la clase \""
+  },
+  {
+    "md5": "A5806D79FAA95E03EC6664D6C27CB2DD",
+    "Translation": "\"you can use this magic.\"",
+    "Original": "\" puede utilizar esta magia.\""
+  },
+  {
+    "md5": "4562FE5B24CCCC6168C18D4E342FBB31",
+    "Translation": "\"You don't have a goal.\"",
+    "Original": "\"You don't have a goal.\""
+  },
+  {
+    "md5": "6F47AB51397F0E8E0D08625D26FABC9C",
+    "Translation": "\"You must have a level\"",
+    "Original": "\"Debes tener nivel \""
+  },
+  {
+    "md5": "34F76C12E62FA3E01A917DC123250A21",
+    "Translation": "\"to use this skill.\"",
+    "Original": "\" para usar ésta habilidad.\""
+  },
+  {
+    "md5": "405A5E464122D7B6417F289B803D169D",
+    "Translation": "\"You must be an administrator to use this skill.\"",
+    "Original": "\"Debes ser administrador para usar esta habilidad.\""
+  },
+  {
+    "md5": "23E8ABACDB5B1D6EF60CA29A499C493B",
+    "Translation": "\"you can use this skill.\"",
+    "Original": "\" puede usar esta habilidad.\""
+  },
+  {
+    "md5": "68C0182C25E0542530E32E25674F2C56",
+    "Translation": "\"You are paralyzed!\"",
+    "Original": "\"¡Estás paralizado!\""
+  },
+  {
+    "md5": "5B688A9F7FB11211ABE69F921EB874F9",
+    "Translation": "\"Dodged!\"",
+    "Original": "\"¡Esquivado!\""
+  },
+  {
+    "md5": "CBDF851B25A00254DA3E87A1B4323189",
+    "Translation": "\"Blocked!\"",
+    "Original": "\"¡Bloqueado!\""
+  },
+  {
+    "md5": "41520475272BE01245B354679EAED2EE",
+    "Translation": "\"Critic!\"",
+    "Original": "\"¡Crítico!\""
+  },
+  {
+    "md5": "6CF40DAB56FDC2546E99A165D0542894",
+    "Translation": "\"Averted!\"",
+    "Original": "\"¡Evitado!\""
+  },
+  {
+    "md5": "44DE510528949FA4C55056965A7ED470",
+    "Translation": "\"The other player has accepted.\"",
+    "Original": "\"El otro jugador ha aceptado.\""
+  },
+  {
+    "md5": "61926EDB15D423D1342583826252BA05",
+    "Translation": "\"Waiting for the other player to accept.\"",
+    "Original": "\"Esperando al otro jugador a que acepte.\""
+  },
+  {
+    "md5": "EA8895367195C29282FD9208D94007B8",
+    "Translation": "\"he has connected\"",
+    "Original": "\" se ha conectado\""
+  },
+  {
+    "md5": "EA8895367195C29282FD9208D94007B8",
+    "Translation": "\"he has connected\"",
+    "Original": "\" se ha conectado\""
+  },
+  {
+    "md5": "A1034920C3888C068F8E62FDBB77A1E5",
+    "Translation": "\"he refused the trade.\"",
+    "Original": "\" ha rechazado el comercio.\""
+  },
+  {
+    "md5": "50157D2CA22CD28C23C55FD365AB4D98",
+    "Translation": "\"it has been disconnected\"",
+    "Original": "\" se ha desconectado\""
+  },
+  {
+    "md5": "50157D2CA22CD28C23C55FD365AB4D98",
+    "Translation": "\" has disconnected\"",
+    "Original": "\" se ha desconectado\""
+  },
+  {
+    "md5": "50157D2CA22CD28C23C55FD365AB4D98",
+    "Translation": "\"it has been disconnected\"",
+    "Original": "\" se ha desconectado\""
+  },
+  {
+    "md5": "50157D2CA22CD28C23C55FD365AB4D98",
+    "Translation": "\" has disconnected\"",
+    "Original": "\" se ha desconectado\""
+  },
+  {
+    "md5": "F3B821D2E5271A4BBBEEA5EF6CA5EB71",
+    "Translation": "\"it has been disconnected\"",
+    "Original": "\" se ha desconectado \""
+  },
+  {
+    "md5": "F3B821D2E5271A4BBBEEA5EF6CA5EB71",
+    "Translation": "\" has disconnected\"",
+    "Original": "\" se ha desconectado \""
+  },
+  {
+    "md5": "EA8895367195C29282FD9208D94007B8",
+    "Translation": "\" has connected\"",
+    "Original": "\" se ha conectado\""
+  },
+  {
+    "md5": "3F1E6ADDC86F6A5B7BDA3A2B70BF5D8D",
+    "Translation": "\"You need the right key to open this door. (\"",
+    "Original": "\"Necesitas la llave correcta para abrir ésta puerta. (\""
+  },
+  {
+    "md5": "02C0E979D9CC237118C73D313885DFCE",
+    "Translation": "\"You have to flip a switch to open this door.\"",
+    "Original": "\"Tienes que activar un interruptor para abrir ésta puerta.\""
+  },
+  {
+    "md5": "3F1E6ADDC86F6A5B7BDA3A2B70BF5D8D",
+    "Translation": "\"You need the right key to open this door. (\"",
+    "Original": "\"Necesitas la llave correcta para abrir ésta puerta. (\""
+  },
+  {
+    "md5": "3F1E6ADDC86F6A5B7BDA3A2B70BF5D8D",
+    "Translation": "\"You need the right key to open this door. (\"",
+    "Original": "\"Necesitas la llave correcta para abrir ésta puerta. (\""
+  },
+  {
+    "md5": "02C0E979D9CC237118C73D313885DFCE",
+    "Translation": "\"You have to flip a switch to open this door.\"",
+    "Original": "\"Tienes que activar un interruptor para abrir ésta puerta.\""
+  },
+  {
+    "md5": "3F1E6ADDC86F6A5B7BDA3A2B70BF5D8D",
+    "Translation": "\"You need the right key to open this door. (\"",
+    "Original": "\"Necesitas la llave correcta para abrir ésta puerta. (\""
+  },
+  {
+    "md5": "02C0E979D9CC237118C73D313885DFCE",
+    "Translation": "\"You have to flip a switch to open this door.\"",
+    "Original": "\"Tienes que activar un interruptor para abrir ésta puerta.\""
+  },
+  {
+    "md5": "79670CC2CF0FEE2FF2131B2E4A5C5287",
+    "Translation": "\"You have to flip a switch to open this door. \"",
+    "Original": "\"Tienes que activar un interruptor para abrir ésta puerta. \""
+  },
+  {
+    "md5": "AB3BC9118790190F42E23FA55A2568E6",
+    "Translation": "\"The door has been opened.\"",
+    "Original": "\"La puerta se ha abierto.\""
+  },
+  {
+    "md5": "B0EBF1665B361E46D0A2318B9DAD8498",
+    "Translation": "\"You have been damaged.\"",
+    "Original": "\"Has sido dañado.\""
+  },
+  {
+    "md5": "7FAA9C89C6E916FE007D02D48C3DB746",
+    "Translation": "\"it has gone up\"",
+    "Original": "\" ha subido \""
+  },
+  {
+    "md5": "579DA7266E86117CBE8012476119F4D8",
+    "Translation": "\"level!\"",
+    "Original": "\" nivel!\""
+  },
+  {
+    "md5": "7FAA9C89C6E916FE007D02D48C3DB746",
+    "Translation": "\" has risen \"",
+    "Original": "\" ha subido \""
+  },
+  {
+    "md5": "7FAA9C89C6E916FE007D02D48C3DB746",
+    "Translation": "\"it has gone up\"",
+    "Original": "\" ha subido \""
+  },
+  {
+    "md5": "7FAA9C89C6E916FE007D02D48C3DB746",
+    "Translation": "\" has risen \"",
+    "Original": "\" ha subido \""
+  },
+  {
+    "md5": "E1976A3BC0BF41C8D10D37F5456C2F4C",
+    "Translation": "\"he has committed a crime!\"",
+    "Original": "\" ha cometido un crimen!\""
+  },
+  {
+    "md5": "E1976A3BC0BF41C8D10D37F5456C2F4C",
+    "Translation": "\" has committed a crime!\"",
+    "Original": "\" ha cometido un crimen!\""
+  },
+  {
+    "md5": "3D066AF0CAA873D1077F6093CD022173",
+    "Translation": "\"he has become a hero!\"",
+    "Original": "\" se ha convertido en un hÃ©roe!\""
+  },
+  {
+    "md5": "3D066AF0CAA873D1077F6093CD022173",
+    "Translation": "\" has become a hero!\"",
+    "Original": "\" se ha convertido en un hÃ©roe!\""
+  },
+  {
+    "md5": "DEC90481780C108001603A54F5D955D6",
+    "Translation": "\"he has done justice!\"",
+    "Original": "\" ha hecho justicia!\""
+  },
+  {
+    "md5": "DEC90481780C108001603A54F5D955D6",
+    "Translation": "\" has done justice!\"",
+    "Original": "\" ha hecho justicia!\""
+  },
+  {
+    "md5": "7759384EDE7867DED591AF75294A4BC3",
+    "Translation": "\"he has become a murderer!\"",
+    "Original": "\" se ha convertido en un asesino!\""
+  },
+  {
+    "md5": "7759384EDE7867DED591AF75294A4BC3",
+    "Translation": "\" has become a murderer!\"",
+    "Original": "\" se ha convertido en un asesino!\""
+  },
+  {
+    "md5": "15E1B319CF3355D69AD1DF14785B2FF0",
+    "Translation": "\"You must possess a triforce to equip yourself with it\"",
+    "Original": "\"Debes poseer una trifuerza para equiparte Ã©ste Ã­tem\""
+  },
+  {
+    "md5": "F6067222CBD20617C6C2D7A20842D081",
+    "Translation": "\"You don't possess the triforce to equip yourself with this self\"",
+    "Original": "\"No posees la trifuerza para equiparte Ã©ste Ã­tem\""
+  },
+  {
+    "md5": "82739E9E3FFFC3E5389E026CEADAEC2A",
+    "Translation": "\"You don't have the necessary access to equip yourself here.\"",
+    "Original": "\"No posees el acceso necesario para equiparte Ã©ste Ã­tem.\""
+  },
+  {
+    "md5": "B143D0E8BC2E9884761AE6504D709FAD",
+    "Translation": "\"You don't belong to the necessary class to equip yourself with this one.\"",
+    "Original": "\"No perteneces a la clase necesaria para equiparte Ã©ste Ã­tem.\""
+  },
+  {
+    "md5": "92072E26B79CAECAB59B774E13F798BD",
+    "Translation": "\"You don't have the necessary level to equip yourself with this one.\"",
+    "Original": "\"No posees el nivel necesario para equiparte Ã©ste Ã­tem.\""
+  },
+  {
+    "md5": "7F490F367A54449B5962E59CC1D189DA",
+    "Translation": "\"You don't have the statistics necessary to equip yourself with this.\"",
+    "Original": "\"No posees la estadÃ­stica necesaria para equiparte Ã©ste Ã­tem.\""
+  },
+  {
+    "md5": "05CA1995421C7FE23E2791963011C39E",
+    "Translation": "\"he has acquired the triforce\"",
+    "Original": "\" ha adquirido la trifuerza \""
+  },
+  {
+    "md5": "A998F2C13D0599634E5264662CA6BCA8",
+    "Translation": "\"of Power\"",
+    "Original": "\"del Poder\""
+  },
+  {
+    "md5": "F740E2C3679A560B4BF4B5F73FAF4627",
+    "Translation": "\"of Wisdom\"",
+    "Original": "\"de la SabidurÃ­a\""
+  },
+  {
+    "md5": "723CBC53BCDBAFAED5D7DD9C1FB46AB2",
+    "Translation": "\"of Courage\"",
+    "Original": "\"del Coraje\""
+  },
+  {
+    "md5": "7FC5C12701B24E4A52104890575CE745",
+    "Translation": "\"You don't have the triforce\"",
+    "Original": "\"No tienes la trifuerza\""
+  },
+  {
+    "md5": "834D407B457EC7E5A537112DE8DC0348",
+    "Translation": "\"You have already been reborn\"",
+    "Original": "\"Ya has renacido\""
+  },
+  {
+    "md5": "F0F33AA79E58B8C6B01BB31FB3610533",
+    "Translation": "\"The switch has been turned off\"",
+    "Original": "\"El interruptor ha sido desactivado\""
+  },
+  {
+    "md5": "5788D437AD6D54165961932B2ECDE29D",
+    "Translation": "\"The switch has been activated\"",
+    "Original": "\"El interruptor ha sido activado\""
+  },
+  {
+    "md5": "A75A71978BDBF9D0FCE8BED2267AA16E",
+    "Translation": "\"This door is already open.\"",
+    "Original": "\"Ãsta puerta ya estÃ¡ abierta.\""
+  },
+  {
+    "md5": "5BA9768B8B29B70CA001965A07C83018",
+    "Translation": "\"This door is not closed.\"",
+    "Original": "\"Ãsta puerta no estÃ¡ cerrada.\""
+  },
+  {
+    "md5": "A62B74044953780463091E16CCFDBA06",
+    "Translation": "\"You haven't pushed the right switch to open the door.\"",
+    "Original": "\"No has pulsado el interruptor adecuado para abrir la puerta.\""
+  },
+  {
+    "md5": "ECF941FD46BD65E74C130F972F620917",
+    "Translation": "\"You don't have the right key to open the door.\"",
+    "Original": "\"No posees la llave adecuada para abrir la puerta.\""
+  },
+  {
+    "md5": "5B9B510DB03CE407E64E48C7BC9ABB41",
+    "Translation": "\"Something has been unlocked\"",
+    "Original": "\"Se ha desbloqueado algo\""
+  },
+  {
+    "md5": "93506F6799FCD93D1EB09BFDCAAAF798",
+    "Translation": "\"You have been redeemed, your past has been set free\"",
+    "Original": "\"Has sido redimido, tu pasado se ha liberado\""
+  },
+  {
+    "md5": "05D2CFA589945AB544391AB530078EF3",
+    "Translation": "\"to acquire the triforce\"",
+    "Original": "\" para adquirir la trifuerza\""
+  },
+  {
+    "md5": "552FF263D2F9557F7F336619B35A6F41",
+    "Translation": "\"ÃÂ¿Â½\"",
+    "Original": "\"Ã¯Â¿Â½\""
+  },
+  {
+    "md5": "F48E36DB9BCE20340FAD67662B8B7095",
+    "Translation": "\" levels!\"",
+    "Original": "\" niveles!\""
+  },
+  {
+    "md5": "BDF5889B2BAC246A19F6C32587AFBBC3",
+    "Translation": "\"You don't have the right tool equipped.\"",
+    "Original": "\"No tienes equipada la herramienta adecuada.\""
+  },
+  {
+    "md5": "C815DEE72738FE334C65A6C32EFE9C7B",
+    "Translation": "\"You need a tool\"",
+    "Original": "\"Necesitas herramienta\""
+  },
+  {
+    "md5": "C4C262A95E88CD94378CCA94BFFD6E50",
+    "Translation": "\"Failure!\"",
+    "Original": "\"Fallo!\""
+  },
+  {
+    "md5": "9F499C1A8E19B084A41F3AC112751EBB",
+    "Translation": "\"You have not lost any experience.\"",
+    "Original": "\"No perdistes experiencia.\""
+  },
+  {
+    "md5": "0FCE3216B60A212A1118344E5A2E3EB7",
+    "Translation": "\"You've lost\"",
+    "Original": "\"ÃÂ¡Has perdido \""
+  },
+  {
+    "md5": "54E909F28D99557942AB4D7BF197119F",
+    "Translation": "\" of experience!\"",
+    "Original": "\" de experiencia!\""
+  },
+  {
+    "md5": "F72B4B67B4892E4C534147FBDF144FCA",
+    "Translation": "\" of experience!\"",
+    "Original": "\" of experience!\""
+  },
+  {
+    "md5": "89E36E17E55FA4D3F719F8B43AEB8F8E",
+    "Translation": "\"You equip yourself\"",
+    "Original": "\"Te equipastes \""
+  },
+  {
+    "md5": "ECF0745F983F5BF9A6A5B1366A9B06A4",
+    "Translation": "\"You can not equip this item\"",
+    "Original": "\"No puedes equiparte este item\""
+  },
+  {
+    "md5": "89E36E17E55FA4D3F719F8B43AEB8F8E",
+    "Translation": "\"You equip yourself\"",
+    "Original": "\"Te equipastes \""
+  },
+  {
+    "md5": "89E36E17E55FA4D3F719F8B43AEB8F8E",
+    "Translation": "\"You equip yourself\"",
+    "Original": "\"Te equipastes \""
+  },
+  {
+    "md5": "89E36E17E55FA4D3F719F8B43AEB8F8E",
+    "Translation": "\"You equip yourself\"",
+    "Original": "\"Te equipastes \""
+  },
+  {
+    "md5": "AB3BC9118790190F42E23FA55A2568E6",
+    "Translation": "\"The door has been opened.\"",
+    "Original": "\"La puerta se ha abierto.\""
+  },
+  {
+    "md5": "0DA81B03E3D921B6EAB143AFF9D08700",
+    "Translation": "\"The key was destroyed.\"",
+    "Original": "\"La llave fue destruÃÂ­da.\""
+  },
+  {
+    "md5": "15E8F6E1467A36206BA159FEDEA9B522",
+    "Translation": "\"You've learned a new skill. Now you can use \"",
+    "Original": "\"Has aprendido una nueva habilidad. Ahora puedes usar \""
+  },
+  {
+    "md5": "3A228677ADB5EEFD6FBCCBE7584E9AC8",
+    "Translation": "\"You already know this skill.\"",
+    "Original": "\"Ya conoces ÃÂ©sta habilidad.\""
+  },
+  {
+    "md5": "66978187BF9E5338332213AA0C8FA9CF",
+    "Translation": "\"You can't learn any more skills.\"",
+    "Original": "\"No puedes aprender mÃÂ¡s habilidades.\""
+  },
+  {
+    "md5": "0700133179748FC2671B7F4CCB5309F7",
+    "Translation": "\"You must be level\"",
+    "Original": "\"Debes ser nivel \""
+  },
+  {
+    "md5": "9C4891CC40833651E65DD4E3D0A8E2CF",
+    "Translation": "\" to learn this skill.\"",
+    "Original": "\" para aprender ÃÂ©sta habilidad.\""
+  },
+  {
+    "md5": "05F369A786C51BF64B860FF7535A8993",
+    "Translation": "\"It can only be learned by\"",
+    "Original": "\"Solo puede ser aprendido por \""
+  },
+  {
+    "md5": "50C04B32D642128886164213F36465B8",
+    "Translation": "\"You have reset your points, now you have \"",
+    "Original": "\"Has reseteado tus puntos, ahora tienes \""
+  },
+  {
+    "md5": "6D0E7505105379A334BBDAEAF2387D27",
+    "Translation": "\" points!\"",
+    "Original": "\" puntos!\""
+  },
+  {
+    "md5": "898E925CE15EA370724A0CD9B3E1AD41",
+    "Translation": "\"Need to be Lvl\"",
+    "Original": "\"Necesitar ser Lvl \""
+  },
+  {
+    "md5": "43F40AD9C4C9888EBC1BF6649332B113",
+    "Translation": "\"<Wisdom>\"",
+    "Original": "\"<SabidurÃÂ­a>\""
+  },
+  {
+    "md5": "9823F0ABECC6C696E4B1BAB868BCC0FA",
+    "Translation": "\"<Power>\"",
+    "Original": "\"<Poder>\""
+  },
+  {
+    "md5": "5F8117E621700DC812CCED4210A2BF7E",
+    "Translation": "\"<Value>\"",
+    "Original": "\"<Valor>\""
+  },
+  {
+    "md5": "5F8117E621700DC812CCED4210A2BF7E",
+    "Translation": "\"<Valor>\"",
+    "Original": "\"<Valor>\""
+  },
+  {
+    "md5": "5EBC60CA488B1C8D68EA8A162B05682F",
+    "Translation": "\"You can't forget an ability while recharging!\"",
+    "Original": "\"¡No puedes olvidar una habilidad mientras se recarga!\""
+  },
+  {
+    "md5": "5636FDCD4197AEEE59BE8391AAB4B0C8",
+    "Translation": "\"You can't forget a skill while using it!\"",
+    "Original": "\"¡No puedes olvidar una habilidad mientras la usas!\""
+  },
+  {
+    "md5": "332C698124B43A166EDE85DC467F285D",
+    "Translation": "\"Magic recharging.\"",
+    "Original": "\"Magia recargándose.\""
+  },
+  {
+    "md5": "9129AA0C4D58A3AEB732095AE439908A",
+    "Translation": "\"You don't have enough MP to pitch\"",
+    "Original": "\"No tienes suficiente MP para lanzar \""
+  },
+  {
+    "md5": "CE9D7B39FDB5D9692B57E80434179225",
+    "Translation": "\"Without enough magic points!\"",
+    "Original": "\"¡Sin puntos de magia suficientes!\""
+  },
+  {
+    "md5": "CE202AFBF054931FB1AF25431F96D03B",
+    "Translation": "\"You can't summon while running.\"",
+    "Original": "\"No puedes invocar mientras corres.\""
+  },
+  {
+    "md5": "B71E10D0EBAB1A18A476127CB5A256D2",
+    "Translation": "\"Gap\"",
+    "Original": "\"Vacío\""
+  },
+  {
+    "md5": "4376AA925D97AC292680EE51B8510B23",
+    "Translation": "\"castSpell\"",
+    "Original": "\"CastSpell\""
+  },
+  {
+    "md5": "7F53926AA0EE1AA0DF80E6B1D84C3674",
+    "Translation": "\"Connecting to the server...\"",
+    "Original": "\"Conectando al servidor...\""
+  },
+  {
+    "md5": "C2F7056028536B85F8D5E6B28B7BE1A6",
+    "Translation": "\"[INVISIBLE MODE]\"",
+    "Original": "\"[MODO INVISIBLE]\""
+  },
+  {
+    "md5": "86687E8AC99A00740CB0A20F0FF0564F",
+    "Translation": "\"[VISIBLE MODE]\"",
+    "Original": "\"[MODO VISIBLE]\""
+  },
+  {
+    "md5": "A90E450BACEBD6BB057108F48BAF79D0",
+    "Translation": "\" he has been banned for (...\"",
+    "Original": "\" ha sido expulsado por (\""
+  },
+  {
+    "md5": "C252FCCE21AB2C82A0E15F746399600F",
+    "Translation": "\"You've lost your connection to\"",
+    "Original": "\"Has perdido tu conexión con \""
+  },
+  {
+    "md5": "CE0461D569D2B148D3D3DF32F06BF01A",
+    "Translation": "\"There are no more players online.\"",
+    "Original": "\"No hay más jugadores en línea.\""
+  },
+  {
+    "md5": "E3A40768ADD16AA040334D0C2885EB1E",
+    "Translation": "\" Online players: \"",
+    "Original": "\" Jugadores online: \""
+  },
+  {
+    "md5": "138D1718C51DBD888D76ACF08401E22E",
+    "Translation": "\"Have \"",
+    "Original": "\"Hay \""
+  },
+  {
+    "md5": "30E817F0948FF6E259E978E3C9431696",
+    "Translation": "\"[Map]\"",
+    "Original": "\"[Mapa] \""
+  },
+  {
+    "md5": "DA7DC7EFF724797C2EEDBA406EA38BE9",
+    "Translation": "\"You are not in a group.\"",
+    "Original": "\"No estas en un grupo.\""
+  },
+  {
+    "md5": "D277CBEA1722513705D906956F285E89",
+    "Translation": "\"Activate Without Impact\"",
+    "Original": "\"Activar Sin Impactar\""
+  },
+  {
+    "md5": "74A7CE7C7F736590A880BB0F6D6D74AC",
+    "Translation": "\"Impact\"",
+    "Original": "\"Impactar\""
+  },
+  {
+    "md5": "4366EE62ACE349CFB314941C577F956D",
+    "Translation": "\"127.0.0.1\"",
+    "Original": "\"trollparty.org\""
+  },
+  {
+    "md5": "90DD1C36977606A33D4394D636E5554E",
+    "Translation": "\"Increases the melee attack with weapons\"",
+    "Original": "\"Incrementa el ataque cuerpo a cuerpo con armas\""
+  },
+  {
+    "md5": "0094AB5FC055C12D73F34B6F0F41A219",
+    "Translation": "\"Increases the chance of dodging attack and increases the attack with projectiles\"",
+    "Original": "\"Sube la probabilidad de esquivar ataque y aumenta el ataque con proyectiles\""
+  },
+  {
+    "md5": "916FF42B5257348EC867A1E2DF5DAA5F",
+    "Translation": "\"Increases the user's melee defense\"",
+    "Original": "\"Aumenta la defensa cuerpo a cuerpo del usuario\""
+  },
+  {
+    "md5": "B0A9DC30D361D1C5DC70E204F854F461",
+    "Translation": "\"It raises the regeneration of life and energy and raises the magical defense\"",
+    "Original": "\"Eleva la regeneración de vida y energía y eleva la defensa mágica\""
+  },
+  {
+    "md5": "A837020EAD77BB3F635B0480E29F2839",
+    "Translation": "\"Expand the energy and power up the magic attack\"",
+    "Original": "\"Amplia la energía y potencia el ataque mágico\""
+  },
+  {
+    "md5": "05390C017D4B445359964919B589BEB0",
+    "Translation": "\"Grabbing things off the floor: ENTER\"",
+    "Original": "\"Agarrar cosas del suelo: ENTER\""
+  },
+  {
+    "md5": "7FDA18A81EE7499599A2A6CA08918362",
+    "Translation": "\"Attack/Talk to NPC: Cntrl\"",
+    "Original": "\"Atacar/Hablar con NPC: Cntrl\""
+  },
+  {
+    "md5": "121C5B91A86374A7766BB71DB986DFE9",
+    "Translation": "\"Moving around the world: Arrows\"",
+    "Original": "\"Moverse por el mundo: Flechas\""
+  },
+  {
+    "md5": "99FA92BC098782155B377B41CC281F76",
+    "Translation": "\"Running while moving: Shift\"",
+    "Original": "\"Correr mientras te mueves: Shift\""
+  },
+  {
+    "md5": "EA36C4337A3DA7B0ABDF1AB6C84129B3",
+    "Translation": "\"Use items or abilities using F1, F2... F12: Drag item or Skill to the desired Fnº box\"",
+    "Original": "\"Usar ítems o habilidades usando F1, F2... F12: Arrastrar ítem o Habilidad al recuadro de Fnº deseado\""
+  },
+  {
+    "md5": "5190C937E75E1B8EBF837E92B857BF1F",
+    "Translation": "\"Gerudo Canyon, Gerudo Fortress, Desert, Temple of the Spirit\"",
+    "Original": "\"Cañón Gerudo, Fortaleza Gerudo, Desierto, Templo del Espíritu\""
+  },
+  {
+    "md5": "2C991F2C83ED433355B3416386693591",
+    "Translation": "\"Level 10-20\"",
+    "Original": "\"Nivel 10-20\""
+  },
+  {
+    "md5": "F2B0EE4429B0079792E0642A09618678",
+    "Translation": "\"Level 5-10\"",
+    "Original": "\"Nivel 5-10\""
+  },
+  {
+    "md5": "BCA37236F3AB181518E4983E9603D0DC",
+    "Translation": "\"Level 40-50\"",
+    "Original": "\"Nivel 40-50\""
+  },
+  {
+    "md5": "2FBDEB73F1AC49A2B1FFEF1D072CDBA9",
+    "Translation": "\"Deku Tree, Dodongo Cavern, Great Jabu Jabu, Hyrule Fields, Zora River\"",
+    "Original": "\"Árbol Deku, Caverna Dodongo, Gran Jabu Jabu, Campos de Hyrule, Rio Zora\""
+  },
+  {
+    "md5": "D04D71A30C33191279524A67EFDDAE49",
+    "Translation": "\"Lost Forests, Forest Temple, Swamp, Swamp Temple, Ruins\"",
+    "Original": "\"Bosques Perdidos, Templo del Bosque, Pantano, Templo del Pantano, Ruinas\""
+  },
+  {
+    "md5": "DAD67C9ECF9D4F0CCCFDF029971C48B0",
+    "Translation": "\"Level 20-30\"",
+    "Original": "\"Nivel 20-30\""
+  },
+  {
+    "md5": "4843C9629C0B68CE6C78613D0CE6C740",
+    "Translation": "\"Death Mountain, Fire Temple, Snowy Pass, Ice Temple\"",
+    "Original": "\"Montaña de la Muerte, Templo del Fuego, Paso Nevado, Templo del Hielo\""
+  },
+  {
+    "md5": "195D9B86FCCC2B57D3FBE9AB22CE3038",
+    "Translation": "\"Level 30-40\"",
+    "Original": "\"Nivel 30-40\""
+  },
+  {
+    "md5": "5E1CCDAC1EB248EF1555E4AA45F30FEE",
+    "Translation": "\"Hylia Lake, Water Temple, Cemetery, Tombs and Royal Tomb\"",
+    "Original": "\"Lago Hylia, Templo del Agua, Cementerio, Tumbas y Tumba Real\""
+  },
+  {
+    "md5": "24DDC2B5586BF3CB4B89F7148C8C75FF",
+    "Translation": "\"Level 50-60\"",
+    "Original": "\"Nivel 50-60\""
+  },
+  {
+    "md5": "96C9A50619C06C01995FA80774C7FF3A",
+    "Translation": "\"Cave of Aquamentus, Secret Sanctuary, Castle of Ganon\"",
+    "Original": "\"Cueva de Aquamentus, Santuario Secreto, Castillo de Ganon\""
+  },
+  {
+    "md5": "9B3F4CE12C71D9D7EFC895224DED99E9",
+    "Translation": "\"Level 60-70\"",
+    "Original": "\"Nivel 60-70\""
+  },
+  {
+    "md5": "6BF80ECD33049D0697397B3C8ED26313",
+    "Translation": "\"Cyclopean Clouds, Pyramid\"",
+    "Original": "\"Nubes Ciclópeas, Pirámide\""
+  },
+  {
+    "md5": "1AAD8E3D5CF8BF95BCD8E2F7EE6FEE6A",
+    "Translation": "\"All classes can use skills, and everyone has different from the others\"",
+    "Original": "\"Todas las clases pueden usar habilidades, y cada cual tiene diferentes a las demás\""
+  },
+  {
+    "md5": "304BE6CE3609701CDD3948D139FBD4B9",
+    "Translation": "\"In the Temple of Time, in the city of Hyrule, to the northeast\"",
+    "Original": "\"En el Templo del Tiempo, en la ciudad de Hyrule, al noreste\""
+  },
+  {
+    "md5": "F5E3F39D98B9E9F8FC1F749A3293B8E0",
+    "Translation": "\"In the hall of Darunia, in Goron City, north of the central hall\"",
+    "Original": "\"En la sala de Darunia, en ciudad Goron, al norte de la sala central\""
+  },
+  {
+    "md5": "ED0B453C4AB862A3A25A9B7C94B8A7AE",
+    "Translation": "\"In the hall of King Zora, in the City Zora, north of the central hall\"",
+    "Original": "\"En la sala del Rey Zora, en la Ciudad Zora, al norte de la sala central\""
+  },
+  {
+    "md5": "DEFCA533379472EC684653318E3DDDF4",
+    "Translation": "\"In the square of the Gerudo Fortress, next to the mountain on the left\"",
+    "Original": "\"En la plaza de la Fortaleza Gerudo, junto al monte a la izquierda\""
+  },
+  {
+    "md5": "A18DF4D9AC4CC909EEC0BB9AD63ADE4B",
+    "Translation": "\"Taming Creature\"",
+    "Original": "\"Domar Criatura\""
+  },
+  {
+    "md5": "D615E8270E7033A0B0642540927E955A",
+    "Translation": "\"Use Pet\"",
+    "Original": "\"Usar Mascota\""
+  },
+  {
+    "md5": "4737D080176F777B6497D467A369DD51",
+    "Translation": "\"Benefit\"",
+    "Original": "\"Beneficios\""
+  },
+  {
+    "md5": "E77D35A9157B87F78E98AC273745E551",
+    "Translation": "\"The user is not online, or the name does not match\"",
+    "Original": "\"El usuario no está en línea, o el nombre no coincide\""
+  },
+  {
+    "md5": "B3E59D96CFA770A1DE832CB5ABAA671F",
+    "Translation": "\"They have changed your level\"",
+    "Original": "\"Te han cambiado tu nivel \""
+  },
+  {
+    "md5": "ABEC4552E18F5F575DAF435FA3F1E58F",
+    "Translation": "\" at the level\"",
+    "Original": "\" al nivel \""
+  },
+  {
+    "md5": "9BDE285B1EEBF4CF6E6649EB53921854",
+    "Translation": "\"Enter the code here\"",
+    "Original": "\"Introduce el codigo aqui\""
+  },
+  {
+    "md5": "0FEF8BFB47785D2E622259CFDA23FC57",
+    "Translation": "\"Current Balance: X\"",
+    "Original": "\"Saldo Actual: X \""
+  },
+  {
+    "md5": "0E598A4D2E978F6C143EB8CEEB4CFCEA",
+    "Translation": "\"Current Balance: \"",
+    "Original": "\"Saldo Actual: \""
+  },
+  {
+    "md5": "46C269170FF600957939652D3A76BF19",
+    "Translation": "\"Redeem Code\"",
+    "Original": "\"Canjear Codigo\""
+  },
+  {
+    "md5": "765A4AE6E11FA1015911394DF0FEFA2C",
+    "Translation": "\"Game Rooms\"",
+    "Original": "\"Salas de Juegos\""
+  },
+  {
+    "md5": "C6043AB917445F9615F7F508918D9CD6",
+    "Translation": "\"Start the Game\"",
+    "Original": "\"Empezar Juego\""
+  },
+  {
+    "md5": "C96B4310D7E333A31D6DBD7D18709754",
+    "Translation": "\"Create a Game\"",
+    "Original": "\"Crear Juego\""
+  },
+  {
+    "md5": "B85C8825C22EC5C77810F24D8F03E9A4",
+    "Translation": "\"Join it\"",
+    "Original": "\"Unirse\""
+  },
+  {
+    "md5": "FBB1E70749ABDB380E2DA26A303FC1A4",
+    "Translation": "\"Online Teams\"",
+    "Original": "\"Equipos Online\""
+  },
+  {
+    "md5": "1EA14889C77F70AC6C2229465B4B9A27",
+    "Translation": "\"Bet\"",
+    "Original": "\"Apostar\""
+  },
+  {
+    "md5": "DCCD85F116B529D4C8D73D8EA1979B22",
+    "Translation": "\"Creating a Team\"",
+    "Original": "\"Crear Equipo\""
+  },
+  {
+    "md5": "CFA5DCDEBF727812EB5270C1A8DCEB20",
+    "Translation": "\"Invite Team\"",
+    "Original": "\"Invitar Equipo\""
+  },
+  {
+    "md5": "FDF1085D635C29FA649A7A85A8C323DD",
+    "Translation": "\"Clan Leader Options\"",
+    "Original": "\"Opciones del Líder del Clan\""
+  },
+  {
+    "md5": "0693939E2FDCB7A0F072F7FD4A08C87B",
+    "Translation": "\"Choice\"",
+    "Original": "\"Opciones\""
+  },
+  {
+    "md5": "632D6B6B28FD08780406846171AFE613",
+    "Translation": "\"User\"",
+    "Original": "\"Usuarios\""
+  },
+  {
+    "md5": "8BCD8C2D38170100CFDA0AB03117AE3E",
+    "Translation": "\"Edit Users\"",
+    "Original": "\"Editar Usuarios\""
+  },
+  {
+    "md5": "86434631B8C82115E80C7DF47C47E7B3",
+    "Translation": "\"Save User\"",
+    "Original": "\"Guardar Usuario\""
+  },
+  {
+    "md5": "ADD3B33A77DA81D2D79574DA484F0C94",
+    "Translation": "\"Comment:\"",
+    "Original": "\"Comentario:\""
+  },
+  {
+    "md5": "C01730D18F8ABF6304900A7BAB593CD5",
+    "Translation": "\"Degree:\"",
+    "Original": "\"Grado:\""
+  },
+  {
+    "md5": "A67C16B57B99EB930D93A5BC353B6B92",
+    "Translation": "\"Edit Grades\"",
+    "Original": "\"Editar Grados\""
+  },
+  {
+    "md5": "AE4E55A31FED14C195982AE01FC10ED0",
+    "Translation": "\"Can he?\"",
+    "Original": "\"¿Puede?\""
+  },
+  {
+    "md5": "609B26B15CD2A19B142D9C14C5C7F418",
+    "Translation": "\"Save Degrees\"",
+    "Original": "\"Guardar Grados\""
+  },
+  {
+    "md5": "C01730D18F8ABF6304900A7BAB593CD5",
+    "Translation": "\"Degree:\"",
+    "Original": "\"Grado:\""
+  },
+  {
+    "md5": "2D9D8659F089DDF7F6B8C0D4CAFCBF6D",
+    "Translation": "\"Edit Options\"",
+    "Original": "\"Editar Opciones\""
+  },
+  {
+    "md5": "DA5DC1420775EBF01A5FF206981964D3",
+    "Translation": "\"Save Options\"",
+    "Original": "\"Guardar Opciones\""
+  },
+  {
+    "md5": "0DFF8FCD55B168E9C8820B5E1791CDE9",
+    "Translation": "\"Message of the Day:\"",
+    "Original": "\"Mensaje del Día:\""
+  },
+  {
+    "md5": "DB92F25BE80734F44BE6061672424124",
+    "Translation": "\"Recruits start in Grade:\"",
+    "Original": "\"Los reclutas comienzan en Grado:\""
+  },
+  {
+    "md5": "AD84055F3512AFDBD20F926CC43BD45C",
+    "Translation": "\"Color of the Clan:\"",
+    "Original": "\"Color del Clan:\""
+  },
+  {
+    "md5": "C63507B82C43CD052B4A3A8445201174",
+    "Translation": "\"City\"",
+    "Original": "\"Ciudades\""
+  },
+  {
+    "md5": "68A965128D477210983A56B026C3F8C1",
+    "Translation": "'Regions'",
+    "Original": "\"Regiones\""
+  },
+  {
+    "md5": "AAA9A8F549C14AA6B1220234A213B568",
+    "Translation": "\"Temple\"",
+    "Original": "\"Templos\""
+  },
+  {
+    "md5": "C7249A8A2067F76BCE25814AA9D88BA3",
+    "Translation": "\"Nothing\"",
+    "Original": "\"Nada\""
+  },
+  {
+    "md5": "5B4E1709472E23FFE2B77DF7DE80A01D",
+    "Translation": "\"Temple of the Spirit\"",
+    "Original": "\"Templo del Espíritu\""
+  },
+  {
+    "md5": "F875B3687F3B58E29A31E5981FC7956A",
+    "Translation": "\"Gerudo Canyon\"",
+    "Original": "\"Cañón Gerudo\""
+  },
+  {
+    "md5": "F66A71F15573BE8B6EE8375BF9A99D0A",
+    "Translation": "\"Water Temple\"",
+    "Original": "\"Templo del Agua\""
+  },
+  {
+    "md5": "8255C3418F397F646860BA37B81D96C6",
+    "Translation": "\"Temple of the Forest\"",
+    "Original": "\"Templo del Bosque\""
+  },
+  {
+    "md5": "EFD820C2BB7D8F491AFAA19A4F705C5A",
+    "Translation": "\"Temple of Fire\"",
+    "Original": "\"Templo del Fuego\""
+  },
+  {
+    "md5": "AF7ED623049C901A670C57FEAB8ED998",
+    "Translation": "\"Rancho Lon Lon\"",
+    "Original": "\"Rancho Lon Lon\""
+  },
+  {
+    "md5": "AA176C13E6AA668F5309BA9B105CAEF5",
+    "Translation": "\"Rio Zora\"",
+    "Original": "\"Rio Zora\""
+  },
+  {
+    "md5": "AF7ED623049C901A670C57FEAB8ED998",
+    "Translation": "\"Lon Lon Ranch\"",
+    "Original": "\"Rancho Lon Lon\""
+  },
+  {
+    "md5": "21DB26C42DAE8F85BB452C170874BE49",
+    "Translation": "\"Hylia Lake\"",
+    "Original": "\"Lago Hylia\""
+  },
+  {
+    "md5": "53B7EBFC7A3EACB5762D915F437917B5",
+    "Translation": "\"Mountain of Death\"",
+    "Original": "\"Montaña de la Muerte\""
+  },
+  {
+    "md5": "31048F39090C5B25460CA0AD7A39178D",
+    "Translation": "\"Lost Forests\"",
+    "Original": "\"Bosques Perdidos\""
+  },
+  {
+    "md5": "98A1900B31369736388C46EF8024ABDE",
+    "Translation": "\"Temple of Shadows\"",
+    "Original": "\"Templo de las Sombras\""
+  },
+  {
+    "md5": "C63507B82C43CD052B4A3A8445201174",
+    "Translation": "\"City\"",
+    "Original": "\"Ciudades\""
+  },
+  {
+    "md5": "68A965128D477210983A56B026C3F8C1",
+    "Translation": "'Regions'",
+    "Original": "\"Regiones\""
+  },
+  {
+    "md5": "AAA9A8F549C14AA6B1220234A213B568",
+    "Translation": "\"Temple\"",
+    "Original": "\"Templos\""
+  },
+  {
+    "md5": "C7249A8A2067F76BCE25814AA9D88BA3",
+    "Translation": "\"Nothing\"",
+    "Original": "\"Nada\""
+  },
+  {
+    "md5": "1FA3F0409A2BBAFA54CCD5B98A77F056",
+    "Translation": "\"Swamp\"",
+    "Original": "\"Pantano\""
+  },
+  {
+    "md5": "2867DD212615174E0C8B27935D73E010",
+    "Translation": "\"Snowy Summit\"",
+    "Original": "\"Cumbre Nevada\""
+  },
+  {
+    "md5": "2ED481F91028140B00A766609FFD70DC",
+    "Translation": "\"Great Bay\"",
+    "Original": "\"Gran Bahía\""
+  },
+  {
+    "md5": "D41B870D411C5EECEC75559909BCF8FD",
+    "Translation": "\"Ikana Valley\"",
+    "Original": "\"Valle Ikana\""
+  },
+  {
+    "md5": "ECBCF2EEC6357225BC348E59808504C0",
+    "Translation": "\"Clock City\"",
+    "Original": "\"Ciudad Reloj\""
+  },
+  {
+    "md5": "CF2B5BC65C83FA927D2D5E51C8BDBD45",
+    "Translation": "\"Goron Refuge\"",
+    "Original": "\"Refugio Goron\""
+  },
+  {
+    "md5": "020802C445ADDDDBA2A40907536678D5",
+    "Translation": "\"Zora City\"",
+    "Original": "\"Ciudad Zora\""
+  },
+  {
+    "md5": "B2C802897BFC305408139CBCEDB3B998",
+    "Translation": "\"Temple of the Swamp\"",
+    "Original": "\"Templo del Pantano\""
+  },
+  {
+    "md5": "AEF5B4FD1C83A53B415727BB217113DE",
+    "Translation": "\"Snowy Temple\"",
+    "Original": "\"Templo Nevado\""
+  },
+  {
+    "md5": "EC212F14F41A4EF20E97EDCECC5C788C",
+    "Translation": "\"Temple of the Great Bay\"",
+    "Original": "\"Templo de la Gran Bahía\""
+  },
+  {
+    "md5": "A6430409926598DD214FE4F72A5EF6FF",
+    "Translation": "\"Temple of the Stone Tower\"",
+    "Original": "\"Templo de la Torre de Piedra\""
+  },
+  {
+    "md5": "AF57A82DA4F09DC9AAF8AF29CFDA0ECC",
+    "Translation": "\"The Legend of Zelda: The Golden Kingdom\"",
+    "Original": "\"The Legend of Zelda: El Reino Dorado\""
+  },
+  {
+    "md5": "5CCF7A2B46B9AD2D0BC480B13BB043F9",
+    "Translation": "\"Pressing the button\"",
+    "Original": "\"Pulsando en el botón \""
+  },
+  {
+    "md5": "AF57A82DA4F09DC9AAF8AF29CFDA0ECC",
+    "Translation": "\"The Legend of Zelda: The Golden Kingdom\"",
+    "Original": "\"The Legend of Zelda: El Reino Dorado\""
+  },
+  {
+    "md5": "AF57A82DA4F09DC9AAF8AF29CFDA0ECC",
+    "Translation": "\"The Legend of Zelda: The Golden Kingdom\"",
+    "Original": "\"The Legend of Zelda: El Reino Dorado\""
+  },
+  {
+    "md5": "AF57A82DA4F09DC9AAF8AF29CFDA0ECC",
+    "Translation": "\"The Legend of Zelda: The Golden Kingdom\"",
+    "Original": "\"The Legend of Zelda: El Reino Dorado\""
+  },
+  {
+    "md5": "C0A59F45209DDA980C249E8668D71B3F",
+    "Translation": "\" (Options) you have at your disposal a button to open the Mini-Manual Panel.\"",
+    "Original": "\" (Opciones) tienes a tu disposición un botón para abrir el Panel de Mini-Manual.\""
+  },
+  {
+    "md5": "B7A71A91645FF01B6D66EE17EF2138FC",
+    "Translation": "\"First steps recommendation for:\"",
+    "Original": "\"RecomendaciÃ³n de pimeros pasos para:\""
+  },
+  {
+    "md5": "0787F06286B7510D3623E561B7093C9A",
+    "Translation": "\"Train at the Big Deku Tree, east of Kokiri City, along the path indicated by Mido.\"",
+    "Original": "\"Entrenar en el Gran Ãrbol Deku, al este de Ciudad Kokiri, por el camino que indica Mido.\""
+  },
+  {
+    "md5": "54394214686D93EAAB51600787D6F99C",
+    "Translation": "\"Train in the Dodongo Cavern, inside Goron City, heading north taking the cave on the right above.\"",
+    "Original": "\"Entrenar en la caverna Dodongo, dentro de Ciudad Goron, hacia el norte tomando la cueva de la derecha arriba.\""
+  },
+  {
+    "md5": "B9A4162D7AE4F424862B2B748E75C72C",
+    "Translation": "\"Train inside the Great Jabu Jabu, to the north inside Zora City, to the left of King Zora.\"",
+    "Original": "\"Entrenar en el interior del Gran Jabu Jabu, hacia el norte dentro de la Ciudad Zora, a la izquierda del Rey Zora.\""
+  },
+  {
+    "md5": "4C77B07434B7B7A842DD1C099BDBC5E6",
+    "Translation": "\"Training in the Gerudo Training Area, to the east of the Gerudo Fortress, there is a cave.\"",
+    "Original": "\"Entrenar en la Zona de Entrenamiento Gerudo, al este de la Fortaleza Gerudo, hay una cueva.\""
+  },
+  {
+    "md5": "468059689CF40A4D97ED47D592BA893E",
+    "Translation": "\"Close Window\"",
+    "Original": "\"Cerrar Ventana\""
+  },
+  {
+    "md5": "064EE5C7B521FB064D3BC2301BED6D0A",
+    "Translation": "\"Welcome to \"",
+    "Original": "\"Â¡Bienvenido a \""
+  },
+  {
+    "md5": "BA3B991661708549D3BC827A04DC55C9",
+    "Translation": "\"Accept Settings\"",
+    "Original": "\"Aceptar Ajustes\""
+  },
+  {
+    "md5": "62B54D08D9B5FEC6155F6F954498FF52",
+    "Translation": "\"Activate Video Recording\"",
+    "Original": "\"Activar Grabación de video\""
+  },
+  {
+    "md5": "9DF71201BBEFC7A76A2B28EACE59964A",
+    "Translation": "\"If you save the settings the current recording will be deleted. You can save it before.\"",
+    "Original": "\"Si Guardas los ajustes la grabación actual se eliminará. Puedes Guardarla antes\""
+  },
+  {
+    "md5": "54FBDDD72DE9FE02EAE423DF96159DE5",
+    "Translation": "\"To save the video press the key \"",
+    "Original": "\"Para Guardar el video presiona la tecla \""
+  },
+  {
+    "md5": "10F64AA9BFF22175A7C39B63B819F5E6",
+    "Translation": "\"Order\"",
+    "Original": "\"Fin\""
+  },
+  {
+    "md5": "4ABA4E6C1FD4F6BD1799AC81B4B8CA2E",
+    "Translation": "\"Attention: Video recording uses a lot of RAM memory: Average Usage: 28 MB\"",
+    "Original": "\"Atención: La grabación de video utiliza mucha memoria RAM: Uso Medio: 28 MB\""
+  },
+  {
+    "md5": "B6E997A30F7F244D35FABE2C271963B8",
+    "Translation": "\"Memorized Seconds:\"",
+    "Original": "\"Segundos Memorizados:\""
+  },
+  {
+    "md5": "E72C3F6697C6F69242B09E3163A44BC2",
+    "Translation": "\"Memorized Seconds:\"",
+    "Original": "\"Segundos Memorizados: \""
+  },
+  {
+    "md5": "2346ED442885810D3487FEA2BB0C3624",
+    "Translation": "\"Undo Guild\"",
+    "Original": "\"Undo Clan\""
+  },
+  {
+    "md5": "06EBCD96784DC0B8E4EC6E6576DD3CA0",
+    "Translation": "\"Your account has been edited by the administrator.\"",
+    "Original": "\"Tu cuenta ha sido editada por el administrador.\""
+  },
+  {
+    "md5": "ADE57EB153FAFA43FF49B68010503B2E",
+    "Translation": "\"You can't summon your pet yet!, miss \"",
+    "Original": "\"Aún no puedes invocar a tu mascota!, faltan \""
+  },
+  {
+    "md5": "1C612DCCA7954F3DD9F38DA0102F9748",
+    "Translation": "\" seconds!\"",
+    "Original": "\" segundos!\""
+  },
+  {
+    "md5": "817A01AE31F860C66DE08E03CDE12156",
+    "Translation": "\"You don't have any NPC fixed\"",
+    "Original": "\"No tienes ningun NPC fijado\""
+  },
+  {
+    "md5": "94791E4F1C5E4889508389AA52BB521E",
+    "Translation": "\"You don't have enough taming points\"",
+    "Original": "\"No tienes suficientes puntos de domación\""
+  },
+  {
+    "md5": "0D399734E68EBD72D939185EB71661C0",
+    "Translation": "\" he has joined your team!\"",
+    "Original": "\" se ha unido a tu equipo!\""
+  },
+  {
+    "md5": "6233996C64BAF1F6267550E3AD98FDEA",
+    "Translation": "\"Your pet has come up\"",
+    "Original": "\"¡Tu mascota ha subido \""
+  },
+  {
+    "md5": "B418313F1FDB0E182C93B56AA10762BE",
+    "Translation": "\"You abandon your\"",
+    "Original": "\"Abandonas a tu \""
+  },
+  {
+    "md5": "4268F75FEF2A8E74D8D6C6FE6B332592",
+    "Translation": "\" and you get half of his Exp:\"",
+    "Original": "\" y recibes la mitad de su Exp: \""
+  },
+  {
+    "md5": "51ADEC365C4261B303B271AB7042D11C",
+    "Translation": "\"The time to accept invitation to the clan is exhausted\"",
+    "Original": "\"El tiempo de aceptar invitación al clan se agotó\""
+  },
+  {
+    "md5": "40AF1432C947C3E6A9B468EE17E7F6F9",
+    "Translation": "\"Shutdown of the Server in: \"",
+    "Original": "\"Apagado del Servidor en: \""
+  },
+  {
+    "md5": "2C1F505B1DD343FD2A3E0064B571E694",
+    "Translation": "\"System\"",
+    "Original": "\"Sistema\""
+  },
+  {
+    "md5": "3FB13826298EA6F186513C939B4D5AA0",
+    "Translation": "\"Whisper\"",
+    "Original": "\"Susurros\""
+  },
+  {
+    "md5": "AC44E47EA964AF0E37A0CD473767B5EA",
+    "Translation": "\"Download link: \"",
+    "Original": "\"Link de descarga: \""
+  },
+  {
+    "md5": "2A054723D73DAFAC9D24C714E51DD025",
+    "Translation": "\"There is an update available, instructions: \"",
+    "Original": "\"Hay una actualizacion disponible, instrucciones: \""
+  },
+  {
+    "md5": "DECF5EE0D9A32B5FD166623BEE19BC14",
+    "Translation": "\" to accept this quest!\"",
+    "Original": "\" para aceptar ésta quest!\""
+  },
+  {
+    "md5": "49B2111299E9C0343E3FB612843D500D",
+    "Translation": "\"You need to complete the quest!\"",
+    "Original": "\"¡Necesitas completar la quest \""
+  },
+  {
+    "md5": "2ACF31677186651BAFEAF6294B414CE1",
+    "Translation": "\"Need \"",
+    "Original": "\"¡Necesitas \""
+  },
+  {
+    "md5": "368647596297139605FFB659E4709F03",
+    "Translation": "\"You need to have more level to accept this quest!\"",
+    "Original": "\"Necesitas tener más nivel para aceptar ésta quest!\""
+  },
+  {
+    "md5": "11934C8E942A22CB78E4147EDA76C5D4",
+    "Translation": "\"You can't accept this quest again!\"",
+    "Original": "\"¡No puedes aceptar ésta quest otra vez!\""
+  },
+  {
+    "md5": "6ADD5D03B68634ABEB6012753F1F4E1B",
+    "Translation": "\" kill.\"",
+    "Original": "\" matados.\""
+  },
+  {
+    "md5": "0158336292C5A091928327941BC98816",
+    "Translation": "\" - You have\"",
+    "Original": "\" - Tienes \""
+  },
+  {
+    "md5": "245EBC2361AE395B204160009D9614D6",
+    "Translation": "\" - You have given\"",
+    "Original": "\" - Has dado \""
+  },
+  {
+    "md5": "9A9A652A886BB07ED496C0A17106A189",
+    "Translation": "\" players killed.\"",
+    "Original": "\" jugadores matados.\""
+  },
+  {
+    "md5": "18A2001C51D494E6DB321B0221665920",
+    "Translation": "\" blow.\"",
+    "Original": "\" golpes.\""
+  },
+  {
+    "md5": "17B7E7DF0319759DE2872F41313570D7",
+    "Translation": "\": quest completed\"",
+    "Original": "\": quest completada\""
+  },
+  {
+    "md5": "949E7DDFEBB353D821A1366D1570DF9D",
+    "Translation": "\"�\"",
+    "Original": "\"\""
+  },
+  {
+    "md5": "42648F3131BA27676709E4A320CE7774",
+    "Translation": "\"Rewriting:\"",
+    "Original": "\"Reescribir:\""
+  },
+  {
+    "md5": "4706123B0B51072E022E65F0B92C34A1",
+    "Translation": "\"Accept\"",
+    "Original": "\"Accept\""
+  },
+  {
+    "md5": "9710282C6B07C51563F2E28ED7122D37",
+    "Translation": "\"Password:\"",
+    "Original": "\"Contraseña:\""
+  },
+  {
+    "md5": "65D78CE65F3BA0A88ABC135ED444A3F6",
+    "Translation": "\"Managers: Farid, Nicoxlitox\"",
+    "Original": "\"Mánagers: Farid, Nicoxlitox\""
+  },
+  {
+    "md5": "6DD39BC118E43AA208EDA29BEB724DA0",
+    "Translation": "\"Graphics: Dace, Sebas\"",
+    "Original": "\"Gráficos: Dace, Sebas\""
+  },
+  {
+    "md5": "62EE1EC393F7ABFD2BB479EAB57EC676",
+    "Translation": "\"Mappers: Dace, Luis Lara, Rolexgamer, Kevin\"",
+    "Original": "\"Mapeadores: Dace, Luis Lara, Rolexgamer, Kevin\""
+  },
+  {
+    "md5": "02597390E70F93AAE10EAC9CD3D282E1",
+    "Translation": "\"Programmers: Joan, Dace\"",
+    "Original": "\"Programadores: Joan, Dace\""
+  },
+  {
+    "md5": "E44444C852DEF23E09F7F5E01F0B18CD",
+    "Translation": "\"Project Manager: Dace\"",
+    "Original": "\"Director del Proyecto: Dace\""
+  },
+  {
+    "md5": "058FB5875ECD13E06210F05E24D0DA74",
+    "Translation": "\"Welcome to Zelda Online\"",
+    "Original": "\"Bienvenido a Zelda Online\""
+  },
+  {
+    "md5": "13ACF0EBCA9807CCFE1A84C799C94A32",
+    "Translation": "\"Save Password?\"",
+    "Original": "\"Guardar Contraseña?\""
+  },
+  {
+    "md5": "A89A21945727FCFBF3AF283E9EF3FC35",
+    "Translation": "\"The Guardian of Light is adept at handling weapons and is very well-balanced in hand-to-hand combat\"",
+    "Original": "\"El Guardián de Luz es experto en el manejo de armas y es muy equilibrado en combate cuerpo a cuerpo\""
+  },
+  {
+    "md5": "D14F33C2484E5F38E49CFAC28F772CA3",
+    "Translation": "\"The Dark Guardian wields certain weapons and possesses powerful arcane spells with which to conjure\"",
+    "Original": "\"El Guardián Oscuro maneja ciertas armas y posee poderosos hechizos arcanos con los que conjurar\""
+  },
+  {
+    "md5": "C6D2358786F40F77023CBCE60E310A56",
+    "Translation": "\"The Light Magician uses electric power to paralyze and attack, as well as to heal wounds\"",
+    "Original": "\"El Mago de Luz usa el poder eléctrico para paralizar y atacar, como tambien para curar heridas\""
+  },
+  {
+    "md5": "55EB118C639C9C58AA2D3CEF5F5CE6CF",
+    "Translation": "\"The Elemental Mage controls fire and ice as a means of burning or freezing his opponents\"",
+    "Original": "\"El Mago Elemental controla el fuego y el hielo como medio para quemar o congelar a sus oponentes\""
+  },
+  {
+    "md5": "DCF1FDFCE339586ACB4FE15DD2A8C9D7",
+    "Translation": "\"The Fighting Goron is a brave and strong fighter who fights without weapons and hand-to-hand\"",
+    "Original": "\"El Goron Luchador es un aguerrido y fuerte combatiente que pelea sin armas y cuerpo a cuerpo\""
+  },
+  {
+    "md5": "A1430D60B56F029224CB7D879C4FEA58",
+    "Translation": "\"The Explosive Goron dominates fire and explosions and is very resistant, withstanding many blows\"",
+    "Original": "\"El Goron Explosivo domina el fuego y las explosiones y es muy resistente, aguantando muchos golpes\""
+  },
+  {
+    "md5": "E6C0B35741D2817E5FBCBABCDF8207FA",
+    "Translation": "\"The Mystic Zora uses the nature of water to defend herself from her enemies or to heal herself\"",
+    "Original": "\"El Zora Místico maneja la naturaleza del agua para defenderse de sus enemigos o para curarse\""
+  },
+  {
+    "md5": "818ADDA4B0E892E1A01AD6530893B88B",
+    "Translation": "\"The Stormy Zora uses his knowledge about nature to attack his opponents from afar\"",
+    "Original": "\"El Zora Tormentoso usa sus conocimientos sobre la naturaleza para atacar desde lejos a sus oponentes\""
+  },
+  {
+    "md5": "F080B795AB11E2D04198815B5ACB1EAA",
+    "Translation": "\"The Gerudo Warrior is an excellent hand-to-hand combatant, who is also lethal in throwing weapons\"",
+    "Original": "\"La Gerudo Guerrera es una excelente combatiente cuerpo a cuerpo, que tambien es letal en armas arrojadizas\""
+  },
+  {
+    "md5": "23E75D3FEED30709AF914BD170122203",
+    "Translation": "\"The Gerudo Sorceress uses devastating magical powers to defeat her opponents, her specialty is magic\"",
+    "Original": "\"La Gerudo Hechicera usa devastadores poderes mágicos para vencer a sus oponentes, su especialidad es la magia\""
+  },
+  {
+    "md5": "F4BAA24A82EDB716C5758712299FC3F8",
+    "Translation": "\"Class without information\"",
+    "Original": "\"Clase sin información\""
+  },
+  {
+    "md5": "0D6EF7688FE0E197A832601F4A69B72C",
+    "Translation": "\"Use items or abilities using F1, F2... F12: Drag item or Skill to the desired skill bar box\"",
+    "Original": "\"Use items or abilities using F1, F2... F12: Drag item or Skill to the desired FnÂº box\""
+  },
+  {
+    "md5": "FB63A04687C6E7AD3FC3D6058BFBE245",
+    "Translation": "\"Map number not visible.\"",
+    "Original": "\"NÃÂÃÂºmero de mapa no vÃÂÃÂ¡lido.\""
+  },
+  {
+    "md5": "8E8DCB966F9A1968BEB1D56BDC7026B3",
+    "Translation": "\"Music\"",
+    "Original": "\"MÃÂÃÂÃÂÃÂºsica\""
+  },
+  {
+    "md5": "1035A8490CC4B6D86F19626B1173684A",
+    "Translation": "\"Empty\"",
+    "Original": "\"Vacio\""
+  },
+  {
+    "md5": "E0E2FDF0499935A5C202CD89E2A44769",
+    "Translation": "\"Gender:\"",
+    "Original": "\"GÃÂ©nero:\""
+  },
+  {
+    "md5": "676CE3ABF4B1029E9F17A8A70ACD2145",
+    "Translation": "\"[Change Appearance]\"",
+    "Original": "\"[Cambiar Apariencia]\""
+  },
+  {
+    "md5": "CAA2332C02F7377F167FBD44B8CB7685",
+    "Translation": "\"ÃÂ¿Â½\"",
+    "Original": "\"ÃÂ¿Â½\""
+  },
+  {
+    "md5": "FA2AC9CDC64BE25E7AAD9DE3D4C48B17",
+    "Translation": "\"Password:\"",
+    "Original": "\"ContraseÃÂ±a:\""
+  },
+  {
+    "md5": "AF4C0944213B5EA9CDF71415D7D7B028",
+    "Translation": "\"Select a Triforce\"",
+    "Original": "\"Selecciona una Trifuerza\""
+  },
+  {
+    "md5": "83F8E0919A5DB140807C09740EB3341F",
+    "Translation": "\"Power\"",
+    "Original": "\"Poder\""
+  },
+  {
+    "md5": "DAE4C023DA2C973C973B8D81CE0598F6",
+    "Translation": "\"Courage\"",
+    "Original": "\"Valor\""
+  },
+  {
+    "md5": "F115932E04C655F82E944C5A7591FF5E",
+    "Translation": "\"Wisdom\"",
+    "Original": "\"Sabiduría\""
+  },
+  {
+    "md5": "2927E90FFF3D7BC0DC56911DD7B53851",
+    "Translation": "\"Triforce\"",
+    "Original": "\"Triforce\""
+  },
+  {
+    "md5": "3C59F07E47EEE5DF7430D9F635C6E94E",
+    "Translation": "\"Neutral\"",
+    "Original": "\"Neutral\""
+  },
+  {
+    "md5": "5C5F281AEA965A5B40A81D134A9077A4",
+    "Translation": "\"Lieutenant\"",
+    "Original": "\"Lieutenant\""
+  },
+  {
+    "md5": "E5F981A987C588AF32B6591FAE952312",
+    "Translation": "\"Resisted!\"",
+    "Original": "\"YOU RESISTED!\""
+  },
+  {
+    "md5": "C0DAF36A1BED4F8A78214687BC0474DB",
+    "Translation": "\"ï¿½\"",
+    "Original": "\"ï¿½\""
+  },
+  {
+    "md5": "3CF8D44B8402AA0B4E6A4DEF428EE7EC",
+    "Translation": "\"¡¡\"",
+    "Original": "\"Â¡\""
+  },
+  {
+    "md5": "16BF835DDBEA343254E8757F223CEC8D",
+    "Translation": "\"Critical!\"",
+    "Original": "\"Critic!\""
+  },
+  {
+    "md5": "0F541DF39FBF2AEADA0B093BC07C432E",
+    "Translation": "\"You must be level\"",
+    "Original": "\"You must have a level\""
+  },
+  {
+    "md5": "985CC0F77B2DDB3A06157D3B7C3658F9",
+    "Translation": "\" has paid the price for being a murderer!\"",
+    "Original": "\"he has paid the price for being a murderer!\""
+  },
+  {
+    "md5": "5424639817BA5C37CA19A0E32568185E",
+    "Translation": "\" has become a murderer!\"",
+    "Original": "\"he has become a murderer!\""
+  },
+  {
+    "md5": "74D54F049DB0164059A5A979BC004EAC",
+    "Translation": "\"is under level 10, you can't attack him yet\"",
+    "Original": "\"he's under level 10, you can't attack him yet\""
+  },
+  {
+    "md5": "9792862DBF924DC9E58005D0941420D9",
+    "Translation": "\"was killed by\"",
+    "Original": "\"he was killed by\""
+  },
+  {
+    "md5": "27D8A3D22DD3A98E92946A6A3EA75062",
+    "Translation": "\"Blocked!\"",
+    "Original": "\"Bloqueado!\""
+  },
+  {
+    "md5": "AE69D2104C20486E7D16017AF37F0A1F",
+    "Translation": "\"Loading Options\\Translation...\"",
+    "Original": "\"Cargando Opciones\\Traducción...\""
+  },
+  {
+    "md5": "93515D6F4B2087D786FCAF2873B7EB40",
+    "Translation": "\"Loading Menu...\"",
+    "Original": "\"Cargando Menú...\""
+  },
+  {
+    "md5": "DE735A0564A26CE81E3F306F4D947B87",
+    "Translation": "\"Loading Interface...\"",
+    "Original": "\"Cargando Interface...\""
+  },
+  {
+    "md5": "0F15CEC1AACB2C8B9371FF90800FB097",
+    "Translation": "\"Starting TCP settings...\"",
+    "Original": "\"Iniciando ajustes de TCP...\""
+  },
+  {
+    "md5": "EAAC32DEC5C76D88AC383F88D3A1A465",
+    "Translation": "\"Starting DirectX...\"",
+    "Original": "\"Iniciando DirectX...\""
+  },
+  {
+    "md5": "3C0BEC27A7A40CB70D5698423B8974F0",
+    "Translation": "\"Loading Buttons...\"",
+    "Original": "\"Cargando Botones...\""
+  },
+  {
+    "md5": "97049C51A55AFCE9887FFFA366BA5233",
+    "Translation": "\"Logged in, sending character information...\"",
+    "Original": "\"Conectado, enviando información de personaje...\""
+  },
+  {
+    "md5": "020086137FB20DE2A0414507A3AEB704",
+    "Translation": "\"Logged in, sending new account information...\"",
+    "Original": "\"Conectado, enviando información de la nueva cuenta...\""
+  },
+  {
+    "md5": "F4AE9E16D3552E08579731349E524B03",
+    "Translation": "\"Connected, receiving data...\"",
+    "Original": "\"Conectado, recibiendo datos...\""
+  },
+  {
+    "md5": "C4E544F47F66DB8A43E9165153BFEE70",
+    "Translation": "\"Use !playername (message)\"",
+    "Original": "\"Uso !playername (message)\""
+  },
+  {
+    "md5": "26480010CDFB1CFDA9C3B3BE507755E1",
+    "Translation": "\"Social Commands:\"",
+    "Original": "\"Comandos Sociales:\""
+  },
+  {
+    "md5": "CDCB731C1A46B5870F56EE25E14BBB5E",
+    "Translation": "\"-msghere = message in color\"",
+    "Original": "\"-msghere = mensaje a color\""
+  },
+  {
+    "md5": "0468209812B900529FEC552A35BD7B69",
+    "Translation": "\"!nickname message = message to Player\"",
+    "Original": "\"!nickname mensaje = mensaje a Jugador\""
+  },
+  {
+    "md5": "25D2E0BB6CC7308D01669750EFEE34E3",
+    "Translation": "\"Guilds Commands:\"",
+    "Original": "\"Comandos de Guilds:\""
+  },
+  {
+    "md5": "CF2147D8C6A061A7583831FF3B99EFEC",
+    "Translation": "\"To transfer founder data usa /guild founder (Name)\"",
+    "Original": "\"Para transferir datos del fundador usa /guild founder (Name)\""
+  },
+  {
+    "md5": "F0B4803842B3473A2BB379001A8D82A1",
+    "Translation": "\"Invite to the Guild: /guild invite (name)\"",
+    "Original": "\"Invitar al Guild: /guild invite (name)\""
+  },
+  {
+    "md5": "1C00470AA435191208C9A1F752A6166C",
+    "Translation": "\"Abandon Guild: /guild abandon\"",
+    "Original": "\"Abandonar Guild: /guild abandon\""
+  },
+  {
+    "md5": "2666AD56BBCD97AC75802022EB2AB331",
+    "Translation": "\"Open Guild Dashboard: /guild admin\"",
+    "Original": "\"Abrir Panel del Guild: /guild admin\""
+  },
+  {
+    "md5": "7406402C481412E5E4234A2F3CE0B8FF",
+    "Translation": "\"Expel from Guild: /guild expell (name)\"",
+    "Original": "\"Expulsar del Guild: /guild expell (name)\""
+  },
+  {
+    "md5": "E4CA7F60770F4ED194C8692B5CCB4A14",
+    "Translation": "\"View Guild: /guild online (online/all/offline)\"",
+    "Original": "\"Ver Guild: /guild online (online/all/offline)\""
+  },
+  {
+    "md5": "6CF82ADE481D83A0D6C95C8074BD71A6",
+    "Translation": "\"You must select a user, use /guild invite (Name)\"",
+    "Original": "\"Debes seleccionar un usuario, usa /guild invite (Name)\""
+  },
+  {
+    "md5": "7DFAD774B2684F00AFE3353179630966",
+    "Translation": "\"You must select a user, usa /guild founder (Name)\"",
+    "Original": "\"Debes seleccionar un usuario, usa /guild fundador (Name)\""
+  },
+  {
+    "md5": "9A0D3B22FBB513AD9FAA8066A399A123",
+    "Translation": "\"You must select a user, use /guild expel (Name)\"",
+    "Original": "\"Debes seleccionar un usuario, usa /guild expulsar (Name)\""
+  },
+  {
+    "md5": "237E46FFD9928C64017E6EB40EC03444",
+    "Translation": "\"Type something like /guild undo yes (This is to avoid an accident!)\"",
+    "Original": "\"Escribe algo como /guild deshacer sí (¡Ésto es para evitar un accidente!)\""
+  },
+  {
+    "md5": "AC302FEDD5F4C21B2D973E9509483F4A",
+    "Translation": "\"-Counter of Committed Death-\"",
+    "Original": "\"-Contador de Death Cometidas-\""
+  },
+  {
+    "md5": "32CA85657AF7785AD537F239A92D84AB",
+    "Translation": "\"-Counter of Death Suffered-\"",
+    "Original": "\"-Contador de Death Sufridas-\""
+  },
+  {
+    "md5": "C4CC8548FF33F75E1DE17A4EF8545CEC",
+    "Translation": "\"Use /kick (name)\"",
+    "Original": "\"Uso /kick (name)\""
+  },
+  {
+    "md5": "E96768EBEB456099FC8DB2C226E9183E",
+    "Translation": "\"Use /warpmeto (name)\"",
+    "Original": "\"Uso /warpmeto (name)\""
+  },
+  {
+    "md5": "E2894BAB188AC0946FE32541F3E88559",
+    "Translation": "\"Use /warptome (name)\"",
+    "Original": "\"Uso /warptome (name)\""
+  },
+  {
+    "md5": "F67BCA5F9EA6576AACB79FF7F2ECD780",
+    "Translation": "\"Use /warpto (map #)\"",
+    "Original": "\"Uso /warpto (map #)\""
+  },
+  {
+    "md5": "BC893F077E0CB817418847CE574860AE",
+    "Translation": "\"Use /setsprite (sprite #)\"",
+    "Original": "\"Uso /setsprite (sprite #)\""
+  },
+  {
+    "md5": "66391379CA2E896751DAC978A4792DC9",
+    "Translation": "\"Use /motd (new motd)\"",
+    "Original": "\"Uso /motd (new motd)\""
+  },
+  {
+    "md5": "91576AAC2D766143AD80F334D70710BA",
+    "Translation": "\"Use /ban (password) (name)\"",
+    "Original": "\"Uso /ban (password) (name)\""
+  },
+  {
+    "md5": "22FE2EBCE621AC01F2D5583C14B3C1CC",
+    "Translation": "\"Use /ban (name)\"",
+    "Original": "\"Uso /ban (name)\""
+  },
+  {
+    "md5": "034DB088BED4820C172A3179A74FFC71",
+    "Translation": "\"Use /mute (Name) (time[s])\"",
+    "Original": "\"Usa /mute (Name) (tiempo[s])\""
+  },
+  {
+    "md5": "A532D291987FF1505A1358811D2FF17A",
+    "Translation": "\"Time has to be a number\"",
+    "Original": "\"El tiempo tiene que ser un numero\""
+  },
+  {
+    "md5": "69BB22FBA1BFF63C57E1CDB7ECCEB68E",
+    "Translation": "\"It's not a valid command!\"",
+    "Original": "\"¡No es un comando válido!\""
+  },
+  {
+    "md5": "A91BF91DD33B6256E395E884515E8556",
+    "Translation": "\"You can't summon your pet for \"",
+    "Original": "\"You can't summon your pet yet!, miss \""
+  },
+  {
+    "md5": "B1864CE13C599FA42421E8104CE7CFF3",
+    "Translation": "\"has refused the trade.\"",
+    "Original": "\"he refused the trade.\""
+  },
+  {
+    "md5": "70FB40A50114AD8E64813DCB318D09DA",
+    "Translation": "\"has connected\"",
+    "Original": "\"he has connected\""
+  },
+  {
+    "md5": "5088C415B8F75CAE7024A407BE0A9D61",
+    "Translation": "\"<Valor>\"",
+    "Original": "\"<Value>\""
+  },
+  {
+    "md5": "46D8FA65B03E9B409D6628C8818EC4E5",
+    "Translation": "\" Nothing.\"",
+    "Original": "\" Nada.\""
+  },
+  {
+    "md5": "31F009CF878F9BF6257DFC42C5561225",
+    "Translation": "\"Class:\"",
+    "Original": "\"Clase: \""
+  },
+  {
+    "md5": "19671A6FAE2ADBDE434685F5DB7A7346",
+    "Translation": "\"Level: \"",
+    "Original": "\"Nivel: \""
+  },
+  {
+    "md5": "F835E2AA83533ED1A40E610F6B1C9089",
+    "Translation": "\"You have been banned from\"",
+    "Original": "\"Has sido baneado de \""
+  },
+  {
+    "md5": "C239774E78978D1AD79541F95008A6DB",
+    "Translation": "'528DFF3B9D5433CF9561D4F62BAEBB98'",
+    "Original": "\"528DFF3B9D5433CF9561D4F62BAEBB98\""
+  },
+  {
+    "md5": "C40885A63714F499219DB56BCFC5FB23",
+    "Translation": "\"Translation\"",
+    "Original": "\"Translation\""
+  },
+  {
+    "md5": "9FA46DD8BC4F522C579B7ABD16360823",
+    "Translation": "\"Resist!\"",
+    "Original": "\"Resisted!\""
+  },
+  {
+    "md5": "AA9CF185EA5CC1A97AA31504937B7D16",
+    "Translation": "\"Picture2\"",
+    "Original": "\"Picture2\""
+  },
+  {
+    "md5": "B89D83BF90E3C8136B3A0CDAEA79620E",
+    "Translation": "\"Training\"",
+    "Original": "\"Training\""
+  },
+  {
+    "md5": "3EBCAFAB4357B0B4F98455D8F2C5198C",
+    "Translation": "\"Expand the energy and power up the magic attack\"",
+    "Original": "\"Expand the energy and power up the magic attack\""
+  },
+  {
+    "md5": "2AF4DD01A39B1F72DDB6D3E275D17A5E",
+    "Translation": "\"Total Deaths in Combat:\"",
+    "Original": "\"Muertes Totales en Combate: \""
+  },
+  {
+    "md5": "55F806A6EA5A535E719781557879D807",
+    "Translation": "\"Killed by Creatures:\"",
+    "Original": "\"Asesinado por Criaturas: \""
+  },
+  {
+    "md5": "02E421309F86415247BBCD0E3DE6C4F3",
+    "Translation": "\"Killed by Players:\"",
+    "Original": "\"Asesinado por Jugadores: \""
+  },
+  {
+    "md5": "18AEE7406223777C0D80001FB4B9A733",
+    "Translation": "\"-Counter of Deaths Suffered-\"",
+    "Original": "\"-Contador de Muertes Sufridas-\""
+  },
+  {
+    "md5": "36A8EA62650263747653B58F688609D0",
+    "Translation": "\"Deaths in Total:\"",
+    "Original": "\"Muertes en Total: \""
+  },
+  {
+    "md5": "82EC868FE34F3CB56DA1EBFCAACAF5F8",
+    "Translation": "\"-Counter of Deaths Committed-\"",
+    "Original": "\"-Contador de Muertes Cometidas-\""
+  },
+  {
+    "md5": "A235953ACC508F1C040131909D28742C",
+    "Translation": "\"Deaths to Players: \"",
+    "Original": "\"Muertes a Jugadores: \""
+  },
+  {
+    "md5": "AF1B539E3396DEB7EB73F22D602D28C3",
+    "Translation": "\"Deaths to Creatures:\"",
+    "Original": "\"Muertes a Criaturas: \""
+  },
+  {
+    "md5": "73AD2A3B4FE58C478C71B80A5F6292C1",
+    "Translation": "\"Accidental Deaths:\"",
+    "Original": "\"Muertes Accidentales: \""
+  },
+  {
+    "md5": "2800A6B78BA4F234E9EDD54935E04EBD",
+    "Translation": "\"Total Deaths:\"",
+    "Original": "\"Muertes Totales: \""
+  }
+]

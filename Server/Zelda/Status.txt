@@ -1,0 +1,8 @@
+[Servers]
+NumServers=1
+[Server1]
+Players=0
+MaxPlayers=0
+PvPOnly=0
+Port=0
+Online= 1

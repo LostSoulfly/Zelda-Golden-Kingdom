@@ -1,0 +1,2 @@
+[UPDATER]
+version=1
